@@ -18,7 +18,7 @@
         <h1>Adventure Map</h1>
         <p class="lede">Mountains climbed. Races run. One map of the places that made the miles memorable.</p>
         <nav class="section-nav" aria-label="Adventure section navigation">
-          <a class="is-active" href="index.html">Map</a><a href="races.html">Races</a><a href="summits.html">Summits</a><a href="adventures.html">Adventures</a>
+          <a href="overview.html">Overview</a><a class="is-active" href="index.html">Map</a><a href="races.html">Races</a><a href="summits.html">Summits</a><a href="adventures.html">Adventures</a>
         </nav>
       </header>
 
@@ -51,9 +51,9 @@
       <footer class="sidebar-footer"><p>Adventure inventory sourced from <a href="https://www.alexlford.com/about" target="_blank" rel="noreferrer">alexlford.com/about</a>, enriched with Alex's Strava export and historical race results.</p><p>GPS-matched adventures show recorded routes and dates. Sensitive home-area route geometry is withheld.</p></footer>
     </section>
 
-    <section class="map-panel" aria-label="Interactive adventure map"><div id="map"></div><div class="map-note"><strong>Explore the archive:</strong> use the map here, or switch to Races, Summits, and Adventures for the full almanac views.</div></section>
+    <section class="map-panel" aria-label="Interactive adventure map"><div id="map"></div><div class="map-note"><strong>Explore the archive:</strong> click a marker or route for its full record, or switch to Races, Summits, and Adventures for the almanac views.</div></section>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="app.js"></script><script src="expansion.js"></script><script src="notable.js"></script>
+  <script src="app.js"></script><script src="map-enhancements.js"></script><script src="expansion.js"></script><script src="notable.js"></script>
 </body></html>
