@@ -1,6 +1,6 @@
 window.AdventureSite = (() => {
   const fmt = new Intl.NumberFormat('en-US');
-  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#039;'}[c]));
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
   const formatDate = (value) => {
     if (!value) return '';
     const [y,m,d] = value.split('-').map(Number);
