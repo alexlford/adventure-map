@@ -13,17 +13,15 @@ window.AdventureSite = (() => {
   };
   const raceType = (a) => a.discipline === 'marathon' ? 'Marathon' : a.discipline === 'trail' ? 'Trail race' : a.discipline === 'nordic' ? 'Nordic' : a.discipline === 'relay' ? 'Relay' : (a.distance || 'Road race');
   async function load() {
-    const urls=['data/adventures.json','data/strava-matches.json','data/discovered-races.json','data/notable-adventures.json'];
-    const [base,strava,discovered,notable]=await Promise.all(urls.map(u=>fetch(u).then(r=>{if(!r.ok)throw new Error(`Failed to load ${u}`);return r.json();})));
+    const urls=['data/adventures.json','data/strava-matches.json','data/discovered-races.json','data/notable-adventures.json','data/user-confirmed-races.json'];
+    const [base,strava,discovered,notable,confirmed]=await Promise.all(urls.map(u=>fetch(u).then(r=>{if(!r.ok)throw new Error(`Failed to load ${u}`);return r.json();})));
     const merged=base.adventures.map(a=>({...a,...(strava.matches?.[a.id]||{})}));
     const seen=new Set(merged.map(a=>a.id));
-    [...(discovered.adventures||[]),...(notable.adventures||[])].forEach(a=>{if(!seen.has(a.id)){merged.push(a);seen.add(a.id);}});
+    [...(discovered.adventures||[]),...(confirmed.adventures||[]),...(notable.adventures||[])].forEach(a=>{if(!seen.has(a.id)){merged.push(a);seen.add(a.id);}});
     const northStar=merged.find(a=>a.id==='north-star-mountain');
     if(northStar) Object.assign(northStar,{date:'2020-09-12',stravaActivityId:'4312782595',stravaActivityName:'Quartzville',distanceKm:12.25,distanceMi:7.61,elapsedSeconds:19132,movingSeconds:12935,elevationGainM:938.1,matchConfidence:'confirmed'});
     return merged;
   }
-  function shell(active){
-    document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));
-  }
+  function shell(active){document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));}
   return {load,esc,formatDate,formatDuration,fmt,raceType,shell};
 })();
