@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "source": "Systematic Strava-to-historical-calendar audit",
+    "updatedOn": "2026-08-10",
+    "publicArchive": false,
+    "policy": "Do not load these into the public almanac until corroborated or user-confirmed."
+  },
+  "candidates": [
+    {"stravaActivityId":"641967630","date":"2014-11-27","stravaActivityName":"Energy - Crainville","distanceKm":5.02,"elapsedSeconds":1683,"area":"Crainville / southern Illinois","candidate":"Unknown Thanksgiving 5K","confidence":"borderline","reason":"Exactly 5K on Thanksgiving, but no matching southern Illinois event has been found online and it is not the Lawrence Thanksgiving race."},
+    {"stravaActivityId":"721329446","date":"2016-09-17","stravaActivityName":"Tuesday Evening Run","distanceKm":5.03,"elapsedSeconds":1622,"area":"Lawrence, Kansas","candidate":"WOW Run 5K","confidence":"borderline","reason":"Exact date, distance, and city match the 2016 WOW Run 5K, but a surviving individual result/start-location record has not been found."},
+    {"stravaActivityId":"4312802712","date":"2016-11-24","stravaActivityName":"Thursday Afternoon Run","distanceKm":5.65,"elapsedSeconds":1845,"area":"Unknown from export index","candidate":"runLawrence Thanksgiving Day 5K","confidence":"borderline","reason":"The activity is on the exact 2016 race date and is 5K-ish, but the FIT-based GPS location has not yet been decoded and no indexed individual result has been found."},
+    {"stravaActivityId":"4312796414","date":"2017-11-23","stravaActivityName":"Thursday Afternoon Run","distanceKm":5.08,"elapsedSeconds":1917,"area":"Unknown from export index","candidate":"runLawrence Thanksgiving Day 5K","confidence":"borderline","reason":"The activity is almost exactly 5K on the exact 2017 race date, but the FIT-based GPS location has not yet been decoded and no indexed individual result has been found."}
+  ],
+  "rejected": [
+    {"stravaActivityId":"4312806997","date":"2016-08-06","reason":"Initially resembled a Red Dog Run match, but the historical 2016 Lawrence calendar has no Red Dog race on that date."},
+    {"stravaActivityId":"641963442","date":"2015-10-31","reason":"Race-like distance but no matching adult event; local calendar was dominated by high-school cross-country that day."},
+    {"stravaActivityId":"641967907","date":"2014-11-02","reason":"Date and distance resemble the Kansas Half 5K, but the recorded course is a compact south-Lawrence training loop rather than the event course."}
+  ]
+}
