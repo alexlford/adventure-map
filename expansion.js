@@ -1,12 +1,21 @@
 CATEGORY.road = { label: 'Road race', color: '#d97706' };
 CATEGORY.trail = { label: 'Trail race', color: '#b45309' };
 
+function updateRouteCount() {
+  const routeCount = document.getElementById('routeCount');
+  if (!routeCount || !state.routes) return;
+  routeCount.textContent = new Set(
+    state.routes.features.flatMap((feature) => feature.properties?.adventureIds || [])
+  ).size;
+}
+
 function mergeSupplementalRoutes(payload, attempt = 0) {
   if (state.routes) {
     const existing = new Set(state.routes.features.map((feature) => feature.properties?.id));
     (payload.features || []).forEach((feature) => {
       if (!existing.has(feature.properties?.id)) state.routes.features.push(feature);
     });
+    updateRouteCount();
     render();
     return;
   }
@@ -48,6 +57,7 @@ window.addEventListener('load', async () => {
 
     document.getElementById('summitCount').textContent = state.adventures.filter((item) => item.kind === 'summit').length;
     document.getElementById('raceCount').textContent = state.adventures.filter((item) => item.kind === 'race').length;
+    updateRouteCount();
     render();
   } catch (error) { console.error(error); }
 });
