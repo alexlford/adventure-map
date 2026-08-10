@@ -1,0 +1,6 @@
+{
+  "meta":{"source":"User confirmation + Strava export","updatedOn":"2026-08-10","policy":"User-confirmed race identities where surviving online records conflict or are incomplete."},
+  "adventures":[
+    {"id":"colderbolder-2022","kind":"race","discipline":"road","name":"COLDERBolder 5K","year":2022,"date":"2022-12-10","distance":"5K","distanceKm":5.02,"distanceMi":3.12,"location":"Boulder, Colorado","region":"Colorado","stravaActivityId":"8232311338","stravaActivityName":"Muenzinger Psychology Building - Boulder","elapsedSeconds":1702,"movingSeconds":1696,"elevationGainM":44,"routeStatus":"matched-no-public-route","matchSource":"Strava export + user confirmation","matchConfidence":"confirmed","note":"User confirms this Strava activity was COLDERBolder. The current official 2022 COLDERBolder archive lists December 3, 2022, so the activity-date discrepancy is retained rather than silently overwritten.","officialArchiveDate":"2022-12-03"}
+  ]
+}
