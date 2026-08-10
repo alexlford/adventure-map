@@ -1,4 +1,5 @@
 CATEGORY.road = { label: 'Road race', color: '#d97706' };
+CATEGORY.trail = { label: 'Trail race', color: '#b45309' };
 
 window.addEventListener('load', async () => {
   try {
