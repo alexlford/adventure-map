@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "source": "Slopes screenshots supplied by user",
+    "updatedOn": "2026-08-10",
+    "coverage": "2012/13–2025/26",
+    "note": "Initial ski archive seed. Overall totals are authoritative from the Slopes season summary; day-level records below include only dates clearly readable in supplied screenshots and will be expanded as more Slopes data is imported."
+  },
+  "summary": {
+    "firstSeason": "2012/13",
+    "latestSeason": "2025/26",
+    "recordedDays": 110,
+    "recordedRuns": 1132,
+    "timeSeconds": 469917,
+    "verticalFt": 1264730,
+    "resortCount": 29
+  },
+  "seasons": [
+    {"season":"2012/13","days":3,"verticalFt":18300},
+    {"season":"2019/20","days":2,"verticalFt":0},
+    {"season":"2020/21","days":4,"verticalFt":54200},
+    {"season":"2021/22","days":20,"verticalFt":261900}
+  ],
+  "days": [
+    {"date":"2013-03-10","season":"2012/13","resort":"Copper Mountain Resort","runs":2,"durationMinutes":19},
+    {"date":"2013-03-11","season":"2012/13","resort":"Arapahoe Basin Ski Area","runs":13,"durationMinutes":81},
+    {"date":"2013-03-12","season":"2012/13","resort":"Copper Mountain Resort","runs":6,"durationMinutes":67},
+    {"date":"2020-02-21","season":"2019/20","resort":"Liberty Mountain Resort","runs":0,"durationMinutes":30},
+    {"date":"2020-02-22","season":"2019/20","resort":"Liberty Mountain Resort","runs":0,"durationMinutes":15},
+    {"date":"2021-01-14","season":"2020/21","resort":"Steamboat Ski Resort","runs":6,"durationMinutes":113},
+    {"date":"2021-01-15","season":"2020/21","resort":"Steamboat Ski Resort","runs":12,"durationMinutes":251},
+    {"date":"2021-03-27","season":"2020/21","resort":"Keystone Resort","runs":13,"durationMinutes":277},
+    {"date":"2021-03-28","season":"2020/21","resort":"Keystone Resort","runs":10,"durationMinutes":245},
+    {"date":"2022-03-11","season":"2021/22","resort":"Winter Park Resort","runs":10,"durationMinutes":197},
+    {"date":"2022-03-18","season":"2021/22","resort":"Aspen Highlands / Aspen Mountain","runs":14,"durationMinutes":319},
+    {"date":"2022-03-19","season":"2021/22","resort":"Buttermilk","runs":8,"durationMinutes":325},
+    {"date":"2022-03-20","season":"2021/22","resort":"Snowmass","runs":5,"durationMinutes":154},
+    {"date":"2022-03-27","season":"2021/22","resort":"Eldora Mountain Resort","runs":6,"durationMinutes":97}
+  ]
+}
