@@ -1,6 +1,6 @@
 window.AdventureSite = (() => {
   const fmt = new Intl.NumberFormat('en-US');
-  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#039;'}[c]));
   const formatDate = (value) => {
     if (!value) return '';
     const [y,m,d] = value.split('-').map(Number);
@@ -22,6 +22,13 @@ window.AdventureSite = (() => {
     if(northStar) Object.assign(northStar,{date:'2020-09-12',stravaActivityId:'4312782595',stravaActivityName:'Quartzville',distanceKm:12.25,distanceMi:7.61,elapsedSeconds:19132,movingSeconds:12935,elevationGainM:938.1,matchConfidence:'confirmed'});
     return merged;
   }
-  function shell(active){document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));}
+  function ensureOverviewNav(){
+    const nav=document.querySelector('.nav');
+    if(nav && !nav.querySelector('a[href="overview.html"]')){
+      const a=document.createElement('a');a.href='overview.html';a.textContent='Overview';nav.insertBefore(a,nav.firstChild);
+    }
+  }
+  function shell(active){ensureOverviewNav();document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));}
+  ensureOverviewNav();
   return {load,esc,formatDate,formatDuration,fmt,raceType,shell};
 })();
