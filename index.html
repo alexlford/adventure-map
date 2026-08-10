@@ -17,6 +17,9 @@
         <p class="eyebrow">ALEX FORD</p>
         <h1>Adventure Map</h1>
         <p class="lede">Mountains climbed. Races run. One map of the places that made the miles memorable.</p>
+        <nav class="section-nav" aria-label="Adventure section navigation">
+          <a class="is-active" href="index.html">Map</a><a href="races.html">Races</a><a href="summits.html">Summits</a><a href="adventures.html">Adventures</a>
+        </nav>
       </header>
 
       <section class="stats" aria-label="Adventure totals">
@@ -36,41 +39,21 @@
           <button class="filter-button" type="button" data-filter="nordic">Nordic</button>
         </div>
         <label class="search-label" for="searchInput">Search</label>
-        <div class="search-row">
-          <input id="searchInput" type="search" placeholder="Peak, race, city, year…" autocomplete="off" />
-          <button id="fitButton" class="secondary-button" type="button">Fit map</button>
-        </div>
+        <div class="search-row"><input id="searchInput" type="search" placeholder="Peak, race, city, year…" autocomplete="off" /><button id="fitButton" class="secondary-button" type="button">Fit map</button></div>
       </section>
 
       <div class="legend" aria-label="Map legend">
-        <span><i class="legend-dot summit-dot"></i> Summit</span>
-        <span><i class="legend-dot marathon-dot"></i> Marathon</span>
-        <span><i class="legend-dot" style="background:#d97706"></i> Road race</span>
-        <span><i class="legend-dot" style="background:#b45309"></i> Trail race</span>
-        <span><i class="legend-dot relay-dot"></i> Relay</span>
-        <span><i class="legend-dot nordic-dot"></i> Nordic</span>
+        <span><i class="legend-dot summit-dot"></i> Summit</span><span><i class="legend-dot marathon-dot"></i> Marathon</span><span><i class="legend-dot" style="background:#d97706"></i> Road race</span><span><i class="legend-dot" style="background:#b45309"></i> Trail race</span><span><i class="legend-dot relay-dot"></i> Relay</span><span><i class="legend-dot nordic-dot"></i> Nordic</span>
       </div>
 
-      <section class="results-section" aria-live="polite">
-        <div class="results-heading"><h2>Adventures</h2><span id="resultCount" class="result-count"></span></div>
-        <div id="adventureList" class="adventure-list"></div>
-      </section>
+      <section class="results-section" aria-live="polite"><div class="results-heading"><h2>Adventures</h2><span id="resultCount" class="result-count"></span></div><div id="adventureList" class="adventure-list"></div></section>
 
-      <footer class="sidebar-footer">
-        <p>Adventure inventory sourced from <a href="https://www.alexlford.com/about" target="_blank" rel="noreferrer">alexlford.com/about</a>, enriched with Alex's Strava export and historical race results.</p>
-        <p>GPS-matched adventures show recorded routes and dates. The 2020 virtual Chicago Marathon is city-mapped to Baltimore while its exact route is withheld for privacy.</p>
-      </footer>
+      <footer class="sidebar-footer"><p>Adventure inventory sourced from <a href="https://www.alexlford.com/about" target="_blank" rel="noreferrer">alexlford.com/about</a>, enriched with Alex's Strava export and historical race results.</p><p>GPS-matched adventures show recorded routes and dates. Sensitive home-area route geometry is withheld.</p></footer>
     </section>
 
-    <section class="map-panel" aria-label="Interactive adventure map">
-      <div id="map"></div>
-      <div class="map-note"><strong>GPS layer:</strong> verified Strava tracks now appear as route lines. Click an adventure to zoom to its recorded course or climb.</div>
-    </section>
+    <section class="map-panel" aria-label="Interactive adventure map"><div id="map"></div><div class="map-note"><strong>Explore the archive:</strong> use the map here, or switch to Races, Summits, and Adventures for the full almanac views.</div></section>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="app.js"></script>
-  <script src="expansion.js"></script>
-  <script src="notable.js"></script>
-</body>
-</html>
+  <script src="app.js"></script><script src="expansion.js"></script><script src="notable.js"></script>
+</body></html>
