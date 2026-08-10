@@ -9,33 +9,38 @@ function updateRouteCount() {
   ).size;
 }
 
-function mergeSupplementalRoutes(payload, attempt = 0) {
+function mergeSupplementalRoutes(payloads, attempt = 0) {
   if (state.routes) {
     const existing = new Set(state.routes.features.map((feature) => feature.properties?.id));
-    (payload.features || []).forEach((feature) => {
-      if (!existing.has(feature.properties?.id)) state.routes.features.push(feature);
+    payloads.flatMap((payload) => payload.features || []).forEach((feature) => {
+      if (!existing.has(feature.properties?.id)) {
+        state.routes.features.push(feature);
+        existing.add(feature.properties?.id);
+      }
     });
     updateRouteCount();
     render();
     return;
   }
-  if (attempt < 40) setTimeout(() => mergeSupplementalRoutes(payload, attempt + 1), 100);
+  if (attempt < 40) setTimeout(() => mergeSupplementalRoutes(payloads, attempt + 1), 100);
 }
 
 window.addEventListener('load', async () => {
   try {
-    const [discoveredResponse, minedResponse, confirmedResponse, routeResponse] = await Promise.all([
+    const [discoveredResponse, minedResponse, confirmedResponse, minedRouteResponse, historicalRouteResponse] = await Promise.all([
       fetch('data/discovered-races.json'),
       fetch('data/mined-races.json'),
       fetch('data/user-confirmed-races.json'),
-      fetch('data/mined-routes.geojson')
+      fetch('data/mined-routes.geojson'),
+      fetch('data/historical-routes-v2.geojson')
     ]);
     if (!discoveredResponse.ok) throw new Error(`Unable to load discovered races (${discoveredResponse.status})`);
     if (!minedResponse.ok) throw new Error(`Unable to load mined races (${minedResponse.status})`);
     if (!confirmedResponse.ok) throw new Error(`Unable to load confirmed races (${confirmedResponse.status})`);
-    if (!routeResponse.ok) throw new Error(`Unable to load mined routes (${routeResponse.status})`);
-    const [discovered, mined, confirmed, minedRoutes] = await Promise.all([
-      discoveredResponse.json(), minedResponse.json(), confirmedResponse.json(), routeResponse.json()
+    if (!minedRouteResponse.ok) throw new Error(`Unable to load mined routes (${minedRouteResponse.status})`);
+    if (!historicalRouteResponse.ok) throw new Error(`Unable to load historical routes (${historicalRouteResponse.status})`);
+    const [discovered, mined, confirmed, minedRoutes, historicalRoutes] = await Promise.all([
+      discoveredResponse.json(), minedResponse.json(), confirmedResponse.json(), minedRouteResponse.json(), historicalRouteResponse.json()
     ]);
 
     const existingIds = new Set(state.adventures.map((item) => item.id));
@@ -45,7 +50,7 @@ window.addEventListener('load', async () => {
         existingIds.add(item.id);
       }
     });
-    mergeSupplementalRoutes(minedRoutes);
+    mergeSupplementalRoutes([minedRoutes, historicalRoutes]);
 
     const northStar = state.adventures.find((item) => item.id === 'north-star-mountain');
     if (northStar) Object.assign(northStar, {
