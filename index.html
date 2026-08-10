@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="An interactive map of Alex Ford's mountain summits and endurance races." />
+  <title>Adventure Map | Alex Ford</title>
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="preconnect" href="https://tile.openstreetmap.org" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynFgWgWf0pT6p5pGT4TQbA03pRsc=" crossorigin="" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="sidebar" aria-label="Adventure map controls">
+      <header class="brand-block">
+        <p class="eyebrow">ALEX FORD</p>
+        <h1>Adventure Map</h1>
+        <p class="lede">Mountains climbed. Races run. One map of the places that made the miles memorable.</p>
+      </header>
+
+      <section class="stats" aria-label="Adventure totals">
+        <div class="stat"><span id="summitCount" class="stat-value">—</span><span class="stat-label">Summits</span></div>
+        <div class="stat"><span id="raceCount" class="stat-value">—</span><span class="stat-label">Race events</span></div>
+        <div class="stat"><span id="mappedCount" class="stat-value">—</span><span class="stat-label">Mapped</span></div>
+      </section>
+
+      <section class="controls">
+        <div class="filter-row" role="group" aria-label="Filter adventures">
+          <button class="filter-button is-active" type="button" data-filter="all">All</button>
+          <button class="filter-button" type="button" data-filter="summit">Summits</button>
+          <button class="filter-button" type="button" data-filter="marathon">Marathons</button>
+          <button class="filter-button" type="button" data-filter="relay">Relays</button>
+          <button class="filter-button" type="button" data-filter="nordic">Nordic</button>
+        </div>
+        <label class="search-label" for="searchInput">Search</label>
+        <div class="search-row">
+          <input id="searchInput" type="search" placeholder="Peak, race, city, year…" autocomplete="off" />
+          <button id="fitButton" class="secondary-button" type="button">Fit map</button>
+        </div>
+      </section>
+
+      <div class="legend" aria-label="Map legend">
+        <span><i class="legend-dot summit-dot"></i> Summit</span>
+        <span><i class="legend-dot marathon-dot"></i> Marathon</span>
+        <span><i class="legend-dot relay-dot"></i> Relay</span>
+        <span><i class="legend-dot nordic-dot"></i> Nordic</span>
+      </div>
+
+      <section class="results-section" aria-live="polite">
+        <div class="results-heading"><h2>Adventures</h2><span id="resultCount" class="result-count"></span></div>
+        <div id="adventureList" class="adventure-list"></div>
+      </section>
+
+      <footer class="sidebar-footer">
+        <p>Initial inventory sourced from <a href="https://www.alexlford.com/about" target="_blank" rel="noreferrer">alexlford.com/about</a>.</p>
+        <p>Summit pins use summit coordinates. Race pins are venue/city placeholders until course GPX data is added.</p>
+      </footer>
+    </section>
+
+    <section class="map-panel" aria-label="Interactive adventure map">
+      <div id="map"></div>
+      <div class="map-note"><strong>Next layer:</strong> GPX course lines, summit routes, photos, dates, finish times, and short stories.</div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>
