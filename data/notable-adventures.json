@@ -1,0 +1,7 @@
+{
+  "meta": {"source":"Strava account export","importedOn":"2026-08-10"},
+  "adventures": [
+    {"id":"colorado-triathlon-2023","kind":"adventure","discipline":"challenge","name":"Colorado Triathlon","year":2023,"date":"2023-12-02","location":"Colorado Front Range","region":"Colorado","routeStatus":"multi-activity-match","matchSource":"Strava export","matchConfidence":"high","note":"Self-described three-leg Colorado Triathlon: ColderBoulder 5K, alpine skiing, then a mountain-bike ride, all on the same day."},
+    {"id":"west-maroon-pass-2026","kind":"adventure","discipline":"trek","name":"West Maroon Pass Traverse","year":2026,"date":"2026-06-29","endDate":"2026-06-30","location":"Elk Mountains, Colorado","region":"Colorado","routeStatus":"gps-source-available","matchSource":"Strava export / summitbag annotation","matchConfidence":"high","distanceKm":36.04,"distanceMi":22.39,"elevationGainM":2298.0,"note":"Two consecutive long hikes annotated West Maroon Pass (3,775 m) in the Strava export."}
+  ]
+}
