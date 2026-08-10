@@ -3,7 +3,7 @@
     "source": "Slopes screenshots supplied by user",
     "updatedOn": "2026-08-10",
     "coverage": "2012/13–2025/26",
-    "note": "Initial ski archive seed. Overall totals are authoritative from the Slopes season summary; day-level records below include only dates clearly readable in supplied screenshots and will be expanded as more Slopes data is imported."
+    "note": "Growing ski archive. Overall totals are authoritative from the Slopes season summary. Day-level records include only dates and values clearly readable in supplied screenshots; grouped trip names are retained when visible."
   },
   "summary": {
     "firstSeason": "2012/13",
@@ -18,7 +18,10 @@
     {"season":"2012/13","days":3,"verticalFt":18300},
     {"season":"2019/20","days":2,"verticalFt":0},
     {"season":"2020/21","days":4,"verticalFt":54200},
-    {"season":"2021/22","days":20,"verticalFt":261900}
+    {"season":"2021/22","days":20,"verticalFt":261900},
+    {"season":"2022/23","days":28,"verticalFt":310100},
+    {"season":"2023/24","days":21,"verticalFt":256800},
+    {"season":"2024/25","days":16,"verticalFt":177300}
   ],
   "days": [
     {"date":"2013-03-10","season":"2012/13","resort":"Copper Mountain Resort","runs":2,"durationMinutes":19},
@@ -34,6 +37,66 @@
     {"date":"2022-03-18","season":"2021/22","resort":"Aspen Highlands / Aspen Mountain","runs":14,"durationMinutes":319},
     {"date":"2022-03-19","season":"2021/22","resort":"Buttermilk","runs":8,"durationMinutes":325},
     {"date":"2022-03-20","season":"2021/22","resort":"Snowmass","runs":5,"durationMinutes":154},
-    {"date":"2022-03-27","season":"2021/22","resort":"Eldora Mountain Resort","runs":6,"durationMinutes":97}
+    {"date":"2022-03-27","season":"2021/22","resort":"Eldora Mountain Resort","runs":6,"durationMinutes":97},
+
+    {"date":"2022-12-02","season":"2022/23","resort":"Eldora Mountain Resort","runs":7,"durationMinutes":115},
+    {"date":"2022-12-20","season":"2022/23","resort":"Eldora Mountain Resort","runs":10,"durationMinutes":137},
+    {"date":"2022-12-30","season":"2022/23","resort":"Eldora Mountain Resort","runs":10,"durationMinutes":185},
+    {"date":"2023-01-14","season":"2022/23","resort":"Vail Ski Resort","runs":5,"durationMinutes":101,"trip":"Elledge Family Visit"},
+    {"date":"2023-01-18","season":"2022/23","resort":"Copper Mountain Resort","runs":12,"durationMinutes":414,"trip":"Ski-In Ski-Out Copper"},
+    {"date":"2023-01-19","season":"2022/23","resort":"Copper Mountain Resort","runs":18,"durationMinutes":368,"trip":"Ski-In Ski-Out Copper"},
+    {"date":"2023-01-20","season":"2022/23","resort":"Winter Park Resort","runs":5,"durationMinutes":67,"trip":"Ski-In Ski-Out Copper"},
+    {"date":"2023-02-02","season":"2022/23","resort":"Vail Ski Resort","runs":15,"durationMinutes":298},
+    {"date":"2023-02-05","season":"2022/23","resort":"Howelsen Hill Ski Area","runs":15,"durationMinutes":114},
+    {"date":"2023-02-06","season":"2022/23","resort":"Steamboat Ski Resort","runs":10,"durationMinutes":217,"trip":"Steamboat and the Beach"},
+    {"date":"2023-02-07","season":"2022/23","resort":"Steamboat Ski Resort","runs":10,"durationMinutes":201,"trip":"Steamboat and the Beach"},
+    {"date":"2023-02-08","season":"2022/23","resort":"Steamboat Ski Resort","runs":10,"durationMinutes":222,"trip":"Steamboat and the Beach"},
+    {"date":"2023-02-09","season":"2022/23","resort":"Steamboat Ski Resort","runs":8,"durationMinutes":118,"trip":"Steamboat and the Beach"},
+    {"date":"2023-02-10","season":"2022/23","resort":"Arapahoe Basin Ski Area","runs":15,"durationMinutes":353,"trip":"Steamboat and the Beach"},
+    {"date":"2023-02-24","season":"2022/23","resort":"Arapahoe Basin Ski Area","runs":17,"durationMinutes":430},
+    {"date":"2023-02-26","season":"2022/23","resort":"Crested Butte Mountain Resort","runs":19,"durationMinutes":285},
+    {"date":"2023-02-27","season":"2022/23","resort":"Crested Butte Mountain Resort","runs":13,"durationMinutes":179},
+    {"date":"2023-02-28","season":"2022/23","resort":"Crested Butte Mountain Resort","runs":14,"durationMinutes":144},
+    {"date":"2023-03-01","season":"2022/23","resort":"Crested Butte Mountain Resort","runs":16,"durationMinutes":264},
+    {"date":"2023-03-02","season":"2022/23","resort":"Crested Butte Mountain Resort","runs":12,"durationMinutes":196},
+    {"date":"2023-03-25","season":"2022/23","resort":"Eldora Mountain Resort","runs":10,"durationMinutes":186},
+    {"date":"2023-03-29","season":"2022/23","resort":"Eldora Mountain Resort","runs":5,"durationMinutes":88},
+    {"date":"2023-04-04","season":"2022/23","resort":"Eldora Mountain Resort","runs":11,"durationMinutes":191},
+    {"date":"2023-04-10","season":"2022/23","resort":"Eldora Mountain Resort","runs":12,"durationMinutes":282},
+    {"date":"2023-04-25","season":"2022/23","resort":"Arapahoe Basin Ski Area","runs":16,"durationMinutes":299},
+
+    {"date":"2023-12-15","season":"2023/24","resort":"Perfect North Slopes","runs":14,"durationMinutes":121},
+    {"date":"2023-12-24","season":"2023/24","resort":"Eldora Mountain Resort","runs":10,"durationMinutes":153},
+    {"date":"2024-01-15","season":"2023/24","resort":"Solitude Mountain Resort","runs":14,"durationMinutes":255,"trip":"SLC Solitude"},
+    {"date":"2024-01-16","season":"2023/24","resort":"Brighton Resort","runs":16,"durationMinutes":405,"trip":"SLC Solitude"},
+    {"date":"2024-01-17","season":"2023/24","resort":"Snowbird","runs":12,"durationMinutes":349,"trip":"SLC Solitude"},
+    {"date":"2024-01-25","season":"2023/24","resort":"Arapahoe Basin Ski Area","runs":10,"durationMinutes":248},
+    {"date":"2024-01-31","season":"2023/24","resort":"Copper Mountain Resort","runs":13,"durationMinutes":208},
+    {"date":"2024-02-14","season":"2023/24","resort":"Eldora Mountain Resort","runs":6,"durationMinutes":112},
+    {"date":"2024-03-01","season":"2023/24","resort":"Bear Mountain / Snow Summit Mountain Resort","runs":15,"durationMinutes":175,"trip":"Coast to Coast"},
+    {"date":"2024-03-01","season":"2023/24","resort":"Snow Valley Mountain Resort","runs":7,"durationMinutes":60,"trip":"Coast to Coast"},
+    {"date":"2024-03-02","season":"2023/24","resort":"Sunday River","runs":14,"durationMinutes":211,"trip":"Coast to Coast"},
+    {"date":"2024-03-03","season":"2023/24","resort":"Sugarloaf","runs":9,"durationMinutes":162,"trip":"Coast to Coast"},
+    {"date":"2024-03-16","season":"2023/24","resort":"Arapahoe Basin Ski Area","runs":12,"durationMinutes":240},
+    {"date":"2024-03-17","season":"2023/24","resort":"Winter Park Resort","runs":8,"durationMinutes":151},
+    {"date":"2024-03-18","season":"2023/24","resort":"Ski Granby Ranch","runs":3,"durationMinutes":184},
+    {"date":"2024-03-20","season":"2023/24","resort":"Vail Ski Resort","runs":1,"durationMinutes":185},
+    {"date":"2024-03-29","season":"2023/24","resort":"Eldora Mountain Resort","runs":8,"durationMinutes":132},
+    {"date":"2024-05-04","season":"2023/24","resort":"Arapahoe Basin Ski Area","runs":9,"durationMinutes":202},
+
+    {"date":"2025-03-20","season":"2024/25","resort":"Vail Ski Resort","runs":1,"durationMinutes":185,"trip":"Penny's First Ski Trip"},
+    {"date":"2025-03-22","season":"2024/25","resort":"Winter Park Resort","runs":12,"durationMinutes":320,"trip":"Penny's First Ski Trip"},
+    {"date":"2025-03-28","season":"2024/25","resort":"Winter Park Resort","runs":11,"durationMinutes":145,"trip":"Penny's First Ski Trip"},
+    {"date":"2025-03-29","season":"2024/25","resort":"Winter Park Resort","runs":11,"durationMinutes":297,"trip":"Penny's First Ski Trip"},
+    {"date":"2025-04-03","season":"2024/25","resort":"Steamboat Ski Resort","runs":10,"durationMinutes":169,"trip":"Penny's First Ski Trip"},
+    {"date":"2025-04-25","season":"2024/25","resort":"Arapahoe Basin Ski Area","runs":10,"durationMinutes":109}
+  ],
+  "trips": [
+    {"name":"Elledge Family Visit","season":"2022/23","runs":5,"durationMinutes":101,"verticalFt":8053},
+    {"name":"Ski-In Ski-Out Copper","season":"2022/23","runs":35,"durationMinutes":851,"verticalFt":43394},
+    {"name":"Steamboat and the Beach","season":"2022/23","runs":68,"durationMinutes":1227,"verticalFt":69337},
+    {"name":"SLC Solitude","season":"2023/24","runs":42,"durationMinutes":1010,"verticalFt":50507},
+    {"name":"Coast to Coast","season":"2023/24","runs":45,"durationMinutes":610,"verticalFt":42315},
+    {"name":"Penny's First Ski Trip","season":"2024/25","runs":56,"durationMinutes":1456,"verticalFt":63050}
   ]
 }
