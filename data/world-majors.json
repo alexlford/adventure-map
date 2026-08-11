@@ -4,7 +4,8 @@
     "officialSourceCheckedOn": "2026-08-11",
     "currentMajorCount": 7,
     "confirmedMajorCountFor2027": 8,
-    "note": "Personal Abbott World Marathon Majors journey. The 2026 series has seven current Majors. Cape Town is confirmed to join as the eighth Major in 2027. Shanghai remains a candidate and is not counted as a Major unless officially admitted. Completed and registered statuses are tracked separately."
+    "nextSeriesCheckpointOn": "2026-12-06",
+    "note": "Personal Abbott World Marathon Majors journey. The 2026 series has seven current Majors. Cape Town is confirmed to join as the eighth Major in 2027. Shanghai remains a candidate and is not counted as a Major unless officially admitted. Its next assessment is tied to the December 6, 2026 Shanghai Marathon; a successful assessment would make it the ninth Major in 2027. Completed and registered statuses are tracked separately."
   },
   "majors": [
     {"id":"chicago","name":"Chicago Marathon","city":"Chicago, Illinois","status":"completed","membership":"current","label":"Completed","lat":41.8781,"lon":-87.6298},
@@ -17,6 +18,6 @@
     {"id":"cape-town","name":"Cape Town Marathon","city":"Cape Town, South Africa","status":"future","membership":"joins-2027","joinsYear":2027,"firstMajorDate":"2027-05-23","label":"Confirmed Major · 2027","lat":-33.9249,"lon":18.4241}
   ],
   "candidates": [
-    {"id":"shanghai","name":"Shanghai Marathon","city":"Shanghai, China","status":"candidate","label":"Candidate · pending assessment","lat":31.2304,"lon":121.4737}
+    {"id":"shanghai","name":"Shanghai Marathon","city":"Shanghai, China","status":"candidate","assessmentStage":"second-stage","nextAssessmentDate":"2026-12-06","joinsYearIfSuccessful":2027,"label":"Candidate · next assessment Dec. 6, 2026","lat":31.2304,"lon":121.4737}
   ]
 }
