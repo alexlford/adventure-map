@@ -11,6 +11,7 @@
     "validate:stories": "node scripts/validate-story-context.mjs",
     "build:public-data": "node scripts/build-public-data.mjs",
     "build:public-index": "node scripts/build-public-index.mjs",
+    "build:site": "node scripts/build-static-site.mjs",
     "scan:strava": "python3 scripts/scan_strava_export.py",
     "advance:strava": "python3 scripts/advance_strava_state.py",
     "test:update-pipeline": "python3 scripts/test_update_pipeline.py"
