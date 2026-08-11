@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = async rel => JSON.parse(await fs.readFile(path.join(root, rel), 'utf8'));
 const manifest = await readJson('data/catalog.json');
+const schema = await readJson('data/event-schema.json');
 const records = new Map();
 const sourceById = new Map();
 const problems = [];
@@ -27,19 +28,28 @@ for (const [id, match] of Object.entries(matchPayload.matches || {})) {
 for (const id of manifest.removeIds || []) { if (!records.has(id)) warnings.push(`catalog removeIds references unknown id ${id}`); records.delete(id); }
 for (const [id, override] of Object.entries(manifest.overrides || {})) { if (!records.has(id)) problems.push(`catalog override references unknown id ${id}`); else records.set(id, { ...records.get(id), ...override }); }
 
-const allowedKinds = new Set(['summit','race','adventure','event']);
+const allowedKinds = new Set(schema.kinds || []);
+const allowedDisciplines = new Set(schema.disciplines || []);
+const allowedConfidence = new Set(schema.confidence || []);
+const allowedPrecision = new Set(schema.coordinatePrecision || []);
 for (const record of records.values()) {
   const at = record.id;
   if (!record.name) problems.push(`${at}: missing name`);
   if (!allowedKinds.has(record.kind)) problems.push(`${at}: invalid kind ${record.kind}`);
   if ((record.kind === 'race' || record.kind === 'event') && !record.discipline) problems.push(`${at}: ${record.kind} missing discipline`);
+  if (record.discipline && !allowedDisciplines.has(record.discipline)) warnings.push(`${at}: noncanonical discipline ${record.discipline}`);
+  if (record.matchConfidence && !allowedConfidence.has(record.matchConfidence)) warnings.push(`${at}: noncanonical confidence ${record.matchConfidence}`);
+  if (record.coordinatePrecision && !allowedPrecision.has(record.coordinatePrecision)) warnings.push(`${at}: noncanonical coordinatePrecision ${record.coordinatePrecision}`);
   if (record.date && !/^\d{4}-\d{2}-\d{2}$/.test(record.date)) problems.push(`${at}: invalid date ${record.date}`);
   if (record.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(record.endDate)) problems.push(`${at}: invalid endDate ${record.endDate}`);
   if ((record.lat == null) !== (record.lon == null)) problems.push(`${at}: lat/lon must be provided together`);
   if (Number.isFinite(record.lat) && (record.lat < -90 || record.lat > 90)) problems.push(`${at}: latitude out of range`);
   if (Number.isFinite(record.lon) && (record.lon < -180 || record.lon > 180)) problems.push(`${at}: longitude out of range`);
   if (record.year && record.date && Number(record.date.slice(0,4)) !== Number(record.year)) warnings.push(`${at}: year does not match date`);
+  if (record.distanceMi != null && (!Number.isFinite(record.distanceMi) || record.distanceMi < 0)) problems.push(`${at}: invalid distanceMi`);
+  if (record.distanceKm != null && (!Number.isFinite(record.distanceKm) || record.distanceKm < 0)) problems.push(`${at}: invalid distanceKm`);
   if (record.kind === 'adventure' && record.discipline === 'mountain-bike') warnings.push(`${at}: mountain-bike event should normally be kind=race`);
+  if (record.kind === 'event' && /race/i.test(record.note || '') && !/not a race|rather than a race/i.test(record.note || '')) warnings.push(`${at}: event note mentions race; review classification`);
 }
 
 if (manifest.relationshipLayer) {
