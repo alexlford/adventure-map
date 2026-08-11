@@ -16,6 +16,11 @@
       card('Official distance',officialDistance,'Race distance from the organizer/event record'),
       card('Race family',series,'Series, challenge, or recurring-event context')
     ];
+    if(a.participationMode||a.completionDate){
+      const mode=a.participationMode==='virtual'?'Virtual completion':a.participationMode==='in-person'?'In-person race':a.participationMode||'Recorded completion';
+      const timing=a.completionDate&&a.completionDate!==a.date?`Organizer event: ${A.formatDate(a.date)} · completed: ${A.formatDate(a.completionDate)}`:(a.date?`Event date: ${A.formatDate(a.date)}`:'Participation evidence retained in the race archive.');
+      cards.push(card('Participation',mode,timing));
+    }
     const gpsDistance=Number.isFinite(a.stravaDistanceMi)?`${a.stravaDistanceMi} mi`:a.distanceMi?`${a.distanceMi} mi`:'';
     const gpsSeconds=Number.isFinite(a.stravaElapsedSeconds)?a.stravaElapsedSeconds:a.elapsedSeconds;
     if(gpsDistance||Number.isFinite(gpsSeconds))cards.push(card('GPS recording',[gpsDistance,Number.isFinite(gpsSeconds)?A.formatDuration(gpsSeconds):''].filter(Boolean).join(' · '),'Strava/watch recording retained for route and GPS context; it does not override the official race result.'));
