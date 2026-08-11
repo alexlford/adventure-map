@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "updatedOn": "2026-08-11",
-  "description": "Canonical public-record resolver for Alex Ford Adventures. Source files preserve provenance; this manifest defines public precedence, removals, corrections, normalized relationships, and day-level outings.",
+  "description": "Canonical public-record resolver for Alex Ford Adventures. Source files preserve provenance; official race-result fields are preferred over Strava metrics when verified.",
   "sources": [
     {"path":"data/adventures.json","role":"seed","description":"Original alexlford.com summit and race inventory"},
     {"path":"data/discovered-races.json","role":"recovered","description":"High-confidence races recovered from Strava and historical results"},
@@ -10,7 +10,9 @@
     {"path":"data/notable-adventures.json","role":"editorial","description":"Curated stand-alone adventure stories"},
     {"path":"data/recovered-events-2026-08.json","role":"confirmed","description":"August 2026 recovered races and corrections"},
     {"path":"data/medal-recovered.json","role":"confirmed","description":"Medal-assisted race discoveries reconciled to Strava and historical/official race sources"},
-    {"path":"data/activity-days.json","role":"outing","description":"Day-level MTB and Nordic outings reconstructed from Strava GPS"}
+    {"path":"data/medal-challenges.json","role":"editorial","description":"Multi-race accomplishments confirmed from medal evidence"},
+    {"path":"data/activity-days.json","role":"outing","description":"Day-level MTB and Nordic outings reconstructed from Strava GPS"},
+    {"path":"data/official-results-overrides.json","role":"official","description":"Official organizer/timer distances, times, places and awards. These fields are authoritative when verified; Strava remains GPS evidence and fallback."}
   ],
   "matchLayer": "data/strava-matches.json",
   "relationshipLayer": "data/relationships.json",
