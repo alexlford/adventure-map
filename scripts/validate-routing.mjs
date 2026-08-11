@@ -1,13 +1,13 @@
 import fs from 'node:fs';
 const shared=fs.readFileSync('shared.js','utf8');
 const fallback=fs.readFileSync('404.html','utf8');
-const normalizer=fs.readFileSync('clean-route-normalizer.js','utf8');
 const mapApp=fs.readFileSync('app.js','utf8');
 const mapPage=fs.readFileSync('map.html','utf8');
 const mapEnhancements=fs.readFileSync('map-enhancements.js','utf8');
 const routeCatalogJs=fs.readFileSync('route-catalog.js','utf8');
 const routeCatalog=fs.readFileSync('data/route-catalog.json','utf8');
 const detail=fs.readFileSync('detail.html','utf8');
+const renderer=fs.readFileSync('record-renderer.js','utf8');
 const sitemap=fs.readFileSync('sitemap.xml','utf8');
 const publicPages=['index.html','map.html','activities.html','timeline.html','races.html','summits.html','skiing.html','nordic.html','mountain-biking.html','adventures.html','detail.html','404.html'];
 const cleanRoutes={home:'/',map:'/map',explore:'/explore',timeline:'/timeline',races:'/races',summits:'/summits',skiing:'/skiing',nordic:'/nordic',mtb:'/mtb',stories:'/stories'};
@@ -18,8 +18,6 @@ if(!shared.includes('const PUBLIC_PATHS='))errors.push('shared.js does not defin
 for(const route of Object.values(cleanRoutes))if(!shared.includes(`'${route}'`)&&!shared.includes(`:${JSON.stringify(route)}`))errors.push(`shared.js missing clean public route ${route}`);
 if(!fallback.includes("clean.match(/^record\\/([^/]+)$/)"))errors.push('404.html does not recognize /record/<slug>/ routes');
 for(const [route,file] of Object.entries({home:'index.html',map:'map.html',explore:'activities.html',timeline:'timeline.html',races:'races.html',summits:'summits.html',skiing:'skiing.html',nordic:'nordic.html',mtb:'mountain-biking.html',stories:'adventures.html'}))if(!fallback.includes(`${route}:'${file}'`))errors.push(`404.html missing route mapping for ${route}`);
-if(normalizer.includes('history.replaceState'))errors.push('record normalizer must not change browser history before relative data/map fetches finish');
-if(!normalizer.includes('link[rel="canonical"]')||!normalizer.includes("meta[property=\"og:url\"]"))errors.push('record normalizer does not publish clean canonical/share URLs');
 if(!mapApp.includes('AdventureRoutes.loadAll()'))errors.push('map app must load the complete canonical route catalog before rendering');
 if(mapApp.includes("fetch('data/routes.geojson')"))errors.push('map app must not bypass the canonical route catalog');
 if(!mapApp.includes('recordHref=A.recordHref')||!mapApp.includes('formatDate=A.formatDate')||!mapApp.includes('escapeHtml=A.esc'))errors.push('map app must use AdventureSite shared URL and formatting helpers');
@@ -34,9 +32,15 @@ if(mapPage.includes('ski-map.js')||fs.existsSync('ski-map.js'))errors.push('obso
 if(mapPage.includes('official-results-ui.js')||fs.existsSync('official-results-ui.js'))errors.push('obsolete official-results-ui.js patch module must remain removed');
 if(mapEnhancements.includes('detail.html?id=')||mapEnhancements.includes('window.popupCard'))errors.push('map enhancements must not wrap popupCard or inject legacy record links');
 if(!routeCatalogJs.includes('cfg.polylineFiles')||!routeCatalog.includes('"data/activity-route-polylines.json"'))errors.push('route catalog must own day-level activity polylines');
-if(detail.includes('payloads.flatMap')||!detail.includes('const features=(collection.features||[])'))errors.push('detail page must consume AdventureRoutes.loadAll() as one merged FeatureCollection');
-if(!detail.includes("A.pageHref('map.html')"))errors.push('detail page map action is not production-safe');
-if(!detail.includes("history.replaceState(null,'',A.recordHref(a))"))errors.push('detail page does not restore the clean record URL after data and map loading');
+if(!detail.includes('src="record-renderer.js"'))errors.push('detail page must load the unified record renderer');
+for(const old of ['detail-phase4.js','story-detail.js','world-major-detail.js','record-media.js','clean-route-normalizer.js'])if(detail.includes(old)||shared.includes(old))errors.push(`${old} must not be dynamically loaded by the active detail path`);
+if(!detail.includes('detail-phase4.css')||!detail.includes('story-themes.css')||!detail.includes('record-media.css'))errors.push('detail page must load its record presentation styles explicitly');
+if(renderer.includes('MutationObserver'))errors.push('record renderer must not depend on MutationObserver composition');
+if(/setTimeout\([^)]*(50|200|600)/.test(renderer))errors.push('record renderer must not use delayed cleanup passes');
+if(!renderer.includes('const features=(collection.features||[])'))errors.push('record renderer must consume AdventureRoutes.loadAll() as one merged FeatureCollection');
+if(!renderer.includes("A.pageHref('map.html')"))errors.push('record renderer map action is not production-safe');
+if(!renderer.includes("history.replaceState(null,'',A.recordHref(a))"))errors.push('record renderer does not restore the clean record URL after data and map loading');
+if(!renderer.includes('function storyModule')||!renderer.includes('function majorModule')||!renderer.includes('function mediaModule')||!renderer.includes('function sportModule'))errors.push('record renderer must compose Story, Major, media, and sport-specific modules explicitly');
 if(/https:\/\/adventures\.alexlford\.com\/[a-z-]+\.html/.test(sitemap))errors.push('sitemap still publishes .html URLs');
 for(const route of Object.values(cleanRoutes).filter(x=>x!=='/'))if(!sitemap.includes(`https://adventures.alexlford.com${route}`))errors.push(`sitemap missing clean route ${route}`);
 for(const file of publicPages){
