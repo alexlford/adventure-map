@@ -1,14 +1,15 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "updatedOn": "2026-08-10",
-  "description": "Canonical public-event resolver for the Personal Adventure Almanac. Source files preserve provenance; this manifest defines public precedence, removals, corrections, and normalized relationships.",
+  "description": "Canonical public-record resolver for the Personal Adventure Almanac. Source files preserve provenance; this manifest defines public precedence, removals, corrections, normalized relationships, and day-level outings.",
   "sources": [
     {"path":"data/adventures.json","role":"seed","description":"Original alexlford.com summit and race inventory"},
     {"path":"data/discovered-races.json","role":"recovered","description":"High-confidence races recovered from Strava and historical results"},
     {"path":"data/mined-races.json","role":"recovered","description":"Additional systematic Strava race matches"},
     {"path":"data/user-confirmed-races.json","role":"confirmed","description":"User-confirmed historical race records"},
     {"path":"data/notable-adventures.json","role":"editorial","description":"Curated stand-alone adventures"},
-    {"path":"data/recovered-events-2026-08.json","role":"confirmed","description":"August 2026 recovered races and corrections"}
+    {"path":"data/recovered-events-2026-08.json","role":"confirmed","description":"August 2026 recovered races and corrections"},
+    {"path":"data/activity-days.json","role":"outing","description":"Day-level MTB and Nordic outings reconstructed from Strava GPS"}
   ],
   "matchLayer": "data/strava-matches.json",
   "relationshipLayer": "data/relationships.json",
