@@ -25,11 +25,13 @@ if(mapApp.includes("fetch('data/routes.geojson')"))errors.push('map app must not
 if(!mapApp.includes('recordHref=A.recordHref')||!mapApp.includes('formatDate=A.formatDate')||!mapApp.includes('escapeHtml=A.esc'))errors.push('map app must use AdventureSite shared URL and formatting helpers');
 if(/function\s+(recordHref|formatDate|formatDuration|escapeHtml)\b/.test(mapApp))errors.push('map app must not reimplement shared URL, date, duration, or escaping helpers');
 if(!mapApp.includes('mapEntities:[]')||!mapApp.includes('loadSkiResortEntities()'))errors.push('map app must model ski resorts as explicit map entities loaded before first render');
+if(!mapApp.includes('function racePopupCard')||!mapApp.includes('officialDistanceLabel'))errors.push('map app must render official race results in the core popup renderer');
 if(!mapPage.includes('href="index.html"')||!mapPage.includes('src="shared.js"'))errors.push('map page must keep relative staging links and load the shared site shell');
 if(mapPage.indexOf('src="shared.js"')>mapPage.indexOf('src="app.js"'))errors.push('map page must load shared.js before app.js');
 if(mapPage.includes('notable.js')||fs.existsSync('notable.js'))errors.push('obsolete notable.js map extension must remain removed');
 if(mapPage.includes('expansion.js')||fs.existsSync('expansion.js'))errors.push('obsolete supplemental route loader must remain removed');
 if(mapPage.includes('ski-map.js')||fs.existsSync('ski-map.js'))errors.push('obsolete ski-map.js patch module must remain removed');
+if(mapPage.includes('official-results-ui.js')||fs.existsSync('official-results-ui.js'))errors.push('obsolete official-results-ui.js patch module must remain removed');
 if(mapEnhancements.includes('detail.html?id=')||mapEnhancements.includes('window.popupCard'))errors.push('map enhancements must not wrap popupCard or inject legacy record links');
 if(!routeCatalogJs.includes('cfg.polylineFiles')||!routeCatalog.includes('"data/activity-route-polylines.json"'))errors.push('route catalog must own day-level activity polylines');
 if(!detail.includes("A.pageHref('map.html')"))errors.push('detail page map action is not production-safe');
