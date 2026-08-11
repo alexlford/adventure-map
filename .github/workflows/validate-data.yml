@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, agent/adventures-stabilization]
+    branches: [main, agent/adventures-stabilization, agent/record-renderer]
 
 permissions:
   contents: read
@@ -37,11 +37,19 @@ jobs:
           test -s .ci-public-data/public-records.json
           test -s .ci-public-data/public-routes.geojson
           test -s .ci-public-data/public-map-entities.json
+      - name: Build static deployment artifact
+        run: |
+          npm run build:site -- --out-dir .ci-site
+          test -s .ci-site/index.html
+          test -s .ci-site/races/index.html
+          test -s .ci-site/sitemap.xml
+          test -s .ci-site/data/public-records.json
+          test -d .ci-site/record
       - name: Install browser smoke-test tooling
         run: npm install --no-save @playwright/test@1.55.0
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
-      - name: Run browser smoke tests
+      - name: Run source browser smoke tests
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/adventures-http.log 2>&1 &
           SERVER_PID=$!
@@ -53,6 +61,18 @@ jobs:
             sleep 0.5
           done
           npx playwright test --project=chromium
+      - name: Run generated static-site tests
+        run: |
+          python3 -m http.server 4174 --bind 127.0.0.1 --directory .ci-site > /tmp/adventures-static-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID' EXIT
+          for attempt in {1..20}; do
+            if curl -fsS http://127.0.0.1:4174/ > /dev/null; then
+              break
+            fi
+            sleep 0.5
+          done
+          npx playwright test --config=playwright.static.config.mjs --project=chromium
       - name: Validate maintenance scripts
         run: python3 -m py_compile scripts/scan_strava_export.py scripts/advance_strava_state.py scripts/test_update_pipeline.py
       - name: Test maintenance pipeline
