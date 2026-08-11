@@ -1,61 +1,9 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Alex Ford's interactive Personal Adventure Almanac: summits, races, ski resorts, GPS routes and memorable challenges." />
-  <title>Adventure Map | Alex Ford</title>
-  <link rel="preconnect" href="https://unpkg.com" />
-  <link rel="preconnect" href="https://tile.openstreetmap.org" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynFgWgWf0pT6p5pGT4TQbA03pRsc=" crossorigin="" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <main class="app-shell">
-    <section class="sidebar" aria-label="Adventure map controls">
-      <header class="brand-block">
-        <p class="eyebrow">PERSONAL ADVENTURE ALMANAC</p>
-        <h1>Adventure Map</h1>
-        <p class="lede">Mountains climbed. Finish lines crossed. Seasons on snow. One map of the places that made the miles memorable.</p>
-        <nav class="section-nav" aria-label="Adventure section navigation">
-          <a href="overview.html">Overview</a><a class="is-active" href="index.html">Map</a><a href="races.html">Races</a><a href="summits.html">Summits</a><a href="skiing.html">Skiing</a><a href="adventures.html">Adventures</a>
-        </nav>
-      </header>
-
-      <section class="stats" aria-label="Adventure totals">
-        <div class="stat"><span id="summitCount" class="stat-value">—</span><span class="stat-label">Summits</span></div>
-        <div class="stat"><span id="raceCount" class="stat-value">—</span><span class="stat-label">Race events</span></div>
-        <div class="stat"><span id="skiCount" class="stat-value">—</span><span class="stat-label">Ski resorts</span></div>
-        <div class="stat"><span id="routeCount" class="stat-value">—</span><span class="stat-label">GPS routes</span></div>
-      </section>
-
-      <section class="controls">
-        <div class="filter-row" role="group" aria-label="Filter adventures">
-          <button class="filter-button is-active" type="button" data-filter="all">All</button>
-          <button class="filter-button" type="button" data-filter="summit">Summits</button>
-          <button class="filter-button" type="button" data-filter="ski">Skiing</button>
-          <button class="filter-button" type="button" data-filter="marathon">Marathons</button>
-          <button class="filter-button" type="button" data-filter="road">Road races</button>
-          <button class="filter-button" type="button" data-filter="trail">Trail races</button>
-          <button class="filter-button" type="button" data-filter="relay">Relays</button>
-          <button class="filter-button" type="button" data-filter="nordic">Nordic</button>
-        </div>
-        <label class="search-label" for="searchInput">Search</label>
-        <div class="search-row"><input id="searchInput" type="search" placeholder="Peak, race, resort, city, year…" autocomplete="off" /><button id="fitButton" class="secondary-button" type="button">Fit map</button></div>
-      </section>
-
-      <div class="legend" aria-label="Map legend">
-        <span><i class="legend-dot summit-dot"></i> Summit</span><span><i class="legend-dot" style="background:#16a6c9"></i> Ski resort</span><span><i class="legend-dot marathon-dot"></i> Marathon</span><span><i class="legend-dot" style="background:#d97706"></i> Road race</span><span><i class="legend-dot" style="background:#b45309"></i> Trail race</span><span><i class="legend-dot relay-dot"></i> Relay</span><span><i class="legend-dot nordic-dot"></i> Nordic</span>
-      </div>
-
-      <section class="results-section" aria-live="polite"><div class="results-heading"><h2>Almanac</h2><span id="resultCount" class="result-count"></span></div><div id="adventureList" class="adventure-list"></div></section>
-
-      <footer class="sidebar-footer"><p>Adventure inventory sourced from alexlford.com and enriched with Alex's Strava export, Slopes logbook, historical race results, and confirmed personal records.</p><p>Skiing is mapped at the resort level to keep the national view readable. GPS-matched race and summit adventures show recorded routes where appropriate.</p></footer>
-    </section>
-
-    <section class="map-panel" aria-label="Interactive adventure map"><div id="map"></div><div class="map-note"><strong>Explore the almanac:</strong> click a summit, race, or ski resort, or switch to the archive pages for deeper timelines and stories.</div></section>
-  </main>
-
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="app.js"></script><script src="map-enhancements.js"></script><script src="expansion.js"></script><script src="notable.js"></script><script src="ski-map.js"></script>
-</body></html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="description" content="Alex Ford's interactive Personal Adventure Almanac: summits, races, ski resorts, routes and memorable adventures."/><title>Adventure Map | Alex Ford</title><link rel="preconnect" href="https://unpkg.com"/><link rel="preconnect" href="https://tile.openstreetmap.org"/><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynFgWgWf0pT6p5pGT4TQbA03pRsc=" crossorigin=""/><link rel="stylesheet" href="styles.css"/></head><body>
+<main class="app-shell"><section class="sidebar" aria-label="Adventure map controls"><header class="brand-block"><p class="eyebrow">PERSONAL ADVENTURE ALMANAC</p><h1>Adventure Map</h1><p class="lede">Mountains climbed. Finish lines crossed. Seasons on snow. One map of the places that made the miles memorable.</p><nav class="section-nav" aria-label="Adventure section navigation"><a href="overview.html">Overview</a><a class="is-active" href="index.html">Map</a><a href="races.html">Races</a><a href="summits.html">Summits</a><a href="skiing.html">Skiing</a><a href="adventures.html">Adventures</a></nav></header>
+<section class="stats" aria-label="Adventure totals"><div class="stat"><span id="summitCount" class="stat-value">—</span><span class="stat-label">Summits</span></div><div class="stat"><span id="raceCount" class="stat-value">—</span><span class="stat-label">Race events</span></div><div class="stat"><span id="skiCount" class="stat-value">—</span><span class="stat-label">Ski resorts</span></div><div class="stat"><span id="routeCount" class="stat-value">—</span><span class="stat-label">Recorded routes</span></div></section>
+<section class="controls"><div class="filter-row" role="group" aria-label="Filter adventures"><button class="filter-button is-active" type="button" data-filter="all">All</button><button class="filter-button" type="button" data-filter="summit">Summits</button><button class="filter-button" type="button" data-filter="ski">Skiing</button><button class="filter-button" type="button" data-filter="marathon">Marathons</button><button class="filter-button" type="button" data-filter="road">Road races</button><button class="filter-button" type="button" data-filter="trail">Trail races</button><button class="filter-button" type="button" data-filter="relay">Relays</button><button class="filter-button" type="button" data-filter="nordic">Nordic</button></div><label class="search-label" for="searchInput">Search</label><div class="search-row"><input id="searchInput" type="search" placeholder="Peak, race, resort, city, year…" autocomplete="off"/><button id="fitButton" class="secondary-button" type="button">Fit map</button></div></section>
+<div class="legend" aria-label="Map legend"><span><i class="legend-dot summit-dot"></i> Summit</span><span><i class="legend-dot" style="background:#16a6c9"></i> Ski resort</span><span><i class="legend-dot marathon-dot"></i> Marathon</span><span><i class="legend-dot" style="background:#d97706"></i> Road race</span><span><i class="legend-dot" style="background:#b45309"></i> Trail race</span><span><i class="legend-dot relay-dot"></i> Relay</span><span><i class="legend-dot nordic-dot"></i> Nordic</span></div>
+<section class="results-section" aria-live="polite"><div class="results-heading"><h2>Almanac</h2><span id="resultCount" class="result-count"></span></div><div id="adventureList" class="adventure-list"></div></section><footer class="sidebar-footer"><p>Summits, races, ski resorts and stand-alone adventures from the Personal Adventure Almanac.</p><p>Skiing is mapped at the resort level to keep the national view readable; recorded routes appear where they add useful geographic context.</p></footer></section>
+<section class="map-panel" aria-label="Interactive adventure map"><div id="map"></div><div class="map-note"><strong>Explore the almanac:</strong> click a summit, race, ski resort or adventure, or switch to the archive pages for deeper timelines and stories.</div></section></main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><script src="app.js"></script><script src="map-enhancements.js"></script><script src="expansion.js"></script><script src="notable.js"></script><script src="ski-map.js"></script></body></html>
