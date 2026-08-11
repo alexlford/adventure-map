@@ -3,8 +3,12 @@
     "source": "Systematic Strava-to-historical-calendar audit + user confirmation",
     "updatedOn": "2026-08-10",
     "publicArchive": false,
-    "policy": "Do not load these into the public almanac until corroborated or user-confirmed."
+    "policy": "Keep unresolved candidates and user-confirmed events with incomplete dates here until the public record can be dated and placed accurately."
   },
+  "knownEventsPendingDate": [
+    {"candidate":"Disney Princess Half Marathon","distance":"Half marathon","userMemory":"confirmed","status":"date-and-Strava-match-needed","reason":"User explicitly confirms completing this race. Recover the exact year/date and matching Strava activity before promoting it to the public timeline."},
+    {"candidate":"Big Ten 10K","distance":"10K","userMemory":"confirmed","status":"date-and-Strava-match-needed","reason":"User explicitly confirms completing the Big Ten 10K. Recover the exact year/date and matching Strava activity before promoting it to the public timeline."}
+  ],
   "candidates": [
     {"stravaActivityId":"4312802712","date":"2016-11-24","stravaActivityName":"Thursday Afternoon Run","distanceKm":5.65,"elapsedSeconds":1845,"area":"Unknown from export index","candidate":"runLawrence Thanksgiving Day 5K","confidence":"borderline","userMemory":"maybe","reason":"The activity is on the exact 2016 race date and is 5K-ish; user says this is possible but does not remember clearly. FIT-based GPS location still needs to be decoded and no indexed individual result has been found."},
     {"stravaActivityId":"4312796414","date":"2017-11-23","stravaActivityName":"Thursday Afternoon Run","distanceKm":5.08,"elapsedSeconds":1917,"area":"Unknown from export index","candidate":"runLawrence Thanksgiving Day 5K","confidence":"borderline","userMemory":"maybe","reason":"The activity is almost exactly 5K on the exact 2017 race date; user says this is possible but does not remember clearly. FIT-based GPS location still needs to be decoded and no indexed individual result has been found."}
