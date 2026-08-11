@@ -8,6 +8,9 @@ window.AdventureSite = (() => {
   const outingType = (a) => a.discipline === 'nordic' ? 'Nordic outing' : a.discipline === 'mountain-bike' ? (a.mtbMode === 'downhill' ? 'Downhill MTB' : a.mtbMode === 'mixed' ? 'MTB + Downhill MTB' : 'MTB') : 'Outing';
   const adventureType = (a) => a.discipline === 'ski-objective' ? 'Ski objective' : a.discipline === 'mountain-loop' ? 'Mountain loop' : a.discipline === 'trek' ? 'Trek / traverse' : a.discipline === 'challenge' ? 'Challenge' : a.kind === 'summit' ? 'Summit' : 'Adventure';
   const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'event' ? eventType(a) : a.kind === 'outing' ? outingType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
+  const PRIMARY=[['overview.html','Overview','overview'],['index.html','Map','map'],['timeline.html','Timeline','timeline'],['activities.html','Activities','activities'],['adventures.html','Adventures','adventures']];
+  const ACTIVITIES=[['races.html','Races','races'],['summits.html','Summits','summits'],['skiing.html','Skiing','skiing'],['nordic.html','Nordic','nordic'],['mountain-biking.html','MTB','mountain-biking']];
+  const activityKeys=new Set(ACTIVITIES.map(x=>x[2]));
   let catalogPromise;
   const ensureCatalog = () => {
     if (window.AdventureCatalog) return Promise.resolve(window.AdventureCatalog);
@@ -19,16 +22,22 @@ window.AdventureSite = (() => {
   const load = () => ensureCatalog().then(catalog => catalog.load());
   const loadRelationships = () => ensureCatalog().then(catalog => catalog.loadRelationships());
   const relationshipsFor = (id) => ensureCatalog().then(catalog => catalog.relationshipsFor(id));
-  function ensureNav(){
+  function inferActive(){const p=location.pathname.split('/').pop()||'overview.html';const hit=[...PRIMARY,...ACTIVITIES].find(x=>x[0]===p);return hit?.[2]||null;}
+  function primaryKey(active){return activityKeys.has(active)?'activities':active;}
+  function ensureNav(active=inferActive()){
     const nav=document.querySelector('.nav'); if(!nav)return;
-    const insertBeforeAdventures=(href,text,key)=>{if(nav.querySelector(`a[href="${href}"]`))return;const a=document.createElement('a');a.href=href;a.textContent=text;a.dataset.nav=key;const adventures=nav.querySelector('a[href="adventures.html"]');if(adventures)nav.insertBefore(a,adventures);else nav.appendChild(a);};
-    if(!nav.querySelector('a[href="overview.html"]')){const a=document.createElement('a');a.href='overview.html';a.textContent='Overview';a.dataset.nav='overview';nav.insertBefore(a,nav.firstChild);}
-    insertBeforeAdventures('skiing.html','Skiing','skiing');
-    insertBeforeAdventures('nordic.html','Nordic','nordic');
-    insertBeforeAdventures('mountain-biking.html','Mountain Biking','mountain-biking');
-    insertBeforeAdventures('timeline.html','Timeline','timeline');
+    const top=primaryKey(active);
+    nav.setAttribute('aria-label','Primary navigation');
+    nav.innerHTML=PRIMARY.map(([href,text,key])=>`<a data-nav="${key}" href="${href}"${top===key?' class="is-active"':''}>${text}</a>`).join('');
+    document.querySelector('.activity-subnav-wrap')?.remove();
+    if(active==='activities'||activityKeys.has(active)){
+      const header=document.querySelector('.site-header');if(!header)return;
+      const wrap=document.createElement('div');wrap.className='activity-subnav-wrap';
+      wrap.innerHTML=`<nav class="activity-subnav" aria-label="Activity chapters"><span class="activity-subnav-label">Activity chapters</span>${ACTIVITIES.map(([href,text,key])=>`<a href="${href}"${active===key?' class="is-active"':''}>${text}</a>`).join('')}</nav>`;
+      header.insertAdjacentElement('afterend',wrap);
+    }
   }
-  function shell(active){ensureNav();document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));}
+  function shell(active){ensureNav(active);}
   ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,shell};
 })();
 
