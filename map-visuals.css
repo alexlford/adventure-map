@@ -26,6 +26,11 @@
 .popup-card+.popup-card{margin-top:13px;padding-top:13px}
 .popup-kicker{color:var(--accent,var(--summit))}
 .popup-detail a{font-weight:800;text-decoration-thickness:1px;text-underline-offset:4px}
+.map-cluster-more{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:.68rem;font-weight:750;line-height:1.4}
+.leaflet-tooltip.map-cluster-count{margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;color:#fff!important;font-size:9px!important;font-weight:900!important;line-height:1!important;text-align:center!important;text-shadow:0 1px 3px rgba(23,32,42,.42);pointer-events:none!important}
+.leaflet-tooltip.map-cluster-count:before{display:none!important}
+.leaflet-tooltip.map-point-label{padding:4px 7px!important;border:1px solid rgba(23,32,42,.12)!important;border-radius:8px!important;background:rgba(255,255,255,.95)!important;box-shadow:0 5px 16px rgba(23,32,42,.1)!important;color:var(--ink)!important;font-size:9px!important;font-weight:750!important}
+.leaflet-tooltip.map-point-label:before{display:none!important}
 
 .map-panel:after,.detail-map:after{content:"";position:absolute;inset:0;z-index:350;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(23,32,42,.04)}
 .map-note{left:20px;bottom:20px;max-width:430px;padding:9px 12px;border-color:rgba(255,255,255,.45);border-radius:11px;background:rgba(23,32,42,.82);box-shadow:0 12px 34px rgba(23,32,42,.18);font-size:.76rem;backdrop-filter:blur(10px)}
@@ -61,4 +66,5 @@ body[data-page="adventures"] .detail-map .leaflet-interactive{stroke:#715a8d!imp
   .detail-map{border-radius:16px}
   .route-endpoint{width:22px;height:22px}
   .leaflet-tooltip.route-endpoint-label{display:none}
+  .leaflet-tooltip.map-point-label{display:none}
 }
