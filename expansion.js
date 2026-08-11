@@ -1,5 +1,6 @@
 CATEGORY.road = { label: 'Road race', color: '#d97706' };
 CATEGORY.trail = { label: 'Trail race', color: '#b45309' };
+CATEGORY['mountain-bike'] = { label: 'Mountain bike race', color: '#2563eb' };
 
 function updateRouteCount() {
   const routeCount = document.getElementById('routeCount');
@@ -27,24 +28,28 @@ function mergeSupplementalRoutes(payloads, attempt = 0) {
 
 window.addEventListener('load', async () => {
   try {
-    const [discoveredResponse, minedResponse, confirmedResponse, minedRouteResponse, historicalRouteResponse] = await Promise.all([
+    const [discoveredResponse, minedResponse, confirmedResponse, recoveredResponse, minedRouteResponse, historicalRouteResponse] = await Promise.all([
       fetch('data/discovered-races.json'),
       fetch('data/mined-races.json'),
       fetch('data/user-confirmed-races.json'),
+      fetch('data/recovered-events-2026-08.json'),
       fetch('data/mined-routes.geojson'),
       fetch('data/historical-routes-v2.geojson')
     ]);
     if (!discoveredResponse.ok) throw new Error(`Unable to load discovered races (${discoveredResponse.status})`);
     if (!minedResponse.ok) throw new Error(`Unable to load mined races (${minedResponse.status})`);
     if (!confirmedResponse.ok) throw new Error(`Unable to load confirmed races (${confirmedResponse.status})`);
+    if (!recoveredResponse.ok) throw new Error(`Unable to load recovered races (${recoveredResponse.status})`);
     if (!minedRouteResponse.ok) throw new Error(`Unable to load mined routes (${minedRouteResponse.status})`);
     if (!historicalRouteResponse.ok) throw new Error(`Unable to load historical routes (${historicalRouteResponse.status})`);
-    const [discovered, mined, confirmed, minedRoutes, historicalRoutes] = await Promise.all([
-      discoveredResponse.json(), minedResponse.json(), confirmedResponse.json(), minedRouteResponse.json(), historicalRouteResponse.json()
+    const [discovered, mined, confirmed, recovered, minedRoutes, historicalRoutes] = await Promise.all([
+      discoveredResponse.json(), minedResponse.json(), confirmedResponse.json(), recoveredResponse.json(), minedRouteResponse.json(), historicalRouteResponse.json()
     ]);
 
+    const removeIds = new Set(recovered.removeIds || []);
+    state.adventures = state.adventures.filter(item => !removeIds.has(item.id));
     const existingIds = new Set(state.adventures.map((item) => item.id));
-    [...(discovered.adventures || []), ...(mined.adventures || []), ...(confirmed.adventures || [])].forEach((item) => {
+    [...(discovered.adventures || []), ...(mined.adventures || []), ...(confirmed.adventures || []), ...(recovered.adventures || [])].forEach((item) => {
       if (!existingIds.has(item.id)) {
         state.adventures.push(item);
         existingIds.add(item.id);
