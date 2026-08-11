@@ -92,7 +92,26 @@ for (const [recordId, override] of Object.entries(routeCatalog.recordOverrides |
   if (!records.has(recordId)) problems.push(`route-catalog recordOverrides references unknown record ${recordId}`);
   if (override.provenance && !allowedProvenance.has(override.provenance)) problems.push(`${recordId}: invalid record provenance ${override.provenance}`);
 }
+
+const ingestState = await readJson('data/ingest-state.json');
+if (Number(ingestState.schemaVersion) < 2) problems.push('ingest-state: expected schemaVersion >= 2');
+if (!Number.isInteger(ingestState.activityCount) || ingestState.activityCount < 1) problems.push('ingest-state: invalid activityCount');
+if (!/^\d{4}-\d{2}-\d{2}$/.test(ingestState.snapshotOn || '')) problems.push('ingest-state: snapshotOn must use YYYY-MM-DD');
+if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(ingestState.lastSeenActivityLocalDateTime || '')) problems.push('ingest-state: invalid lastSeenActivityLocalDateTime');
+if (!Array.isArray(ingestState.seenAtWatermarkActivityIdHashes) || !ingestState.seenAtWatermarkActivityIdHashes.length) problems.push('ingest-state: missing watermark activity hashes');
+for (const hash of ingestState.seenAtWatermarkActivityIdHashes || []) if (!/^[0-9a-f]{16}$/.test(hash)) problems.push(`ingest-state: invalid activity hash ${hash}`);
+
+const updatePolicy = await readJson('data/update-policy.json');
+const requiredUpdateCategories = ['run', 'bike', 'nordic', 'skiing'];
+for (const category of requiredUpdateCategories) if (!updatePolicy.activityPolicies?.[category]) problems.push(`update-policy: missing ${category} policy`);
+const allowedUpdateActions = new Set(['review-only', 'race-review', 'bike-review', 'candidate-outing', 'ski-passport']);
+for (const [category, policy] of Object.entries(updatePolicy.activityPolicies || {})) {
+  if (!allowedUpdateActions.has(policy.defaultAction)) problems.push(`update-policy: ${category} has invalid defaultAction ${policy.defaultAction}`);
+  if (!Array.isArray(policy.publicDestinations) || !policy.publicDestinations.length) problems.push(`update-policy: ${category} has no publicDestinations`);
+}
+
 console.log(`Catalog records: ${records.size}`);
+console.log(`Strava ingest watermark: ${ingestState.lastSeenActivityLocalDateTime} (${ingestState.activityCount} activities reviewed)`);
 console.log(`Warnings: ${warnings.length}`);
 warnings.forEach(x => console.warn(`WARN ${x}`));
 if (problems.length) { problems.forEach(x => console.error(`ERROR ${x}`)); process.exitCode = 1; } else console.log('Catalog validation passed.');
