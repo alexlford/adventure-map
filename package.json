@@ -7,6 +7,7 @@
     "validate:slugs": "node scripts/validate-record-slugs.mjs",
     "validate:routing": "node scripts/validate-routing.mjs",
     "validate:majors": "node scripts/validate-world-majors.mjs",
+    "validate:stories": "node scripts/validate-story-context.mjs",
     "build:public-index": "node scripts/build-public-index.mjs",
     "scan:strava": "python3 scripts/scan_strava_export.py",
     "advance:strava": "python3 scripts/advance_strava_state.py",
