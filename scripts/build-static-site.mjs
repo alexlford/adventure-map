@@ -38,8 +38,6 @@ const fileToCleanPath = new Map([
   ...Object.entries(cleanPages).map(([route, file]) => [file, `/${route}/`]),
 ]);
 
-const slugify = value => String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-');
-const recordSlug = record => record.slug || [record.date || record.year, record.name].filter(Boolean).map(slugify).filter(Boolean).join('-') || slugify(record.id);
 const attr = value => String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const xml = attr;
 const displayDate = value => {
@@ -104,7 +102,8 @@ function publicHtml(html, cleanPath = null, descriptionOverride = '') {
 }
 
 function recordHtml(template, record) {
-  const slug = recordSlug(record);
+  const slug = record.slug;
+  if (!slug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error(`Compiled record ${record.id || record.name || '(unknown)'} is missing a valid canonical slug`);
   const cleanPath = `/record/${encodeURIComponent(slug)}/`;
   const canonical = `${SITE}${cleanPath}`;
   const title = `${record.name} | Alex Ford Adventures`;
@@ -170,7 +169,6 @@ async function generateRecords() {
   const seen = new Set();
   for (const record of compiled.records || []) {
     const generated = recordHtml(template, record);
-    if (!generated.slug) throw new Error(`Cannot generate record page for ${record.id || record.name}`);
     if (seen.has(generated.slug)) throw new Error(`Duplicate generated record slug: ${generated.slug}`);
     seen.add(generated.slug);
     slugs.push(generated.slug);
