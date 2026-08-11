@@ -21,3 +21,7 @@ jobs:
           node-version: '22'
       - name: Validate canonical catalog
         run: npm run validate:data
+      - name: Rebuild public index
+        run: npm run build:public-index
+      - name: Verify public index is current
+        run: git diff --exit-code -- sitemap.xml robots.txt
