@@ -10,10 +10,11 @@
     {"path":"data/notable-adventures.json","role":"editorial","description":"Curated stand-alone adventure stories"},
     {"path":"data/recovered-events-2026-08.json","role":"confirmed","description":"August 2026 recovered races and corrections"},
     {"path":"data/medal-recovered.json","role":"confirmed","description":"Medal-assisted race discoveries reconciled to Strava and historical/official race sources"},
-    {"path":"data/medal-recovered-2026-08-11b.json","role":"confirmed","description":"Additional medal-confirmed virtual and RunDenver races"},
-    {"path":"data/medal-challenges.json","role":"editorial","description":"Multi-race accomplishments confirmed from medal evidence"},
+    {"path":"data/medal-recovered-2026-08-11b.json","role":"confirmed","description":"Additional medal-confirmed virtual, RunDenver, and Flying Pig challenge races"},
+    {"path":"data/medal-challenges.json","role":"editorial","description":"Multi-race accomplishments confirmed from medal evidence and official challenge definitions"},
     {"path":"data/activity-days.json","role":"outing","description":"Day-level MTB and Nordic outings reconstructed from Strava GPS"},
-    {"path":"data/official-results-overrides.json","role":"official","description":"Official organizer/timer distances, times, places and awards. These fields are authoritative when verified; Strava remains GPS evidence and fallback."}
+    {"path":"data/official-results-overrides.json","role":"official","description":"Official organizer/timer distances, times, places and awards. These fields are authoritative when verified; Strava remains GPS evidence and fallback."},
+    {"path":"data/official-results-overrides-2026-08-11b.json","role":"official","description":"Latest official naming/distance overrides from the medal-assisted audit; loaded last for public precedence."}
   ],
   "matchLayer": "data/strava-matches.json",
   "relationshipLayer": "data/relationships.json",
