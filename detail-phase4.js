@@ -12,7 +12,7 @@
     const cards=[card('Race day',result,a.officialPlace?`Published place: ${a.officialPlace}`:'Result and course record'),card('Distance',a.distanceMi?`${a.distanceMi} mi`:a.distance||'—',a.discipline==='relay'?'Relay course/event distance may differ from individual legs.':''),card('Race family',series,'Series, challenge, or recurring-event context')];
     if(a.bib)cards.push(card('Bib',String(a.bib),'Race-day identifier'));
     if(a.resultUrl)cards.push(card('Published record','Results available','A public result source is linked above.'));
-    return section('Race dossier','Results, course context, and how this event fits into the larger race archive.',cards,`<div class="detail-callout"><strong>Race archive</strong><p>${a.discipline==='trail'?'Filed with trail races.':a.discipline==='nordic'?'Filed with Nordic racing.':a.discipline==='mountain-bike'?'Filed with mountain-bike racing.':'Filed with road races, including marathons and relays.'}</p></div>`);
+    return section('Race dossier','Results, course context, and how this event fits into the larger race history.',cards,`<div class="detail-callout"><strong>Race archive</strong><p>${a.discipline==='trail'?'Filed with trail races.':a.discipline==='nordic'?'Filed with Nordic racing.':a.discipline==='mountain-bike'?'Filed with mountain-bike racing.':'Filed with road races, including marathons and relays.'}</p></div>`);
   }
   function summitModule(a,all){
     const elevation=a.elevationFt?`${A.fmt.format(a.elevationFt)}′`:'—';
@@ -38,10 +38,10 @@
   }
   function adventureModule(a,rels){
     const related=rels.reduce((n,r)=>n+(r.memberIds||[]).length,0);
-    return section('Adventure chapter','The editorial layer of the almanac: multi-part objectives, traverses, challenges, and weekends that are more than a single race or ordinary activity.',[
-      card('Adventure type',A.adventureType(a),'Editorial classification'),
-      card('Span',a.endDate?`${A.formatDate(a.date)} – ${A.formatDate(a.endDate)}`:(a.date?A.formatDate(a.date):String(a.year||'—')),'When this chapter happened'),
-      card('Connected records',related?String(related):'—',related?'Events or records tied into this chapter.':'Standalone adventure chapter.')
+    return section('Adventure story','The story layer of Adventures: multi-part objectives, traverses, challenges, and weekends that are more than a single race or ordinary activity.',[
+      card('Adventure type',A.adventureType(a),'Story classification'),
+      card('Span',a.endDate?`${A.formatDate(a.date)} – ${A.formatDate(a.endDate)}`:(a.date?A.formatDate(a.date):String(a.year||'—')),'When this story happened'),
+      card('Connected records',related?String(related):'—',related?'Events or records tied into this story.':'Standalone adventure story.')
     ]);
   }
   async function run(){
@@ -55,11 +55,11 @@
       else if(a.kind==='outing'&&(a.discipline==='mountain-bike'||a.discipline==='nordic'))html=outingModule(a,all);
       else if(a.kind==='adventure')html=adventureModule(a,related);
       else return;
-      const refreshMeta=()=>A.refreshMeta?.(`${A.recordType(a)} · ${a.location||'Personal Adventure Almanac'}${a.date?` · ${A.formatDate(a.date)}`:''}`);
+      const refreshMeta=()=>A.refreshMeta?.(`${A.recordType(a)} · ${a.location||'Alex Ford Adventures'}${a.date?` · ${A.formatDate(a.date)}`:''}`);
       const wait=()=>{const route=document.querySelector('.detail-route-section');if(route){route.insertAdjacentHTML('beforebegin',html);refreshMeta();return true}return false};
       if(wait())return;
       const obs=new MutationObserver(()=>{if(wait())obs.disconnect()});obs.observe(document.getElementById('page'),{childList:true,subtree:true});
-    }catch(e){console.error('Phase 4 detail module',e)}
+    }catch(e){console.error('Adventure detail module',e)}
   }
   run();
 })();
