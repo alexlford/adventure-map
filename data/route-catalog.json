@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedOn": "2026-08-11",
-  "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON and encoded activity polylines preserve imported geometry; this file defines public ownership, provenance, and privacy treatment.",
+  "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON and encoded activity polylines preserve imported geometry; this file defines public ownership, provenance, privacy treatment, and explicit publication repairs for incomplete imported geometry.",
   "routeFiles": [
     "data/routes.geojson",
     "data/mined-routes.geojson",
@@ -11,6 +11,16 @@
   "polylineFiles": [
     "data/activity-route-polylines.json"
   ],
+  "polylineRepairs": {
+    "activity-mtb-day-2026-05-24": {
+      "trimEndByLine": {"1": 2},
+      "note": "The second imported segment ends with an incomplete encoded latitude and no matching longitude. Publication drops only that incomplete trailing point; all complete GPS coordinates are preserved."
+    },
+    "activity-nordic-day-2023-01-28": {
+      "trimEndByLine": {"0": 2},
+      "note": "The imported segment ends with an incomplete encoded latitude and no matching longitude. Publication drops only that incomplete trailing point; all complete GPS coordinates are preserved."
+    }
+  },
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
     "historical-course": "Historical or published event-course geometry, not represented as Alex's personal GPS track.",
