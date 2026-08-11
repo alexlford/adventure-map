@@ -15,6 +15,17 @@ function runtimeErrors(page) {
   return errors;
 }
 
+async function compiledRecords(request) {
+  const response = await request.get('/data/public-records.json');
+  expect(response.status()).toBe(200);
+  const compiled = await response.json();
+  expect(compiled.records).toHaveLength(compiled.recordCount);
+  const slugs = compiled.records.map(record => record.slug);
+  expect(slugs.every(slug => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug || ''))).toBe(true);
+  expect(new Set(slugs).size).toBe(slugs.length);
+  return compiled;
+}
+
 test('generated section routes are real static documents with static metadata', async ({ request }) => {
   const home = await request.get('/');
   expect(home.status()).toBe(200);
@@ -37,13 +48,12 @@ test('generated section routes are real static documents with static metadata', 
 });
 
 test('generated record route has static metadata before JavaScript runs', async ({ request, page }) => {
-  const recordsResponse = await request.get('/data/public-records.json');
-  expect(recordsResponse.status()).toBe(200);
-  const compiled = await recordsResponse.json();
+  const compiled = await compiledRecords(request);
   const record = compiled.records.find(item => item.id === 'chicago-marathon-2021') || compiled.records[0];
   expect(record).toBeTruthy();
+  expect(record.slug).toBeTruthy();
 
-  const slug = record.slug || record.id;
+  const slug = record.slug;
   const response = await request.get(`/record/${slug}/`);
   expect(response.status()).toBe(200);
   const html = await response.text();
@@ -90,9 +100,10 @@ test('generated Map uses compiled publication data instead of provenance source 
 });
 
 test('generated record uses compiled records, relationships, routes, and route provenance', async ({ request, page }) => {
-  const compiled = await (await request.get('/data/public-records.json')).json();
+  const compiled = await compiledRecords(request);
   const record = compiled.records.find(item => item.id === 'chicago-marathon-2021') || compiled.records[0];
-  const slug = record.slug || record.id;
+  expect(record?.slug).toBeTruthy();
+  const slug = record.slug;
   const requests = [];
   const errors = runtimeErrors(page);
   page.on('request', request => {
@@ -113,22 +124,21 @@ test('generated record uses compiled records, relationships, routes, and route p
 });
 
 test('deployment sitemap contains every generated record URL', async ({ request }) => {
-  const [recordsResponse, sitemapResponse, robotsResponse] = await Promise.all([
-    request.get('/data/public-records.json'),
+  const [compiled, sitemapResponse, robotsResponse] = await Promise.all([
+    compiledRecords(request),
     request.get('/sitemap.xml'),
     request.get('/robots.txt'),
   ]);
-  expect(recordsResponse.status()).toBe(200);
   expect(sitemapResponse.status()).toBe(200);
   expect(robotsResponse.status()).toBe(200);
 
-  const compiled = await recordsResponse.json();
   const sitemap = await sitemapResponse.text();
   const robots = await robotsResponse.text();
   const recordUrls = sitemap.match(/<loc>https:\/\/adventures\.alexlford\.com\/record\/[^<]+<\/loc>/g) || [];
 
   expect(recordUrls).toHaveLength(compiled.recordCount);
   expect(sitemap).not.toContain('.html</loc>');
+  for (const record of compiled.records) expect(sitemap).toContain(`<loc>${SITE}/record/${record.slug}/</loc>`);
   for (const route of sections) expect(sitemap).toContain(`<loc>${SITE}/${route}/</loc>`);
   expect(robots).toContain(`Sitemap: ${SITE}/sitemap.xml`);
 });
