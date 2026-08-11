@@ -1,6 +1,10 @@
 # Updating the Personal Adventure Almanac
 
-The Almanac is designed to stay curated as new running, mountain biking, Nordic skiing, and alpine skiing accumulate. The update workflow should be incremental: compare a fresh Strava export against activity IDs already known to the repository, review only the unseen relevant activities, then promote the appropriate records.
+The Almanac is designed to stay curated as new running, mountain biking, Nordic skiing, and alpine skiing accumulate. The update workflow is incremental: compare a fresh Strava export against the last fully reviewed snapshot watermark, review only the new relevant activities, promote the appropriate records, then advance the watermark.
+
+## Current baseline
+
+The initial full-history review is baselined in `data/ingest-state.json` at **3,371 Strava activities**, reviewed through the latest activity in the August 10, 2026 export. The state file stores the final activity timestamp plus one-way hashes only when multiple activities share that exact timestamp. It does not publish a list of ordinary historical training activity IDs.
 
 ## The normal update cycle
 
@@ -12,7 +16,7 @@ The Almanac is designed to stay curated as new running, mountain biking, Nordic 
    ```
 
    The default output is `tmp/update-queue.json`.
-3. Review the queue. The scanner does **not** publish anything automatically.
+3. Review the queue. The scanner does **not** publish anything automatically and does **not** advance the ingest state automatically.
 4. Resolve location, record type, and any discipline-specific classification for the candidates worth publishing.
 5. Extract or generalize GPS geometry only for records where a route adds value and is privacy-safe.
 6. Update the appropriate canonical source files.
@@ -22,9 +26,25 @@ The Almanac is designed to stay curated as new running, mountain biking, Nordic 
    npm run validate:data
    ```
 
-8. Commit and publish.
+8. Once the entire new Strava snapshot has been reviewed, advance the watermark:
 
-The scanner compares activity IDs in the new export against IDs already present anywhere in `data/*.json`, so it does not depend on a fragile “last imported date.” Re-running it against a full export is safe and gives a true delta queue.
+   ```bash
+   npm run advance:strava -- tmp/update-queue.json --confirm-reviewed
+   ```
+
+9. Run validation again, commit, and publish.
+
+The watermark means a full Strava export can be supplied every time without resurfacing thousands of old training activities. The queue includes a proposed next watermark, but it is only accepted after review.
+
+### Historical backfills
+
+If an activity is added to Strava later with an activity date older than the current watermark, intentionally rescan a historical window:
+
+```bash
+npm run scan:strava -- /path/to/export.zip --since 2026-01-01
+```
+
+Do not advance the normal watermark backward after a historical rescan.
 
 ## What happens by activity type
 
@@ -39,9 +59,11 @@ Ordinary training runs do **not** become public Almanac records. Review new runs
 
 This keeps the public Map at Road Races and Trail Races instead of turning it into a training heat map.
 
-### Mountain biking
+### Cycling / mountain biking
 
-Ordinary MTB days can enter the day-level outing archive. For every published ride, resolve the classification for that **specific day**:
+A generic Strava `Ride` is **not** automatically an MTB outing. First resolve whether it is mountain biking, road cycling, an organized race, or a larger Adventure. Ordinary road-cycling training is not currently a public Almanac layer.
+
+For every published MTB day, resolve the classification for that **specific day**:
 
 - `MTB` — human-powered riding;
 - `Downhill MTB` — lift-served riding;
@@ -76,7 +98,8 @@ The review queue uses suggested actions rather than making publication decisions
 
 - `review-only` — inspect, but usually do not publish;
 - `race-review` — likely needs race/event classification and evidence;
-- `candidate-outing` — likely belongs in MTB or Nordic day-level history;
+- `bike-review` — resolve MTB vs road cycling vs race/Adventure before publication;
+- `candidate-outing` — likely belongs in Nordic day-level history;
 - `ski-passport` — reconcile into the ski archive.
 
 The authoritative policy is `data/update-policy.json`.
@@ -98,11 +121,13 @@ For a race, a new record should not be considered complete merely because Strava
 
 ## Ski screenshots and other evidence
 
-A screenshot from Slopes, a race result, medal/photo, calendar entry, or direct confirmation can enrich or correct a Strava-backed record. Preserve source disagreements rather than guessing. For example, if a trip header and visible day rows disagree slightly, retain both facts in source notes rather than forcing a fabricated reconciliation.
+A screenshot from Slopes, a race result, medal/photo, calendar entry, or direct confirmation can enrich or correct a Strava-backed record. Preserve source disagreements rather than guessing. If a trip header and visible day rows disagree slightly, retain both facts in source notes rather than forcing a fabricated reconciliation.
 
 ## Updating through ChatGPT
 
-The practical low-friction workflow is also simple: upload a fresh Strava export and any new Slopes screenshots, then ask to “update the Almanac.” The same delta policy should be followed: identify unseen activities, review the relevant subset, update canonical data/routes, validate, and publish. You should not need to re-explain the site architecture each time.
+The lowest-friction workflow is simple: upload a fresh Strava export and any new Slopes screenshots, then ask to **update the Almanac**. The same delta policy should be followed: scan from the reviewed watermark, review the new relevant subset, update canonical data/routes, validate, advance the watermark, and publish. You should not need to re-explain the site architecture each time.
+
+For ordinary ongoing use, a fresh full Strava export is preferable to manually listing recent activities because it also catches rides, ski days, renamed activities, and new GPS files consistently.
 
 ## Future automation
 
