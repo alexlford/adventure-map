@@ -1,28 +1,34 @@
 {
-  "meta": {
-    "source": "Strava export GPX reconstruction + user-confirmed riding style + public trail-system verification",
-    "updatedOn": "2026-08-10",
-    "note": "MTB locations distinguish lift-served/downhill riding from pedal-powered trail riding. Race classification remains in the canonical event catalog."
-  },
-  "ridingStyles": {
-    "lift-served": "Lift-served / downhill MTB: gravity-oriented riding where lifts provide primary uphill access.",
-    "pedal": "Pedal MTB: trail, cross-country, or enduro-style riding where the ride is substantially human-powered uphill and downhill.",
-    "mixed": "Mixed MTB: a day or location includes both lift access and meaningful pedaling."
-  },
-  "locations": [
-    {"id":"mtb-trestle-winter-park","name":"Trestle Bike Park / Winter Park","location":"Winter Park, Colorado","lat":39.8818,"lon":-105.7780,"recordedDays":4,"dates":["2022-07-16","2024-07-27","2024-08-31","2026-08-05"],"ridingStyle":"lift-served","styleLabel":"Lift-served / downhill","confidence":"confirmed","note":"User-confirmed lift-served riding at Trestle. Strava ascent reflects lift access and is not treated as pedaled climbing."},
-    {"id":"mtb-kokopelli-loma","name":"Kokopelli Trails","location":"Loma / Fruita, Colorado","lat":39.1780,"lon":-108.8260,"recordedDays":3,"dates":["2025-06-05","2025-06-06","2025-06-07"],"ridingStyle":"pedal","styleLabel":"Pedal MTB","confidence":"high","note":"Three consecutive pedal-oriented days riding the Kokopelli trail system near Loma."},
-    {"id":"mtb-steamboat","name":"Steamboat Bike Park","location":"Steamboat Springs, Colorado","lat":40.4601,"lon":-106.7836,"recordedDays":1,"dates":["2025-10-05"],"ridingStyle":"lift-served","styleLabel":"Lift-served / downhill","confidence":"confirmed","note":"User-confirmed lift-served riding. The Strava track also shows repeated rapid ascent resets consistent with lift access."},
-    {"id":"mtb-vail","name":"Vail trail network","location":"Vail, Colorado","lat":39.6284,"lon":-106.3781,"recordedDays":1,"dates":["2025-09-28"],"ridingStyle":"lift-served","styleLabel":"Lift-served / downhill","confidence":"confirmed","note":"User-confirmed lift-served riding. The track is strongly downhill-dominant with large vertical resets."},
-    {"id":"mtb-granby-ranch","name":"Granby Ranch","location":"Granby, Colorado","lat":40.0383,"lon":-105.8974,"recordedDays":1,"dates":["2025-07-11"],"ridingStyle":"pedal","styleLabel":"Pedal MTB","confidence":"confirmed","note":"User-confirmed pedal-up ride. The Strava track lacks the repeated rapid vertical resets typical of lift-served riding."},
-    {"id":"mtb-crested-butte","name":"Crested Butte trail network","location":"Crested Butte, Colorado","lat":38.9008,"lon":-106.9528,"recordedDays":1,"dates":["2023-09-24"],"ridingStyle":"mixed","styleLabel":"Mixed lift + pedal","confidence":"confirmed","note":"User-confirmed mix of lift-served and pedaled riding. The Strava track also shows substantial pedaling combined with a large net descent."},
-    {"id":"mtb-north-table","name":"North Table Mountain","location":"Golden, Colorado","lat":39.7819,"lon":-105.2113,"recordedDays":1,"dates":["2023-12-02"],"ridingStyle":"pedal","styleLabel":"Pedal MTB","confidence":"confirmed","note":"User-confirmed fully pedaled North Table Mountain ride; first recorded ride on the new mountain bike."},
-    {"id":"mtb-leadville","name":"Leadville trail network","location":"Leadville, Colorado","lat":39.2414,"lon":-106.2857,"recordedDays":1,"dates":["2026-05-24"],"ridingStyle":"pedal","styleLabel":"Pedal MTB","confidence":"high","note":"Two separate mountain-bike activities recorded on the same day around Leadville, both showing ordinary human-powered climbing patterns."},
-    {"id":"mtb-royal-gorge","name":"Royal Gorge Park","location":"Cañon City, Colorado","lat":38.4710,"lon":-105.3157,"recordedDays":1,"dates":["2024-04-21"],"ridingStyle":"pedal","styleLabel":"Pedal MTB / race","confidence":"confirmed","note":"Royal Gorge Groove race day; retained as a ridden location while the event itself remains classified as a mountain-bike race."}
+  "meta":{"source":"Strava export GPX reconstruction + user-confirmed riding style + public trail-system verification","updatedOn":"2026-08-10","note":"Riding mode is classified per activity/day, never permanently by resort. Locations summarize the mix of classified days."},
+  "ridingStyles":{"lift-served":"Downhill MTB: lift-served/gravity-oriented riding.","pedal":"MTB: substantially human-powered trail riding.","mixed":"Mixed day: meaningful lift-served and human-powered riding in the same outing."},
+  "activities":[
+    {"date":"2022-07-16","locationId":"mtb-trestle-winter-park","ridingStyle":"lift-served","confidence":"confirmed"},
+    {"date":"2024-07-27","locationId":"mtb-trestle-winter-park","ridingStyle":"lift-served","confidence":"confirmed","stravaActivityId":"11997305131"},
+    {"date":"2024-08-31","locationId":"mtb-trestle-winter-park","ridingStyle":"lift-served","confidence":"confirmed"},
+    {"date":"2026-08-05","locationId":"mtb-trestle-winter-park","ridingStyle":"lift-served","confidence":"confirmed","stravaActivityId":"19618505573"},
+    {"date":"2025-06-05","locationId":"mtb-kokopelli-loma","ridingStyle":"pedal","confidence":"high"},{"date":"2025-06-06","locationId":"mtb-kokopelli-loma","ridingStyle":"pedal","confidence":"high"},{"date":"2025-06-07","locationId":"mtb-kokopelli-loma","ridingStyle":"pedal","confidence":"high"},
+    {"date":"2025-10-05","locationId":"mtb-steamboat","ridingStyle":"lift-served","confidence":"confirmed"},
+    {"date":"2025-09-28","locationId":"mtb-vail","ridingStyle":"lift-served","confidence":"confirmed"},
+    {"date":"2025-07-11","locationId":"mtb-granby-ranch","ridingStyle":"pedal","confidence":"confirmed"},
+    {"date":"2023-09-24","locationId":"mtb-crested-butte","ridingStyle":"mixed","confidence":"confirmed"},
+    {"date":"2023-12-02","locationId":"mtb-north-table","ridingStyle":"pedal","confidence":"confirmed"},
+    {"date":"2026-05-24","locationId":"mtb-leadville","ridingStyle":"pedal","confidence":"high"},
+    {"date":"2024-04-21","locationId":"mtb-royal-gorge","ridingStyle":"pedal","confidence":"confirmed"}
   ],
-  "epicRides": [
-    {"id":"trestle-big-day-2024","name":"Trestle downhill day","date":"2024-07-27","location":"Trestle Bike Park / Winter Park, Colorado","distanceKm":45.55,"distanceMi":28.30,"ridingStyle":"lift-served","stravaActivityId":"11997305131","note":"High-volume lift-served downhill day; recorded ascent is intentionally excluded from pedaled-climbing statistics."},
-    {"id":"trestle-downhill-day-2026","name":"Trestle downhill day","date":"2026-08-05","location":"Trestle Bike Park / Winter Park, Colorado","distanceKm":34.41,"distanceMi":21.38,"ridingStyle":"lift-served","stravaActivityId":"19618505573","note":"Another high-volume lift-served downhill day; recorded ascent includes lift access."},
-    {"id":"kokopelli-three-day-2025","name":"Kokopelli three-day weekend","date":"2025-06-05","endDate":"2025-06-07","location":"Kokopelli Trails, Loma / Fruita, Colorado","distanceKm":44.27,"distanceMi":27.51,"elevationGainM":664.7,"ridingStyle":"pedal","note":"Three consecutive pedal-powered mountain-bike days on the Kokopelli trail system."}
+  "locations":[
+    {"id":"mtb-trestle-winter-park","name":"Trestle Bike Park / Winter Park","location":"Winter Park, Colorado","lat":39.8818,"lon":-105.7780,"recordedDays":4,"dates":["2022-07-16","2024-07-27","2024-08-31","2026-08-05"],"note":"Current recorded days are Downhill MTB; future days may classify differently."},
+    {"id":"mtb-kokopelli-loma","name":"Kokopelli Trails","location":"Loma / Fruita, Colorado","lat":39.1780,"lon":-108.8260,"recordedDays":3,"dates":["2025-06-05","2025-06-06","2025-06-07"],"note":"Three consecutive MTB days."},
+    {"id":"mtb-steamboat","name":"Steamboat Bike Park","location":"Steamboat Springs, Colorado","lat":40.4601,"lon":-106.7836,"recordedDays":1,"dates":["2025-10-05"],"note":"2025-10-05 is Downhill MTB; the location itself is not permanently classified."},
+    {"id":"mtb-vail","name":"Vail trail network","location":"Vail, Colorado","lat":39.6284,"lon":-106.3781,"recordedDays":1,"dates":["2025-09-28"],"note":"2025-09-28 is Downhill MTB; future Vail rides may be MTB."},
+    {"id":"mtb-granby-ranch","name":"Granby Ranch","location":"Granby, Colorado","lat":40.0383,"lon":-105.8974,"recordedDays":1,"dates":["2025-07-11"],"note":"2025-07-11 is MTB with a pedal-up."},
+    {"id":"mtb-crested-butte","name":"Crested Butte trail network","location":"Crested Butte, Colorado","lat":38.9008,"lon":-106.9528,"recordedDays":1,"dates":["2023-09-24"],"note":"2023-09-24 combines lift-served and pedaled riding."},
+    {"id":"mtb-north-table","name":"North Table Mountain","location":"Golden, Colorado","lat":39.7819,"lon":-105.2113,"recordedDays":1,"dates":["2023-12-02"],"note":"Fully pedaled MTB day."},
+    {"id":"mtb-leadville","name":"Leadville trail network","location":"Leadville, Colorado","lat":39.2414,"lon":-106.2857,"recordedDays":1,"dates":["2026-05-24"],"note":"MTB day with ordinary human-powered climbing patterns."},
+    {"id":"mtb-royal-gorge","name":"Royal Gorge Park","location":"Cañon City, Colorado","lat":38.4710,"lon":-105.3157,"recordedDays":1,"dates":["2024-04-21"],"note":"MTB race day; event remains classified as a race."}
+  ],
+  "epicRides":[
+    {"id":"trestle-big-day-2024","name":"Trestle downhill day","date":"2024-07-27","location":"Trestle Bike Park / Winter Park, Colorado","distanceKm":45.55,"distanceMi":28.30,"ridingStyle":"lift-served","stravaActivityId":"11997305131","note":"High-volume Downhill MTB day; lift ascent is excluded from climbing statistics."},
+    {"id":"trestle-downhill-day-2026","name":"Trestle downhill day","date":"2026-08-05","location":"Trestle Bike Park / Winter Park, Colorado","distanceKm":34.41,"distanceMi":21.38,"ridingStyle":"lift-served","stravaActivityId":"19618505573","note":"High-volume Downhill MTB day."},
+    {"id":"kokopelli-three-day-2025","name":"Kokopelli three-day weekend","date":"2025-06-05","endDate":"2025-06-07","location":"Kokopelli Trails, Loma / Fruita, Colorado","distanceKm":44.27,"distanceMi":27.51,"elevationGainM":664.7,"ridingStyle":"pedal","note":"Three consecutive MTB days on the Kokopelli trail system."}
   ]
 }
