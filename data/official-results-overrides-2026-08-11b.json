@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "source": "Official organizer event definitions + user medal evidence",
+    "updatedOn": "2026-08-11",
+    "precedence": "These official organizer fields override GPS measurements and generic recovered race names; Strava remains route/fallback evidence."
+  },
+  "adventures": [
+    {
+      "id": "illinois-5k-2016",
+      "name": "Presence Health 5K",
+      "eventSeries": "Illinois Half I-Challenge",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5.0,
+      "officialDistanceMi": 3.11,
+      "stravaDistanceKm": 5.02,
+      "stravaDistanceMi": 3.12,
+      "stravaElapsedSeconds": 1257,
+      "resultSource": "Christie Clinic Illinois Marathon 2016 event archive + user Presence Health 5K medal",
+      "matchConfidence": "confirmed",
+      "note": "Presence Health was the named 5K on the 2016 Illinois Marathon weekend. Official event distance is 5K; the Strava recording is retained only as GPS/fallback timing."
+    },
+    {
+      "id": "illinois-half-2016",
+      "officialDistance": "Half marathon",
+      "officialDistanceMi": 13.1,
+      "officialDistanceKm": 21.08,
+      "stravaDistanceKm": 21.18,
+      "stravaDistanceMi": 13.16,
+      "stravaElapsedSeconds": 6598,
+      "resultSource": "Christie Clinic Illinois Marathon 2016 event archive + user half-marathon medal",
+      "matchConfidence": "confirmed"
+    },
+    {
+      "id": "flying-pig-5k-2025",
+      "eventSeries": "Skyline Chili 4-Way Challenge",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5.0,
+      "officialDistanceMi": 3.11,
+      "stravaDistanceKm": 5.05,
+      "stravaDistanceMi": 3.14,
+      "stravaElapsedSeconds": 1892,
+      "resultSource": "Flying Pig Marathon official event/challenge definition",
+      "matchConfidence": "confirmed"
+    },
+    {
+      "id": "flying-pig-10k-2025",
+      "eventSeries": "Skyline Chili 4-Way Challenge",
+      "officialDistance": "10K",
+      "officialDistanceKm": 10.0,
+      "officialDistanceMi": 6.21,
+      "resultSource": "Flying Pig Marathon official Skyline Chili 4-Way Challenge definition; individual result time pending recovery",
+      "matchConfidence": "confirmed"
+    },
+    {
+      "id": "flying-pig-marathon-2025",
+      "eventSeries": "Skyline Chili 4-Way Challenge",
+      "officialDistance": "Marathon",
+      "officialDistanceKm": 42.195,
+      "officialDistanceMi": 26.2,
+      "resultSource": "Flying Pig Marathon official event/challenge definition",
+      "matchConfidence": "confirmed"
+    }
+  ]
+}
