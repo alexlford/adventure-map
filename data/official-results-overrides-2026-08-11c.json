@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "source": "Denver Colfax official race definitions/results portal + user medals + Strava GPS fallback",
+    "updatedOn": "2026-08-11",
+    "precedence": "Official Colfax event distances are authoritative. Strava elapsed/distance remains explicitly labeled as GPS fallback until individual chip results are recovered from the official Xact portal."
+  },
+  "adventures": [
+    {
+      "id": "colfax-half-2021",
+      "name": "Denver Colfax Half Marathon",
+      "officialDistance": "13.1 miles",
+      "officialDistanceMi": 13.1,
+      "officialDistanceKm": 21.08,
+      "stravaDistanceKm": 21.51,
+      "stravaDistanceMi": 13.37,
+      "stravaElapsedSeconds": 8079,
+      "resultSource": "Denver Colfax official race archive; individual chip result pending machine recovery",
+      "matchConfidence": "verified"
+    },
+    {
+      "id": "colfax-5k-2024",
+      "name": "Denver Colfax 5K",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5.0,
+      "officialDistanceMi": 3.11,
+      "stravaDistanceKm": 5.15,
+      "stravaDistanceMi": 3.20,
+      "stravaElapsedSeconds": 2171,
+      "resultSource": "Denver Colfax official race archive",
+      "matchConfidence": "verified"
+    },
+    {
+      "id": "colfax-urban-10-2024",
+      "name": "Denver Colfax Urban 10 Miler",
+      "officialDistance": "10 miles",
+      "officialDistanceMi": 10.0,
+      "officialDistanceKm": 16.093,
+      "stravaDistanceKm": 16.1732,
+      "stravaDistanceMi": 10.05,
+      "stravaElapsedSeconds": 6272,
+      "resultSource": "Denver Colfax official Urban 10 race/medal archive; individual chip result pending machine recovery",
+      "matchConfidence": "verified"
+    },
+    {
+      "id": "colfax-5k-2026",
+      "name": "Denver Colfax 5K",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5.0,
+      "officialDistanceMi": 3.11,
+      "stravaDistanceKm": 5.15,
+      "stravaDistanceMi": 3.20,
+      "stravaElapsedSeconds": 1951,
+      "resultSource": "Denver Colfax official 2026 race archive",
+      "matchConfidence": "verified"
+    },
+    {
+      "id": "colfax-urban-10-2026",
+      "name": "Denver Colfax Urban 10 Miler",
+      "officialDistance": "10 miles",
+      "officialDistanceMi": 10.0,
+      "officialDistanceKm": 16.093,
+      "stravaDistanceKm": 16.27,
+      "stravaDistanceMi": 10.11,
+      "stravaElapsedSeconds": 5599,
+      "resultSource": "Denver Colfax official 2026 Urban 10 race and 20th-anniversary medal archive",
+      "matchConfidence": "verified"
+    }
+  ]
+}
