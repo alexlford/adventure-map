@@ -1,14 +1,15 @@
 {
   "meta": {
     "updatedOn": "2026-08-11",
-    "purpose": "Determine whether the user's 2020 B3 medal corresponds to a full B3 completed in 2019, 2020, or 2021.",
-    "policy": "Treat photos, exact-date Strava GPS, and official event calendars as separate evidence layers. Do not promote a full-series completion unless all three legs are supported."
+    "purpose": "Determine whether the user's 2020 B3 medal corresponds to a completed B3 in 2019, 2020, or 2021.",
+    "policy": "Treat photos, official participant/result records, user confirmation, exact-date Strava GPS, and event calendars as separate evidence layers. Registration or possession of a mailed medal is not treated as a race finish without completion evidence."
   },
   "conclusion": {
     "fullSeries2019": false,
+    "fullSeries2020": false,
     "fullSeries2021": false,
-    "bestCurrentHypothesis": "The medal belongs to the actual pandemic-era 2020 B3 registration/virtual-completion path rather than a full B3 shifted to 2019 or 2021.",
-    "confidence": "high for excluding full 2019/2021; moderate for reconstructing the exact 2020 completion mechanics"
+    "bestCurrentConclusion": "The user did not complete the 2020 B3 races. The 2020 Sole of the City 10K and Charles Street 12 participant records reflect virtual registrations with medals sent, but the supplied RunSignup records contain no finish time or pace and the user explicitly confirmed the races were not run. The 2019 Charles Street 12 is a verified finish.",
+    "confidence": "confirmed by user + official participant screenshots"
   },
   "years": {
     "2019": {
@@ -26,25 +27,47 @@
       },
       "charlesStreet12": {
         "officialDate": "2019-08-31",
-        "status": "verified",
-        "stravaActivityId": "4610353848",
+        "status": "verified finish",
+        "stravaActivityId": "4312788726",
         "stravaDistanceKm": 18.00,
-        "evidence": "User finish-line/medal photo dated Aug. 31, 2019 plus exact-date point-to-point Strava GPS from Towson to Baltimore."
+        "bib": "456",
+        "officialParticipantName": "Alexander Ford",
+        "evidence": "User finish-line/medal photo dated Aug. 31, 2019; user-supplied RunSignup individual result screenshot; exact-date point-to-point Strava GPS from Towson to Baltimore.",
+        "note": "Official race distance is 12 miles. The supplied RunSignup screenshot confirms the participant and bib but does not expose the official finish time."
       },
-      "seriesAssessment": "Partial B3 components only; not a full 2019 B3."
+      "seriesAssessment": "Verified Charles Street 12 only; not a full 2019 B3."
+    },
+    "2020": {
+      "status": "registered / medals received, not completed",
+      "soleOfTheCity10k": {
+        "officialParticipantRecord": true,
+        "bib": "212",
+        "category": "10K with Premium (Virtual Run)",
+        "status": "not completed",
+        "evidence": "User-supplied RunSignup screenshot shows Alex Ford, age 32, Baltimore, MD, bib 212, but chip time, gun time, and pace are blank. User confirms the race was not run.",
+        "note": "A May 30, 2020 10.04 km Baltimore Strava run had previously been considered as a possible virtual completion. It is now rejected as the race based on the user's direct confirmation and blank official result record."
+      },
+      "charlesStreet12": {
+        "officialParticipantRecord": true,
+        "bib": "60",
+        "category": "Virtual 12 Miler",
+        "status": "not completed",
+        "evidence": "User-supplied RunSignup screenshot shows Alex Ford, age 32, Baltimore, MD, digital bib 60, but chip time, gun time, and pace are blank. User confirms the race was not run.",
+        "note": "The 2020 Charles Street 12 medal was received but does not represent a completed race."
+      },
+      "seriesAssessment": "No completed 2020 B3. Medal/registration evidence must not be displayed as race finishes."
     },
     "2021": {
       "shamrock5k": {
         "completionDeadline": "2021-03-14",
-        "status": "plausible virtual match",
+        "status": "unverified",
         "stravaActivityId": "5453595822",
         "stravaDistanceKm": 5.02,
-        "note": "Exact-deadline 5K in Baltimore; plausible virtual Shamrock but not yet tied to an official participant result."
+        "note": "Exact-deadline 5K in Baltimore, but no evidence currently ties it to the B3 series."
       },
       "soleOfTheCity10k": {
         "officialDate": "2021-04-10",
-        "status": "no Strava match",
-        "note": "No Strava activity exists on the 2021 Sole of the City date."
+        "status": "no Strava match"
       },
       "charlesStreet12": {
         "officialDate": "2021-09-03",
@@ -54,20 +77,6 @@
         "note": "The user's exact-date Strava activity is a 5K in Denver, not the Baltimore Charles Street 12."
       },
       "seriesAssessment": "Not a full 2021 B3."
-    },
-    "2020": {
-      "status": "likely actual medal year",
-      "soleOfTheCityCandidate": {
-        "stravaActivityId": "4610348946",
-        "date": "2020-05-30",
-        "stravaDistanceKm": 10.04,
-        "status": "candidate only",
-        "note": "A strong Baltimore 10K candidate exists during the pandemic period; the exact virtual completion window still needs documentary confirmation."
-      },
-      "charlesStreet12Candidate": {
-        "status": "not found in Strava",
-        "note": "No approximately 12-mile run is present in the 2020 export around the known virtual Charles Street 12 period. This is absence of Strava evidence, not proof the race was not completed."
-      }
     }
   }
 }
