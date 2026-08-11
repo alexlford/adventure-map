@@ -1,10 +1,36 @@
 {
   "meta": {
-    "source": "BOLDERBoulder official Online Race Results archive + existing Strava match",
+    "source": "BOLDERBoulder official Online Race Results archive + existing Strava matches",
     "updatedOn": "2026-08-11",
     "precedence": "Official event distance, chip time, bib, placements, pace, and published splits override Strava timing/distance when available. Strava remains GPS and route evidence."
   },
   "adventures": [
+    {
+      "id": "bolderboulder-2022",
+      "officialDistance": "10K",
+      "officialDistanceKm": 10.0,
+      "officialDistanceMi": 6.21,
+      "officialTime": "54:10",
+      "officialPace": "8:44/mi",
+      "bib": "DA117",
+      "division": "M34",
+      "officialPlace": 3824,
+      "divisionPlace": 74,
+      "divisionFieldSize": 305,
+      "genderPlace": 2850,
+      "genderFieldSize": 13849,
+      "officialSplits": [
+        {"label":"Mile 1","time":"8:23"},
+        {"label":"Mile 2","time":"8:56"},
+        {"label":"Mile 3","time":"9:10"},
+        {"label":"Mile 4","time":"8:50"},
+        {"label":"Mile 5","time":"8:14"},
+        {"label":"Mile 6","time":"8:45"}
+      ],
+      "resultSource": "BOLDERBoulder 2022 official Online Race Results archive",
+      "resultUrl": "https://admin.onlineraceresults.com/race/view_race.php?highlight_no=CA149&lower_bound=0&race_id=76089&re_DIVISION=M34&submit_action=select_result&upper_bound=200",
+      "matchConfidence": "verified"
+    },
     {
       "id": "bolderboulder-2024",
       "officialDistance": "10K",
