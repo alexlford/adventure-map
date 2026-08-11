@@ -9,7 +9,17 @@
     .replaceAll("'",'&#039;');
   const isMapped = item => Number.isFinite(item?.lat) && Number.isFinite(item?.lon);
   const production = () => location.hostname === 'adventures.alexlford.com';
-  const fullMapHref = () => production() ? '/map' : 'map.html';
+  const fullMapHref = options => {
+    const base = production() ? '/map' : 'map.html';
+    const pageLayer = {
+      summits:'summits',
+      skiing:'skiing',
+      nordic:'nordic',
+      'mountain-biking':'mtb'
+    }[document.body.dataset.page];
+    const layer = options?.mapLayer || pageLayer;
+    return layer ? `${base}?layer=${encodeURIComponent(layer)}` : base;
+  };
   const recordHref = item => {
     if (item?.href) return item.href;
     if (!item?.id) return null;
@@ -138,7 +148,7 @@
     };
 
     const link = document.querySelector(`[data-map-link="${options.elementId}"]`);
-    if (link) link.href = fullMapHref();
+    if (link) link.href = fullMapHref(options);
     draw(initialRecords);
     setTimeout(() => map.invalidateSize({pan:false}),120);
     setTimeout(() => { map.invalidateSize({pan:false}); tiles.redraw(); },420);
