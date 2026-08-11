@@ -1,8 +1,8 @@
 {
   "meta": {
-    "source": "User-uploaded medal photos",
+    "source": "User-uploaded medal photos + research generated from medal-assisted Strava mining",
     "createdOn": "2026-08-11",
-    "purpose": "Research queue for medal evidence that is useful for Strava mining but not yet specific enough for the public catalog.",
+    "purpose": "Research queue for evidence that is useful for Strava mining but not yet specific or internally consistent enough for the public catalog.",
     "privacy": "Only extracted event metadata is stored here; medal images remain outside the public repository."
   },
   "evidence": [
@@ -26,6 +26,16 @@
       "visibleEvidence": ["Snow Mountain Ranch", "1st Place Age Class"],
       "status": "needs-leg-confirmation",
       "note": "Likely associated with the 2022 Stampede/Ranch Hand weekend, but the photo alone does not identify which race leg or category produced the award."
+    },
+    {
+      "id": "colderbolder-2023-date-conflict",
+      "event": "COLDERBolder 5K",
+      "year": 2023,
+      "location": "Boulder, Colorado",
+      "stravaActivityId": "10317055162",
+      "stravaDate": "2023-12-02",
+      "status": "source-date-conflict",
+      "note": "Online Race Results lists the ColderBOLDER 5K on December 2, 2023, matching the Strava recording. The current BOLDERBoulder historical archive labels the 2023 COLDERBolder as December 9, 2023. Preserve December 2 in the race record while retaining this discrepancy for source reconciliation."
     }
   ]
 }
