@@ -8,9 +8,9 @@
   "knownEventsPendingDate": [
     {
       "candidate": "2020 B3 Distance Series",
-      "evidence": "User owns the 2020 B3 Distance Series medal/holder. Contemporary reporting states that the 2020 Shamrock 5K was canceled, all registrations were deferred to 2021, and 2020 B3 registrants still received the Shamrock medal and holder. The medal therefore establishes 2020 B3 registration but not completion of all three races.",
-      "status": "COVID-disrupted series; completion reconstruction unresolved",
-      "reason": "The strongest reconstruction spans multiple seasons. In 2019, Strava has a 4.59 km run on the exact March 10 Shamrock race date and an 18.00 km run on August 31; dated user photos and a Charles Street 12 2019 finisher lanyard independently verify the August 31 Charles Street 12. No Strava activity appears on the April 13, 2019 Sole of the City race date. For the deferred 2020 registration, Strava has an exact 5.02 km run on March 14, 2021, the final day of the official March 6-14 virtual Shamrock window for 2020 registrants, plus a 19.32 km (~12.0 mile) Denver run on September 5, 2021 near the Charles Street 12 race/virtual period. No run appears on the November 13, 2021 Sole of the City date and there is no obvious 10K-scale November 2021 substitute. A 10.04 km Baltimore run on May 30, 2020 remains a possible virtual Sole completion, but the permitted 2020 virtual window/individual result has not been recovered. Do not publish a completed B3 challenge until the Sole component and challenge completion are independently resolved."
+      "evidence": "User owns the 2020 B3 Distance Series medal/holder. Contemporary reporting states that the 2020 Shamrock 5K was canceled and registrations were deferred. The deferred Shamrock leg is now independently reconciled to an exact 5.02 km Strava completion on March 14, 2021, the final day of the organizer's virtual window. The medal still does not by itself prove completion of the remaining B3 legs.",
+      "status": "COVID-disrupted series; Shamrock leg resolved, full challenge unresolved",
+      "reason": "The deferred 2020 Shamrock 5K is now published as a verified virtual completion. A 10.04 km Baltimore Strava run on May 30, 2020 remains a plausible virtual Sole of the City 10K candidate, but the permitted completion window or individual result has not yet been recovered. A 19.32 km Denver run on September 5, 2021 remains a strong Charles Street 12 virtual candidate during the 2021 race/virtual period, but an archived virtual result or registration record is still needed. Do not publish a completed B3 challenge until the Sole and Charles Street components are independently resolved."
     },
     {
       "candidate": "Colfax 2-Day Mile High Challenge",
@@ -41,16 +41,6 @@
       "candidate": "2020 Sole of the City 10K virtual completion",
       "confidence": "promising",
       "reason": "Exact 10K-scale Baltimore run during the pandemic-era B3 season. The Sole results archive contains a 2020 virtual category, but the specific permitted completion window and the user's individual result have not yet been recovered."
-    },
-    {
-      "stravaActivityId": "5115941734",
-      "date": "2021-03-14",
-      "stravaActivityName": "Monday Afternoon Run",
-      "distanceKm": 5.02,
-      "elapsedSeconds": 1550,
-      "candidate": "Deferred 2020 Shamrock 5K completed virtually in 2021",
-      "confidence": "very high",
-      "reason": "The 2020 Shamrock was canceled and automatically deferred. Organizers told 2020 registrants to complete the 2021 virtual 5K between March 6 and March 14; this Strava run is exactly 5.02 km on March 14, the final permitted day."
     },
     {
       "stravaActivityId": "5912524987",
@@ -89,6 +79,13 @@
     }
   ],
   "resolved": [
+    {
+      "stravaActivityId": "5115941734",
+      "date": "2021-03-14",
+      "candidate": "Deferred 2020 Kelly Benefits St. Patrick's Day Shamrock 5K",
+      "status": "promoted as virtual completion",
+      "reason": "The March 15, 2020 in-person race was canceled and registrations were deferred. Organizer instructions for 2020 registrants allowed the 2021 virtual 5K from March 6 through March 14; Strava records exactly 5.02 km on March 14, the final permitted day. This resolves the Shamrock leg without asserting completion of the full B3 series."
+    },
     {
       "stravaActivityId": "641962666",
       "date": "2016-04-09",
