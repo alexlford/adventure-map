@@ -10,11 +10,12 @@ function updateRouteCount() {
 
 function mergeSupplementalRoutes(payloads, attempt = 0) {
   if (state.routes) {
-    const existing = new Set(state.routes.features.map(feature => feature.properties?.id));
+    const existing = new Set(state.routes.features.map(feature => feature.id || feature.properties?.featureId || feature.properties?.id));
     payloads.flatMap(payload => payload.features || []).forEach(feature => {
-      if (!existing.has(feature.properties?.id)) {
+      const id = feature.id || feature.properties?.featureId || feature.properties?.id;
+      if (!existing.has(id)) {
         state.routes.features.push(feature);
-        existing.add(feature.properties?.id);
+        existing.add(id);
       }
     });
     updateRouteCount();
@@ -32,7 +33,10 @@ window.addEventListener('load', async () => {
     ]);
     if (!minedRouteResponse.ok) throw new Error(`Unable to load mined routes (${minedRouteResponse.status})`);
     if (!historicalRouteResponse.ok) throw new Error(`Unable to load historical routes (${historicalRouteResponse.status})`);
-    const [minedRoutes, historicalRoutes] = await Promise.all([minedRouteResponse.json(), historicalRouteResponse.json()]);
+    const [minedRoutes, historicalRoutes] = await Promise.all([
+      AdventureRoutes.normalizeCollection(await minedRouteResponse.json()),
+      AdventureRoutes.normalizeCollection(await historicalRouteResponse.json())
+    ]);
     mergeSupplementalRoutes([minedRoutes, historicalRoutes]);
   } catch (error) { console.error(error); }
 });
