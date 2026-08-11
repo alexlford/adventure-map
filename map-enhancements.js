@@ -15,6 +15,11 @@
   const desktopNext = mapPanel?.nextSibling || null;
   const mobileQuery = window.matchMedia('(max-width: 820px)');
 
+  function invalidate() {
+    const m = window.adventureMap;
+    if (m && typeof m.invalidateSize === 'function') m.invalidateSize({pan:false});
+  }
+
   function placeMapForViewport() {
     if (!shell || !sidebar || !brand || !mapPanel) return;
     if (mobileQuery.matches) {
@@ -23,15 +28,11 @@
       if (desktopNext && desktopNext.parentNode === shell) shell.insertBefore(mapPanel, desktopNext);
       else shell.appendChild(mapPanel);
     }
-    requestAnimationFrame(() => {
-      if (window.map && typeof window.map.invalidateSize === 'function') window.map.invalidateSize({pan:false});
-    });
+    requestAnimationFrame(invalidate);
   }
 
   function refreshMapSize() {
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      if (window.map && typeof window.map.invalidateSize === 'function') window.map.invalidateSize({pan:false});
-    }));
+    requestAnimationFrame(() => requestAnimationFrame(invalidate));
   }
 
   placeMapForViewport();
