@@ -23,6 +23,9 @@ if(!detail.includes("A.pageHref('map.html')"))errors.push('detail page map actio
 if(!detail.includes("history.replaceState(null,'',A.recordHref(a))"))errors.push('detail page does not restore the clean record URL after data and map loading');
 if(/https:\/\/adventures\.alexlford\.com\/[a-z-]+\.html/.test(sitemap))errors.push('sitemap still publishes .html URLs');
 for(const route of Object.values(cleanRoutes).filter(x=>x!=='/'))if(!sitemap.includes(`https://adventures.alexlford.com${route}`))errors.push(`sitemap missing clean route ${route}`);
-for(const file of publicPages){const text=fs.readFileSync(file,'utf8');if(text.includes('Personal Adventure Almanac'))errors.push(`${file} still exposes the old Personal Adventure Almanac branding`);}
+for(const file of publicPages){
+  const text=fs.readFileSync(file,'utf8');
+  if(/\bAlmanac\b/.test(text))errors.push(`${file} exposes retired Almanac branding; use Adventures, Stories, Explore, records, or archive as appropriate`);
+}
 if(errors.length){console.error(errors.join('\n'));process.exit(1)}
 console.log('Clean routing and Adventures branding validation passed.');
