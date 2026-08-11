@@ -4,6 +4,20 @@
     Object.entries(theme.colors).forEach(([key,color]) => {
       if (CATEGORY[key]) CATEGORY[key].color = color;
     });
+    const legendMap={
+      'MTB':theme.colors.mtb,
+      'Nordic':theme.colors.nordic,
+      'Road race':theme.colors['road-races'],
+      'Trail race':theme.colors['trail-races'],
+      'Skiing':theme.colors.skiing,
+      'Summit':theme.colors.summits,
+      'Adventure':theme.colors.adventures
+    };
+    document.querySelectorAll('.legend span').forEach(item=>{
+      const dot=item.querySelector('.legend-dot');
+      const label=item.textContent.trim();
+      if(dot&&legendMap[label])dot.style.background=legendMap[label];
+    });
   }
 
   if (typeof applyFocusStyles === 'function') {
