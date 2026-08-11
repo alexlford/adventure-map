@@ -7,9 +7,52 @@ window.AdventureCatalog = (() => {
     return response.json();
   };
 
+  const sportFor = (record) => {
+    if (record.kind === 'summit') return 'mountaineering';
+    if (record.discipline === 'nordic') return 'nordic-skiing';
+    if (record.discipline === 'mountain-bike') return 'mountain-biking';
+    if (record.discipline === 'ski-objective' || record.discipline === 'ski') return 'alpine-skiing';
+    if (record.discipline === 'mountain-loop' || record.discipline === 'trek' || record.discipline === 'hike') return 'hiking';
+    if (record.kind === 'race') return 'running';
+    return 'adventure';
+  };
+
+  function normalizeRecord(record) {
+    const startDate = record.date || (record.year ? `${record.year}-01-01` : null);
+    const finishDate = record.endDate || startDate;
+    return {
+      ...record,
+      recordClass: record.kind,
+      sport: sportFor(record),
+      startDate,
+      finishDate,
+      distanceInfo: {
+        km: Number.isFinite(record.distanceKm) ? record.distanceKm : null,
+        mi: Number.isFinite(record.distanceMi) ? record.distanceMi : null,
+        label: record.distance || null
+      },
+      locationInfo: {
+        label: record.location || null,
+        region: record.region || null,
+        lat: Number.isFinite(record.lat) ? record.lat : null,
+        lon: Number.isFinite(record.lon) ? record.lon : null,
+        precision: record.coordinatePrecision || (Number.isFinite(record.lat) && Number.isFinite(record.lon) ? 'unknown' : null)
+      },
+      evidence: {
+        source: record.matchSource || null,
+        confidence: record.matchConfidence || 'unknown'
+      },
+      routeInfo: {
+        status: record.routeStatus || null,
+        provenance: record.routeProvenance || null
+      }
+    };
+  }
+
   function validate(records) {
     const errors = [], warnings = [], seen = new Set();
     const allowedKinds = new Set(['summit','race','adventure','event']);
+    const allowedConfidence = new Set(['confirmed','verified','high','medium','low','unknown']);
     records.forEach((record, index) => {
       const where = record.id || `record ${index + 1}`;
       if (!record.id) errors.push(`${where}: missing id`);
@@ -25,8 +68,11 @@ window.AdventureCatalog = (() => {
       if (Number.isFinite(record.lon) && (record.lon < -180 || record.lon > 180)) errors.push(`${where}: longitude out of range`);
       if (record.year && record.date && Number(record.date.slice(0,4)) !== Number(record.year)) warnings.push(`${where}: year does not match date`);
       if (record.distanceMi != null && (!Number.isFinite(record.distanceMi) || record.distanceMi < 0)) errors.push(`${where}: invalid distanceMi`);
+      if (record.distanceKm != null && (!Number.isFinite(record.distanceKm) || record.distanceKm < 0)) errors.push(`${where}: invalid distanceKm`);
       if (record.elevationFt != null && (!Number.isFinite(record.elevationFt) || record.elevationFt < 0)) errors.push(`${where}: invalid elevationFt`);
+      if (record.matchConfidence && !allowedConfidence.has(record.matchConfidence)) warnings.push(`${where}: noncanonical confidence ${record.matchConfidence}`);
       if (record.kind === 'adventure' && record.discipline === 'mountain-bike') warnings.push(`${where}: mountain-bike event should normally be kind=race`);
+      if (record.kind === 'event' && /race/i.test(record.note || '') && !/not a race|rather than a race/i.test(record.note || '')) warnings.push(`${where}: event note mentions race; review classification`);
     });
     return { errors, warnings, valid: errors.length === 0 };
   }
@@ -47,7 +93,7 @@ window.AdventureCatalog = (() => {
       if (!records.has(id)) throw new Error(`Catalog override references unknown id: ${id}`);
       records.set(id, { ...records.get(id), ...override });
     }
-    const adventures = [...records.values()];
+    const adventures = [...records.values()].map(normalizeRecord);
     const report = validate(adventures);
     if (!report.valid) throw new Error(`Catalog validation failed: ${report.errors.join('; ')}`);
     if (report.warnings.length) console.warn('Adventure catalog warnings:', report.warnings);
@@ -63,5 +109,5 @@ window.AdventureCatalog = (() => {
     return relationshipCache;
   }
   async function relationshipsFor(recordId) { const relationships = await loadRelationships(); return relationships.filter(rel => (rel.memberIds || []).includes(recordId) || rel.adventureId === recordId); }
-  return { load, validate, loadRelationships, relationshipsFor };
+  return { load, validate, normalizeRecord, loadRelationships, relationshipsFor };
 })();
