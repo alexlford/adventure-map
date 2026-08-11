@@ -30,13 +30,19 @@ window.AdventureSite = (() => {
     if(northStar) Object.assign(northStar,{date:'2020-09-12',stravaActivityId:'4312782595',stravaActivityName:'Quartzville',distanceKm:12.25,distanceMi:7.61,elapsedSeconds:19132,movingSeconds:12935,elevationGainM:938.1,matchConfidence:'confirmed'});
     return merged;
   }
-  function ensureOverviewNav(){
+  function ensureNav(){
     const nav=document.querySelector('.nav');
-    if(nav && !nav.querySelector('a[href="overview.html"]')){
+    if(!nav) return;
+    if(!nav.querySelector('a[href="overview.html"]')){
       const a=document.createElement('a');a.href='overview.html';a.textContent='Overview';a.dataset.nav='overview';nav.insertBefore(a,nav.firstChild);
     }
+    if(!nav.querySelector('a[href="skiing.html"]')){
+      const a=document.createElement('a');a.href='skiing.html';a.textContent='Skiing';a.dataset.nav='skiing';
+      const adventures=nav.querySelector('a[href="adventures.html"]');
+      if(adventures) nav.insertBefore(a,adventures); else nav.appendChild(a);
+    }
   }
-  function shell(active){ensureOverviewNav();document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));}
-  ensureOverviewNav();
+  function shell(active){ensureNav();document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));}
+  ensureNav();
   return {load,esc,formatDate,formatDuration,fmt,raceType,verificationLabel,shell};
 })();
