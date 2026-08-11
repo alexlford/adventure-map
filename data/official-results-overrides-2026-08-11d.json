@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "source": "Official/archived race results recovered during systematic Strava audit",
+    "updatedOn": "2026-08-11",
+    "precedence": "Published race results are authoritative for official time, placing, pace and race distance; Strava remains GPS/recording evidence."
+  },
+  "adventures": [
+    {
+      "id": "twin-cities-marathon-2015",
+      "name": "Medtronic Twin Cities Marathon",
+      "officialDistance": "Marathon",
+      "officialDistanceKm": 42.195,
+      "officialDistanceMi": 26.2,
+      "officialTime": "5:25:40",
+      "officialClockTime": "5:33:59",
+      "officialPace": "12:44/mi",
+      "officialPlace": 4429,
+      "division": "M20",
+      "divisionPlace": 1644,
+      "officialAge": 27,
+      "officialCity": "Lawrence, Kansas",
+      "stravaDistanceKm": 43.2295,
+      "stravaDistanceMi": 26.86,
+      "stravaElapsedSeconds": 19069,
+      "resultSource": "MTEC archived results via Raceberry Jam",
+      "resultUrl": "https://www.raceberryjam.com/2015/tcmmen.html",
+      "matchSource": "Published result listing Alex Ford, age 27, Lawrence KS + exact-date Strava marathon activity",
+      "matchConfidence": "verified",
+      "note": "Official net time is 5:25:40. The 5:33:59 value is clock/gun time. Official race distance overrides the longer GPS-recorded Strava distance."
+    }
+  ]
+}
