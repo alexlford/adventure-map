@@ -20,9 +20,11 @@
     },
     {
       "candidate": "That Dam Run 2022",
-      "evidence": "User photo shows the fifth 2021-22 RunDenver medal as That Dam Run, with a 2022 series ribbon. RunDenver's archive lists That Dam Run 2022 and an official result link; historical calendars place the race at Cherry Creek Dam on March 6, 2022 with 13.1M, 10K, and 5K options.",
-      "status": "medal-confirmed event association; finish/distance unresolved",
-      "reason": "The Strava export has no run on March 6, 2022 and no plausible 5K, 10K, or half-marathon completion in the surrounding two weeks. Do not infer a race finish or distance from medal possession alone. Recover the archived individual 2022 result before promoting it."
+      "eventDate": "2022-03-19",
+      "location": "Cherry Creek Dam, Greenwood Village, Colorado",
+      "evidence": "User photo shows the fifth 2021-22 RunDenver medal as That Dam Run, with a 2022 series ribbon. RunDenver's archive links a 2022 Sporthive result set and HAL Sports places That Dam Run 13.1, 10K, 5K on March 19, 2022 at Cherry Creek Dam. The archived RunDenver season leaderboard separately includes That Dam 5K, 10K, and 21.1K scoring columns.",
+      "status": "medal-confirmed event association; finish/distance unresolved; race date corrected",
+      "reason": "The prior negative Strava conclusion was based on an incorrect March 6 race date and is withdrawn. The individual Sporthive result has not yet been recovered. Recheck the Strava archive for March 19 through the following Sunday to cover the in-person race and permitted virtual-results window before promoting a distance or finish."
     }
   ],
   "candidates": [
