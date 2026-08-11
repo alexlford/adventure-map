@@ -3,7 +3,7 @@
     "source": "Systematic Strava-to-historical-calendar audit + user medal/photo evidence + official event records",
     "updatedOn": "2026-08-11",
     "publicArchive": false,
-    "policy": "Keep unresolved candidates here until the public record can be dated and placed accurately; medals alone do not prove a finish when contemporary event records show cancellation, deferral, or automatic medal distribution."
+    "policy": "Keep unresolved candidates here until the public record can be dated and placed accurately; medals alone do not prove a finish when contemporary event records show cancellation, deferral, virtual options, or automatic medal distribution."
   },
   "knownEventsPendingDate": [
     {
@@ -17,6 +17,12 @@
       "evidence": "User owns an official 3D etched Mile High Challenge award. Strava contains qualifying Colfax 5K + Urban 10 Miler combinations in both 2024 and 2026.",
       "status": "challenge year unresolved",
       "reason": "The award itself does not show a year. Both 2024 and 2026 activity pairs match the organizer's 5K Saturday + Sunday race challenge format; do not assign the award to a specific year until medal design, registration record or other dated evidence resolves it."
+    },
+    {
+      "candidate": "That Dam Run 2022",
+      "evidence": "User photo shows the fifth 2021-22 RunDenver medal as That Dam Run, with a 2022 series ribbon. RunDenver's archive lists That Dam Run 2022 and an official result link; historical calendars place the race at Cherry Creek Dam on March 6, 2022 with 13.1M, 10K, and 5K options.",
+      "status": "medal-confirmed event association; finish/distance unresolved",
+      "reason": "The Strava export has no run on March 6, 2022 and no plausible 5K, 10K, or half-marathon completion in the surrounding two weeks. Do not infer a race finish or distance from medal possession alone. Recover the archived individual 2022 result before promoting it."
     }
   ],
   "candidates": [
