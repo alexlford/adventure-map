@@ -9,7 +9,6 @@ const outIndex = args.indexOf('--out-dir');
 const outDir = path.resolve(root, outIndex >= 0 && args[outIndex + 1] ? args[outIndex + 1] : 'dist/data');
 
 async function readText(rel) { return fs.readFile(path.join(root, rel), 'utf8'); }
-async function readJson(rel) { return JSON.parse(await readText(rel)); }
 const stableHash = values => crypto.createHash('sha256').update(values.join('\n')).digest('hex').slice(0, 16);
 
 function inferProvenance(feature) {
@@ -67,15 +66,19 @@ async function compileRecords() {
     if (!records.has(id)) throw new Error(`Catalog override references unknown id: ${id}`);
     records.set(id, { ...records.get(id), ...override });
   }
+  const relationshipText = manifest.relationshipLayer ? await readText(manifest.relationshipLayer) : '{"relationships":[]}';
+  const relationshipPayload = JSON.parse(relationshipText);
   const list = [...records.values()];
   const ids = new Set(list.map(record => record.id));
   if (ids.size !== list.length) throw new Error('Compiled public records contain duplicate ids');
   return {
     schemaVersion: 1,
-    sourceFingerprint: stableHash([manifestText, ...sourceTexts, matchText]),
+    sourceFingerprint: stableHash([manifestText, ...sourceTexts, matchText, relationshipText]),
     sourceCount: (manifest.sources || []).length,
     recordCount: list.length,
+    relationshipCount: (relationshipPayload.relationships || []).length,
     records: list,
+    relationships: relationshipPayload.relationships || [],
   };
 }
 
@@ -135,6 +138,7 @@ async function compileRoutes() {
       schemaVersion: 1,
       sourceFingerprint: stableHash([catalogText, ...sourceTexts]),
       featureCount: features.length,
+      recordOverrides: catalog.recordOverrides || {},
     },
     features,
   };
@@ -177,6 +181,7 @@ const outputs = [
 for (const [name, payload] of outputs) await fs.writeFile(path.join(outDir, name), `${JSON.stringify(payload)}\n`);
 
 console.log(`Compiled ${records.recordCount} public records from ${records.sourceCount} source layers.`);
+console.log(`Compiled ${records.relationshipCount} public relationships.`);
 console.log(`Compiled ${routes.metadata.featureCount} public route features.`);
 console.log(`Compiled ${mapEntities.entityCount} public map entities.`);
 console.log(`Public data output: ${path.relative(root, outDir) || '.'}`);
