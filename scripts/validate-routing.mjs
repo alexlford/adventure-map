@@ -4,6 +4,7 @@ const fallback=fs.readFileSync('404.html','utf8');
 const normalizer=fs.readFileSync('clean-route-normalizer.js','utf8');
 const mapApp=fs.readFileSync('app.js','utf8');
 const mapPage=fs.readFileSync('map.html','utf8');
+const mapEnhancements=fs.readFileSync('map-enhancements.js','utf8');
 const detail=fs.readFileSync('detail.html','utf8');
 const sitemap=fs.readFileSync('sitemap.xml','utf8');
 const publicPages=['index.html','map.html','activities.html','timeline.html','races.html','summits.html','skiing.html','nordic.html','mountain-biking.html','adventures.html','detail.html','404.html'];
@@ -19,6 +20,8 @@ if(normalizer.includes('history.replaceState'))errors.push('record normalizer mu
 if(!normalizer.includes('link[rel="canonical"]')||!normalizer.includes("meta[property=\"og:url\"]"))errors.push('record normalizer does not publish clean canonical/share URLs');
 if(!mapApp.includes("location.hostname==='adventures.alexlford.com'"))errors.push('map app does not emit clean production record links');
 if(!mapPage.includes('href="index.html"')||!mapPage.includes("'index.html':'/'"))errors.push('map page must keep relative staging links and rewrite them only on production');
+if(mapPage.includes('notable.js')||fs.existsSync('notable.js'))errors.push('obsolete notable.js map extension must remain removed');
+if(mapEnhancements.includes('detail.html?id=')||mapEnhancements.includes('window.popupCard'))errors.push('map enhancements must not wrap popupCard or inject legacy record links');
 if(!detail.includes("A.pageHref('map.html')"))errors.push('detail page map action is not production-safe');
 if(!detail.includes("history.replaceState(null,'',A.recordHref(a))"))errors.push('detail page does not restore the clean record URL after data and map loading');
 if(/https:\/\/adventures\.alexlford\.com\/[a-z-]+\.html/.test(sitemap))errors.push('sitemap still publishes .html URLs');
