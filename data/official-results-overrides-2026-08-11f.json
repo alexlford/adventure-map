@@ -1,6 +1,6 @@
 {
   "meta": {
-    "source": "Official race archives + user-supplied RunSignup result screenshot + Strava export",
+    "source": "Official race archives + user-supplied RunSignup result screenshot + Strava export + user photo metadata",
     "updatedOn": "2026-08-11",
     "precedence": "Official event distance and published participant fields override Strava measurements; Strava remains route and fallback timing evidence."
   },
@@ -14,9 +14,9 @@
       "year": 2018,
       "location": "Tower Grove Park, St. Louis, Missouri",
       "region": "Missouri",
-      "lat": 38.60631,
-      "lon": -90.2553,
-      "coordinatePrecision": "event-area",
+      "lat": 38.6066546,
+      "lon": -90.2588633,
+      "coordinatePrecision": "gps-start",
       "officialDistance": "8K",
       "officialDistanceKm": 8.0,
       "officialDistanceMi": 4.97,
@@ -32,9 +32,9 @@
       "routeStatus": "matched-no-public-route",
       "resultSource": "2018 St. Louis Turkey Trot official Online Race Results archive",
       "resultUrl": "https://onlineraceresults.com/race/view_race.php?race_id=67017",
-      "matchSource": "Exact Thanksgiving date + 8K distance + Tower Grove/Shaw GPS neighborhood + official 2018 event archive",
+      "matchSource": "Official event archive + exact Thanksgiving date + 8K-scale Strava activity + Tower Grove Park GPS start/end + user photo metadata from Tower Grove Park on race morning",
       "matchConfidence": "verified",
-      "note": "Official individual finish row has not yet been extracted. Strava elapsed 43:56 remains a labeled fallback, not the canonical race time."
+      "note": "Official individual finish row has not yet been extracted. Official event distance is 8K. Strava elapsed 43:56 remains a labeled fallback, not the canonical race time."
     },
     {
       "id": "charles-street-12-2019",
@@ -61,7 +61,7 @@
       "routeStatus": "matched-no-public-route",
       "resultSource": "RunSignup individual result, user-supplied screenshot",
       "resultUrl": "https://runsignup.com/Race/Results/24911/",
-      "matchSource": "Official RunSignup result screenshot + exact-date Towson-to-Baltimore Strava GPS",
+      "matchSource": "Official RunSignup result screenshot + exact-date Towson-to-Baltimore Strava GPS + user finish-line photo dated August 31, 2019",
       "matchConfidence": "verified",
       "note": "User screenshot confirms Alexander Ford, 12 Miler, male, age 31, Baltimore MD, bib 456. Official chip time is not visible in the supplied screenshot and has not yet been recovered, so no official time is asserted."
     }
