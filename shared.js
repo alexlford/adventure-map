@@ -6,10 +6,15 @@ window.AdventureSite = (() => {
   const raceType = (a) => a.discipline === 'marathon' ? 'Marathon' : a.discipline === 'trail' ? 'Trail race' : a.discipline === 'nordic' ? 'Nordic ski race' : a.discipline === 'relay' ? 'Relay' : a.discipline === 'mountain-bike' ? 'Mountain bike race' : a.kind === 'race' ? (a.distance || 'Road race') : adventureType(a);
   const adventureType = (a) => a.discipline === 'ski-objective' ? 'Ski objective' : a.discipline === 'mountain-loop' ? 'Mountain loop' : a.discipline === 'trek' ? 'Trek / traverse' : a.discipline === 'challenge' ? 'Challenge' : a.kind === 'summit' ? 'Summit' : 'Adventure';
   const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
-  const load = () => {
-    if (!window.AdventureCatalog) throw new Error('Adventure catalog loader is unavailable.');
-    return window.AdventureCatalog.load();
+  let catalogPromise;
+  const ensureCatalog = () => {
+    if (window.AdventureCatalog) return Promise.resolve(window.AdventureCatalog);
+    if (!catalogPromise) catalogPromise = new Promise((resolve,reject) => {
+      const script=document.createElement('script'); script.src='catalog.js'; script.onload=()=>resolve(window.AdventureCatalog); script.onerror=()=>reject(new Error('Adventure catalog loader is unavailable.')); document.head.appendChild(script);
+    });
+    return catalogPromise;
   };
+  const load = () => ensureCatalog().then(catalog => catalog.load());
   function ensureNav(){const nav=document.querySelector('.nav');if(!nav)return;if(!nav.querySelector('a[href="overview.html"]')){const a=document.createElement('a');a.href='overview.html';a.textContent='Overview';a.dataset.nav='overview';nav.insertBefore(a,nav.firstChild);}if(!nav.querySelector('a[href="skiing.html"]')){const a=document.createElement('a');a.href='skiing.html';a.textContent='Skiing';a.dataset.nav='skiing';const adventures=nav.querySelector('a[href="adventures.html"]');if(adventures)nav.insertBefore(a,adventures);else nav.appendChild(a);}}
   function shell(active){ensureNav();document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));}
   ensureNav(); return {load,esc,formatDate,formatDuration,fmt,raceType,adventureType,recordType,shell};
