@@ -32,17 +32,6 @@
       "reason": "Exact 2019 Shamrock race date and race-like effort in Baltimore; GPS distance is short of 5K, so seek the official individual result before promotion."
     },
     {
-      "stravaActivityId": "4312788726",
-      "date": "2019-08-31",
-      "stravaActivityName": "Saturday Morning Run",
-      "distanceKm": 18.00,
-      "elapsedSeconds": 6408,
-      "area": "Baltimore, Maryland",
-      "candidate": "2019 Charles Street 12",
-      "confidence": "verified by photo/medal evidence",
-      "reason": "Exact event date; user supplied dated finish-line photos and a visible Charles Street 12 2019 FINISHER lanyard. Strava under-recorded the official 12-mile course. This individual race is ready for public promotion even though B3-series completion remains unresolved."
-    },
-    {
       "stravaActivityId": "4312784075",
       "date": "2020-05-30",
       "stravaActivityName": "Wednesday Evening Run",
@@ -84,7 +73,7 @@
       "candidate": "runLawrence Thanksgiving Day 5K",
       "confidence": "borderline",
       "userMemory": "maybe",
-      "reason": "The activity is on the exact 2016 race date and is 5K-ish; user says this is possible but does not remember clearly. FIT-based GPS location still needs to be decoded and no indexed individual result has been found."
+      "reason": "The activity is on the exact 2016 race date and is 5K-ish; user says this is possible but does not remember clearly. FIT-based GPS location still needs independent event-course reconciliation and no indexed individual result has been found."
     },
     {
       "stravaActivityId": "4312796414",
@@ -96,10 +85,24 @@
       "candidate": "runLawrence Thanksgiving Day 5K",
       "confidence": "borderline",
       "userMemory": "maybe",
-      "reason": "The activity is almost exactly 5K on the exact 2017 race date; user says this is possible but does not remember clearly. FIT-based GPS location still needs to be decoded and no indexed individual result has been found."
+      "reason": "The activity is almost exactly 5K on the exact 2017 race date; user says this is possible but does not remember clearly. FIT-based GPS location still needs independent event-course reconciliation and no indexed individual result has been found."
     }
   ],
   "resolved": [
+    {
+      "stravaActivityId": "4312788726",
+      "date": "2019-08-31",
+      "candidate": "2019 Charles Street 12",
+      "status": "promoted",
+      "reason": "Exact event date; user supplied dated finish-line photos and a visible Charles Street 12 2019 FINISHER lanyard, and a user-supplied official result screenshot confirms Alexander Ford, bib 456. Public record uses the official 12-mile distance."
+    },
+    {
+      "stravaActivityId": "4312787170",
+      "date": "2019-11-28",
+      "candidate": "2019 Gobble Cobble 5K",
+      "status": "promoted",
+      "reason": "User medal explicitly identifies Gobble Cobble Turkey Trot 5K; Maryland Timing lists the Nov. 28 Baltimore Inner Harbor event; Strava records a 4.92 km activity named Marriott Baltimore Waterfront at race-morning time. Public record uses the official 5K distance."
+    },
     {
       "stravaActivityId": "5503854364",
       "date": "2021-06-20",
@@ -126,6 +129,12 @@
     {
       "candidate": "Garmin Marathon in the Land of Oz 2017",
       "reason": "User owns a 2017 Garmin medal but the official 2017 results archive contains no Alex/Alexander Ford match in the half marathon search, contemporary 2017 event material lists marathon/half/10K rather than a virtual option, and the Strava export has no half-marathon-scale activity around April 22, 2017. Keep out of the public archive unless stronger evidence appears."
+    },
+    {
+      "stravaActivityId": "4312787872",
+      "date": "2019-10-06",
+      "candidate": "Fort McHenry Tunnel 5K / Sowebo Landmark 5K",
+      "reason": "Although the activity is exactly 5.02 km on a date with two Baltimore 5Ks, the Strava timestamp corresponds to an evening run rather than either 9:00 a.m. event, and decoded GPS starts near South Baltimore rather than the Sowebo Union Square start. Do not promote solely from date/distance coincidence."
     },
     {
       "stravaActivityId": "641967630",
