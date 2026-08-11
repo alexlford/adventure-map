@@ -22,6 +22,11 @@ window.AdventureCatalog = (() => {
   function normalizeRecord(record) {
     const startDate = record.date || (record.year ? `${record.year}-01-01` : null);
     const finishDate = record.endDate || startDate;
+    const officialKm = Number(record.officialDistanceKm);
+    const officialMi = Number(record.officialDistanceMi);
+    const recordedKm = Number(record.distanceKm);
+    const recordedMi = Number(record.distanceMi);
+    const hasOfficialDistance = Number.isFinite(officialKm) || Number.isFinite(officialMi) || Boolean(record.officialDistance);
     return {
       ...record,
       slug: recordSlug(record),
@@ -30,9 +35,10 @@ window.AdventureCatalog = (() => {
       startDate,
       finishDate,
       distanceInfo: {
-        km: Number.isFinite(record.distanceKm) ? record.distanceKm : null,
-        mi: Number.isFinite(record.distanceMi) ? record.distanceMi : null,
-        label: record.distance || null
+        km: Number.isFinite(officialKm) ? officialKm : (Number.isFinite(recordedKm) ? recordedKm : null),
+        mi: Number.isFinite(officialMi) ? officialMi : (Number.isFinite(recordedMi) ? recordedMi : null),
+        label: record.officialDistance || record.distance || null,
+        source: hasOfficialDistance ? 'official' : 'recorded'
       },
       locationInfo: {
         label: record.location || null,
@@ -42,7 +48,9 @@ window.AdventureCatalog = (() => {
         precision: record.coordinatePrecision || (Number.isFinite(record.lat) && Number.isFinite(record.lon) ? 'unknown' : null)
       },
       evidence: {
-        source: record.matchSource || null,
+        source: record.resultSource || record.matchSource || null,
+        matchSource: record.matchSource || null,
+        resultSource: record.resultSource || null,
         confidence: record.matchConfidence || 'unknown'
       },
       routeInfo: {
@@ -75,6 +83,8 @@ window.AdventureCatalog = (() => {
       if (record.year && record.date && Number(record.date.slice(0,4)) !== Number(record.year)) warnings.push(`${where}: year does not match date`);
       if (record.distanceMi != null && (!Number.isFinite(record.distanceMi) || record.distanceMi < 0)) errors.push(`${where}: invalid distanceMi`);
       if (record.distanceKm != null && (!Number.isFinite(record.distanceKm) || record.distanceKm < 0)) errors.push(`${where}: invalid distanceKm`);
+      if (record.officialDistanceMi != null && (!Number.isFinite(record.officialDistanceMi) || record.officialDistanceMi < 0)) errors.push(`${where}: invalid officialDistanceMi`);
+      if (record.officialDistanceKm != null && (!Number.isFinite(record.officialDistanceKm) || record.officialDistanceKm < 0)) errors.push(`${where}: invalid officialDistanceKm`);
       if (record.elevationFt != null && (!Number.isFinite(record.elevationFt) || record.elevationFt < 0)) errors.push(`${where}: invalid elevationFt`);
       if (record.matchConfidence && !allowedConfidence.has(record.matchConfidence)) warnings.push(`${where}: noncanonical confidence ${record.matchConfidence}`);
       if (record.kind === 'adventure' && record.discipline === 'mountain-bike') warnings.push(`${where}: mountain-bike event should normally be kind=race or outing`);
