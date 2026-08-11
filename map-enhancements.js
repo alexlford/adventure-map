@@ -22,6 +22,7 @@
 
   const focusEndpointLayer=window.L&&typeof map!=='undefined'?L.layerGroup().addTo(map):null;
   state.pinnedFocusId=null;
+  const pinnedIsVisible=()=>Boolean(state.pinnedFocusId&&filteredAdventures().some(a=>a.id===state.pinnedFocusId));
 
   function geometrySegments(geometry){
     if(!geometry)return[];
@@ -86,17 +87,20 @@
   if(typeof setRouteEmphasis==='function'){
     setRouteEmphasis=function(id,on){
       if(on)state.focusId=id;
-      else state.focusId=state.pinnedFocusId||null;
+      else{
+        if(!pinnedIsVisible())state.pinnedFocusId=null;
+        state.focusId=state.pinnedFocusId||null;
+      }
       applyFocusStyles();
     };
   }
 
   if (typeof applyFocusStyles === 'function') {
     applyFocusStyles = function() {
-      if(state.focusId&&!state.adventures.some(a=>a.id===state.focusId)){
-        state.focusId=null;
-        state.pinnedFocusId=null;
-      }
+      if(state.pinnedFocusId&&!pinnedIsVisible())state.pinnedFocusId=null;
+      if(state.focusId&&!state.adventures.some(a=>a.id===state.focusId))state.focusId=null;
+      if(!state.focusId&&state.pinnedFocusId)state.focusId=state.pinnedFocusId;
+
       const zoom=typeof map!=='undefined'?map.getZoom():7;
       const low=zoom<=4,mid=zoom>4&&zoom<=6;
       const routeWeightFactor=low ? .5 : (mid ? .72 : 1);
@@ -140,9 +144,21 @@
     };
   }
 
+  const originalRender=typeof render==='function'?render:null;
+  if(originalRender){
+    render=function(...args){
+      const pinned=state.pinnedFocusId;
+      const result=originalRender(...args);
+      if(pinned&&filteredAdventures().some(a=>a.id===pinned))state.focusId=pinned;
+      else if(pinned)state.pinnedFocusId=null;
+      requestAnimationFrame(()=>applyFocusStyles());
+      return result;
+    };
+  }
+
   if(typeof map!=='undefined'){
     map.on('zoomend',()=>applyFocusStyles());
-    map.on('click',()=>{state.pinnedFocusId=null;focusEndpointLayer?.clearLayers()});
+    map.on('click',()=>{state.pinnedFocusId=null;state.focusId=null;focusEndpointLayer?.clearLayers();applyFocusStyles()});
     setTimeout(()=>applyFocusStyles(),0);
   }
 
