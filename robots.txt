@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alexlford.github.io/adventure-map/sitemap.xml
