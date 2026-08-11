@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "source": "Bank of America Chicago Marathon 2021 individual result via Mika Timing",
+    "providedOn": "2026-08-11",
+    "note": "Official participant result URL supplied directly by the user. Timing/split fields are not transcribed unless independently readable from the official result page."
+  },
+  "adventures": [
+    {
+      "id": "chicago-marathon-2021",
+      "officialDistance": "Marathon",
+      "officialDistanceKm": 42.195,
+      "officialDistanceMi": 26.2,
+      "resultSource": "Bank of America Chicago Marathon 2021 official individual result (Mika Timing)",
+      "resultUrl": "https://chicago-history.r.mikatiming.com/2021/?content=detail&event=MAR_9TGG9638F1&idp=LSMG9638244F16&lang=EN_CAP&pid=search&search[name]=Ford&search[firstname]=Alex&id=LSMG9638244F16",
+      "matchConfidence": "verified"
+    }
+  ]
+}
