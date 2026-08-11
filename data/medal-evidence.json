@@ -7,6 +7,30 @@
   },
   "evidence": [
     {
+      "id": "garmin-land-of-oz-2017-medal",
+      "event": "Garmin Marathon in the Land of Oz",
+      "year": 2017,
+      "eventDate": "2017-04-22",
+      "location": "Olathe, Kansas",
+      "visibleEvidence": ["Garmin Marathon event branding", "Olathe ribbon text", "2017 ribbon text"],
+      "probableDistance": "Half marathon",
+      "stravaMatch": null,
+      "status": "probable-half-needs-official-participant-row",
+      "note": "User recalls this as the half marathon. The medal confirms 2017 event participation, but the medal itself does not identify distance and no matching Strava activity or reliable indexed official participant row has yet been recovered. Do not publish a finish time or distance as confirmed until the official result is found."
+    },
+    {
+      "id": "mile-high-leprechaun-7k-medal",
+      "event": "Mile High Leprechaun 7K",
+      "year": 2021,
+      "location": "Denver, Colorado",
+      "visibleEvidence": ["Mile High Leprechaun 7K", "RunDenver Race Series"],
+      "candidateStravaActivityId": "5115941743",
+      "candidateStravaDate": "2021-03-13",
+      "candidateStravaDistanceKm": 7.241,
+      "status": "needs-event-name-reconciliation",
+      "note": "The medal and a 7.24 km Strava run strongly suggest a match. Runnin' of the Green 7K is the likely related Denver/HAL Sports event, but the medal's Mile High Leprechaun naming has not yet been reconciled to a surviving official event page, so this remains research evidence rather than a public record."
+    },
+    {
       "id": "snow-mountain-ranch-age-class-award",
       "event": "Snow Mountain Ranch Stampede 25K Classic",
       "year": 2022,
