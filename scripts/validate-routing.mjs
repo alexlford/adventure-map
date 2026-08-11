@@ -5,6 +5,7 @@ const normalizer=fs.readFileSync('clean-route-normalizer.js','utf8');
 const mapApp=fs.readFileSync('app.js','utf8');
 const mapPage=fs.readFileSync('map.html','utf8');
 const mapEnhancements=fs.readFileSync('map-enhancements.js','utf8');
+const mapTouch=fs.readFileSync('map-touch-mode.js','utf8');
 const routeCatalogJs=fs.readFileSync('route-catalog.js','utf8');
 const routeCatalog=fs.readFileSync('data/route-catalog.json','utf8');
 const detail=fs.readFileSync('detail.html','utf8');
@@ -28,6 +29,9 @@ if(!mapApp.includes('mapEntities:[]')||!mapApp.includes('loadSkiResortEntities()
 if(!mapApp.includes('function racePopupCard')||!mapApp.includes('officialDistanceLabel'))errors.push('map app must render official race results in the core popup renderer');
 if(!mapPage.includes('href="index.html"')||!mapPage.includes('src="shared.js"'))errors.push('map page must keep relative staging links and load the shared site shell');
 if(mapPage.indexOf('src="shared.js"')>mapPage.indexOf('src="app.js"'))errors.push('map page must load shared.js before app.js');
+if(!mapPage.includes('src="map-touch-mode.js"')||mapPage.indexOf('src="map-touch-mode.js"')<mapPage.indexOf('src="app.js"'))errors.push('map page must load passive touch mode after the core Map exists');
+if(!mapTouch.includes("matchMedia('(max-width:820px) and (pointer:coarse)')")||!mapTouch.includes("button.textContent = active ? 'Done' : 'Explore map'"))errors.push('map touch mode must preserve passive mobile scrolling with an explicit interaction toggle');
+if(!mapTouch.includes('disable(map.dragging)')||!mapTouch.includes('enable(map.dragging)')||!mapTouch.includes('disable(map.touchZoom)')||!mapTouch.includes('enable(map.touchZoom)'))errors.push('map touch mode must explicitly toggle Leaflet dragging and touch zoom');
 if(mapPage.includes('notable.js')||fs.existsSync('notable.js'))errors.push('obsolete notable.js map extension must remain removed');
 if(mapPage.includes('expansion.js')||fs.existsSync('expansion.js'))errors.push('obsolete supplemental route loader must remain removed');
 if(mapPage.includes('ski-map.js')||fs.existsSync('ski-map.js'))errors.push('obsolete ski-map.js patch module must remain removed');
