@@ -9,15 +9,23 @@ window.AdventureSite = (() => {
   const adventureType = (a) => a.discipline === 'ski-objective' ? 'Ski objective' : a.discipline === 'mountain-loop' ? 'Mountain loop' : a.discipline === 'trek' ? 'Trek / traverse' : a.discipline === 'challenge' ? 'Challenge' : a.kind === 'summit' ? 'Summit' : 'Adventure';
   const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'event' ? eventType(a) : a.kind === 'outing' ? outingType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
   const productionHost='adventures.alexlford.com';
-  const isProduction=()=>location.hostname===productionHost;
-  const PUBLIC_PATHS={
+  const productionOrigin=`https://${productionHost}`;
+  const isPublicBuild=()=>window.ADVENTURE_PUBLIC_BUILD===true;
+  const isProductionHost=()=>location.hostname===productionHost;
+  const isProduction=()=>isProductionHost()||isPublicBuild();
+  const LEGACY_PUBLIC_PATHS={
     'index.html':'/','activities.html':'/explore','map.html':'/map','adventures.html':'/stories','timeline.html':'/timeline',
     'races.html':'/races','summits.html':'/summits','skiing.html':'/skiing','nordic.html':'/nordic','mountain-biking.html':'/mtb'
   };
+  const STATIC_PUBLIC_PATHS={
+    'index.html':'/','activities.html':'/explore/','map.html':'/map/','adventures.html':'/stories/','timeline.html':'/timeline/',
+    'races.html':'/races/','summits.html':'/summits/','skiing.html':'/skiing/','nordic.html':'/nordic/','mountain-biking.html':'/mtb/'
+  };
+  const publicPaths=()=>isPublicBuild()?STATIC_PUBLIC_PATHS:LEGACY_PUBLIC_PATHS;
   const pageHref = (href) => {
     if(!isProduction())return href;
     const raw=String(href||'');const match=raw.match(/^([^?#]+)(\?[^#]*)?(#.*)?$/);if(!match)return raw;
-    const file=match[1].replace(/^\.\//,'').replace(/^\//,'');const clean=PUBLIC_PATHS[file];
+    const file=match[1].replace(/^\.\//,'').replace(/^\//,'');const clean=publicPaths()[file];
     return clean?`${clean}${match[2]||''}${match[3]||''}`:raw;
   };
   const recordHref = (record) => isProduction()?`/record/${encodeURIComponent(record.slug || record.id)}/`:`detail.html?record=${encodeURIComponent(record.slug || record.id)}`;
@@ -28,7 +36,7 @@ window.AdventureSite = (() => {
   const allNav=[...PRIMARY,...AUX,...ACTIVITIES];
   function normalizePublicUrl(){
     if(!isProduction())return;
-    const file=location.pathname.split('/').pop();const clean=PUBLIC_PATHS[file];
+    const file=location.pathname.split('/').pop();const clean=publicPaths()[file];
     if(clean&&location.pathname!==clean)history.replaceState(null,'',`${clean}${location.search}${location.hash}`);
   }
   function rewritePublicLinks(){
@@ -38,7 +46,8 @@ window.AdventureSite = (() => {
   function inferActive(){
     const path=location.pathname.replace(/\/+$/,'')||'/';
     if(isProduction()){
-      const file=Object.keys(PUBLIC_PATHS).find(k=>(PUBLIC_PATHS[k].replace(/\/+$/,'')||'/')===path);
+      const paths=publicPaths();
+      const file=Object.keys(paths).find(k=>(paths[k].replace(/\/+$/,'')||'/')===path);
       const hit=file&&allNav.find(x=>x[0]===file);if(hit)return hit[2];
     }
     const p=location.pathname.split('/').pop()||'index.html';const hit=allNav.find(x=>x[0]===p);return hit?.[2]||null;
@@ -64,7 +73,8 @@ window.AdventureSite = (() => {
   function ensureMeta(descriptionOverride=''){
     const description=descriptionOverride||document.querySelector('meta[name="description"]')?.content||document.querySelector('.hero p')?.textContent?.trim()||'Alex Ford Adventures: races, mountains, skiing, biking and the stories behind them.';
     const detail=/detail\.html$/.test(location.pathname);
-    const canonicalUrl=`${location.origin}${location.pathname}${detail?location.search:''}`;
+    const canonicalOrigin=isPublicBuild()?productionOrigin:location.origin;
+    const canonicalUrl=`${canonicalOrigin}${location.pathname}${detail?location.search:''}`;
     const set=(selector,attrs)=>{let node=document.head.querySelector(selector);if(!node){node=document.createElement(attrs.tag||'meta');document.head.appendChild(node)}Object.entries(attrs).forEach(([k,v])=>{if(k!=='tag')node.setAttribute(k,v)})};
     set('meta[name="description"]',{name:'description',content:description});
     set('link[rel="canonical"]',{tag:'link',rel:'canonical',href:canonicalUrl});
@@ -108,5 +118,5 @@ window.AdventureSite = (() => {
     page.appendChild(nav);
   }
   function shell(active){ensureNav(active);ensureFlow(active);rewritePublicLinks();}
-  normalizePublicUrl();applyPageIdentity();ensureMeta();ensureAccessibility();ensureBranding();rewritePublicLinks();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,pageHref,shell,refreshMeta:ensureMeta,isProduction};
+  normalizePublicUrl();applyPageIdentity();ensureMeta();ensureAccessibility();ensureBranding();rewritePublicLinks();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,pageHref,shell,refreshMeta:ensureMeta,isProduction,isPublicBuild};
 })();
