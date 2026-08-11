@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "source": "BOLDERBoulder official Online Race Results archive + existing Strava match",
+    "updatedOn": "2026-08-11",
+    "precedence": "Official event distance, chip time, bib, placements, pace, and published splits override Strava timing/distance when available. Strava remains GPS and route evidence."
+  },
+  "adventures": [
+    {
+      "id": "bolderboulder-2024",
+      "officialDistance": "10K",
+      "officialDistanceKm": 10.0,
+      "officialDistanceMi": 6.21,
+      "officialTime": "1:00:48",
+      "officialPace": "9:48/mi",
+      "bib": "EG298",
+      "division": "M36",
+      "officialPlace": 9273,
+      "divisionPlace": 161,
+      "divisionFieldSize": 412,
+      "genderPlace": 6377,
+      "genderFieldSize": 20918,
+      "officialSplits": [
+        {"label":"Mile 1","time":"9:25"},
+        {"label":"Mile 2","time":"9:29"},
+        {"label":"Mile 3","time":"10:10"},
+        {"label":"Mile 4","time":"9:46"},
+        {"label":"Mile 5","time":"9:45"},
+        {"label":"Mile 6","time":"10:08"}
+      ],
+      "stravaDistanceKm": 10.15,
+      "stravaDistanceMi": 6.31,
+      "stravaElapsedSeconds": 3724,
+      "resultSource": "BOLDERBoulder 2024 official Online Race Results archive",
+      "resultUrl": "https://onlineraceresults.com/race/view_race.php?highlight_no=CC068&lower_bound=0&race_id=77804&re_DIVISION=M36&submit_action=select_result&upper_bound=200",
+      "matchSource": "Official named result + existing exact-date BOLDERBoulder Strava activity",
+      "matchConfidence": "verified",
+      "note": "Official result lists Alex Ford, bib EG298, division M36, 1:00:48. Official 10K distance and result fields are canonical; the 10.15 km Strava recording remains GPS evidence."
+    }
+  ]
+}
