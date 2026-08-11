@@ -8,10 +8,11 @@ window.AdventureSite = (() => {
   const outingType = (a) => a.discipline === 'nordic' ? 'Nordic outing' : a.discipline === 'mountain-bike' ? (a.mtbMode === 'downhill' ? 'Downhill MTB' : a.mtbMode === 'mixed' ? 'MTB + Downhill MTB' : 'MTB') : 'Outing';
   const adventureType = (a) => a.discipline === 'ski-objective' ? 'Ski objective' : a.discipline === 'mountain-loop' ? 'Mountain loop' : a.discipline === 'trek' ? 'Trek / traverse' : a.discipline === 'challenge' ? 'Challenge' : a.kind === 'summit' ? 'Summit' : 'Adventure';
   const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'event' ? eventType(a) : a.kind === 'outing' ? outingType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
-  const productionHost='almanac.alexlford.com';
+  const productionHost='adventures.alexlford.com';
   const isProduction=()=>location.hostname===productionHost;
   const recordHref = (record) => isProduction()?`/record/${encodeURIComponent(record.slug || record.id)}/`:`detail.html?record=${encodeURIComponent(record.slug || record.id)}`;
-  const PRIMARY=[['overview.html','Overview','overview'],['index.html','Map','map'],['timeline.html','Timeline','timeline'],['activities.html','Activities','activities'],['adventures.html','Adventures','adventures']];
+  const PRIMARY=[['index.html','Home','home'],['activities.html','Explore','explore'],['map.html','Map','map'],['adventures.html','Stories','stories']];
+  const AUX=[['timeline.html','Timeline','timeline']];
   const ACTIVITIES=[['races.html','Races','races'],['summits.html','Summits','summits'],['skiing.html','Skiing','skiing'],['nordic.html','Nordic','nordic'],['mountain-biking.html','MTB','mountain-biking']];
   const activityKeys=new Set(ACTIVITIES.map(x=>x[2]));
   let catalogPromise;
@@ -25,23 +26,23 @@ window.AdventureSite = (() => {
   const load = () => ensureCatalog().then(catalog => catalog.load());
   const loadRelationships = () => ensureCatalog().then(catalog => catalog.loadRelationships());
   const relationshipsFor = (id) => ensureCatalog().then(catalog => catalog.relationshipsFor(id));
-  function inferActive(){const p=location.pathname.split('/').pop()||'overview.html';const hit=[...PRIMARY,...ACTIVITIES].find(x=>x[0]===p);return hit?.[2]||null;}
-  function primaryKey(active){return activityKeys.has(active)?'activities':active;}
+  function inferActive(){const p=location.pathname.split('/').pop()||'index.html';const hit=[...PRIMARY,...AUX,...ACTIVITIES].find(x=>x[0]===p);return hit?.[2]||null;}
+  function primaryKey(active){return active==='activities'||active==='timeline'||activityKeys.has(active)?'explore':active==='adventures'?'stories':active;}
   function applyPageIdentity(active=inferActive()){
-    const primary=primaryKey(active)||'overview';
+    const primary=primaryKey(active)||'home';
     document.body.dataset.page=active||'detail';
     document.body.dataset.primary=primary;
     document.body.classList.toggle('is-activity-chapter',activityKeys.has(active));
   }
   function ensureMeta(descriptionOverride=''){
-    const description=descriptionOverride||document.querySelector('meta[name="description"]')?.content||document.querySelector('.hero p')?.textContent?.trim()||'Alex Ford Personal Adventure Almanac.';
+    const description=descriptionOverride||document.querySelector('meta[name="description"]')?.content||document.querySelector('.hero p')?.textContent?.trim()||'Alex Ford Adventures: races, mountains, skiing, biking and the stories behind them.';
     const detail=/detail\.html$/.test(location.pathname);
     const canonicalUrl=`${location.origin}${location.pathname}${detail?location.search:''}`;
     const set=(selector,attrs)=>{let node=document.head.querySelector(selector);if(!node){node=document.createElement(attrs.tag||'meta');document.head.appendChild(node)}Object.entries(attrs).forEach(([k,v])=>{if(k!=='tag')node.setAttribute(k,v)})};
     set('meta[name="description"]',{name:'description',content:description});
     set('link[rel="canonical"]',{tag:'link',rel:'canonical',href:canonicalUrl});
     set('meta[name="theme-color"]',{name:'theme-color',content:'#f7f4ee'});
-    set('meta[property="og:site_name"]',{property:'og:site_name',content:'Alex Ford Personal Adventure Almanac'});
+    set('meta[property="og:site_name"]',{property:'og:site_name',content:'Alex Ford Adventures'});
     set('meta[property="og:title"]',{property:'og:title',content:document.title});
     set('meta[property="og:description"]',{property:'og:description',content:description});
     set('meta[property="og:type"]',{property:'og:type',content:'website'});
@@ -54,17 +55,18 @@ window.AdventureSite = (() => {
     const main=document.querySelector('main');if(main&&!main.id)main.id='main-content';
     if(main&&!document.querySelector('.skip-link')){const a=document.createElement('a');a.className='skip-link';a.href='#main-content';a.textContent='Skip to content';document.body.insertAdjacentElement('afterbegin',a)}
   }
+  function ensureBranding(){const footer=document.querySelector('.footer span:first-child');if(footer)footer.textContent='Alex Ford Adventures';}
   function ensureNav(active=inferActive()){
-    applyPageIdentity(active);
+    applyPageIdentity(active);ensureBranding();
     const nav=document.querySelector('.nav'); if(!nav)return;
     const top=primaryKey(active);
     nav.setAttribute('aria-label','Primary navigation');
     nav.innerHTML=PRIMARY.map(([href,text,key])=>`<a data-nav="${key}" href="${href}"${top===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('');
     document.querySelector('.activity-subnav-wrap')?.remove();
-    if(active==='activities'||activityKeys.has(active)){
+    if(active==='activities'||active==='timeline'||activityKeys.has(active)){
       const header=document.querySelector('.site-header');if(!header)return;
       const wrap=document.createElement('div');wrap.className='activity-subnav-wrap';
-      wrap.innerHTML=`<nav class="activity-subnav" aria-label="Activity chapters"><span class="activity-subnav-label">Activity chapters</span>${ACTIVITIES.map(([href,text,key])=>`<a href="${href}"${active===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('')}</nav>`;
+      wrap.innerHTML=`<nav class="activity-subnav" aria-label="Explore Adventures"><span class="activity-subnav-label">Explore</span>${ACTIVITIES.map(([href,text,key])=>`<a href="${href}"${active===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('')}<a href="timeline.html"${active==='timeline'?' class="is-active" aria-current="page"':''}>Timeline</a></nav>`;
       header.insertAdjacentElement('afterend',wrap);
     }
     requestAnimationFrame(()=>document.querySelector('.nav .is-active,.activity-subnav .is-active')?.scrollIntoView({block:'nearest',inline:'center'}));
@@ -75,11 +77,11 @@ window.AdventureSite = (() => {
     const page=document.querySelector('.page');if(!page)return;
     const idx=ACTIVITIES.findIndex(x=>x[2]===active);const next=ACTIVITIES[idx+1];
     const nav=document.createElement('nav');nav.className='chronology-nav chapter-flow-nav';nav.setAttribute('aria-label','Continue exploring activity chapters');
-    nav.innerHTML=`<a class="chronology-link" href="activities.html"><small>Activity hub</small><strong>← All activity chapters</strong></a>${next?`<a class="chronology-link next" href="${next[0]}"><small>Next chapter</small><strong>${next[1]} →</strong></a>`:`<a class="chronology-link next" href="adventures.html"><small>Continue exploring</small><strong>Adventures →</strong></a>`}`;
+    nav.innerHTML=`<a class="chronology-link" href="activities.html"><small>Explore</small><strong>← All activity chapters</strong></a>${next?`<a class="chronology-link next" href="${next[0]}"><small>Next chapter</small><strong>${next[1]} →</strong></a>`:`<a class="chronology-link next" href="adventures.html"><small>Continue exploring</small><strong>Stories →</strong></a>`}`;
     page.appendChild(nav);
   }
   function shell(active){ensureNav(active);ensureFlow(active);}
-  applyPageIdentity();ensureMeta();ensureAccessibility();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,shell,refreshMeta:ensureMeta,isProduction};
+  applyPageIdentity();ensureMeta();ensureAccessibility();ensureBranding();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,shell,refreshMeta:ensureMeta,isProduction};
 })();
 
 if (/detail\.html$/.test(location.pathname)) {
