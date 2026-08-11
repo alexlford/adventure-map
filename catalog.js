@@ -1,6 +1,8 @@
 window.AdventureCatalog = (() => {
   let cache = null;
   let relationshipCache = null;
+  let compiledPayloadPromise = null;
+  const publicBuild = () => window.ADVENTURE_PUBLIC_BUILD === true;
   const fetchJson = async (path) => {
     const response = await fetch(path, { cache: 'no-cache' });
     if (!response.ok) throw new Error(`Failed to load ${path} (${response.status})`);
@@ -102,8 +104,21 @@ window.AdventureCatalog = (() => {
   }
 
   async function loadManifest() { return fetchJson('data/catalog.json'); }
+  async function compiledPayload({ fresh = false, path = 'data/public-records.json' } = {}) {
+    if (fresh || !compiledPayloadPromise) compiledPayloadPromise = fetchJson(path);
+    const payload = await compiledPayloadPromise;
+    if (!Array.isArray(payload.records)) throw new Error(`Compiled catalog ${path} is missing records`);
+    if (Number(payload.recordCount) !== payload.records.length) throw new Error(`Compiled catalog ${path} recordCount does not match records`);
+    if (payload.relationshipCount != null && Number(payload.relationshipCount) !== (payload.relationships || []).length) throw new Error(`Compiled catalog ${path} relationshipCount does not match relationships`);
+    return payload;
+  }
   async function load({ fresh = false } = {}) {
     if (cache && !fresh) return cache;
+    if (publicBuild()) {
+      const payload = await compiledPayload({ fresh });
+      cache = normalizeAndValidate(payload.records, 'Compiled adventure catalog');
+      return cache;
+    }
     const manifest = await loadManifest();
     const [sourcePayloads, matches] = await Promise.all([
       Promise.all(manifest.sources.map(source => fetchJson(source.path).then(payload => ({ source, payload })))),
@@ -121,13 +136,16 @@ window.AdventureCatalog = (() => {
     return cache;
   }
   async function loadCompiled(path = 'data/public-records.json') {
-    const payload = await fetchJson(path);
-    if (!Array.isArray(payload.records)) throw new Error(`Compiled catalog ${path} is missing records`);
-    if (Number(payload.recordCount) !== payload.records.length) throw new Error(`Compiled catalog ${path} recordCount does not match records`);
+    const payload = await compiledPayload({ fresh: true, path });
     return normalizeAndValidate(payload.records, 'Compiled adventure catalog');
   }
   async function loadRelationships({ fresh = false } = {}) {
     if (relationshipCache && !fresh) return relationshipCache;
+    if (publicBuild()) {
+      const payload = await compiledPayload({ fresh });
+      relationshipCache = payload.relationships || [];
+      return relationshipCache;
+    }
     const manifest = await loadManifest();
     if (!manifest.relationshipLayer) return [];
     const payload = await fetchJson(manifest.relationshipLayer);
