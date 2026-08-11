@@ -1,0 +1,19 @@
+.chapter-map-section{margin:60px 0 8px;padding-top:24px;border-top:1px solid var(--line)}
+.chapter-map-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;margin-bottom:16px}
+.chapter-map-head h2{margin:0;font-size:clamp(1.8rem,4vw,3.2rem);letter-spacing:-.04em}
+.chapter-map-head p{max-width:620px;margin:8px 0 0;color:var(--muted);font-size:.86rem;line-height:1.55}
+.chapter-map-summary{display:flex;align-items:center;gap:9px;white-space:nowrap;color:var(--muted);font-size:.72rem;font-weight:750}
+.chapter-map-summary:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 13%,transparent)}
+.chapter-map-frame{position:relative}
+.chapter-map{display:block;width:100%;height:min(48vh,430px);min-height:330px;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#dbe7e6;box-shadow:0 12px 32px rgba(23,32,42,.055)}
+.chapter-map.leaflet-container{width:100%!important;max-width:100%!important}
+.chapter-map-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:11px;color:var(--muted);font-size:.72rem;line-height:1.45}
+.chapter-map-foot p{margin:0;max-width:720px}
+.chapter-map-link{flex:0 0 auto;color:var(--ink);font-weight:800;text-decoration:none}
+.chapter-map-link:hover{text-decoration:underline;text-underline-offset:4px}
+.chapter-map-tooltip{padding:5px 8px!important;border:1px solid rgba(23,32,42,.12)!important;border-radius:9px!important;background:rgba(255,255,255,.95)!important;box-shadow:0 5px 18px rgba(23,32,42,.12)!important;color:var(--ink)!important;font-size:.7rem!important;font-weight:750!important}
+.chapter-map-tooltip:before{display:none}
+.chapter-popup+.chapter-popup{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.chapter-map-overflow{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:.7rem;font-weight:700}
+@media(max-width:760px){.chapter-map-section{margin-top:52px}.chapter-map-head{grid-template-columns:1fr;gap:10px}.chapter-map-summary{white-space:normal}.chapter-map{height:42dvh;min-height:300px;max-height:390px;border-radius:18px}.chapter-map-foot{align-items:flex-start;flex-direction:column;gap:7px}}
+@media(max-width:420px){.chapter-map{height:330px;min-height:330px}.chapter-map-foot{font-size:.68rem}}
