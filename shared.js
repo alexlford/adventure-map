@@ -5,8 +5,9 @@ window.AdventureSite = (() => {
   const formatDuration = (seconds) => { if (!Number.isFinite(seconds)) return ''; const h=Math.floor(seconds/3600),m=Math.floor((seconds%3600)/60),s=Math.floor(seconds%60); return h?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${m}:${String(s).padStart(2,'0')}`; };
   const raceType = (a) => a.discipline === 'marathon' ? 'Marathon' : a.discipline === 'trail' ? 'Trail race' : a.discipline === 'nordic' ? 'Nordic ski race' : a.discipline === 'relay' ? 'Relay' : a.discipline === 'mountain-bike' ? 'Mountain bike race' : a.kind === 'race' ? (a.distance || 'Road race') : adventureType(a);
   const eventType = (a) => a.discipline === 'nordic' ? 'Nordic ski event' : a.discipline === 'ski' ? 'Ski event' : a.discipline === 'mountain-bike' ? 'Mountain bike event' : 'Event';
+  const outingType = (a) => a.discipline === 'nordic' ? 'Nordic outing' : a.discipline === 'mountain-bike' ? (a.mtbMode === 'downhill' ? 'Downhill MTB' : a.mtbMode === 'mixed' ? 'MTB + Downhill MTB' : 'MTB') : 'Outing';
   const adventureType = (a) => a.discipline === 'ski-objective' ? 'Ski objective' : a.discipline === 'mountain-loop' ? 'Mountain loop' : a.discipline === 'trek' ? 'Trek / traverse' : a.discipline === 'challenge' ? 'Challenge' : a.kind === 'summit' ? 'Summit' : 'Adventure';
-  const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'event' ? eventType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
+  const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'event' ? eventType(a) : a.kind === 'outing' ? outingType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
   let catalogPromise;
   const ensureCatalog = () => {
     if (window.AdventureCatalog) return Promise.resolve(window.AdventureCatalog);
@@ -27,5 +28,5 @@ window.AdventureSite = (() => {
     insertBeforeAdventures('mountain-biking.html','Mountain Biking','mountain-biking');
   }
   function shell(active){ensureNav();document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));}
-  ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,adventureType,recordType,shell};
+  ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,shell};
 })();
