@@ -24,6 +24,12 @@ window.AdventureSite = (() => {
   const relationshipsFor = (id) => ensureCatalog().then(catalog => catalog.relationshipsFor(id));
   function inferActive(){const p=location.pathname.split('/').pop()||'overview.html';const hit=[...PRIMARY,...ACTIVITIES].find(x=>x[0]===p);return hit?.[2]||null;}
   function primaryKey(active){return activityKeys.has(active)?'activities':active;}
+  function applyPageIdentity(active=inferActive()){
+    const primary=primaryKey(active)||'overview';
+    document.body.dataset.page=active||'detail';
+    document.body.dataset.primary=primary;
+    document.body.classList.toggle('is-activity-chapter',activityKeys.has(active));
+  }
   function ensureMeta(descriptionOverride=''){
     const description=descriptionOverride||document.querySelector('meta[name="description"]')?.content||document.querySelector('.hero p')?.textContent?.trim()||'Alex Ford Personal Adventure Almanac.';
     const detail=/detail\.html$/.test(location.pathname);
@@ -46,6 +52,7 @@ window.AdventureSite = (() => {
     if(main&&!document.querySelector('.skip-link')){const a=document.createElement('a');a.className='skip-link';a.href='#main-content';a.textContent='Skip to content';document.body.insertAdjacentElement('afterbegin',a)}
   }
   function ensureNav(active=inferActive()){
+    applyPageIdentity(active);
     const nav=document.querySelector('.nav'); if(!nav)return;
     const top=primaryKey(active);
     nav.setAttribute('aria-label','Primary navigation');
@@ -69,7 +76,7 @@ window.AdventureSite = (() => {
     page.appendChild(nav);
   }
   function shell(active){ensureNav(active);ensureFlow(active);}
-  ensureMeta();ensureAccessibility();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,shell,refreshMeta:ensureMeta};
+  applyPageIdentity();ensureMeta();ensureAccessibility();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,shell,refreshMeta:ensureMeta};
 })();
 
 if (/detail\.html$/.test(location.pathname)) {
