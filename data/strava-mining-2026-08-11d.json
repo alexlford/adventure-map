@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "source": "User medal evidence + Strava export + official Estes Park Marathon event archive",
+    "updatedOn": "2026-08-11",
+    "policy": "Publish only high-confidence recoveries. Official event distance takes precedence over GPS distance; Strava remains route and fallback timing evidence until an official individual result is recovered."
+  },
+  "adventures": [
+    {
+      "id": "estes-park-half-2021",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Estes Park Half Marathon",
+      "eventSeries": "Estes Park Marathon & Half Marathon",
+      "year": 2021,
+      "date": "2021-06-20",
+      "distance": "Half marathon",
+      "officialDistance": "Half marathon",
+      "officialDistanceMi": 13.1,
+      "officialDistanceKm": 21.0975,
+      "location": "Estes Park, Colorado",
+      "region": "Colorado",
+      "lat": 40.291511,
+      "lon": -105.543990,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "5503854364",
+      "stravaActivityName": "Meeker Park - Olympus Heights",
+      "stravaDistanceKm": 21.6703,
+      "stravaDistanceMi": 13.47,
+      "stravaElapsedSeconds": 8833,
+      "stravaMovingSeconds": 8663,
+      "elevationGainM": 66.5,
+      "routeStatus": "gps-source-available",
+      "matchSource": "User Estes Park Half Marathon medal + exact-date half-marathon-scale Strava GPS + official 2021 event archive",
+      "matchConfidence": "verified",
+      "resultSource": "Estes Park Marathon official 2021 results archive / Sporthive; individual result row not yet recovered by crawler",
+      "note": "The official event took place June 20, 2021. Strava records a 21.67 km run starting in the Estes Park/Meeker Park event area that day. Official half-marathon distance is canonical; Strava elapsed time is retained only as a fallback until the individual official result is recovered."
+    }
+  ]
+}
