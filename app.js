@@ -1,3 +1,6 @@
+const A=window.AdventureSite;
+if(!A)throw new Error('AdventureSite shared helpers are unavailable');
+const formatNumber=v=>A.fmt.format(v),formatDate=A.formatDate,formatDuration=A.formatDuration,escapeHtml=A.esc,recordHref=A.recordHref;
 const CATEGORY={
   mtb:{label:'MTB',color:'#2563eb'},nordic:{label:'Nordic',color:'#1779a8'},'road-races':{label:'Road race',color:'#d97706'},'trail-races':{label:'Trail race',color:'#b45309'},skiing:{label:'Skiing',color:'#16a6c9'},summits:{label:'Summit',color:'#16836d'},adventures:{label:'Adventure',color:'#8b5cf6'}
 };
@@ -7,11 +10,6 @@ const routeLayer=L.layerGroup().addTo(map),markerLayer=L.layerGroup().addTo(map)
 function publicLayerFor(a){if(a.kind==='summit')return'summits';if(a.kind==='adventure')return'adventures';if(a.mapCategory==='ski'||a.discipline==='ski')return'skiing';if(a.discipline==='mountain-bike'||a.mapCategory==='mountain-bike'||a.mapCategory==='downhill-mtb')return'mtb';if(a.discipline==='nordic'||a.mapCategory==='nordic')return'nordic';if(a.kind==='race'&&a.discipline==='trail')return'trail-races';if(a.kind==='race')return'road-races';return a.kind==='event'&&a.discipline==='nordic'?'nordic':'adventures'}
 function mapped(a){return Number.isFinite(a.lat)&&Number.isFinite(a.lon)}
 function recordYear(a){const y=Number(a.year||String(a.date||'').slice(0,4));return Number.isFinite(y)&&y>1900?y:null}
-function recordHref(a){return location.hostname==='adventures.alexlford.com'?`/record/${encodeURIComponent(a.slug||a.id)}/`:`detail.html?record=${encodeURIComponent(a.slug||a.id)}`}
-function formatNumber(v){return new Intl.NumberFormat('en-US').format(v)}
-function formatDate(v){if(!v)return'';const[y,m,d]=v.split('-').map(Number);return new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric'}).format(new Date(y,m-1,d))}
-function formatDuration(s){if(!Number.isFinite(s)||s<=0)return'';const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=Math.floor(s%60);return h?`${h}:${String(m).padStart(2,'0')}:${String(x).padStart(2,'0')}`:`${m}:${String(x).padStart(2,'0')}`}
-function escapeHtml(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
 function subtypeFor(a){if(a.mapCategory==='downhill-mtb')return'Downhill MTB';if(a.kind==='race'&&a.discipline==='marathon')return'Marathon';if(a.kind==='race'&&a.discipline==='relay')return'Relay';if(a.kind==='race'&&a.discipline==='nordic')return'Nordic race';if(a.kind==='event'&&a.discipline==='nordic')return'Nordic event';if(a.kind==='outing'&&a.discipline==='mountain-bike')return a.mtbMode==='downhill'?'Downhill MTB':'MTB outing';if(a.kind==='outing'&&a.discipline==='nordic')return'Nordic outing';return CATEGORY[publicLayerFor(a)]?.label||'Adventure'}
 function searchText(a){return[a.name,a.currentName,a.year,a.date,a.location,a.region,a.distance,a.distanceMi,a.elevationFt,a.stravaActivityName,publicLayerFor(a),subtypeFor(a)].filter(Boolean).join(' ').toLowerCase()}
 function filteredAdventures(){const q=state.search.trim().toLowerCase();return state.adventures.filter(a=>{const y=recordYear(a);const yearOk=(!state.yearFrom||!y||y>=state.yearFrom)&&(!state.yearTo||!y||y<=state.yearTo);return(state.filter==='all'||publicLayerFor(a)===state.filter)&&yearOk&&(!q||searchText(a).includes(q))})}
