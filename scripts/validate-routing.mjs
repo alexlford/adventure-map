@@ -34,6 +34,7 @@ if(mapPage.includes('ski-map.js')||fs.existsSync('ski-map.js'))errors.push('obso
 if(mapPage.includes('official-results-ui.js')||fs.existsSync('official-results-ui.js'))errors.push('obsolete official-results-ui.js patch module must remain removed');
 if(mapEnhancements.includes('detail.html?id=')||mapEnhancements.includes('window.popupCard'))errors.push('map enhancements must not wrap popupCard or inject legacy record links');
 if(!routeCatalogJs.includes('cfg.polylineFiles')||!routeCatalog.includes('"data/activity-route-polylines.json"'))errors.push('route catalog must own day-level activity polylines');
+if(detail.includes('payloads.flatMap')||!detail.includes('const features=(collection.features||[])'))errors.push('detail page must consume AdventureRoutes.loadAll() as one merged FeatureCollection');
 if(!detail.includes("A.pageHref('map.html')"))errors.push('detail page map action is not production-safe');
 if(!detail.includes("history.replaceState(null,'',A.recordHref(a))"))errors.push('detail page does not restore the clean record URL after data and map loading');
 if(/https:\/\/adventures\.alexlford\.com\/[a-z-]+\.html/.test(sitemap))errors.push('sitemap still publishes .html URLs');
