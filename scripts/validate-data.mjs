@@ -19,27 +19,20 @@ for (const source of manifest.sources) {
     sourceById.set(item.id, source.path);
   }
 }
-
 const matchPayload = await readJson(manifest.matchLayer);
 for (const [id, match] of Object.entries(matchPayload.matches || {})) {
   if (!records.has(id)) warnings.push(`${manifest.matchLayer}: match references unknown id ${id}`);
   else records.set(id, { ...records.get(id), ...match });
 }
-for (const id of manifest.removeIds || []) {
-  if (!records.has(id)) warnings.push(`catalog removeIds references unknown id ${id}`);
-  records.delete(id);
-}
-for (const [id, override] of Object.entries(manifest.overrides || {})) {
-  if (!records.has(id)) problems.push(`catalog override references unknown id ${id}`);
-  else records.set(id, { ...records.get(id), ...override });
-}
+for (const id of manifest.removeIds || []) { if (!records.has(id)) warnings.push(`catalog removeIds references unknown id ${id}`); records.delete(id); }
+for (const [id, override] of Object.entries(manifest.overrides || {})) { if (!records.has(id)) problems.push(`catalog override references unknown id ${id}`); else records.set(id, { ...records.get(id), ...override }); }
 
-const allowedKinds = new Set(['summit','race','adventure']);
+const allowedKinds = new Set(['summit','race','adventure','event']);
 for (const record of records.values()) {
   const at = record.id;
   if (!record.name) problems.push(`${at}: missing name`);
   if (!allowedKinds.has(record.kind)) problems.push(`${at}: invalid kind ${record.kind}`);
-  if (record.kind === 'race' && !record.discipline) problems.push(`${at}: race missing discipline`);
+  if ((record.kind === 'race' || record.kind === 'event') && !record.discipline) problems.push(`${at}: ${record.kind} missing discipline`);
   if (record.date && !/^\d{4}-\d{2}-\d{2}$/.test(record.date)) problems.push(`${at}: invalid date ${record.date}`);
   if (record.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(record.endDate)) problems.push(`${at}: invalid endDate ${record.endDate}`);
   if ((record.lat == null) !== (record.lon == null)) problems.push(`${at}: lat/lon must be provided together`);
@@ -76,7 +69,7 @@ for (const routeFile of routeCatalog.routeFiles || []) {
     if (routeId) seenRouteIds.add(routeId);
     const override = routeId ? routeCatalog.featureOverrides?.[routeId] : null;
     const props = { ...(feature.properties || {}), ...(override || {}) };
-    const inferred = props.provenance || (props.stravaActivityId || `${props.source || ''}`.toLowerCase().includes('strava') || `${routeId || ''}`.startsWith('strava-') ? 'personal-gps' : `${props.source || ''} ${props.routeType || ''}`.toLowerCase().match(/historical|official|published/) ? 'historical-course' : 'personal-gps');
+    const inferred = props.provenance || props.provenanceType || (props.stravaActivityId || `${props.source || ''}`.toLowerCase().includes('strava') || `${routeId || ''}`.startsWith('strava-') ? 'personal-gps' : `${props.source || ''} ${props.routeType || ''}`.toLowerCase().match(/historical|official|published/) ? 'historical-course' : 'personal-gps');
     if (!allowedProvenance.has(inferred)) problems.push(`${routeId || routeFile}: invalid route provenance ${inferred}`);
     for (const id of props.adventureIds || []) if (!records.has(id)) warnings.push(`${routeFile}: route ${routeId || 'unnamed'} references non-public/unknown id ${id}`);
   }
@@ -89,13 +82,7 @@ for (const [recordId, override] of Object.entries(routeCatalog.recordOverrides |
   if (!records.has(recordId)) problems.push(`route-catalog recordOverrides references unknown record ${recordId}`);
   if (override.provenance && !allowedProvenance.has(override.provenance)) problems.push(`${recordId}: invalid record provenance ${override.provenance}`);
 }
-
 console.log(`Catalog records: ${records.size}`);
 console.log(`Warnings: ${warnings.length}`);
 warnings.forEach(x => console.warn(`WARN ${x}`));
-if (problems.length) {
-  problems.forEach(x => console.error(`ERROR ${x}`));
-  process.exitCode = 1;
-} else {
-  console.log('Catalog validation passed.');
-}
+if (problems.length) { problems.forEach(x => console.error(`ERROR ${x}`)); process.exitCode = 1; } else console.log('Catalog validation passed.');
