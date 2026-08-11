@@ -26,6 +26,7 @@ window.AdventureSite = (() => {
     insertBeforeAdventures('skiing.html','Skiing','skiing');
     insertBeforeAdventures('nordic.html','Nordic','nordic');
     insertBeforeAdventures('mountain-biking.html','Mountain Biking','mountain-biking');
+    insertBeforeAdventures('timeline.html','Timeline','timeline');
   }
   function shell(active){ensureNav();document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));}
   ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,shell};
