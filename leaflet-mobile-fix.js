@@ -92,15 +92,51 @@
       .addTo(endpointLayer);
   }
 
+  function detailProvenance() {
+    const meta = document.getElementById('routeMeta');
+    if (!meta) return;
+    const text = (meta.textContent || '').trim().toLowerCase();
+    let provenance = 'route';
+    if (text.startsWith('personal gps')) provenance = 'personal-gps';
+    else if (text.startsWith('historical')) provenance = 'historical-course';
+    else if (text.startsWith('location')) provenance = 'location-only';
+    else if (text.startsWith('route withheld')) provenance = 'privacy-withheld';
+    meta.dataset.provenance = provenance;
+  }
+
+  function decorateDetailLocation(layer) {
+    if (!layer || layer.__adventureLocationStyled) return;
+    layer.__adventureLocationStyled = true;
+    const bodyAccent = getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#17202a';
+    layer.setStyle?.({
+      radius:8.5,
+      color:'#fff',
+      weight:2.5,
+      fillColor:bodyAccent,
+      fillOpacity:.96,
+      opacity:1
+    });
+    const title = document.querySelector('.hero h1')?.textContent?.trim();
+    if (title && typeof layer.bindTooltip === 'function') {
+      layer.bindTooltip(title,{direction:'top',offset:[0,-7],opacity:.96,className:'detail-location-label'});
+    }
+    requestAnimationFrame(() => layer.getElement?.()?.classList.add('detail-location-point'));
+  }
+
   if (window.L?.map && !L.map.__adventureWrapped) {
     const originalMap = L.map;
     const wrappedMap = function(...args) {
       const map = originalMap.apply(L,args);
       const container = map.getContainer?.();
       if (container?.classList?.contains('detail-map')) {
+        detailProvenance();
         map.on('layeradd',event => {
           if (window.L?.GeoJSON && event.layer instanceof L.GeoJSON) {
             setTimeout(() => decorateDetailRoute(map,event.layer),0);
+            return;
+          }
+          if (window.L?.CircleMarker && event.layer instanceof L.CircleMarker) {
+            setTimeout(() => decorateDetailLocation(event.layer),0);
           }
         });
       }
