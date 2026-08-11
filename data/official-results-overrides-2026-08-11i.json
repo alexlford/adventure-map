@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "source": "Albany Running Exchange archive of official Baltimore Running Festival results + Strava export",
+    "updatedOn": "2026-08-11",
+    "policy": "Official race distance, chip time, gun time, bib, place, and pace are canonical; Strava remains GPS and raw-recording evidence."
+  },
+  "adventures": [
+    {
+      "id": "baltimore-half-2018",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Baltimore Running Festival Half Marathon",
+      "eventSeries": "BaltiMORON-a-thon",
+      "year": 2018,
+      "date": "2018-10-20",
+      "distance": "Half marathon",
+      "officialDistance": "Half marathon",
+      "officialDistanceKm": 21.0975,
+      "officialDistanceMi": 13.1,
+      "officialTime": "2:15:00",
+      "officialChipSeconds": 8100,
+      "officialGunTime": "2:25:23",
+      "officialPlace": 2884,
+      "officialPace": "10:18/mi",
+      "bib": 53715,
+      "age": 30,
+      "location": "Baltimore, Maryland",
+      "region": "Maryland",
+      "stravaActivityId": "4312792178",
+      "stravaActivityName": "Saturday Morning Run",
+      "stravaDistanceKm": 21.7311,
+      "stravaDistanceMi": 13.50,
+      "stravaElapsedSeconds": 8104,
+      "routeStatus": "gps-source-available",
+      "resultSource": "Baltimore Running Festival 2018 official results archive via Albany Running Exchange",
+      "resultUrl": "https://www.albanyrunningexchange.org/results/textDisplay.php?ID=7558",
+      "matchSource": "Official individual result + same-day BaltiMORON medal evidence + exact-date Strava half-marathon recording",
+      "matchConfidence": "verified",
+      "note": "Official results list Alex Ford, age 30, Baltimore, bib 53715, 2,884th overall, 2:25:23 gun / 2:15:00 chip at 10:18 per mile. The Strava recording elapsed time is 2:15:04, four seconds from the official chip time."
+    }
+  ]
+}
