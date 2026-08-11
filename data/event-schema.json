@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "description": "Canonical normalized record vocabulary for the Personal Adventure Almanac. Source files may retain legacy fields; catalog.js projects them into this schema at load time.",
+  "description": "Canonical normalized record vocabulary for Alex Ford Adventures. Source files may retain legacy fields; catalog.js projects them into this schema at load time.",
   "kinds": ["summit", "race", "adventure", "event", "outing"],
   "disciplines": ["road", "marathon", "trail", "relay", "mountain-bike", "nordic", "ski-objective", "mountain-loop", "trek", "challenge", "hike", "ski"],
   "confidence": ["confirmed", "verified", "high", "medium", "low", "unknown"],
