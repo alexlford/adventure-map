@@ -1,5 +1,7 @@
 window.AdventureRoutes = (() => {
   let configPromise;
+  let compiledPromise;
+  const publicBuild = () => window.ADVENTURE_PUBLIC_BUILD === true;
   const fetchJson = async path => {
     const r = await fetch(path, { cache: 'no-cache' });
     if (!r.ok) throw new Error(`Failed to load ${path} (${r.status})`);
@@ -87,7 +89,15 @@ window.AdventureRoutes = (() => {
     }));
     return { type: 'FeatureCollection', features };
   }
+  async function compiledCollection({ fresh = false, path = 'data/public-routes.geojson' } = {}) {
+    if (fresh || !compiledPromise) compiledPromise = fetchJson(path);
+    const collection = await compiledPromise;
+    if (collection.type !== 'FeatureCollection' || !Array.isArray(collection.features)) throw new Error(`Compiled route collection ${path} is invalid`);
+    if (collection.metadata?.featureCount != null && Number(collection.metadata.featureCount) !== collection.features.length) throw new Error(`Compiled route collection ${path} featureCount does not match features`);
+    return collection;
+  }
   async function loadAll() {
+    if (publicBuild()) return compiledCollection();
     const cfg = await config();
     const [routePayloads, polylinePayloads] = await Promise.all([
       Promise.all((cfg.routeFiles || []).map(fetchJson)),
@@ -100,12 +110,13 @@ window.AdventureRoutes = (() => {
     return mergeCollections(await Promise.all(collections.map(normalizeCollection)));
   }
   async function loadCompiled(path = 'data/public-routes.geojson') {
-    const collection = await fetchJson(path);
-    if (collection.type !== 'FeatureCollection' || !Array.isArray(collection.features)) throw new Error(`Compiled route collection ${path} is invalid`);
-    if (collection.metadata?.featureCount != null && Number(collection.metadata.featureCount) !== collection.features.length) throw new Error(`Compiled route collection ${path} featureCount does not match features`);
-    return normalizeCollection(collection);
+    return compiledCollection({ fresh: true, path });
   }
   async function recordProvenance(recordId) {
+    if (publicBuild()) {
+      const collection = await compiledCollection();
+      return collection.metadata?.recordOverrides?.[recordId] || null;
+    }
     const cfg = await config();
     return cfg.recordOverrides?.[recordId] || null;
   }
