@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "validate:data": "node scripts/validate-data.mjs",
-    "build:public-index": "node scripts/build-public-index.mjs"
+    "build:public-index": "node scripts/build-public-index.mjs",
+    "scan:strava": "python3 scripts/scan_strava_export.py"
   }
 }
