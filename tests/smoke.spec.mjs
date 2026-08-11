@@ -36,10 +36,13 @@ for (const [name, path] of publicPages) {
   });
 }
 
-test('Map populates and emits one canonical record link', async ({ page }) => {
+test('Map populates complete routes and emits one canonical record link', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#resultCount')).toContainText('shown');
+  await expect(page.locator('#routeCount')).not.toHaveText('—');
+  const routeCount = Number(await page.locator('#routeCount').textContent());
+  expect(routeCount).toBeGreaterThan(0);
 
   const popup = await page.evaluate(() => window.popupCard?.({
     id: 'smoke-test-record',
