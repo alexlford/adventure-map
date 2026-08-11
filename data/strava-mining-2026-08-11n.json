@@ -6,7 +6,7 @@
   },
   "adventures": [
     {
-      "id": "lawrence-shamrock-shuffle-10k-2015",
+      "id": "shamrock-shuffle-10k-2015",
       "kind": "race",
       "discipline": "road",
       "name": "Lawrence Shamrock Shuffle 10K",
@@ -32,7 +32,7 @@
       "resultUrl": "https://www.runlawrence.org/eventsresults.html",
       "matchSource": "Historical calendar lists the Lawrence Shamrock Shuffle 5K/10K on March 7, 2015 + Strava begins at about 8:59 AM local at 38.97689,-95.236176 near Johnny's North, records 10.2937 km, and returns to the same start/finish area; the modern official event preserves the same 9:00 AM Johnny's North start and North Lawrence course identity",
       "matchConfidence": "verified",
-      "note": "Recovered from a location-based Strava title. The historical calendar places the 5K/10K on the exact date; the GPS activity begins one minute before the race's longstanding 9:00 AM start at Johnny's North and follows a 10K-scale North Lawrence route. No indexed 2015 individual timing row has been recovered, so 54:53 is retained only as the Strava elapsed-time fallback."
+      "note": "Enriches the existing stable Shamrock Shuffle record. The historical calendar places the 5K/10K on the exact date; the GPS activity begins one minute before the race's longstanding 9:00 AM start at Johnny's North and follows a 10K-scale North Lawrence route. No indexed 2015 individual timing row has been recovered, so 54:53 is retained only as the Strava elapsed-time fallback."
     }
   ]
 }
