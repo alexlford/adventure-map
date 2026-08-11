@@ -23,6 +23,8 @@ jobs:
         run: npm run validate:data
       - name: Validate stable record slugs
         run: npm run validate:slugs
+      - name: Validate World Marathon Majors passport
+        run: npm run validate:majors
       - name: Validate production routing and branding
         run: npm run validate:routing
       - name: Validate maintenance scripts
