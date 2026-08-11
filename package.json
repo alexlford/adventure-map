@@ -1,0 +1,8 @@
+{
+  "name": "adventure-map",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate:data": "node scripts/validate-data.mjs"
+  }
+}
