@@ -24,7 +24,7 @@
       const kicker = options.kickerFor?.(item) || options.kicker || '';
       const meta = options.metaFor?.(item) || item.location || item.region || '';
       const value = options.valueLabelFor?.(item) || '';
-      const href = options.hrefFor?.(item) || recordHref(item);
+      const href = options.hrefFor ? options.hrefFor(item) : recordHref(item);
       const action = href ? `<p class="popup-detail"><a href="${esc(href)}">Open record →</a></p>` : '';
       return `<article class="popup-card chapter-popup"><p class="popup-kicker">${esc(kicker)}</p><h3 class="popup-title">${esc(item.name)}</h3>${meta?`<p class="popup-meta">${esc(meta)}</p>`:''}${value?`<p class="popup-meta"><strong>${esc(value)}</strong></p>`:''}${action}</article>`;
     }).join('');
