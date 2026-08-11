@@ -93,6 +93,14 @@ window.AdventureCatalog = (() => {
     return { errors, warnings, valid: errors.length === 0 };
   }
 
+  function normalizeAndValidate(records, label = 'Catalog') {
+    const adventures = records.map(normalizeRecord);
+    const report = validate(adventures);
+    if (!report.valid) throw new Error(`${label} validation failed: ${report.errors.join('; ')}`);
+    if (report.warnings.length) console.warn(`${label} warnings:`, report.warnings);
+    return adventures;
+  }
+
   async function loadManifest() { return fetchJson('data/catalog.json'); }
   async function load({ fresh = false } = {}) {
     if (cache && !fresh) return cache;
@@ -109,12 +117,14 @@ window.AdventureCatalog = (() => {
       if (!records.has(id)) throw new Error(`Catalog override references unknown id: ${id}`);
       records.set(id, { ...records.get(id), ...override });
     }
-    const adventures = [...records.values()].map(normalizeRecord);
-    const report = validate(adventures);
-    if (!report.valid) throw new Error(`Catalog validation failed: ${report.errors.join('; ')}`);
-    if (report.warnings.length) console.warn('Adventure catalog warnings:', report.warnings);
-    cache = adventures;
-    return adventures;
+    cache = normalizeAndValidate([...records.values()], 'Adventure catalog');
+    return cache;
+  }
+  async function loadCompiled(path = 'data/public-records.json') {
+    const payload = await fetchJson(path);
+    if (!Array.isArray(payload.records)) throw new Error(`Compiled catalog ${path} is missing records`);
+    if (Number(payload.recordCount) !== payload.records.length) throw new Error(`Compiled catalog ${path} recordCount does not match records`);
+    return normalizeAndValidate(payload.records, 'Compiled adventure catalog');
   }
   async function loadRelationships({ fresh = false } = {}) {
     if (relationshipCache && !fresh) return relationshipCache;
@@ -125,5 +135,5 @@ window.AdventureCatalog = (() => {
     return relationshipCache;
   }
   async function relationshipsFor(recordId) { const relationships = await loadRelationships(); return relationships.filter(rel => (rel.memberIds || []).includes(recordId) || rel.adventureId === recordId); }
-  return { load, validate, normalizeRecord, loadRelationships, relationshipsFor, recordSlug };
+  return { load, loadCompiled, validate, normalizeRecord, loadRelationships, relationshipsFor, recordSlug };
 })();
