@@ -1,46 +1,47 @@
-# Adventure Map
+# Personal Adventure Almanac
 
-Interactive map of Alex Ford's mountain summits and endurance races, seeded from the Athletic Activities section of [alexlford.com/about](https://www.alexlford.com/about) and enriched with a Strava account export.
+Interactive map and archive of Alex Ford's mountain summits, endurance races, skiing, and stand-alone adventures. The project began with the Athletic Activities section of [alexlford.com/about](https://www.alexlford.com/about) and has been expanded with a Strava account export, Slopes ski records, historical race results, and user-confirmed corrections.
 
 ## Current state
 
-- 19 summits listed on alexlford.com
-- 8 marathons
-- River to River Relay entries for 2006, 2008, and 2010
-- Free State Tri 100 Relay (2015)
-- SMR Stampede 50k Ranch Hand (2022)
-- Stagecoach Classic 15k (2024)
-- 29 existing adventure records matched to Strava metadata
-- 25 GPS route features covering 28 adventures (some summit outings cover multiple peaks)
-- Search, category filters, responsive layout, route-aware zooming, popups, and list view
+- 19 named summits
+- 37 public race-event records currently in the curated archive
+- 111 recorded ski days across 29 ski resorts
+- 6 featured stand-alone adventures, including DeCaLiBron, West Maroon Pass Traverse, and Ski the Sky Loop
+- River to River Relay appearances in 2006, 2008, and 2010
+- Search, category filters, responsive mobile map, route-aware zooming, popups, and archive pages for Races, Summits, Skiing, and Adventures
 
-## Strava matching
+The race inventory is still being reconstructed. User-confirmed races with unresolved dates, including the Disney Princess Half Marathon and Big Ten 10K, are kept in `data/research-candidates.json` until the exact historical record can be recovered.
 
-`data/strava-matches.json` contains the curated match layer from the Strava export. It adds dates, recorded distances, elapsed and moving time, elevation gain, GPS-derived race locations, and route references without overwriting the canonical website inventory in `data/adventures.json`.
+## Data sources
 
-`data/routes.geojson` contains simplified GPS geometry for matched races and climbs. Route geometry is simplified to web-map fidelity to keep the static site fast.
+`data/adventures.json` contains the original summit and race inventory seeded from alexlford.com.
 
-### Match coverage
+`data/strava-matches.json` contains the original curated Strava match layer. Later discoveries and corrections are stored in supplemental data files rather than rewriting the original import in place.
 
-The Strava export confidently matches 18 of the 19 listed summits. North Star Mountain remains unmatched because no recorded activity approached the summit closely enough for a confident association.
+`data/discovered-races.json`, `data/mined-races.json`, and `data/user-confirmed-races.json` hold race records recovered after the first import.
 
-The export resolves all eight marathon dates and locations. The 2020 virtual Chicago Marathon was run in Baltimore, Maryland on October 7, 2020.
+`data/notable-adventures.json` contains stand-alone objectives and stories that are intentionally separated from ordinary activity history.
 
-The exact 2020 virtual-marathon GPS geometry is intentionally **not** committed to this public-map layer because its start/end location may be personally identifying. The map uses a city-level Baltimore location instead.
+`data/skiing.json` contains the ski archive reconciled from Strava and Slopes. Strava is treated as the activity-history backbone; Slopes supplies ski-specific resort, run, vertical, season, and named-trip information.
 
-The three River to River Relay entries (2006, 2008, 2010) predate the GPS activity history contained in this export, so they remain location-only records.
+`data/research-candidates.json` is intentionally not loaded into the public almanac. It holds borderline matches and known events whose dates still need to be recovered.
 
-The Free State Tri 100 Relay is matched to the June 7, 2015 Strava run at Clinton Lake. Strava contains Alex's recorded run leg, not the complete relay course.
+## Important corrections
 
-The 2022 SMR Stampede Ranch Hand is represented by the two consecutive ~25K Nordic activities on March 12 and March 13, totaling approximately 50.7 km.
+North Star Mountain was initially unmatched in the first Strava pass. It was later user-confirmed as the September 12, 2020 Strava activity titled `Quartzville` and is treated as confirmed by the live almanac.
 
-## Data model
+The March 1, 2020 Strava ski outlier was confirmed from a calendar record as Liberty Mountain Resort. The user subsequently added the missing day to Slopes, bringing the reconciled ski-day history to 111 days.
 
-- `data/adventures.json` — canonical adventure inventory from alexlford.com
-- `data/strava-matches.json` — Strava-derived metadata keyed by adventure ID
-- `data/routes.geojson` — GPS course/climb geometry keyed back to adventure IDs
+The 2019/20 ski season has three known ski days, but season vertical was not recorded and is intentionally not displayed as zero.
 
-This separation keeps the personal-history inventory independent from any single tracking service and makes future imports from Garmin, Nike Run Club, or other sources straightforward.
+The exact 2020 virtual Chicago Marathon GPS geometry is intentionally **not** committed to the public-map layer because its start/end location may be personally identifying. The public layer uses a city-level Baltimore location instead.
+
+## Map behavior
+
+Skiing is mapped at the resort level rather than with one marker for every ski day. When multiple record types share one coordinate, the marker retains the primary geographic category color (for example, Big Sky remains a ski-resort marker even though Ski the Sky Loop is also attached there) while the popup can contain multiple records.
+
+Recorded GPS routes are displayed where they add useful context and can be published without unnecessary privacy exposure.
 
 ## Run locally
 
@@ -54,17 +55,16 @@ Then open `http://localhost:8000`.
 
 ## Deploy
 
-This is a build-free static site. It can be hosted directly with GitHub Pages or integrated into alexlford.com.
+This is a build-free static site hosted through GitHub Pages and designed to be integrated with alexlford.com.
 
-## Next upgrades
+## Audit priorities
 
-1. Review Strava-discovered races that are not yet listed on alexlford.com and decide which belong on the map.
-2. Add personal photos and short story/memory text to selected adventures.
-3. Add official result links and official finish times where available.
-4. Resolve North Star Mountain from another GPS source or manual date/route input.
-5. Add historical River to River course geometry from public race-course data.
-6. Consider an optional privacy-trimmed representation of the 2020 virtual marathon.
+1. Continue mining the full Strava archive for user-confirmed but undated races, especially the Disney Princess Half Marathon and Big Ten 10K.
+2. Recover additional historical race results and official times where reliable records survive.
+3. Continue checking race/adventure classification and cross-page consistency.
+4. Add privacy-conscious GPS geometry for additional races, hikes, and ski objectives where useful.
+5. Add photos and short personal memories to selected almanac entries without turning the site into a raw activity feed.
 
 ## Source notes
 
-The canonical activity names, years, and listed summit elevations were taken from alexlford.com/about as checked on 2026-08-10. Strava matching was performed from the account export supplied on 2026-08-10 using activity dates, types, distances, GPS geometry, and proximity to known summit coordinates.
+The original activity names, years, and listed summit elevations were taken from alexlford.com/about as checked on 2026-08-10. Subsequent corrections and additions come from the supplied Strava export, Slopes screenshots, calendar evidence, historical race results, and direct user confirmation.
