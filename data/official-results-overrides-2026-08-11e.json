@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "source": "Official Webscorer / Denver Veterans Day organizer results and event records + Strava",
+    "updatedOn": "2026-08-11",
+    "precedence": "Official organizer/timer fields override Strava measurements; Strava remains route and fallback evidence."
+  },
+  "adventures": [
+    {
+      "id": "stagecoach-classic-15k-2024",
+      "name": "Stagecoach Classic 15K",
+      "eventSeries": "Grand County Nordic Race Series",
+      "date": "2024-01-20",
+      "officialDistance": "15K",
+      "officialDistanceKm": 15.0,
+      "officialDistanceMi": 9.32,
+      "officialTime": "1:53:06.8",
+      "officialPlace": 53,
+      "bib": "147",
+      "age": 35,
+      "division": "Men 30-39",
+      "stravaActivityId": "10596610840",
+      "stravaActivityName": "2024 Stagecoach Classic 15k",
+      "stravaDistanceKm": 15.36,
+      "stravaDistanceMi": 9.54,
+      "stravaElapsedSeconds": 6989,
+      "resultSource": "Webscorer GCNRS #3 Stagecoach Classic Race 2024 official results",
+      "resultUrl": "https://www.webscorer.com/results?did=431017&raceid=340250",
+      "matchSource": "Official individual result + exact-date Strava GPS + user Stagecoach poster/photo evidence",
+      "matchConfidence": "verified"
+    },
+    {
+      "id": "rippetoe-rucksack-2025",
+      "name": "Denver Veterans Day 10K Rippetoe Rucksack Challenge",
+      "eventSeries": "Denver Veterans Day Run",
+      "date": "2025-11-08",
+      "officialDistance": "10K Ruck",
+      "officialDistanceKm": 10.0,
+      "officialDistanceMi": 6.21,
+      "ruckWeightLb": 25,
+      "location": "City Park, Denver, Colorado",
+      "region": "Colorado",
+      "stravaActivityId": "16395842302",
+      "stravaActivityName": "10K Rippetoe Rucksack Challenge",
+      "stravaDistanceKm": 9.67,
+      "stravaDistanceMi": 6.01,
+      "stravaElapsedSeconds": 3963,
+      "resultSource": "Denver Veterans Day / Colorado Veterans Project official event information and RunSignup results portal",
+      "resultUrl": "https://runsignup.com/Race/Results/53380",
+      "matchSource": "User medal + official event date/distance + exact-date Strava activity",
+      "matchConfidence": "verified",
+      "note": "Official event distance is 10K. Individual official finish time has not yet been recovered from the searchable results portal, so Strava elapsed remains a labeled fallback."
+    }
+  ]
+}
