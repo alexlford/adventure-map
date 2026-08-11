@@ -11,6 +11,7 @@
     const pct=n=>confirmedTotal?Math.round(n/confirmedTotal*100):0;
     const statusLabel=x=>x.status==='completed'?'Completed':x.status==='registered'?'Registered':x.membership==='joins-2027'?'Joining the Majors in 2027':'Future target';
     const cityName=x=>x.name.replace(' Marathon','').replace('TCS New York City','New York City');
+    const hasPhotos=record=>Boolean((record?.media||[]).some(item=>item&&(!item.type||item.type==='image')&&item.src&&item.alt));
     const pin=(x,kind='major',index=0)=>{
       const left=((Number(x.lon)+180)/360*100).toFixed(2),top=((90-Number(x.lat))/180*100).toFixed(2),marker=kind==='candidate'?'C':String(index+1).padStart(2,'0');
       return `<div class="major-map-pin ${A.esc(x.status||kind)} ${kind==='candidate'?'candidate':''}" data-major="${A.esc(x.id)}" style="left:${left}%;top:${top}%" title="${A.esc(x.name)} · ${A.esc(x.label||statusLabel(x))}"><span><em>${marker}</em></span><b>${A.esc(cityName(x))}</b></div>`;
@@ -22,7 +23,7 @@
       const earned=x.status==='completed'?'<div class="passport-earned-stamp" aria-label="Completed Major">Completed</div>':'';
       let grow='';
       if(x.status==='completed'){
-        const resultAvailable=Boolean(record&&(record.officialTime||record.elapsedSeconds||record.resultUrl)),courseAvailable=Boolean(record&&(record.routeStatus==='gps'||(record.routeFeatureIds||[]).length)),photosAvailable=Boolean(x.photoUrl||(x.photos||[]).length),storyAvailable=Boolean(x.storyUrl||x.storyRecordId);
+        const resultAvailable=Boolean(record&&(record.officialTime||record.elapsedSeconds||record.resultUrl)),courseAvailable=Boolean(record&&(record.routeStatus==='gps'||(record.routeFeatureIds||[]).length)),photosAvailable=hasPhotos(record)||Boolean(x.photoUrl||(x.photos||[]).length),storyAvailable=Boolean(record?.story||record?.storyBody||x.storyUrl||x.storyRecordId);
         grow=`<div class="passport-grow" aria-label="Completed Major passport details">${asset('Result',resultAvailable)}${asset('Course',courseAvailable)}${asset('Photos',photosAvailable)}${asset('Story',storyAvailable)}</div>`;
       }
       const body=`${earned}<div class="passport-number">${String(i+1).padStart(2,'0')}</div><p class="card-kicker">${A.esc(statusLabel(x))}</p><h3>${A.esc(cityName(x))}</h3><p class="card-meta">${A.esc(x.city)}${x.firstMajorDate?` · Major from ${A.esc(A.formatDate(x.firstMajorDate))}`:x.year?` · ${x.year}`:''}</p>${grow}<div class="passport-state">${A.esc(x.label)}</div>`;
