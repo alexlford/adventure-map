@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "source": "User-uploaded medal photos",
+    "createdOn": "2026-08-11",
+    "purpose": "Research queue for medal evidence that is useful for Strava mining but not yet specific enough for the public catalog.",
+    "privacy": "Only extracted event metadata is stored here; medal images remain outside the public repository."
+  },
+  "evidence": [
+    {
+      "id": "garmin-land-of-oz-2017-medal",
+      "event": "Garmin Marathon in the Land of Oz",
+      "year": 2017,
+      "eventDate": "2017-04-22",
+      "location": "Olathe, Kansas",
+      "visibleEvidence": ["Garmin Marathon event branding", "Olathe ribbon text", "2017 ribbon text"],
+      "distance": null,
+      "stravaMatch": null,
+      "status": "needs-distance-confirmation",
+      "note": "The 2017 event offered marathon, half marathon, and 10K distances. The medal photo confirms participation but does not clearly identify the distance, and the Strava export has no matching activity on race weekend."
+    },
+    {
+      "id": "snow-mountain-ranch-age-class-award",
+      "event": "Snow Mountain Ranch",
+      "year": 2022,
+      "location": "Snow Mountain Ranch, Colorado",
+      "visibleEvidence": ["Snow Mountain Ranch", "1st Place Age Class"],
+      "status": "needs-leg-confirmation",
+      "note": "Likely associated with the 2022 Stampede/Ranch Hand weekend, but the photo alone does not identify which race leg or category produced the award."
+    }
+  ]
+}
