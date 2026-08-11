@@ -50,6 +50,27 @@ for (const record of records.values()) {
   if (record.distanceKm != null && (!Number.isFinite(record.distanceKm) || record.distanceKm < 0)) problems.push(`${at}: invalid distanceKm`);
   if (record.kind === 'adventure' && record.discipline === 'mountain-bike') warnings.push(`${at}: mountain-bike event should normally be kind=race`);
   if (record.kind === 'event' && /race/i.test(record.note || '') && !/not a race|rather than a race/i.test(record.note || '')) warnings.push(`${at}: event note mentions race; review classification`);
+
+  if (record.media != null && !Array.isArray(record.media)) problems.push(`${at}: media must be an array`);
+  for (const [index, item] of (Array.isArray(record.media) ? record.media : []).entries()) {
+    const where = `${at}: media[${index}]`;
+    if (!item || typeof item !== 'object' || Array.isArray(item)) { problems.push(`${where} must be an object`); continue; }
+    if (item.type && item.type !== 'image') warnings.push(`${where}: unsupported media type ${item.type}; only image currently renders`);
+    if (typeof item.src !== 'string' || !item.src.trim()) problems.push(`${where}: missing src`);
+    if (typeof item.alt !== 'string' || !item.alt.trim()) problems.push(`${where}: missing alt text`);
+    if (item.caption != null && typeof item.caption !== 'string') problems.push(`${where}: caption must be a string`);
+    if (item.credit != null && typeof item.credit !== 'string') problems.push(`${where}: credit must be a string`);
+    if (typeof item.src === 'string' && item.src.trim() && !/^https?:\/\//i.test(item.src)) {
+      const rel = item.src.replace(/^\.\//, '');
+      if (path.isAbsolute(rel) || rel.split(/[\\/]/).includes('..')) problems.push(`${where}: local src must stay inside the repository`);
+      else {
+        try { await fs.access(path.join(root, rel)); }
+        catch { problems.push(`${where}: local image does not exist: ${rel}`); }
+      }
+    } else if (typeof item.src === 'string' && /^https?:\/\//i.test(item.src)) {
+      warnings.push(`${where}: remote image URL is less durable than a repository-owned asset`);
+    }
+  }
 }
 
 if (manifest.relationshipLayer) {
