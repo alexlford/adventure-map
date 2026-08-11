@@ -14,6 +14,41 @@ window.AdventureRoutes = (() => {
     if (p.stravaActivityId || source.includes('strava') || feature.id?.startsWith('strava-')) return 'personal-gps';
     return 'personal-gps';
   };
+  const decodePolyline = encoded => {
+    let index = 0, lat = 0, lon = 0;
+    const coordinates = [];
+    while (index < encoded.length) {
+      let result = 0, shift = 0, b;
+      do { b = encoded.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+      lat += (result & 1) ? ~(result >> 1) : (result >> 1);
+      result = 0; shift = 0;
+      do { b = encoded.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+      lon += (result & 1) ? ~(result >> 1) : (result >> 1);
+      coordinates.push([lon / 1e5, lat / 1e5]);
+    }
+    return coordinates;
+  };
+  const activityRoutesToGeoJson = payload => ({
+    type: 'FeatureCollection',
+    features: (payload.routes || []).map(route => {
+      const lines = (route.lines || []).map(decodePolyline);
+      return {
+        type: 'Feature',
+        id: route.id,
+        properties: {
+          featureId: route.id,
+          adventureIds: route.adventureIds || [],
+          provenance: 'personal-gps',
+          category: route.category,
+          source: 'Strava GPS export',
+          mtbMode: route.mtbMode || null,
+        },
+        geometry: lines.length === 1
+          ? { type: 'LineString', coordinates: lines[0] }
+          : { type: 'MultiLineString', coordinates: lines },
+      };
+    }),
+  });
   async function normalizeFeature(feature) {
     const cfg = await config();
     const id = keyFor(feature);
@@ -25,10 +60,28 @@ window.AdventureRoutes = (() => {
   async function normalizeCollection(collection) {
     return { ...collection, features: await Promise.all((collection.features || []).map(normalizeFeature)) };
   }
+  function mergeCollections(collections) {
+    const features = [];
+    const seen = new Set();
+    collections.forEach(collection => (collection.features || []).forEach(feature => {
+      const id = keyFor(feature);
+      if (id && seen.has(id)) return;
+      if (id) seen.add(id);
+      features.push(feature);
+    }));
+    return { type: 'FeatureCollection', features };
+  }
   async function loadAll() {
     const cfg = await config();
-    const payloads = await Promise.all(cfg.routeFiles.map(fetchJson));
-    return Promise.all(payloads.map(normalizeCollection));
+    const [routePayloads, polylinePayloads] = await Promise.all([
+      Promise.all((cfg.routeFiles || []).map(fetchJson)),
+      Promise.all((cfg.polylineFiles || []).map(fetchJson)),
+    ]);
+    const collections = [
+      ...routePayloads,
+      ...polylinePayloads.map(activityRoutesToGeoJson),
+    ];
+    return mergeCollections(await Promise.all(collections.map(normalizeCollection)));
   }
   async function recordProvenance(recordId) {
     const cfg = await config();
