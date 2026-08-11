@@ -19,6 +19,7 @@
     {"path":"data/strava-mining-2026-08-11f.json","role":"recovered","description":"Official-result-first recovery of the 2016 Rock the Parkway Half Marathon from a generic Strava activity."},
     {"path":"data/strava-mining-2026-08-11g.json","role":"recovered","description":"Official-result-first recovery of the 2022 Staunton Rocks! Half Marathon from medal evidence and exact-date Strava GPS."},
     {"path":"data/strava-mining-2026-08-11h.json","role":"recovered","description":"Verified deferred 2020 Baltimore Shamrock 5K virtual completion from cancellation/deferment records, 2021 virtual instructions, B3 evidence, and exact-distance Strava activity."},
+    {"path":"data/strava-mining-2026-08-11i.json","role":"recovered","description":"Exact Strava activity reconciliation for the 2025 Rocky Mountain 5K and Half Marathon weekend."},
     {"path":"data/official-results-overrides.json","role":"official","description":"Official organizer/timer distances, times, places and awards. These fields are authoritative when verified; Strava remains GPS evidence and fallback."},
     {"path":"data/official-results-overrides-2026-08-11b.json","role":"official","description":"Latest official naming/distance overrides from the medal-assisted audit; loaded last for public precedence."},
     {"path":"data/official-results-overrides-2026-08-11c.json","role":"official","description":"Official Denver Colfax distance/name reconciliation from medals, organizer archives and the latest Strava mining pass."},
