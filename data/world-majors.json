@@ -5,10 +5,10 @@
     "currentMajorCount": 7,
     "confirmedMajorCountFor2027": 8,
     "nextSeriesCheckpointOn": "2026-12-06",
-    "note": "Personal Abbott World Marathon Majors journey. The 2026 series has seven current Majors. Cape Town is confirmed to join as the eighth Major in 2027. Shanghai remains a candidate and is not counted as a Major unless officially admitted. Its next assessment is tied to the December 6, 2026 Shanghai Marathon; a successful assessment would make it the ninth Major in 2027. Completed and registered statuses are tracked separately."
+    "note": "Personal Abbott World Marathon Majors journey. The 2026 series has seven current Majors. Cape Town is confirmed to join as the eighth Major in 2027. Shanghai remains a candidate and is not counted as a Major unless officially admitted. Its next assessment is tied to the December 6, 2026 Shanghai Marathon; a successful assessment would make it the ninth Major in 2027. Completed and registered statuses are tracked separately. Completed Majors link to their canonical Adventures race record through recordId."
   },
   "majors": [
-    {"id":"chicago","name":"Chicago Marathon","city":"Chicago, Illinois","status":"completed","membership":"current","label":"Completed","lat":41.8781,"lon":-87.6298},
+    {"id":"chicago","recordId":"chicago-marathon-2021","name":"Chicago Marathon","city":"Chicago, Illinois","status":"completed","membership":"current","label":"Completed","lat":41.8781,"lon":-87.6298},
     {"id":"new-york","name":"New York City Marathon","city":"New York, New York","status":"registered","membership":"current","year":2026,"label":"Registered · 2026","lat":40.7128,"lon":-74.0060},
     {"id":"tokyo","name":"Tokyo Marathon","city":"Tokyo, Japan","status":"registered","membership":"current","year":2027,"label":"Registered · 2027","lat":35.6762,"lon":139.6503},
     {"id":"boston","name":"Boston Marathon","city":"Boston, Massachusetts","status":"future","membership":"current","label":"Future target","lat":42.3601,"lon":-71.0589},
