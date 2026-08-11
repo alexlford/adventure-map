@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Alex Ford's skiing logbook, resort history, Nordic events, ski trips, runs and vertical.">
   <title>Skiing | Alex Ford Adventures</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="section.css">
   <link rel="stylesheet" href="detail-phase4.css">
   <link rel="stylesheet" href="adventures-editorial.css">
   <link rel="stylesheet" href="ski-passport.css">
+  <link rel="stylesheet" href="chapter-map.css">
 </head>
 <body>
   <header class="site-header"><a class="brand" href="https://alexlford.com">ALEX FORD</a><nav class="nav"></nav></header>
@@ -26,6 +28,15 @@
       <div class="metric"><strong id="resorts">—</strong><span>resorts visited</span></div>
     </section>
 
+    <section class="chapter-map-section" aria-labelledby="skiMapTitle">
+      <div class="chapter-map-head">
+        <div><h2 id="skiMapTitle">Resort geography</h2><p>The ski logbook as a travel footprint, with the most-visited mountains given slightly more visual weight without turning the page into another master map.</p></div>
+        <div class="chapter-map-summary" data-map-count="skiResortMap">Loading mapped resorts</div>
+      </div>
+      <div class="chapter-map-frame"><div id="skiResortMap" class="chapter-map" aria-label="Map of ski resorts visited"></div></div>
+      <div class="chapter-map-foot"><p>Marker size reflects recorded ski days at each resort. Select a mountain to see its region and recorded-day total.</p><a class="chapter-map-link" data-map-link="skiResortMap" href="map.html">Open full map →</a></div>
+    </section>
+
     <div class="section-title"><h2>Season logbook</h2><p id="coverage">Loading ski archive…</p></div>
     <div id="seasons"></div>
 
@@ -41,6 +52,9 @@
   <footer class="footer"><span>Alex Ford Adventures</span><span>ad astra per aspera</span></footer>
 
   <script src="shared.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="leaflet-mobile-fix.js"></script>
+  <script src="chapter-map.js"></script>
   <script src="ski-passport.js"></script>
   <script>
     const A=AdventureSite;
@@ -57,6 +71,8 @@
       vertical.textContent=s.verticalFt.toLocaleString();
       resorts.textContent=s.resortCount;
       coverage.textContent=`${s.firstSeason}–${s.latestSeason} · ${s.recordedDays} recorded ski days`;
+
+      AdventureChapterMap.mount({elementId:'skiResortMap',records:d.resorts,color:'#2f8ca6',countLabel:'resorts',valueFor:r=>r.days,kicker:'Ski resort',metaFor:r=>r.region||'',valueLabelFor:r=>`${r.days} recorded day${r.days===1?'':'s'}`,hrefFor:()=>null,maxZoom:5});
 
       seasons.innerHTML=d.seasons.slice().reverse().map(x=>`<div class="timeline-year"><h3>${x.season}</h3><div class="timeline-items"><div class="timeline-item"><div><strong>${x.days} days</strong><span>recorded ski days</span></div>${Number.isFinite(x.verticalFtApprox)?`<div><strong>${Number(x.verticalFtApprox).toLocaleString()} ft</strong><span>season vertical</span></div>`:'<div><strong>Not recorded</strong><span>season vertical</span></div>'}</div></div></div>`).join('');
 
