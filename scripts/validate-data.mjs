@@ -58,21 +58,36 @@ if (manifest.relationshipLayer) {
     seenRelationships.add(rel.id);
     if (!rel.name) problems.push(`${rel.id}: relationship missing name`);
     if (!Array.isArray(rel.memberIds) || !rel.memberIds.length) problems.push(`${rel.id}: relationship has no memberIds`);
-    for (const id of rel.memberIds || []) {
-      if (!records.has(id)) problems.push(`${rel.id}: member references unknown/non-public record ${id}`);
-    }
+    for (const id of rel.memberIds || []) if (!records.has(id)) problems.push(`${rel.id}: member references unknown/non-public record ${id}`);
     if (rel.adventureId && !records.has(rel.adventureId)) problems.push(`${rel.id}: adventureId references unknown/non-public record ${rel.adventureId}`);
     if (rel.adventureId && records.get(rel.adventureId)?.kind !== 'adventure') warnings.push(`${rel.id}: adventureId ${rel.adventureId} is not kind=adventure`);
   }
 }
 
-for (const routeFile of ['data/routes.geojson','data/mined-routes.geojson','data/historical-routes-v2.geojson']) {
+const routeCatalog = await readJson('data/route-catalog.json');
+const allowedProvenance = new Set(Object.keys(routeCatalog.provenanceTypes || {}));
+const seenRouteIds = new Set();
+for (const routeFile of routeCatalog.routeFiles || []) {
   const payload = await readJson(routeFile);
   for (const feature of payload.features || []) {
-    for (const id of feature.properties?.adventureIds || []) {
-      if (!records.has(id)) warnings.push(`${routeFile}: route ${feature.properties?.id || 'unnamed'} references non-public/unknown id ${id}`);
-    }
+    const routeId = feature.id || feature.properties?.featureId || feature.properties?.id;
+    if (!routeId) warnings.push(`${routeFile}: route is missing a stable feature id`);
+    if (routeId && seenRouteIds.has(routeId)) warnings.push(`${routeFile}: duplicate route feature id ${routeId}`);
+    if (routeId) seenRouteIds.add(routeId);
+    const override = routeId ? routeCatalog.featureOverrides?.[routeId] : null;
+    const props = { ...(feature.properties || {}), ...(override || {}) };
+    const inferred = props.provenance || (props.stravaActivityId || `${props.source || ''}`.toLowerCase().includes('strava') || `${routeId || ''}`.startsWith('strava-') ? 'personal-gps' : `${props.source || ''} ${props.routeType || ''}`.toLowerCase().match(/historical|official|published/) ? 'historical-course' : 'personal-gps');
+    if (!allowedProvenance.has(inferred)) problems.push(`${routeId || routeFile}: invalid route provenance ${inferred}`);
+    for (const id of props.adventureIds || []) if (!records.has(id)) warnings.push(`${routeFile}: route ${routeId || 'unnamed'} references non-public/unknown id ${id}`);
   }
+}
+for (const [routeId, override] of Object.entries(routeCatalog.featureOverrides || {})) {
+  if (!seenRouteIds.has(routeId)) problems.push(`route-catalog featureOverrides references unknown route ${routeId}`);
+  if (override.provenance && !allowedProvenance.has(override.provenance)) problems.push(`${routeId}: invalid override provenance ${override.provenance}`);
+}
+for (const [recordId, override] of Object.entries(routeCatalog.recordOverrides || {})) {
+  if (!records.has(recordId)) problems.push(`route-catalog recordOverrides references unknown record ${recordId}`);
+  if (override.provenance && !allowedProvenance.has(override.provenance)) problems.push(`${recordId}: invalid record provenance ${override.provenance}`);
 }
 
 console.log(`Catalog records: ${records.size}`);
