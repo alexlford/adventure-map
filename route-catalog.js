@@ -99,9 +99,15 @@ window.AdventureRoutes = (() => {
     ];
     return mergeCollections(await Promise.all(collections.map(normalizeCollection)));
   }
+  async function loadCompiled(path = 'data/public-routes.geojson') {
+    const collection = await fetchJson(path);
+    if (collection.type !== 'FeatureCollection' || !Array.isArray(collection.features)) throw new Error(`Compiled route collection ${path} is invalid`);
+    if (collection.metadata?.featureCount != null && Number(collection.metadata.featureCount) !== collection.features.length) throw new Error(`Compiled route collection ${path} featureCount does not match features`);
+    return normalizeCollection(collection);
+  }
   async function recordProvenance(recordId) {
     const cfg = await config();
     return cfg.recordOverrides?.[recordId] || null;
   }
-  return { config, normalizeFeature, normalizeCollection, loadAll, recordProvenance, keyFor };
+  return { config, normalizeFeature, normalizeCollection, loadAll, loadCompiled, recordProvenance, keyFor };
 })();
