@@ -7,6 +7,8 @@ window.AdventureCatalog = (() => {
     return response.json();
   };
 
+  const slugify = (value) => String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').replace(/-+/g,'-');
+  const recordSlug = (record) => record.slug || [record.date || record.year, record.name].filter(Boolean).map(slugify).filter(Boolean).join('-') || slugify(record.id);
   const sportFor = (record) => {
     if (record.kind === 'summit') return 'mountaineering';
     if (record.discipline === 'nordic') return 'nordic-skiing';
@@ -22,6 +24,7 @@ window.AdventureCatalog = (() => {
     const finishDate = record.endDate || startDate;
     return {
       ...record,
+      slug: recordSlug(record),
       recordClass: record.kind,
       sport: sportFor(record),
       startDate,
@@ -50,7 +53,7 @@ window.AdventureCatalog = (() => {
   }
 
   function validate(records) {
-    const errors = [], warnings = [], seen = new Set();
+    const errors = [], warnings = [], seen = new Set(), seenSlugs = new Map();
     const allowedKinds = new Set(['summit','race','adventure','event','outing']);
     const allowedConfidence = new Set(['confirmed','verified','high','medium','low','unknown']);
     records.forEach((record, index) => {
@@ -59,6 +62,9 @@ window.AdventureCatalog = (() => {
       else if (seen.has(record.id)) errors.push(`${record.id}: duplicate id`);
       else seen.add(record.id);
       if (!record.name) errors.push(`${where}: missing name`);
+      if (!record.slug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(record.slug)) errors.push(`${where}: invalid record slug ${record.slug || '(missing)'}`);
+      else if (seenSlugs.has(record.slug)) errors.push(`${where}: duplicate record slug ${record.slug} also used by ${seenSlugs.get(record.slug)}`);
+      else seenSlugs.set(record.slug, where);
       if (!allowedKinds.has(record.kind)) errors.push(`${where}: invalid kind ${record.kind}`);
       if ((record.kind === 'race' || record.kind === 'event' || record.kind === 'outing') && !record.discipline) errors.push(`${where}: ${record.kind} missing discipline`);
       if (record.date && !/^\d{4}-\d{2}-\d{2}$/.test(record.date)) errors.push(`${where}: invalid date ${record.date}`);
@@ -109,5 +115,5 @@ window.AdventureCatalog = (() => {
     return relationshipCache;
   }
   async function relationshipsFor(recordId) { const relationships = await loadRelationships(); return relationships.filter(rel => (rel.memberIds || []).includes(recordId) || rel.adventureId === recordId); }
-  return { load, validate, normalizeRecord, loadRelationships, relationshipsFor };
+  return { load, validate, normalizeRecord, loadRelationships, relationshipsFor, recordSlug };
 })();
