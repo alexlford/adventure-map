@@ -42,6 +42,15 @@
       "routeStatus": "matched-no-public-route",
       "matchSource": "Strava export + user confirmation",
       "matchConfidence": "confirmed"
+    },
+    "colfax-marathon-2025": {
+      "officialDistance": "Marathon",
+      "officialDistanceKm": 42.195,
+      "officialDistanceMi": 26.2,
+      "resultSource": "Denver Colfax Marathon official race-results archive",
+      "resultUrl": "https://www.runcolfax.org/races/race-results/",
+      "matchSource": "Original alexlford.com marathon inventory + user Colfax Marathon medal + official 2025 marathon weekend archive + exact-date Strava GPS",
+      "matchConfidence": "verified"
     }
   }
 }
