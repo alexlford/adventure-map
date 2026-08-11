@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "source": "OpenSplitTime official Staunton Rocks! Marathon & Half 2022 results",
+    "updatedOn": "2026-08-11",
+    "precedence": "Official timing checkpoints, finish time, bib and placements are canonical; Strava remains GPS and route evidence."
+  },
+  "adventures": [
+    {
+      "id": "staunton-rocks-half-2022",
+      "officialDistance": "13.1 miles",
+      "officialDistanceMi": 13.1,
+      "officialDistanceKm": 21.08,
+      "officialTime": "3:12:14",
+      "bib": "62",
+      "officialPlace": 127,
+      "genderPlace": 85,
+      "gender": "Male",
+      "age": 34,
+      "officialElevationGainFt": 2198,
+      "officialSplits": [
+        {"label": "Old Mill · mile 6.6", "time": "1:28"},
+        {"label": "Staunton Rocks · mile 11.0", "time": "2:31"},
+        {"label": "Finish · mile 13.1", "time": "3:12:14"}
+      ],
+      "resultSource": "OpenSplitTime official Staunton Rocks! Half Marathon 2022 results",
+      "resultUrl": "https://www.opensplittime.org/events/staunton-rocks-marathon-half-2022-half-marathon/spread?sort=-overall_rank",
+      "matchSource": "Official named result + bib 62 medal/photo evidence + exact-date Strava trail activity",
+      "matchConfidence": "verified",
+      "note": "OpenSplitTime lists Alex Ford of Denver, age 34, bib 62, 127th overall / 85th male in 3:12:14. Published elapsed checkpoints are Old Mill at mile 6.6 in 1:28 and Staunton Rocks at mile 11.0 in 2:31. The official course profile lists 2,198 feet of elevation gain."
+    }
+  ]
+}
