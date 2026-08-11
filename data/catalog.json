@@ -17,6 +17,7 @@
     {"path":"data/official-results-overrides.json","role":"official","description":"Official organizer/timer distances, times, places and awards. These fields are authoritative when verified; Strava remains GPS evidence and fallback."},
     {"path":"data/official-results-overrides-2026-08-11b.json","role":"official","description":"Latest official naming/distance overrides from the medal-assisted audit; loaded last for public precedence."},
     {"path":"data/official-results-overrides-2026-08-11c.json","role":"official","description":"Official Denver Colfax distance/name reconciliation from medals, organizer archives and the latest Strava mining pass."},
+    {"path":"data/official-results-overrides-2026-08-11d.json","role":"official","description":"Official archived Twin Cities Marathon result recovered during the latest Strava audit."},
     {"path":"data/chicago-marathon-2021-official.json","role":"official","description":"User-supplied official individual result link for the 2021 Chicago Marathon; loaded last so the published result source is canonical."}
   ],
   "matchLayer": "data/strava-matches.json",
