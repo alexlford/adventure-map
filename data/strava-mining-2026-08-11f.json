@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "source": "runLawrence detailed historical race-result archive + Strava export",
+    "updatedOn": "2026-08-11",
+    "policy": "Official race distance/time/place are canonical; Strava is route and raw-recording evidence."
+  },
+  "adventures": [
+    {
+      "id": "rock-the-parkway-half-2016",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Rock the Parkway Half Marathon",
+      "year": 2016,
+      "date": "2016-04-09",
+      "distance": "Half marathon",
+      "officialDistance": "Half marathon",
+      "officialDistanceKm": 21.0975,
+      "officialDistanceMi": 13.1,
+      "officialTime": "1:47:58.7",
+      "officialChipSeconds": 6478.7,
+      "officialPace": "8:15/mi",
+      "officialPlace": 695,
+      "bib": 1001,
+      "age": 28,
+      "ageGroup": "M25-29",
+      "ageGroupPlace": 70,
+      "location": "Kansas City, Missouri",
+      "region": "Missouri",
+      "stravaActivityId": "641962666",
+      "stravaActivityName": "Morning Run",
+      "stravaDistanceKm": 21.2319,
+      "stravaDistanceMi": 13.19,
+      "stravaElapsedSeconds": 6480,
+      "routeStatus": "gps-source-available",
+      "resultSource": "runLawrence detailed 2016 Rock the Parkway results archive",
+      "resultUrl": "https://runlawrence.org/2016/16Apr9RocktheParkway/2016Results.html",
+      "matchSource": "Detailed individual historical result + exact-date half-marathon-scale Strava GPS",
+      "matchConfidence": "verified",
+      "note": "Recovered from a generic Strava activity title. The detailed result archive lists Alex Ford of Lawrence, KS, bib 1001, age 28, 695th overall, 70th M25-29, with a 1:47:58.7 chip time."
+    }
+  ]
+}
