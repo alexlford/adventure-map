@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "source": "Strava export GPX reconstruction + user-confirmed races/events + public Nordic-center verification",
+    "updatedOn": "2026-08-10",
+    "note": "Nordic is treated like mountain biking: places skied, true races/events, and standout non-race days or weekends are separate concepts."
+  },
+  "locations": [
+    {"id":"nordic-snow-mountain-ranch","name":"Snow Mountain Ranch","location":"Granby, Colorado","lat":39.9814,"lon":-105.9408,"recordedDays":7,"dates":["2022-02-03","2022-02-05","2022-03-12","2022-03-13","2025-03-19","2025-03-27","2025-04-01"],"confidence":"high","note":"Recurring Nordic location including both Ranch Hand race days and later recreational skiing."},
+    {"id":"nordic-devils-thumb","name":"Devil’s Thumb Ranch","location":"Tabernash, Colorado","lat":39.9679,"lon":-105.7830,"recordedDays":2,"dates":["2024-01-20","2025-03-30"],"confidence":"high","note":"Includes the Stagecoach Classic and a later multi-session recreational Nordic day."},
+    {"id":"nordic-frisco","name":"Frisco Nordic Center","location":"Frisco, Colorado","lat":39.5749,"lon":-106.0778,"recordedDays":3,"dates":["2023-01-28","2024-01-07","2024-03-09"],"confidence":"high","note":"Recurring Frisco Nordic skiing, including BrewSki."},
+    {"id":"nordic-breckenridge","name":"Breckenridge Nordic Center","location":"Breckenridge, Colorado","lat":39.5068,"lon":-106.0484,"recordedDays":3,"dates":["2023-01-08","2023-01-11","2023-01-21"],"confidence":"high","note":"Three GPS-confirmed recreational Nordic days in January 2023."},
+    {"id":"nordic-gold-run","name":"Gold Run Nordic Center","location":"Breckenridge, Colorado","lat":39.5245,"lon":-106.0291,"recordedDays":1,"dates":["2022-01-22"],"confidence":"medium","note":"GPS cluster matches the Gold Run Nordic area."},
+    {"id":"nordic-tennessee-pass","name":"Tennessee Pass Nordic Center","location":"Leadville, Colorado","lat":39.3530,"lon":-106.3040,"recordedDays":2,"dates":["2022-01-02","2022-01-03"],"confidence":"high","note":"Four GPS activities across two consecutive days at the Tennessee Pass Nordic system."},
+    {"id":"nordic-steamboat-touring","name":"Steamboat Ski Touring Center","location":"Steamboat Springs, Colorado","lat":40.4692,"lon":-106.8021,"recordedDays":2,"dates":["2021-01-16","2022-02-16"],"confidence":"high","note":"Two longer Nordic outings with nearly identical GPS footprints."},
+    {"id":"nordic-haymaker","name":"Haymaker Nordic Center","location":"Steamboat Springs, Colorado","lat":40.4278,"lon":-106.8166,"recordedDays":1,"dates":["2022-02-13"],"confidence":"high","note":"Two same-day activities form one recreational Nordic day at Haymaker."},
+    {"id":"nordic-vail","name":"Vail Nordic Center","location":"Vail, Colorado","lat":39.6436,"lon":-106.3371,"recordedDays":1,"dates":["2022-02-19"],"confidence":"high","note":"14.09 km recreational Nordic outing on the Vail Nordic trail network."},
+    {"id":"nordic-crested-butte","name":"Crested Butte Nordic","location":"Crested Butte, Colorado","lat":38.8785,"lon":-106.9917,"recordedDays":1,"dates":["2023-03-01"],"confidence":"high","note":"GPS-confirmed recreational Nordic outing in the Crested Butte Nordic trail system."}
+  ],
+  "epicDays": [
+    {"id":"nordic-tennessee-pass-weekend-2022","name":"Tennessee Pass New Year weekend","date":"2022-01-02","endDate":"2022-01-03","location":"Tennessee Pass Nordic Center, Leadville, Colorado","distanceKm":24.14,"distanceMi":15.00,"note":"Four Nordic activities across two consecutive days; a strong non-race weekend chapter in the archive."},
+    {"id":"nordic-frisco-long-day-2024","name":"Frisco long Nordic day","date":"2024-01-07","location":"Frisco Nordic Center, Frisco, Colorado","distanceKm":18.77,"distanceMi":11.66,"stravaActivityId":"10514763415","note":"Longest clearly recreational Frisco Nordic outing currently identified in the Strava archive."},
+    {"id":"nordic-devils-thumb-multisession-2025","name":"Devil’s Thumb multi-session day","date":"2025-03-30","location":"Devil’s Thumb Ranch, Tabernash, Colorado","distanceKm":19.79,"distanceMi":12.30,"note":"Three separate Nordic activities on the same day, treated as one standout recreational ski day rather than three adventures."}
+  ]
+}
