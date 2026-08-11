@@ -19,19 +19,34 @@ window.AdventureRoutes = (() => {
     const coordinates = [];
     while (index < encoded.length) {
       let result = 0, shift = 0, b;
-      do { b = encoded.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+      do {
+        if (index >= encoded.length) throw new Error('truncated latitude');
+        b = encoded.charCodeAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
       lat += (result & 1) ? ~(result >> 1) : (result >> 1);
       result = 0; shift = 0;
-      do { b = encoded.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+      do {
+        if (index >= encoded.length) throw new Error('truncated longitude');
+        b = encoded.charCodeAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
       lon += (result & 1) ? ~(result >> 1) : (result >> 1);
       coordinates.push([lon / 1e5, lat / 1e5]);
     }
     return coordinates;
   };
-  const activityRoutesToGeoJson = payload => ({
+  const repairedLine = (routeId, line, index, cfg) => {
+    const trim = Number(cfg.polylineRepairs?.[routeId]?.trimEndByLine?.[String(index)] || 0);
+    return trim > 0 ? line.slice(0, -trim) : line;
+  };
+  const activityRoutesToGeoJson = (payload, cfg) => ({
     type: 'FeatureCollection',
     features: (payload.routes || []).map(route => {
-      const lines = (route.lines || []).map(decodePolyline);
+      const lines = (route.lines || []).map((line, index) => decodePolyline(repairedLine(route.id, line, index, cfg)));
+      const repair = cfg.polylineRepairs?.[route.id] || null;
       return {
         type: 'Feature',
         id: route.id,
@@ -42,6 +57,7 @@ window.AdventureRoutes = (() => {
           category: route.category,
           source: 'Strava GPS export',
           mtbMode: route.mtbMode || null,
+          routeRepair: repair?.note || null,
         },
         geometry: lines.length === 1
           ? { type: 'LineString', coordinates: lines[0] }
@@ -79,7 +95,7 @@ window.AdventureRoutes = (() => {
     ]);
     const collections = [
       ...routePayloads,
-      ...polylinePayloads.map(activityRoutesToGeoJson),
+      ...polylinePayloads.map(payload => activityRoutesToGeoJson(payload, cfg)),
     ];
     return mergeCollections(await Promise.all(collections.map(normalizeCollection)));
   }
