@@ -1,0 +1,69 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const readJson = async rel => JSON.parse(await fs.readFile(path.join(root, rel), 'utf8'));
+const manifest = await readJson('data/catalog.json');
+const records = new Map();
+const sourceById = new Map();
+const problems = [];
+const warnings = [];
+
+for (const source of manifest.sources) {
+  const payload = await readJson(source.path);
+  for (const item of payload.adventures || []) {
+    if (!item.id) { problems.push(`${source.path}: record missing id`); continue; }
+    if (records.has(item.id)) warnings.push(`${item.id}: appears in both ${sourceById.get(item.id)} and ${source.path}; later source wins`);
+    records.set(item.id, { ...(records.get(item.id) || {}), ...item });
+    sourceById.set(item.id, source.path);
+  }
+}
+
+const matchPayload = await readJson(manifest.matchLayer);
+for (const [id, match] of Object.entries(matchPayload.matches || {})) {
+  if (!records.has(id)) warnings.push(`${manifest.matchLayer}: match references unknown id ${id}`);
+  else records.set(id, { ...records.get(id), ...match });
+}
+for (const id of manifest.removeIds || []) {
+  if (!records.has(id)) warnings.push(`catalog removeIds references unknown id ${id}`);
+  records.delete(id);
+}
+for (const [id, override] of Object.entries(manifest.overrides || {})) {
+  if (!records.has(id)) problems.push(`catalog override references unknown id ${id}`);
+  else records.set(id, { ...records.get(id), ...override });
+}
+
+const allowedKinds = new Set(['summit','race','adventure']);
+for (const record of records.values()) {
+  const at = record.id;
+  if (!record.name) problems.push(`${at}: missing name`);
+  if (!allowedKinds.has(record.kind)) problems.push(`${at}: invalid kind ${record.kind}`);
+  if (record.kind === 'race' && !record.discipline) problems.push(`${at}: race missing discipline`);
+  if (record.date && !/^\d{4}-\d{2}-\d{2}$/.test(record.date)) problems.push(`${at}: invalid date ${record.date}`);
+  if (record.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(record.endDate)) problems.push(`${at}: invalid endDate ${record.endDate}`);
+  if ((record.lat == null) !== (record.lon == null)) problems.push(`${at}: lat/lon must be provided together`);
+  if (Number.isFinite(record.lat) && (record.lat < -90 || record.lat > 90)) problems.push(`${at}: latitude out of range`);
+  if (Number.isFinite(record.lon) && (record.lon < -180 || record.lon > 180)) problems.push(`${at}: longitude out of range`);
+  if (record.year && record.date && Number(record.date.slice(0,4)) !== Number(record.year)) warnings.push(`${at}: year does not match date`);
+  if (record.kind === 'adventure' && record.discipline === 'mountain-bike') warnings.push(`${at}: mountain-bike event should normally be kind=race`);
+}
+
+for (const routeFile of ['data/routes.geojson','data/mined-routes.geojson','data/historical-routes-v2.geojson']) {
+  const payload = await readJson(routeFile);
+  for (const feature of payload.features || []) {
+    for (const id of feature.properties?.adventureIds || []) {
+      if (!records.has(id)) warnings.push(`${routeFile}: route ${feature.properties?.id || 'unnamed'} references non-public/unknown id ${id}`);
+    }
+  }
+}
+
+console.log(`Catalog records: ${records.size}`);
+console.log(`Warnings: ${warnings.length}`);
+warnings.forEach(x => console.warn(`WARN ${x}`));
+if (problems.length) {
+  problems.forEach(x => console.error(`ERROR ${x}`));
+  process.exitCode = 1;
+} else {
+  console.log('Catalog validation passed.');
+}
