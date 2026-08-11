@@ -10,12 +10,14 @@ const records = new Map();
 const sourceById = new Map();
 const problems = [];
 const warnings = [];
+const layeredMerges = [];
+const absentTombstones = [];
 
 for (const source of manifest.sources) {
   const payload = await readJson(source.path);
   for (const item of payload.adventures || []) {
     if (!item.id) { problems.push(`${source.path}: record missing id`); continue; }
-    if (records.has(item.id)) warnings.push(`${item.id}: appears in both ${sourceById.get(item.id)} and ${source.path}; later source wins`);
+    if (records.has(item.id)) layeredMerges.push(`${item.id}: ${sourceById.get(item.id)} → ${source.path}`);
     records.set(item.id, { ...(records.get(item.id) || {}), ...item });
     sourceById.set(item.id, source.path);
   }
@@ -25,8 +27,14 @@ for (const [id, match] of Object.entries(matchPayload.matches || {})) {
   if (!records.has(id)) warnings.push(`${manifest.matchLayer}: match references unknown id ${id}`);
   else records.set(id, { ...records.get(id), ...match });
 }
-for (const id of manifest.removeIds || []) { if (!records.has(id)) warnings.push(`catalog removeIds references unknown id ${id}`); records.delete(id); }
-for (const [id, override] of Object.entries(manifest.overrides || {})) { if (!records.has(id)) problems.push(`catalog override references unknown id ${id}`); else records.set(id, { ...records.get(id), ...override }); }
+for (const id of manifest.removeIds || []) {
+  if (!records.has(id)) absentTombstones.push(id);
+  records.delete(id);
+}
+for (const [id, override] of Object.entries(manifest.overrides || {})) {
+  if (!records.has(id)) problems.push(`catalog override references unknown id ${id}`);
+  else records.set(id, { ...records.get(id), ...override });
+}
 
 const allowedKinds = new Set(schema.kinds || []);
 const allowedDisciplines = new Set(schema.disciplines || []);
@@ -133,6 +141,12 @@ for (const [category, policy] of Object.entries(updatePolicy.activityPolicies ||
 
 console.log(`Catalog records: ${records.size}`);
 console.log(`Strava ingest watermark: ${ingestState.lastSeenActivityLocalDateTime} (${ingestState.activityCount} activities reviewed)`);
-console.log(`Warnings: ${warnings.length}`);
+console.log(`Layered record merges: ${layeredMerges.length}`);
+console.log(`Catalog tombstones: ${(manifest.removeIds || []).length}${absentTombstones.length ? ` (${absentTombstones.length} not present in current source layers)` : ''}`);
+if (process.env.VERBOSE_VALIDATION === '1') {
+  layeredMerges.forEach(x => console.log(`LAYER ${x}`));
+  absentTombstones.forEach(x => console.log(`TOMBSTONE ${x}`));
+}
+console.log(`Review warnings: ${warnings.length}`);
 warnings.forEach(x => console.warn(`WARN ${x}`));
 if (problems.length) { problems.forEach(x => console.error(`ERROR ${x}`)); process.exitCode = 1; } else console.log('Catalog validation passed.');
