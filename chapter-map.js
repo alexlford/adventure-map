@@ -41,10 +41,20 @@
       return null;
     }
 
+    const compact = window.matchMedia?.('(max-width: 760px)')?.matches || false;
+    const coarse = window.matchMedia?.('(pointer: coarse)')?.matches || false;
+    const passiveMobile = options.mobilePassive !== false && (compact || coarse);
+    el.parentElement?.classList.toggle('is-passive-map',passiveMobile);
+
     const map = L.map(el, {
       scrollWheelZoom:false,
       worldCopyJump:true,
-      zoomControl:true,
+      zoomControl:!passiveMobile,
+      dragging:!passiveMobile,
+      touchZoom:!passiveMobile,
+      doubleClickZoom:!passiveMobile,
+      boxZoom:!passiveMobile,
+      keyboard:!passiveMobile,
       minZoom:2,
       attributionControl:true
     });
@@ -66,14 +76,21 @@
       if (count) count.textContent = `${records.length} mapped ${options.countLabel || 'places'}`;
     };
 
-    const fitCurrent = () => {
-      const fitCandidates = (options.fitRecordsFor?.(currentRecords) || currentRecords).filter(isMapped);
+    const fitRecords = records => {
+      const candidates = (records || []).filter(isMapped);
       const bounds = L.latLngBounds([]);
-      fitCandidates.forEach(item => bounds.extend([item.lat,item.lon]));
+      candidates.forEach(item => bounds.extend([item.lat,item.lon]));
       if (!bounds.isValid()) return;
-      if (new Set(fitCandidates.map(coordinateKey)).size === 1) map.setView(bounds.getCenter(),options.singleZoom || 9);
-      else map.fitBounds(bounds,{padding:[28,28],maxZoom:options.maxZoom || 6});
+      if (new Set(candidates.map(coordinateKey)).size === 1) map.setView(bounds.getCenter(),options.singleZoom || 9);
+      else map.fitBounds(bounds,{padding:passiveMobile?[18,18]:[28,28],maxZoom:options.maxZoom || 6});
     };
+
+    const preferredRecords = () => {
+      const preferred = options.fitRecordsFor?.(currentRecords);
+      return Array.isArray(preferred) && preferred.some(isMapped) ? preferred : currentRecords;
+    };
+
+    const fitCurrent = () => fitRecords(preferredRecords());
 
     const draw = (records,{fit=true}={}) => {
       currentRecords = (records || []).filter(isMapped);
@@ -109,8 +126,10 @@
           fillOpacity:.88
         }).addTo(markerLayer);
         marker.bindPopup(popupHtml(group,options),{maxWidth:340});
-        const tooltip = options.tooltipFor?.(first,group) || (group.length > 1 ? `${first.name} + ${group.length - 1}` : first.name);
-        marker.bindTooltip(esc(tooltip),{direction:'top',offset:[0,-5],opacity:.94,className:'chapter-map-tooltip'});
+        if (!passiveMobile) {
+          const tooltip = options.tooltipFor?.(first,group) || (group.length > 1 ? `${first.name} + ${group.length - 1}` : first.name);
+          marker.bindTooltip(esc(tooltip),{direction:'top',offset:[0,-5],opacity:.94,className:'chapter-map-tooltip'});
+        }
         marker.on('mouseover',() => marker.setStyle({fillOpacity:1,weight:3}));
         marker.on('mouseout',() => marker.setStyle({fillOpacity:.88,weight:2}));
       });
@@ -128,8 +147,11 @@
       map,
       setRecords(records,config){ draw(records,config); },
       fit(){ fitCurrent(); },
+      fitAll(){ fitRecords(currentRecords); },
+      focus(item,zoom=options.focusZoom || 8){ if(isMapped(item)) map.setView([item.lat,item.lon],zoom); },
       get records(){ return currentRecords.slice(); },
-      get locationCount(){ return currentGroups.size; }
+      get locationCount(){ return currentGroups.size; },
+      get passiveMobile(){ return passiveMobile; }
     };
   }
 
