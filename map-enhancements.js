@@ -99,9 +99,9 @@
       }
       const zoom=typeof map!=='undefined'?map.getZoom():7;
       const low=zoom<=4,mid=zoom>4&&zoom<=6;
-      const routeWeightFactor=low?.5:mid?.72:1;
-      const routeOpacityFactor=low?.48:mid?.7:1;
-      const pointRadius=low?4.3:mid?5.2:6;
+      const routeWeightFactor=low ? .5 : (mid ? .72 : 1);
+      const routeOpacityFactor=low ? .48 : (mid ? .7 : 1);
+      const pointRadius=low ? 4.3 : (mid ? 5.2 : 6);
 
       state.routeFeatureLayers.forEach(group => group.eachLayer(layer => {
         const feature = layer.feature || {};
@@ -128,7 +128,7 @@
         const baseRadius=pointRadius+groupedBoost;
         marker.setStyle?.({
           radius: active ? baseRadius + 3 : baseRadius,
-          weight: active ? 3 : (mixed ? 2.5 : low ? 1.5 : 2),
+          weight: active ? 3 : (mixed ? 2.5 : (low ? 1.5 : 2)),
           fillOpacity: state.focusId ? (active ? .98 : .24) : (low ? .78 : .9),
           opacity: state.focusId ? (active ? 1 : .32) : (low ? .88 : 1)
         });
