@@ -10,6 +10,7 @@ window.AdventureSite = (() => {
   const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'event' ? eventType(a) : a.kind === 'outing' ? outingType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
   const productionHost='adventures.alexlford.com';
   const isProduction=()=>location.hostname===productionHost;
+  const pageHref = (href) => isProduction()?`/${String(href).replace(/^\//,'')}`:href;
   const recordHref = (record) => isProduction()?`/record/${encodeURIComponent(record.slug || record.id)}/`:`detail.html?record=${encodeURIComponent(record.slug || record.id)}`;
   const PRIMARY=[['index.html','Home','home'],['activities.html','Explore','explore'],['map.html','Map','map'],['adventures.html','Stories','stories']];
   const AUX=[['timeline.html','Timeline','timeline']];
@@ -61,12 +62,12 @@ window.AdventureSite = (() => {
     const nav=document.querySelector('.nav'); if(!nav)return;
     const top=primaryKey(active);
     nav.setAttribute('aria-label','Primary navigation');
-    nav.innerHTML=PRIMARY.map(([href,text,key])=>`<a data-nav="${key}" href="${href}"${top===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('');
+    nav.innerHTML=PRIMARY.map(([href,text,key])=>`<a data-nav="${key}" href="${pageHref(href)}"${top===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('');
     document.querySelector('.activity-subnav-wrap')?.remove();
     if(active==='activities'||active==='timeline'||activityKeys.has(active)){
       const header=document.querySelector('.site-header');if(!header)return;
       const wrap=document.createElement('div');wrap.className='activity-subnav-wrap';
-      wrap.innerHTML=`<nav class="activity-subnav" aria-label="Explore Adventures"><span class="activity-subnav-label">Explore</span>${ACTIVITIES.map(([href,text,key])=>`<a href="${href}"${active===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('')}<a href="timeline.html"${active==='timeline'?' class="is-active" aria-current="page"':''}>Timeline</a></nav>`;
+      wrap.innerHTML=`<nav class="activity-subnav" aria-label="Explore Adventures"><span class="activity-subnav-label">Explore</span>${ACTIVITIES.map(([href,text,key])=>`<a href="${pageHref(href)}"${active===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('')}<a href="${pageHref('timeline.html')}"${active==='timeline'?' class="is-active" aria-current="page"':''}>Timeline</a></nav>`;
       header.insertAdjacentElement('afterend',wrap);
     }
     requestAnimationFrame(()=>document.querySelector('.nav .is-active,.activity-subnav .is-active')?.scrollIntoView({block:'nearest',inline:'center'}));
@@ -77,11 +78,11 @@ window.AdventureSite = (() => {
     const page=document.querySelector('.page');if(!page)return;
     const idx=ACTIVITIES.findIndex(x=>x[2]===active);const next=ACTIVITIES[idx+1];
     const nav=document.createElement('nav');nav.className='chronology-nav chapter-flow-nav';nav.setAttribute('aria-label','Continue exploring activity chapters');
-    nav.innerHTML=`<a class="chronology-link" href="activities.html"><small>Explore</small><strong>← All activity chapters</strong></a>${next?`<a class="chronology-link next" href="${next[0]}"><small>Next chapter</small><strong>${next[1]} →</strong></a>`:`<a class="chronology-link next" href="adventures.html"><small>Continue exploring</small><strong>Stories →</strong></a>`}`;
+    nav.innerHTML=`<a class="chronology-link" href="${pageHref('activities.html')}"><small>Explore</small><strong>← All activity chapters</strong></a>${next?`<a class="chronology-link next" href="${pageHref(next[0])}"><small>Next chapter</small><strong>${next[1]} →</strong></a>`:`<a class="chronology-link next" href="${pageHref('adventures.html')}"><small>Continue exploring</small><strong>Stories →</strong></a>`}`;
     page.appendChild(nav);
   }
   function shell(active){ensureNav(active);ensureFlow(active);}
-  applyPageIdentity();ensureMeta();ensureAccessibility();ensureBranding();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,shell,refreshMeta:ensureMeta,isProduction};
+  applyPageIdentity();ensureMeta();ensureAccessibility();ensureBranding();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,pageHref,shell,refreshMeta:ensureMeta,isProduction};
 })();
 
 if (/detail\.html$/.test(location.pathname)) {
