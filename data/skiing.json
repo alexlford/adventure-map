@@ -1,1 +1,94 @@
-PLACEHOLDER
+{
+  "meta": {
+    "source": "Strava account export reconciled to user-supplied Slopes screenshots",
+    "updatedOn": "2026-08-10",
+    "coverage": "2012/13–2025/26",
+    "method": "Strava is the master activity archive. Multiple Strava ski/snowboard/backcountry activities on the same calendar day are merged into one Slopes ski day. Slopes summary and trip values remain authoritative for lifetime ski-specific totals."
+  },
+  "summary": {
+    "firstSeason": "2012/13",
+    "latestSeason": "2025/26",
+    "recordedDays": 110,
+    "recordedRuns": 1132,
+    "timeSeconds": 469917,
+    "verticalFt": 1264730,
+    "resortCount": 29
+  },
+  "audit": {
+    "stravaDistinctSnowDays": 111,
+    "matchedSlopesDays": 110,
+    "stravaOnlyDays": [
+      {
+        "date": "2020-03-01",
+        "stravaActivityId": "4312786740",
+        "activityName": "Downhill Skiing",
+        "activityType": "Alpine Ski",
+        "distanceKm": 2.98,
+        "elapsedSeconds": 5225,
+        "status": "Strava-only; not present in supplied Slopes logbook, excluded from authoritative 110-day total pending identification"
+      }
+    ],
+    "notes": [
+      "All 110 Slopes days have corresponding Strava snow-sport data.",
+      "2012/13 appears in Strava as 21 individual Snowboard activities spread across three calendar days.",
+      "2020/21 and later season counts reconcile after same-day split sessions are merged.",
+      "2024/25 includes Backcountry Ski uploads on Mar 18 at Granby Ranch and Mar 20 at Vail.",
+      "2025/26 Jan 9 at Vail combines Alpine Ski and Backcountry Ski segments into one Slopes day."
+    ]
+  },
+  "seasons": [
+    {"season":"2012/13","days":3,"verticalFtApprox":18300},
+    {"season":"2019/20","days":2,"verticalFtApprox":0},
+    {"season":"2020/21","days":4,"verticalFtApprox":54200},
+    {"season":"2021/22","days":20,"verticalFtApprox":261900},
+    {"season":"2022/23","days":28,"verticalFtApprox":310100},
+    {"season":"2023/24","days":21,"verticalFtApprox":256800},
+    {"season":"2024/25","days":16,"verticalFtApprox":177300},
+    {"season":"2025/26","days":16,"verticalFtApprox":185700}
+  ],
+  "resorts": [
+    {"name":"Eldora Mountain Resort","days":18},
+    {"name":"Copper Mountain Resort","days":16},
+    {"name":"Steamboat Ski Resort","days":13},
+    {"name":"Arapahoe Basin Ski Area","days":11},
+    {"name":"Winter Park Resort","days":11},
+    {"name":"Breckenridge Resort","days":6},
+    {"name":"Crested Butte Mountain Resort","days":5},
+    {"name":"Big Sky Resort","days":5},
+    {"name":"Vail Ski Resort","days":4},
+    {"name":"Keystone Resort","days":3},
+    {"name":"Liberty Mountain Resort","days":2},
+    {"name":"Stowe Mountain Resort","days":2},
+    {"name":"Aspen Mountain","days":1},
+    {"name":"Aspen Highlands","days":1},
+    {"name":"Buttermilk","days":1},
+    {"name":"Snowmass","days":1},
+    {"name":"Beaver Creek Resort","days":1},
+    {"name":"Howelsen Hill","days":1},
+    {"name":"Snow Valley Mountain Resort","days":1},
+    {"name":"Snow Summit Mountain Resort","days":1},
+    {"name":"Bear Mountain","days":1},
+    {"name":"Sunday River","days":1},
+    {"name":"Sugarloaf","days":1},
+    {"name":"Perfect North Slopes","days":1},
+    {"name":"Solitude Mountain Resort","days":1},
+    {"name":"Brighton Resort","days":1},
+    {"name":"Snowbird","days":1},
+    {"name":"Ski Granby Ranch","days":1},
+    {"name":"Snow Creek Ski Area","days":1}
+  ],
+  "trips": [
+    {"name":"Elledge Family Visit","season":"2023/24","runs":5,"durationMinutes":101,"verticalFt":8053,"dates":["2024-01-14"],"resorts":["Vail Ski Resort"]},
+    {"name":"Ski-In Ski-Out Copper","season":"2023/24","runs":35,"durationMinutes":851,"verticalFt":43394,"dates":["2024-01-18","2024-01-19","2024-01-20"],"resorts":["Copper Mountain Resort","Winter Park Resort"]},
+    {"name":"Steamboat and the Beach","season":"2023/24","runs":68,"durationMinutes":1227,"verticalFt":69337,"dates":["2024-02-05","2024-02-06","2024-02-07","2024-02-08","2024-02-09","2024-02-10"],"resorts":["Howelsen Hill","Steamboat Ski Resort","Arapahoe Basin Ski Area"]},
+    {"name":"Coast to Coast","season":"2023/24","runs":45,"durationMinutes":610,"verticalFt":42315,"dates":["2024-03-01","2024-03-02","2024-03-03"],"resorts":["Bear Mountain","Snow Summit Mountain Resort","Snow Valley Mountain Resort","Sunday River","Sugarloaf"]},
+    {"name":"SLC Solitude","season":"2024/25","runs":42,"durationMinutes":1010,"verticalFt":50507,"dates":["2025-01-15","2025-01-16","2025-01-17"],"resorts":["Solitude Mountain Resort","Brighton Resort","Snowbird"]},
+    {"name":"Penny's First Ski Trip","season":"2024/25","runs":56,"durationMinutes":1456,"verticalFt":63050,"datesPartial":["2025-03-20","2025-03-22","2025-03-28","2025-03-29","2025-04-03"],"note":"Trip total is authoritative; supplied screenshot shows only part of the member-day list."},
+    {"name":"East Coast Powder","season":"2025/26","runs":28,"durationMinutes":829,"verticalFt":36381,"dates":["2026-01-30","2026-01-31"],"resorts":["Stowe Mountain Resort"]},
+    {"name":"IEEE AeroConf","season":"2025/26","runs":54,"durationMinutes":1170,"verticalFt":69226,"dates":["2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-13"],"resorts":["Big Sky Resort"]}
+  ],
+  "notableStravaRecords": [
+    {"date":"2023-12-02","stravaActivityId":"10318237034","name":"First Ski of the Season","resort":"Eldora Mountain Resort","note":"Strava description identifies this as Leg 2 of the Colorado Triathlon."},
+    {"date":"2026-03-11","stravaActivityId":"17688751938","name":"Ski the Sky Loop","resort":"Big Sky Resort","runs":14,"distanceKm":32.96,"descentM":5326,"note":"Strava description tags Lone Mountain (3,397 m)."}
+  ]
+}
