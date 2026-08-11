@@ -1,22 +1,21 @@
-# Personal Adventure Almanac
+# Alex Ford Adventures
 
-Interactive map and personal outdoor-history archive for Alex Ford. The project began with the Athletic Activities section of alexlford.com and has grown into a structured Almanac spanning races, summits, alpine skiing, Nordic skiing, mountain biking, and curated Adventures.
+Interactive personal outdoor-history website for Alex Ford, published at **adventures.alexlford.com**. The project began with the Athletic Activities section of alexlford.com and now brings together races, summits, alpine skiing, Nordic skiing, mountain biking, routes, and curated stories in one structured site.
 
-## Explore the Almanac
+## Public site flow
 
-The public information architecture is intentionally simple:
+The information architecture is intentionally simple:
 
-- **Overview** — front cover, current pursuits, recent records, and ways into the archive
+- **Home** — a minimal front door with three ways into the site and one current pursuit
+- **Explore** — hub for Races, Summits, Skiing, Nordic, MTB, and the full Timeline
 - **Map** — geographic view with seven public layers: MTB, Nordic, Road Races, Trail Races, Skiing, Summits, and Adventures
-- **Timeline** — one cross-discipline chronology
-- **Activities** — hub for Races, Summits, Skiing, Nordic, and MTB
-- **Adventures** — curated editorial chapters for objectives and efforts that deserve a larger story
+- **Stories** — curated editorial chapters for objectives and efforts that deserve a larger narrative
 
 Individual records use the canonical catalog and route system rather than page-specific copies of the data.
 
 ## Current archive
 
-The archive includes named summits, a reconstructed race history, day-level MTB and Nordic outings, a Slopes/Strava-backed Ski Passport, World Marathon Majors progress, and curated Adventures such as DeCaLiBron, West Maroon Pass Traverse, Ski the Sky Loop, Ranch Hand, and Royal Gorge Groove Run + Ride.
+The archive includes named summits, a reconstructed race history, day-level MTB and Nordic outings, a Slopes/Strava-backed ski history, World Marathon Majors progress, and stories such as DeCaLiBron, West Maroon Pass Traverse, Ski the Sky Loop, Ranch Hand, and Royal Gorge Groove Run + Ride.
 
 The initial Strava baseline contains **3,371 activities** through the August 10, 2026 export. Most ordinary training activities are intentionally not public records.
 
@@ -31,13 +30,13 @@ Key supporting layers include:
 - `data/relationships.json` — series, challenge, weekend, and multi-record relationships
 - `data/route-catalog.json` — route provenance and record/route overrides
 - `data/activity-days.json` — day-level MTB and Nordic outings
-- `data/skiing.json` — Ski Passport, seasons, resorts, trips, and ski-specific metadata
-- `data/world-majors.json` — World Marathon Majors journey, including future registrations without inflating completed-race totals
+- `data/skiing.json` — ski seasons, resorts, trips, and ski-specific metadata
+- `data/world-majors.json` — evolving World Marathon Majors journey, with completed, registered, future, and candidate status kept distinct
 - `data/research-candidates.json` — borderline historical matches excluded from the public catalog
 
 See `docs/data-model.md` for schema and precedence details.
 
-## Keeping the Almanac current
+## Keeping Adventures current
 
 The site is designed to update incrementally as new activities accumulate.
 
@@ -55,10 +54,10 @@ The queue is **review-only**. It never publishes records automatically.
 
 The policy in `data/update-policy.json` keeps the site from becoming an activity feed:
 
-- ordinary training runs stay private unless they are races or become curated Adventures;
+- ordinary training runs stay private unless they are races or become curated stories;
 - generic cycling is reviewed before deciding whether it belongs in the MTB chapter;
 - MTB and Nordic can enter day-level outing history;
-- alpine skiing updates the Ski Passport, with Slopes supplying runs, vertical, resort, and trip context where available;
+- alpine skiing updates the ski history, with Slopes supplying runs, vertical, resort, and trip context where available;
 - organized races, named events, and Adventures are promoted into richer records;
 - routes are published only after provenance and privacy treatment are resolved.
 
@@ -82,10 +81,11 @@ Run:
 
 ```bash
 npm run validate:data
+npm run validate:routing
 npm run test:update-pipeline
 ```
 
-CI checks the canonical catalog, relationships, route provenance, ingest state, update policy, Python maintenance tooling, the update-pipeline smoke test, and generated sitemap/robots files.
+CI checks the canonical catalog, relationships, route provenance, ingest state, update policy, production routing, public branding, Python maintenance tooling, the update-pipeline smoke test, and generated sitemap/robots files.
 
 ## Important archive rules
 
@@ -93,10 +93,16 @@ CI checks the canonical catalog, relationships, route provenance, ingest state, 
 - The stale single `SMR Stampede 50k Ranch Hand` record is suppressed and replaced by the actual March 12–13, 2022 25K freestyle and 25K classic races.
 - Frisco BrewSki is a named Nordic event, not a race.
 - West Maroon Pass Traverse is an Adventure/trek, not a road race.
-- Royal Gorge Groove MTB remains an individual race even though the combined Run + Ride weekend can be a larger chapter.
+- Royal Gorge Groove MTB remains an individual race even though the combined Run + Ride weekend can be a larger story.
 - The 2019/20 ski season has three known ski days, but season vertical was not recorded and is intentionally not shown as zero.
 - The exact 2020 virtual Chicago Marathon route is privacy-withheld.
 - MTB riding style belongs to the individual outing, not permanently to the venue.
+
+## World Marathon Majors
+
+The Majors feature is deliberately data-driven rather than branded as a fixed “seven-star” pursuit. `data/world-majors.json` currently tracks the seven 2026 Majors, Cape Town as the confirmed eighth Major beginning in 2027, and Shanghai separately as a candidate pending its next assessment.
+
+Completed and registered races remain separate so future start lines never inflate completed-race totals. The long-term design is a passport-style journey in which each completed Major can accumulate its result, course, photos, and story.
 
 ## Map and route behavior
 
@@ -112,19 +118,21 @@ Because the site loads JSON with `fetch`, serve the directory rather than openin
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000/overview.html`.
+Then open `http://localhost:8000/`.
 
 ## Deployment
 
-The current staging deployment is GitHub Pages. Public-index files are generated with:
+Production is GitHub Pages on the custom domain:
+
+**https://adventures.alexlford.com/**
+
+The repository `CNAME` must remain `adventures.alexlford.com`. GitHub Pages publishes from the root of the `main` branch. Public-index files are generated with:
 
 ```bash
 npm run build:public-index
 ```
 
-The recommended production home is **`https://alexlford.com/almanac/`**, as a first-class site section rather than an iframe. The project uses relative application/data paths so the same code can operate under the current GitHub Pages subdirectory or the future `/almanac/` path.
-
-See `docs/alexlford-integration.md` for the proposed clean URL structure and migration sequence.
+Production record links use `/record/<slug>/`; the GitHub Pages fallback resolves the route to the static detail renderer and restores the clean URL after the record data and map have loaded. Top-level navigation is rooted on production so it continues to work from clean record URLs.
 
 ## Source notes
 
