@@ -1,6 +1,6 @@
 (()=>{
   const A=window.AdventureSite;if(!A)return;
-  const id=new URLSearchParams(location.search).get('id');
+  const params=new URLSearchParams(location.search),recordKey=params.get('record'),legacyId=params.get('id');
   const esc=A.esc;
   const fmtValue=(v,suffix='')=>Number.isFinite(v)?`${A.fmt.format(Math.round(v*100)/100)}${suffix}`:'—';
   const dayType=a=>a.mtbMode==='downhill'?'Downhill MTB':a.mtbMode==='mixed'?'MTB + Downhill MTB':'MTB';
@@ -47,7 +47,7 @@
   async function run(){
     try{
       const [all,rels]=await Promise.all([A.load(),A.loadRelationships()]);
-      const a=all.find(x=>x.id===id);if(!a)return;
+      const a=all.find(x=>recordKey?(x.slug===recordKey||x.id===recordKey):x.id===legacyId);if(!a)return;
       const related=rels.filter(r=>(r.memberIds||[]).includes(a.id)||r.adventureId===a.id);
       let html='';
       if(a.kind==='race')html=raceModule(a,related);
