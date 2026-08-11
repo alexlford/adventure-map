@@ -105,5 +105,6 @@ window.AdventureSite = (() => {
 if (/detail\.html$/.test(location.pathname)) {
   const style=document.createElement('link'); style.rel='stylesheet'; style.href='detail-phase4.css'; document.head.appendChild(style);
   const script=document.createElement('script'); script.src='detail-phase4.js'; script.defer=true; document.head.appendChild(script);
+  const major=document.createElement('script');major.src='world-major-detail.js';major.defer=true;document.head.appendChild(major);
   const clean=document.createElement('script');clean.src='clean-route-normalizer.js';clean.defer=true;document.head.appendChild(clean);
 }
