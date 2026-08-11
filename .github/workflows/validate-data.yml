@@ -29,6 +29,22 @@ jobs:
         run: npm run validate:majors
       - name: Validate production routing and branding
         run: npm run validate:routing
+      - name: Install browser smoke-test tooling
+        run: npm install --no-save @playwright/test@1.55.0
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run browser smoke tests
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/adventures-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID' EXIT
+          for attempt in {1..20}; do
+            if curl -fsS http://127.0.0.1:4173/index.html > /dev/null; then
+              break
+            fi
+            sleep 0.5
+          done
+          npx playwright test --project=chromium
       - name: Validate maintenance scripts
         run: python3 -m py_compile scripts/scan_strava_export.py scripts/advance_strava_state.py scripts/test_update_pipeline.py
       - name: Test maintenance pipeline
