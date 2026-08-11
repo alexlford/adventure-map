@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "source": "All user-uploaded medal, award, race, and event photos available in the August 11, 2026 project conversation",
+    "updatedOn": "2026-08-11",
+    "reviewedPhotoCount": 48,
+    "privacy": "The private uploaded image files are not stored in the public repository. This file records only facts and research cues extracted from them.",
+    "policy": "A photo or medal may establish event identity, year, distance, challenge participation, award, or location. Official timing data remains preferred for time/place; photo evidence is not used to invent a finish when cancellation or registration-only distribution is possible."
+  },
+  "evidenceGroups": [
+    {"group":"Illinois Marathon weekend","years":[2015,2016],"visibleEvidence":["2015 42K + 5K I-Challenge medal","2016 Illinois Half Marathon medal","2016 5K + 21K I-Challenge medal","2016 Presence Health 5K medal"],"status":"reconciled"},
+    {"group":"Heartland 39.3 / Kansas racing","years":[2016,2017],"visibleEvidence":["Rock the Parkway Half 2016","Garmin Half Marathon 2016","Running With The Cows 2016","Garmin Land of Oz 2017 medal"],"status":"2016 reconciled; 2017 excluded pending stronger evidence"},
+    {"group":"Baltimore Running Festival and Charm City Run","years":[2018,2019,2020,2021],"visibleEvidence":["Baltimore Half Marathon 2018 medal","Charles Street 12 2019 finisher photos/lanyards","Gobble Cobble Turkey Trot 5K medal","2020 B3 Distance Series holder with Sole of the City 10K, Charles Street 12, and Shamrock 5K components"],"status":"2018 and 2019 Charles Street/Gobble Cobble reconciled; B3 pandemic completion chronology remains under evidence-based reconstruction"},
+    {"group":"St. Louis Turkey Trot","years":[2018],"visibleEvidence":["Tower Grove Park photo dated Nov. 22, 2018","St. Louis Turkey Trot 8K backdrop and bibs"],"status":"reconciled"},
+    {"group":"Chicago race weekend","years":[2021],"visibleEvidence":["Abbott Chicago 5K medal"],"status":"reconciled"},
+    {"group":"RunDenver winter series","years":[2021,2022],"visibleEvidence":["Rudolph Ramble 5K","Polar Bear 5K","Super Bowl 5K","Valentine's Day 4 Mile","Beat the Yeti / Yeti event medals and 2021/2022 ribbons"],"status":"core series reconciled; Yeti naming/date remains a research cue unless independently matched"},
+    {"group":"Snow Mountain Ranch Stampede","years":[2022],"visibleEvidence":["Ranch Hand 50K display","1st Place Age Class award"],"status":"reconciled as 25K freestyle + 25K classic; age-class award assigned to 25K Classic by user confirmation"},
+    {"group":"COLDERBolder","years":[2022,2023,2024,2025],"visibleEvidence":["four annual finisher medals"],"status":"reconciled"},
+    {"group":"Colfax Marathon weekend","years":[2021,2024,2025,2026],"visibleEvidence":["15th Anniversary Colfax Half Marathon 13.1 medal","Mile High Challenge award","Urban 10 Miler medals","Denver Colfax Marathon medal visible in medal display"],"status":"individual races reconciled; Mile High Challenge award year remains unresolved between qualifying years until dated evidence is found"},
+    {"group":"Stagecoach Classic","years":[2024],"visibleEvidence":["Jan. 20, 2024 9th Annual Stagecoach Classic poster"],"status":"reconciled with official 15K result"},
+    {"group":"Staunton Rocks","years":[2022],"visibleEvidence":["Staunton Rocks Half Marathon medal","trail race photo showing bib 62"],"status":"reconciled with official result"},
+    {"group":"Estes Park Half Marathon","years":[2021],"visibleEvidence":["Estes Park Half Marathon 13.1 medal"],"status":"reconciled"},
+    {"group":"Rocky Mountain race weekend","years":[2025],"visibleEvidence":["Rocky Mountain 5K medal","Rocky Mountain Half Marathon medal"],"status":"reconciled as separate 5K and Half records; challenge registration identity remains independently verifiable"},
+    {"group":"Flying Pig Marathon weekend","years":[2025],"visibleEvidence":["Flying Pig 5K medal","Flying Pig Marathon medal visible in display"],"status":"challenge relationship maintained in canonical relationship data; individual official times continue to be researched"},
+    {"group":"BOLDERBoulder","years":[2022,2023,2024,2025,2026],"visibleEvidence":["BOLDERBoulder marathon-era medal display cues and annual race evidence supplied across the project"],"status":"reconciled from medals, Strava, and published results"},
+    {"group":"Universal Sole Virtual","years":[2020],"visibleEvidence":["Universal Sole Virtual 5K/10K medal dated June 3, 2020"],"status":"resolved to 5K using exact-date 5.00 km Strava activity"},
+    {"group":"Pi Day River Rotation","years":[2015],"visibleEvidence":["Pi Miler 3rd Place Men award"],"status":"reconciled"},
+    {"group":"Denver Veterans Day","years":[2025],"visibleEvidence":["Denver Veterans Day 10K Ruck medal"],"status":"reconciled as Rippetoe Rucksack Challenge"}
+  ],
+  "explicitExclusions": [
+    {"event":"Garmin Marathon in the Land of Oz 2017","reason":"Medal confirms a 2017 event association, but no matching Alex/Alexander Ford official participant result, no matching half-marathon-scale Strava activity, and no convincing 2017 virtual-race evidence have been recovered. It remains out of the public race history."}
+  ]
+}
