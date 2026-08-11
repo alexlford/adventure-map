@@ -10,12 +10,30 @@ window.AdventureSite = (() => {
   const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'event' ? eventType(a) : a.kind === 'outing' ? outingType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
   const productionHost='adventures.alexlford.com';
   const isProduction=()=>location.hostname===productionHost;
-  const pageHref = (href) => isProduction()?`/${String(href).replace(/^\//,'')}`:href;
+  const PUBLIC_PATHS={
+    'index.html':'/','activities.html':'/explore','map.html':'/map','adventures.html':'/stories','timeline.html':'/timeline',
+    'races.html':'/races','summits.html':'/summits','skiing.html':'/skiing','nordic.html':'/nordic','mountain-biking.html':'/mtb'
+  };
+  const pageHref = (href) => isProduction()?(PUBLIC_PATHS[String(href).replace(/^\//,'')]||`/${String(href).replace(/^\//,'')}`):href;
   const recordHref = (record) => isProduction()?`/record/${encodeURIComponent(record.slug || record.id)}/`:`detail.html?record=${encodeURIComponent(record.slug || record.id)}`;
   const PRIMARY=[['index.html','Home','home'],['activities.html','Explore','explore'],['map.html','Map','map'],['adventures.html','Stories','stories']];
   const AUX=[['timeline.html','Timeline','timeline']];
   const ACTIVITIES=[['races.html','Races','races'],['summits.html','Summits','summits'],['skiing.html','Skiing','skiing'],['nordic.html','Nordic','nordic'],['mountain-biking.html','MTB','mountain-biking']];
   const activityKeys=new Set(ACTIVITIES.map(x=>x[2]));
+  const allNav=[...PRIMARY,...AUX,...ACTIVITIES];
+  function normalizePublicUrl(){
+    if(!isProduction())return;
+    const file=location.pathname.split('/').pop();const clean=PUBLIC_PATHS[file];
+    if(clean&&location.pathname!==clean)history.replaceState(null,'',`${clean}${location.search}${location.hash}`);
+  }
+  function inferActive(){
+    const path=location.pathname.replace(/\/+$/,'')||'/';
+    if(isProduction()){
+      const file=Object.keys(PUBLIC_PATHS).find(k=>(PUBLIC_PATHS[k].replace(/\/+$/,'')||'/')===path);
+      const hit=file&&allNav.find(x=>x[0]===file);if(hit)return hit[2];
+    }
+    const p=location.pathname.split('/').pop()||'index.html';const hit=allNav.find(x=>x[0]===p);return hit?.[2]||null;
+  }
   let catalogPromise;
   const ensureCatalog = () => {
     if (window.AdventureCatalog) return Promise.resolve(window.AdventureCatalog);
@@ -27,7 +45,6 @@ window.AdventureSite = (() => {
   const load = () => ensureCatalog().then(catalog => catalog.load());
   const loadRelationships = () => ensureCatalog().then(catalog => catalog.loadRelationships());
   const relationshipsFor = (id) => ensureCatalog().then(catalog => catalog.relationshipsFor(id));
-  function inferActive(){const p=location.pathname.split('/').pop()||'index.html';const hit=[...PRIMARY,...AUX,...ACTIVITIES].find(x=>x[0]===p);return hit?.[2]||null;}
   function primaryKey(active){return active==='activities'||active==='timeline'||activityKeys.has(active)?'explore':active==='adventures'?'stories':active;}
   function applyPageIdentity(active=inferActive()){
     const primary=primaryKey(active)||'home';
@@ -82,7 +99,7 @@ window.AdventureSite = (() => {
     page.appendChild(nav);
   }
   function shell(active){ensureNav(active);ensureFlow(active);}
-  applyPageIdentity();ensureMeta();ensureAccessibility();ensureBranding();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,pageHref,shell,refreshMeta:ensureMeta,isProduction};
+  normalizePublicUrl();applyPageIdentity();ensureMeta();ensureAccessibility();ensureBranding();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,pageHref,shell,refreshMeta:ensureMeta,isProduction};
 })();
 
 if (/detail\.html$/.test(location.pathname)) {
