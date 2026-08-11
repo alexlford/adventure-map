@@ -18,6 +18,7 @@
     if(Number.isFinite(a.elevationGainM))return `${A.fmt.format(Math.round(a.elevationGainM))} m gain`;
     return a.region||a.location||'Adventure';
   };
+  const cleanLegacy=()=>document.querySelectorAll('.sport-detail').forEach(section=>{if(section.querySelector('h2')?.textContent?.trim()==='Adventure story')section.remove()});
   Promise.all([A.load(),A.loadRelationships()]).then(([all,relationships])=>{
     const a=all.find(x=>x.id===key||x.slug===key);if(!a||a.kind!=='adventure')return;
     const stories=all.filter(x=>x.kind==='adventure').sort((x,y)=>(x.date||'').localeCompare(y.date||''));
@@ -36,7 +37,8 @@
       document.querySelector('.hero')?.classList.add('story-record-hero');
       document.querySelector('.metrics')?.classList.add('story-record-metrics');
       const eyebrow=document.querySelector('.story-record-hero .eyebrow');if(eyebrow)eyebrow.textContent='Adventures · Story';
-      profile.insertAdjacentHTML('beforebegin',html);profile.remove();
+      profile.insertAdjacentHTML('beforebegin',html);profile.remove();cleanLegacy();
+      [50,200,600].forEach(ms=>setTimeout(cleanLegacy,ms));
       A.refreshMeta?.(`${typeFor(a)} · ${a.location||'Alex Ford Adventures'} · ${spanFor(a)}`);
       return true;
     };
