@@ -1,15 +1,15 @@
 {
   "meta": {
-    "updatedOn": "2026-08-10",
-    "note": "Personal Abbott World Marathon Majors journey. Future entries reflect user-confirmed registration, not completion."
+    "updatedOn": "2026-08-11",
+    "note": "Personal Abbott World Marathon Majors journey. Completed and registered statuses are tracked separately so future entries never inflate completed-race totals."
   },
   "majors": [
+    {"id":"chicago","name":"Chicago Marathon","city":"Chicago, Illinois","status":"completed","label":"Completed"},
+    {"id":"new-york","name":"New York City Marathon","city":"New York, New York","status":"registered","year":2026,"label":"Registered · 2026"},
     {"id":"tokyo","name":"Tokyo Marathon","city":"Tokyo, Japan","status":"registered","year":2027,"label":"Registered · 2027"},
     {"id":"boston","name":"Boston Marathon","city":"Boston, Massachusetts","status":"future","label":"Future target"},
     {"id":"london","name":"London Marathon","city":"London, United Kingdom","status":"future","label":"Future target"},
-    {"id":"sydney","name":"Sydney Marathon","city":"Sydney, Australia","status":"future","label":"Future target"},
     {"id":"berlin","name":"Berlin Marathon","city":"Berlin, Germany","status":"future","label":"Future target"},
-    {"id":"chicago","name":"Chicago Marathon","city":"Chicago, Illinois","status":"completed","label":"Completed"},
-    {"id":"new-york","name":"New York City Marathon","city":"New York, New York","status":"registered","year":2026,"label":"Registered · 2026"}
+    {"id":"sydney","name":"Sydney Marathon","city":"Sydney, Australia","status":"future","label":"Future target"}
   ]
 }
