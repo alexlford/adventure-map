@@ -2,7 +2,7 @@
   "meta": {
     "source": "User medal photos + Strava export + official/historical event calendars",
     "updatedOn": "2026-08-11",
-    "policy": "Only publish records where medal/user evidence and Strava/event evidence align. Official race distances take precedence over GPS distance; virtual completion dates are preserved separately from the organizer event date."
+    "policy": "Only publish records where medal/user evidence and Strava/event evidence align. Official race distances take precedence over GPS distance; virtual completion dates are preserved separately from the organizer event date. Unsupported inferred challenge legs are excluded."
   },
   "adventures": [
     {
@@ -20,11 +20,11 @@
       "region": "Maryland",
       "stravaActivityId": "4312783900",
       "stravaActivityName": "Monday Evening Run",
-      "distanceKm": 5.00,
+      "distanceKm": 5.0,
       "distanceMi": 3.11,
       "elapsedSeconds": 1651,
       "movingSeconds": 1643,
-      "stravaDistanceKm": 5.00,
+      "stravaDistanceKm": 5.0,
       "stravaDistanceMi": 3.11,
       "stravaElapsedSeconds": 1651,
       "routeStatus": "matched-no-public-route",
@@ -153,29 +153,6 @@
       "matchSource": "User finisher medal + official event date/distance + virtual-completion Strava activity within the organizer's one-week reporting window",
       "matchConfidence": "verified",
       "note": "The in-person race was February 13 at Washington Park. Strava records the 4.05-mile virtual completion on February 20, the last day of RunDenver's permitted one-week virtual-results window."
-    },
-    {
-      "id": "flying-pig-10k-2025",
-      "kind": "race",
-      "discipline": "road",
-      "name": "Flying Pig 10K",
-      "eventSeries": "Skyline Chili 4-Way Challenge",
-      "year": 2025,
-      "date": "2025-05-03",
-      "distance": "10K",
-      "officialDistance": "10K",
-      "officialDistanceKm": 10.0,
-      "officialDistanceMi": 6.21,
-      "location": "Cincinnati, Ohio",
-      "region": "Ohio",
-      "lat": 39.1031,
-      "lon": -84.5120,
-      "coordinatePrecision": "city-placeholder",
-      "routeStatus": "no-public-route",
-      "resultSource": "Flying Pig Marathon official Skyline Chili Challenge definition; individual 2025 result pending recovery",
-      "matchSource": "User confirmation of Skyline Chili 4-Way Challenge participation + official challenge requirement",
-      "matchConfidence": "confirmed",
-      "note": "The official Skyline Chili 4-Way Challenge requires the Saturday 5K and 10K plus Sunday's full marathon. The Strava export contains the 5K and marathon but no separate 10K recording; no 10K time is inferred or invented."
     }
   ]
 }
