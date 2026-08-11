@@ -2,8 +2,10 @@
   "meta": {
     "source": "User-uploaded medal photos + research generated from medal-assisted Strava mining",
     "createdOn": "2026-08-11",
+    "updatedOn": "2026-08-11",
     "purpose": "Research queue for evidence that is useful for Strava mining but not yet specific or internally consistent enough for the public catalog.",
-    "privacy": "Only extracted event metadata is stored here; medal images remain outside the public repository."
+    "privacy": "Only extracted event metadata is stored here; medal images remain outside the public repository.",
+    "photoAudit": "data/photo-evidence-audit-2026-08-11.json"
   },
   "evidence": [
     {
@@ -13,10 +15,9 @@
       "eventDate": "2017-04-22",
       "location": "Olathe, Kansas",
       "visibleEvidence": ["Garmin Marathon event branding", "Olathe ribbon text", "2017 ribbon text"],
-      "probableDistance": "Half marathon",
       "stravaMatch": null,
-      "status": "probable-half-needs-official-participant-row",
-      "note": "User recalls this as the half marathon. The medal confirms 2017 event participation, but the medal itself does not identify distance and no matching Strava activity or reliable indexed official participant row has yet been recovered. Do not publish a finish time or distance as confirmed until the official result is found."
+      "status": "excluded-from-public-history",
+      "note": "The medal confirms a 2017 event association, but repeated official-result searches found no Alex/Alexander Ford participant match, the Strava export contains no half-marathon-scale activity around the event, and no convincing evidence of a 2017 virtual option was recovered. Do not publish a 2017 Garmin finish unless stronger evidence appears."
     },
     {
       "id": "mile-high-leprechaun-7k-medal",
@@ -51,6 +52,30 @@
       "stravaDate": "2023-12-02",
       "status": "source-date-conflict",
       "note": "Online Race Results lists the COLDERBolder 5K on December 2, 2023, matching the Strava recording. A current BOLDERBoulder historical archive page labels the 2023 COLDERBolder as December 9. Preserve December 2 in the race record while retaining this discrepancy for source reconciliation."
+    },
+    {
+      "id": "gobble-cobble-2019-medal",
+      "event": "Gobble Cobble 5K",
+      "year": 2019,
+      "eventDate": "2019-11-28",
+      "location": "Baltimore Inner Harbor, Maryland",
+      "visibleEvidence": ["Gobble Cobble", "Turkey Trot 5K"],
+      "stravaActivityId": "4312787170",
+      "status": "resolved",
+      "resolvedRecordId": "gobble-cobble-5k-2019",
+      "note": "Medal identity, official Maryland Timing event calendar, and the exact-date 4.92 km Strava activity named Marriott Baltimore Waterfront resolve this as the 2019 Gobble Cobble 5K."
+    },
+    {
+      "id": "colfax-marathon-2025-medal",
+      "event": "Denver Colfax Marathon",
+      "year": 2025,
+      "eventDate": "2025-05-18",
+      "location": "Denver, Colorado",
+      "visibleEvidence": ["Denver Colfax Marathon", "26.2"],
+      "stravaActivityId": "14522257426",
+      "status": "resolved",
+      "resolvedRecordId": "colfax-marathon-2025",
+      "note": "Original alexlford.com race inventory, medal evidence, the official 2025 marathon weekend, and the exact-date 42.66 km Strava activity identify the race. Official chip time remains pending recovery."
     }
   ]
 }
