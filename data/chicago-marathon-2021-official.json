@@ -2,7 +2,7 @@
   "meta": {
     "source": "Bank of America Chicago Marathon 2021 individual result via Mika Timing",
     "providedOn": "2026-08-11",
-    "note": "Official participant result URL supplied directly by the user. Timing/split fields are not transcribed unless independently readable from the official result page."
+    "note": "Official participant result URL and user-provided print/PDF of the individual result. Official timing fields and splits are transcribed from that record; Strava remains the GPS/course source."
   },
   "adventures": [
     {
@@ -10,6 +10,25 @@
       "officialDistance": "Marathon",
       "officialDistanceKm": 42.195,
       "officialDistanceMi": 26.2,
+      "officialTime": "03:57:50",
+      "bib": "5443",
+      "division": "30-34",
+      "startTime": "07:40:35",
+      "officialPlace": 6416,
+      "genderPlace": 4597,
+      "ageGroupPlace": 933,
+      "officialSplits": [
+        {"label":"5K","time":"00:24:51","segmentTime":"24:51","pace":"08:00/mi"},
+        {"label":"10K","time":"00:50:45","segmentTime":"25:54","pace":"08:20/mi"},
+        {"label":"15K","time":"01:16:10","segmentTime":"25:25","pace":"08:11/mi"},
+        {"label":"20K","time":"01:42:51","segmentTime":"26:41","pace":"08:36/mi"},
+        {"label":"Half","time":"01:48:46","segmentTime":"05:55","pace":"08:42/mi"},
+        {"label":"25K","time":"02:10:32","segmentTime":"21:46","pace":"08:59/mi"},
+        {"label":"30K","time":"02:39:48","segmentTime":"29:16","pace":"09:25/mi"},
+        {"label":"35K","time":"03:10:07","segmentTime":"30:19","pace":"09:46/mi"},
+        {"label":"40K","time":"03:44:59","segmentTime":"34:52","pace":"11:14/mi"},
+        {"label":"Finish","time":"03:57:50","segmentTime":"12:51","pace":"09:26/mi"}
+      ],
       "resultSource": "Bank of America Chicago Marathon 2021 official individual result (Mika Timing)",
       "resultUrl": "https://chicago-history.r.mikatiming.com/2021/?content=detail&event=MAR_9TGG9638F1&idp=LSMG9638244F16&lang=EN_CAP&pid=search&search[name]=Ford&search[firstname]=Alex&id=LSMG9638244F16",
       "matchConfidence": "verified"
