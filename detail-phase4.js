@@ -8,11 +8,22 @@
   const card=(k,v,p='',wide=false)=>`<article class="sport-panel${wide?' wide':''}"><small>${esc(k)}</small><strong>${esc(v||'—')}</strong>${p?`<p>${esc(p)}</p>`:''}</article>`;
   function raceModule(a,rels){
     const series=rels.map(r=>r.name).join(' · ')||a.eventSeries||'Standalone race';
-    const result=a.officialTime||a.result||a.distance||(a.distanceMi?`${a.distanceMi} mi`:'Recorded race');
-    const cards=[card('Race day',result,a.officialPlace?`Published place: ${a.officialPlace}`:'Result and course record'),card('Distance',a.distanceMi?`${a.distanceMi} mi`:a.distance||'—',a.discipline==='relay'?'Relay course/event distance may differ from individual legs.':''),card('Race family',series,'Series, challenge, or recurring-event context')];
+    const officialDistance=a.officialDistance||(Number.isFinite(a.officialDistanceMi)?`${a.officialDistanceMi} mi`:a.distance||'—');
+    const place=a.officialPlace?`Overall place ${a.officialPlace}`:a.racePlace?`Race place ${a.racePlace}`:a.ageGroupPlace?`Age-group place ${a.ageGroupPlace}`:'';
+    const result=a.officialTime||a.result||'Official time not recovered';
+    const cards=[
+      card('Official result',result,place||'Organizer/timer result when available'),
+      card('Official distance',officialDistance,'Race distance from the organizer/event record'),
+      card('Race family',series,'Series, challenge, or recurring-event context')
+    ];
+    const gpsDistance=Number.isFinite(a.stravaDistanceMi)?`${a.stravaDistanceMi} mi`:a.distanceMi?`${a.distanceMi} mi`:'';
+    const gpsSeconds=Number.isFinite(a.stravaElapsedSeconds)?a.stravaElapsedSeconds:a.elapsedSeconds;
+    if(gpsDistance||Number.isFinite(gpsSeconds))cards.push(card('GPS recording',[gpsDistance,Number.isFinite(gpsSeconds)?A.formatDuration(gpsSeconds):''].filter(Boolean).join(' · '),'Strava/watch recording retained for route and GPS context; it does not override the official race result.'));
+    if(a.award)cards.push(card('Award',a.award,a.ageGroupPlace?`Age-group place: ${a.ageGroupPlace}`:'Race-day award'));
     if(a.bib)cards.push(card('Bib',String(a.bib),'Race-day identifier'));
     if(a.resultUrl)cards.push(card('Published record','Results available','A public result source is linked above.'));
-    return section('Race dossier','Results, course context, and how this event fits into the larger race history.',cards,`<div class="detail-callout"><strong>Race archive</strong><p>${a.discipline==='trail'?'Filed with trail races.':a.discipline==='nordic'?'Filed with Nordic racing.':a.discipline==='mountain-bike'?'Filed with mountain-bike racing.':'Filed with road races, including marathons and relays.'}</p></div>`);
+    else if(a.resultSource)cards.push(card('Result source',a.resultSource,'Official or organizer-linked source used for the race record.'));
+    return section('Race dossier','Official race records take precedence over GPS measurements. Strava is retained separately for course geometry, route context, and fallback timing when an individual official result cannot be recovered.',cards,`<div class="detail-callout"><strong>Race archive</strong><p>${a.discipline==='trail'?'Filed with trail races.':a.discipline==='nordic'?'Filed with Nordic racing.':a.discipline==='mountain-bike'?'Filed with mountain-bike racing.':'Filed with road races, including marathons and relays.'}</p></div>`);
   }
   function summitModule(a,all){
     const elevation=a.elevationFt?`${A.fmt.format(a.elevationFt)}′`:'—';
