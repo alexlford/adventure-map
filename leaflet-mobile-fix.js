@@ -1,6 +1,34 @@
 (() => {
   'use strict';
 
+  if (!document.querySelector('link[data-adventure-map-visuals]')) {
+    const style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.href = 'map-visuals.css';
+    style.dataset.adventureMapVisuals = 'true';
+    document.head.appendChild(style);
+  }
+
+  const colors = Object.freeze({
+    mtb:'#315f9e',
+    nordic:'#2f6f8f',
+    'road-races':'#b76b26',
+    'trail-races':'#8b5a31',
+    skiing:'#2f8ca6',
+    summits:'#357662',
+    adventures:'#715a8d'
+  });
+  const routeColor = record => {
+    if (record?.kind === 'summit') return colors.summits;
+    if (record?.mapCategory === 'ski' || record?.discipline === 'ski' || record?.discipline === 'ski-objective') return colors.skiing;
+    if (record?.discipline === 'mountain-bike' || record?.mapCategory === 'mountain-bike' || record?.mapCategory === 'downhill-mtb') return colors.mtb;
+    if (record?.discipline === 'nordic' || record?.mapCategory === 'nordic') return colors.nordic;
+    if (record?.kind === 'race' && record?.discipline === 'trail') return colors['trail-races'];
+    if (record?.kind === 'race') return colors['road-races'];
+    return colors.adventures;
+  };
+  window.AdventureMapTheme = { colors, routeColor };
+
   const scheduled = new WeakMap();
 
   function settle(map) {
