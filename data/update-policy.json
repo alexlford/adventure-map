@@ -1,15 +1,17 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "updatedOn": "2026-08-10",
   "purpose": "Rules for turning new personal activity data into public Almanac records without turning the site into an activity feed.",
   "principles": [
-    "Strava is the activity-history backbone and should be scanned incrementally against activity IDs already known to the repository.",
+    "Strava is the activity-history backbone and should be scanned incrementally from the reviewed snapshot watermark in data/ingest-state.json.",
     "A new activity is a review candidate, not automatically a public record.",
     "Ordinary training runs are not published. Running enters the Almanac when it is a race, named challenge, or curated Adventure.",
+    "Generic cycling activities must first be resolved as MTB, road cycling, race, or Adventure; ordinary road rides are not automatically published because the public cycling chapter is MTB-focused.",
     "MTB and Nordic are maintained at the individual outing/day level, with races and named events kept distinct from ordinary outings.",
     "Alpine skiing updates the Ski Passport at the ski-day, resort, season, and named-trip levels; notable objectives may also become Adventures.",
     "Slopes is the preferred source for ski-specific runs, vertical, resort, and named-trip context when that detail matters.",
-    "No route should be published until its provenance and privacy treatment are resolved."
+    "No route should be published until its provenance and privacy treatment are resolved.",
+    "Advance the Strava ingest watermark only after the new snapshot has been reviewed and any public promotions have been handled."
   ],
   "activityPolicies": {
     "run": {
@@ -18,9 +20,9 @@
       "notes": "Do not add ordinary road or trail training runs to the public catalog or map. Promote organized races and truly notable self-directed objectives only."
     },
     "bike": {
-      "defaultAction": "candidate-outing",
-      "publicDestinations": ["outing", "race", "adventure"],
-      "notes": "Resolve location and day-specific MTB mode. Use MTB for human-powered riding, Downhill MTB for lift-served days, and mixed when both meaningfully occur in the same outing."
+      "defaultAction": "bike-review",
+      "publicDestinations": ["outing", "race", "adventure", "ignore-road-cycling"],
+      "notes": "Strava may label both road and mountain rides as Ride. First resolve whether the day belongs in the MTB chapter. For published MTB days, classify the specific day as MTB, Downhill MTB, or mixed."
     },
     "nordic": {
       "defaultAction": "candidate-outing",
@@ -35,10 +37,11 @@
   },
   "promotionChecklist": [
     "Confirm date and activity identity.",
-    "Resolve public category and whether it is an ordinary outing, race/event, or Adventure.",
+    "Resolve public category and whether it is an ordinary outing, race/event, Adventure, Ski Passport day, or intentionally ignored training activity.",
     "Resolve location/resort and any discipline-specific classification.",
     "Attach GPS geometry only when useful and privacy-safe.",
     "Avoid duplicate publication when a race or Adventure already represents the same activity.",
-    "Run the canonical validator before publishing."
+    "Run the canonical validator before publishing.",
+    "After review is complete, advance data/ingest-state.json to the new snapshot watermark."
   ]
 }
