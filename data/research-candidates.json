@@ -1,30 +1,151 @@
 {
-  "meta": {"source":"Systematic Strava-to-historical-calendar audit + user confirmation + medal evidence","updatedOn":"2026-08-11","publicArchive":false,"policy":"Keep unresolved candidates here until the public record can be dated and placed accurately; medals alone do not prove a finish when contemporary event records show cancellation or automatic medal distribution."},
+  "meta": {
+    "source": "Systematic Strava-to-historical-calendar audit + user medal/photo evidence + official event records",
+    "updatedOn": "2026-08-11",
+    "publicArchive": false,
+    "policy": "Keep unresolved candidates here until the public record can be dated and placed accurately; medals alone do not prove a finish when contemporary event records show cancellation, deferral, or automatic medal distribution."
+  },
   "knownEventsPendingDate": [
     {
-      "candidate":"2020 B3 Distance Series",
-      "evidence":"User owns the 2020 B3 Distance Series medal and specifically remembers completing the Sole of the City 10K and Charles Street 12 components.",
-      "status":"component completion under active reconstruction",
-      "reason":"Charm City Run's historical archive identifies the 2020 Sole of the City 10K and Charles Street 12 result sets, including virtual categories. The Strava export does not contain an exact-date run for the archived July 18 Sole date or a 12-mile-scale run around the Sept. 5 Charles Street date. However, a 10.04 km Baltimore run on May 30, 2020 is now the leading Strava candidate for a virtual Sole completion. User memory is affirmative for both the 10K and 12 Miler, so absence of an exact-date Strava activity is treated as missing GPS evidence, not disproof. Do not publish component finishes until result/registration/virtual-window evidence resolves them."
+      "candidate": "2020 B3 Distance Series",
+      "evidence": "User owns the 2020 B3 Distance Series medal/holder. Contemporary reporting states that the 2020 Shamrock 5K was canceled, all registrations were deferred to 2021, and 2020 B3 registrants still received the Shamrock medal and holder. The medal therefore establishes 2020 B3 registration but not completion of all three races.",
+      "status": "COVID-disrupted series; completion reconstruction unresolved",
+      "reason": "The strongest reconstruction spans multiple seasons. In 2019, Strava has a 4.59 km run on the exact March 10 Shamrock race date and an 18.00 km run on August 31; dated user photos and a Charles Street 12 2019 finisher lanyard independently verify the August 31 Charles Street 12. No Strava activity appears on the April 13, 2019 Sole of the City race date. For the deferred 2020 registration, Strava has an exact 5.02 km run on March 14, 2021, the final day of the official March 6-14 virtual Shamrock window for 2020 registrants, plus a 19.32 km (~12.0 mile) Denver run on September 5, 2021 near the Charles Street 12 race/virtual period. No run appears on the November 13, 2021 Sole of the City date and there is no obvious 10K-scale November 2021 substitute. A 10.04 km Baltimore run on May 30, 2020 remains a possible virtual Sole completion, but the permitted 2020 virtual window/individual result has not been recovered. Do not publish a completed B3 challenge until the Sole component and challenge completion are independently resolved."
     },
-    {"candidate":"Colfax 2-Day Mile High Challenge","evidence":"User owns an official 3D etched Mile High Challenge award. Strava contains qualifying Colfax 5K + Urban 10 Miler combinations in both 2024 and 2026.","status":"challenge year unresolved","reason":"The award itself does not show a year. Both 2024 and 2026 activity pairs match the organizer's 5K Saturday + Sunday race challenge format; do not assign the award to a specific year until medal design, registration record or other dated evidence resolves it."}
+    {
+      "candidate": "Colfax 2-Day Mile High Challenge",
+      "evidence": "User owns an official 3D etched Mile High Challenge award. Strava contains qualifying Colfax 5K + Urban 10 Miler combinations in both 2024 and 2026.",
+      "status": "challenge year unresolved",
+      "reason": "The award itself does not show a year. Both 2024 and 2026 activity pairs match the organizer's 5K Saturday + Sunday race challenge format; do not assign the award to a specific year until medal design, registration record or other dated evidence resolves it."
+    }
   ],
   "candidates": [
-    {"stravaActivityId":"4312784075","date":"2020-05-30","stravaActivityName":"Wednesday Evening Run","distanceKm":10.04,"elapsedSeconds":3418,"area":"Baltimore, Maryland","candidate":"2020 Sole of the City 10K virtual completion","confidence":"promising","userMemory":"yes - user remembers running the B3 10K","reason":"Exact 10K-scale Baltimore run during the pandemic-era B3 season. Charm City Run's archive confirms a 2020 Sole virtual result category, but the specific permitted completion window has not yet been recovered, so this is not promoted yet."},
-    {"date":"2020-09-05","candidate":"2020 Charles Street 12 virtual completion","confidence":"memory-supported / GPS missing","userMemory":"yes - user remembers running the B3 12 Miler","reason":"Charm City Run's archive confirms a 2020 Charles Street 12 virtual result category. No 12-mile-scale Strava activity appears around the archived Sept. 5 event date/window, so the completion may be missing from Strava, recorded elsewhere, deleted, or completed under a broader virtual window. Seek official result/registration evidence before promotion."},
-    {"stravaActivityId":"4312802712","date":"2016-11-24","stravaActivityName":"Thursday Afternoon Run","distanceKm":5.65,"elapsedSeconds":1845,"area":"Unknown from export index","candidate":"runLawrence Thanksgiving Day 5K","confidence":"borderline","userMemory":"maybe","reason":"The activity is on the exact 2016 race date and is 5K-ish; user says this is possible but does not remember clearly. FIT-based GPS location still needs to be decoded and no indexed individual result has been found."},
-    {"stravaActivityId":"4312796414","date":"2017-11-23","stravaActivityName":"Thursday Afternoon Run","distanceKm":5.08,"elapsedSeconds":1917,"area":"Unknown from export index","candidate":"runLawrence Thanksgiving Day 5K","confidence":"borderline","userMemory":"maybe","reason":"The activity is almost exactly 5K on the exact 2017 race date; user says this is possible but does not remember clearly. FIT-based GPS location still needs to be decoded and no indexed individual result has been found."}
+    {
+      "stravaActivityId": "4312791249",
+      "date": "2019-03-10",
+      "stravaActivityName": "End Of Day Run With Headspace",
+      "distanceKm": 4.59,
+      "elapsedSeconds": 1577,
+      "area": "Baltimore, Maryland",
+      "candidate": "2019 Kelly Benefits St. Patrick's Day Shamrock 5K",
+      "confidence": "high",
+      "reason": "Exact 2019 Shamrock race date and race-like effort in Baltimore; GPS distance is short of 5K, so seek the official individual result before promotion."
+    },
+    {
+      "stravaActivityId": "4312788726",
+      "date": "2019-08-31",
+      "stravaActivityName": "Saturday Morning Run",
+      "distanceKm": 18.00,
+      "elapsedSeconds": 6408,
+      "area": "Baltimore, Maryland",
+      "candidate": "2019 Charles Street 12",
+      "confidence": "verified by photo/medal evidence",
+      "reason": "Exact event date; user supplied dated finish-line photos and a visible Charles Street 12 2019 FINISHER lanyard. Strava under-recorded the official 12-mile course. This individual race is ready for public promotion even though B3-series completion remains unresolved."
+    },
+    {
+      "stravaActivityId": "4312784075",
+      "date": "2020-05-30",
+      "stravaActivityName": "Wednesday Evening Run",
+      "distanceKm": 10.04,
+      "elapsedSeconds": 3418,
+      "area": "Baltimore, Maryland",
+      "candidate": "2020 Sole of the City 10K virtual completion",
+      "confidence": "promising",
+      "reason": "Exact 10K-scale Baltimore run during the pandemic-era B3 season. The Sole results archive contains a 2020 virtual category, but the specific permitted completion window and the user's individual result have not yet been recovered."
+    },
+    {
+      "stravaActivityId": "5115941734",
+      "date": "2021-03-14",
+      "stravaActivityName": "Monday Afternoon Run",
+      "distanceKm": 5.02,
+      "elapsedSeconds": 1550,
+      "candidate": "Deferred 2020 Shamrock 5K completed virtually in 2021",
+      "confidence": "very high",
+      "reason": "The 2020 Shamrock was canceled and automatically deferred. Organizers told 2020 registrants to complete the 2021 virtual 5K between March 6 and March 14; this Strava run is exactly 5.02 km on March 14, the final permitted day."
+    },
+    {
+      "stravaActivityId": "5912524987",
+      "date": "2021-09-05",
+      "stravaActivityName": "Cheesman Park - Vine Street Houses",
+      "distanceKm": 19.32,
+      "elapsedSeconds": 8589,
+      "area": "Denver, Colorado",
+      "candidate": "Charles Street 12 virtual completion in 2021",
+      "confidence": "high but not yet result-verified",
+      "reason": "19.32 km is essentially exactly 12 miles, recorded in Denver during the 2021 Charles Street 12 race weekend/virtual period. Seek the archived virtual result or registration record before promotion."
+    },
+    {
+      "stravaActivityId": "4312802712",
+      "date": "2016-11-24",
+      "stravaActivityName": "Thursday Afternoon Run",
+      "distanceKm": 5.65,
+      "elapsedSeconds": 1845,
+      "area": "Unknown from export index",
+      "candidate": "runLawrence Thanksgiving Day 5K",
+      "confidence": "borderline",
+      "userMemory": "maybe",
+      "reason": "The activity is on the exact 2016 race date and is 5K-ish; user says this is possible but does not remember clearly. FIT-based GPS location still needs to be decoded and no indexed individual result has been found."
+    },
+    {
+      "stravaActivityId": "4312796414",
+      "date": "2017-11-23",
+      "stravaActivityName": "Thursday Afternoon Run",
+      "distanceKm": 5.08,
+      "elapsedSeconds": 1917,
+      "area": "Unknown from export index",
+      "candidate": "runLawrence Thanksgiving Day 5K",
+      "confidence": "borderline",
+      "userMemory": "maybe",
+      "reason": "The activity is almost exactly 5K on the exact 2017 race date; user says this is possible but does not remember clearly. FIT-based GPS location still needs to be decoded and no indexed individual result has been found."
+    }
   ],
   "resolved": [
-    {"stravaActivityId":"5503854364","date":"2021-06-20","candidate":"Estes Park Half Marathon","status":"promoted","reason":"User medal + official 2021 event date + exact-date 21.67 km Strava GPS starting in the Estes Park/Meeker Park event area. Official half-marathon distance is canonical; official individual finish time still pending recovery."},
-    {"stravaActivityId":"4312806997","date":"2016-08-06","candidate":"Big Ten Network Big 10K","status":"promoted","reason":"User confirmed the event. Strava records 10.34 km starting at 7:00 a.m. local time on the exact 2016 BTN Big 10K date; historical Chicago records independently confirm the event that day."},
-    {"stravaActivityId":"4312794804","date":"2018-02-25","candidate":"Disney Princess Half Marathon","status":"promoted","reason":"User confirmed the event. Strava records 21.22 km on the exact date of the 2018 Disney Princess Half Marathon; historical runDisney schedule confirms the half marathon was Sunday, February 25."}
+    {
+      "stravaActivityId": "5503854364",
+      "date": "2021-06-20",
+      "candidate": "Estes Park Half Marathon",
+      "status": "promoted",
+      "reason": "User medal + official 2021 event date + exact-date 21.67 km Strava GPS starting in the Estes Park/Meeker Park event area. Official half-marathon distance is canonical; official individual finish time still pending recovery."
+    },
+    {
+      "stravaActivityId": "4312806997",
+      "date": "2016-08-06",
+      "candidate": "Big Ten Network Big 10K",
+      "status": "promoted",
+      "reason": "User confirmed the event. Strava records 10.34 km starting at 7:00 a.m. local time on the exact 2016 BTN Big 10K date; historical Chicago records independently confirm the event that day."
+    },
+    {
+      "stravaActivityId": "4312794804",
+      "date": "2018-02-25",
+      "candidate": "Disney Princess Half Marathon",
+      "status": "promoted",
+      "reason": "User confirmed the event. Strava records 21.22 km on the exact date of the 2018 Disney Princess Half Marathon; historical runDisney schedule confirms the half marathon was Sunday, February 25."
+    }
   ],
   "rejected": [
-    {"candidate":"Garmin Marathon in the Land of Oz 2017","reason":"User owns a 2017 Garmin medal but the official 2017 results archive contains no Alex/Alexander Ford match in the half marathon search, contemporary 2017 event material lists marathon/half/10K rather than a virtual option, and the Strava export has no half-marathon-scale activity around April 22, 2017. Keep out of the public archive unless stronger evidence appears."},
-    {"stravaActivityId":"641967630","date":"2014-11-27","reason":"User confirmed this was just a personal run in southern Illinois, not an organized Thanksgiving race."},
-    {"stravaActivityId":"721329446","date":"2016-09-17","reason":"User does not remember running the WOW Run 5K; do not promote without independent stronger evidence."},
-    {"stravaActivityId":"641963442","date":"2015-10-31","reason":"Race-like distance but no matching adult event; local calendar was dominated by high-school cross-country that day."},
-    {"stravaActivityId":"641967907","date":"2014-11-02","reason":"Date and distance resemble the Kansas Half 5K, but the recorded course is a compact south-Lawrence training loop rather than the event course."}
+    {
+      "candidate": "Garmin Marathon in the Land of Oz 2017",
+      "reason": "User owns a 2017 Garmin medal but the official 2017 results archive contains no Alex/Alexander Ford match in the half marathon search, contemporary 2017 event material lists marathon/half/10K rather than a virtual option, and the Strava export has no half-marathon-scale activity around April 22, 2017. Keep out of the public archive unless stronger evidence appears."
+    },
+    {
+      "stravaActivityId": "641967630",
+      "date": "2014-11-27",
+      "reason": "User confirmed this was just a personal run in southern Illinois, not an organized Thanksgiving race."
+    },
+    {
+      "stravaActivityId": "721329446",
+      "date": "2016-09-17",
+      "reason": "User does not remember running the WOW Run 5K; do not promote without independent stronger evidence."
+    },
+    {
+      "stravaActivityId": "641963442",
+      "date": "2015-10-31",
+      "reason": "Race-like distance but no matching adult event; local calendar was dominated by high-school cross-country that day."
+    },
+    {
+      "stravaActivityId": "641967907",
+      "date": "2014-11-02",
+      "reason": "Date and distance resemble the Kansas Half 5K, but the recorded course is a compact south-Lawrence training loop rather than the event course."
+    }
   ]
 }
