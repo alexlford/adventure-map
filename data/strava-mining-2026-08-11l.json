@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "source": "Mile High United Way 2025 Turkey Trot event archive + Strava export",
+    "updatedOn": "2026-08-11",
+    "policy": "Official event distance/date/venue are canonical. Strava supplies exact activity evidence and fallback elapsed time until an individual official timing row is recovered."
+  },
+  "adventures": [
+    {
+      "id": "mile-high-united-way-turkey-trot-2025",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Mile High United Way Turkey Trot",
+      "year": 2025,
+      "date": "2025-11-27",
+      "distance": "4 miles",
+      "officialDistance": "4 miles",
+      "officialDistanceMi": 4.0,
+      "officialDistanceKm": 6.437,
+      "location": "Washington Park, Denver, Colorado",
+      "region": "Colorado",
+      "lat": 39.6927,
+      "lon": -104.9711,
+      "coordinatePrecision": "event-area",
+      "stravaActivityId": "16584355003",
+      "stravaActivityName": "Turkey Trot",
+      "stravaDistanceKm": 6.494,
+      "stravaDistanceMi": 4.03,
+      "stravaElapsedSeconds": 2516,
+      "stravaMovingSeconds": 2502,
+      "elevationGainM": 32,
+      "routeStatus": "gps-source-available",
+      "resultSource": "Mile High United Way official 2025 Turkey Trot event archive",
+      "resultUrl": "https://unitedwaydenver.org/event/mile-high-united-way-turkey-trot-2025/",
+      "matchSource": "Exact Thanksgiving Day date + Strava activity explicitly named Turkey Trot + 6.494 km recording + approximately 10:02 AM local start matching the organizer's 10:00 AM Wave 3 + Washington Park event identity",
+      "matchConfidence": "verified",
+      "note": "Mile High United Way identifies the Nov. 27, 2025 event as its 52nd annual Turkey Trot at Washington Park and describes the course as a 4-mile walk/run. The organizer's schedule lists a 10:00 AM Wave 3; the Strava recording begins about 10:02 AM local and measures 4.03 miles. No indexed individual timing row has yet been recovered, so 41:56 is retained only as the Strava elapsed-time fallback."
+    }
+  ]
+}
