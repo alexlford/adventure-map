@@ -22,9 +22,20 @@ const cleanPages = {
   nordic: 'nordic.html',
   mtb: 'mountain-biking.html',
 };
+const pageDescriptions = {
+  map: 'Explore Alex Ford Adventures by place across races, summits, skiing, Nordic skiing, mountain biking, and memorable outdoor objectives.',
+  explore: 'Explore Alex Ford Adventures by activity, including races, summits, skiing, Nordic skiing, mountain biking, and the full timeline.',
+  stories: 'Curated stories from Alex Ford Adventures: mountain objectives, ski days, race challenges, traverses, and outdoor chapters worth remembering.',
+  timeline: 'A chronological timeline of Alex Ford Adventures across racing, summits, skiing, Nordic skiing, mountain biking, and larger outdoor stories.',
+  races: 'Alex Ford race history across road races, marathons, trail races, relays, Nordic races, mountain-bike races, and World Marathon Majors.',
+  summits: 'Alex Ford summit history with elevations, regions, outing context, and linked mountain objectives.',
+  skiing: 'Alex Ford alpine skiing logbook with resorts, ski days, destinations, and notable ski objectives.',
+  nordic: 'Alex Ford Nordic skiing history across trail systems, races, named events, and standout recreational days.',
+  mtb: 'Alex Ford mountain-bike history with day-level MTB and downhill classifications, locations, routes, and outings.',
+};
 const fileToCleanPath = new Map([
   ['index.html', '/'],
-  ...Object.entries(cleanPages).map(([route, file]) => [file, `/${route}`]),
+  ...Object.entries(cleanPages).map(([route, file]) => [file, `/${route}/`]),
 ]);
 
 const slugify = value => String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-');
@@ -53,20 +64,41 @@ const recordType = record => {
   return 'Adventure Story';
 };
 
-function removeStaticUrlMeta(html) {
+function removeStaticMeta(html) {
   return html
     .replace(/<link\b[^>]*rel=["']canonical["'][^>]*>\s*/gi, '')
-    .replace(/<meta\b[^>]*property=["']og:url["'][^>]*>\s*/gi, '');
+    .replace(/<meta\b[^>]*name=["']description["'][^>]*>\s*/gi, '')
+    .replace(/<meta\b[^>]*property=["']og:(?:site_name|title|description|type|url)["'][^>]*>\s*/gi, '')
+    .replace(/<meta\b[^>]*name=["']twitter:(?:card|title|description)["'][^>]*>\s*/gi, '');
 }
 
-function publicHtml(html, cleanPath = null) {
+function pageTitle(html) {
+  return (html.match(/<title>([^<]*)<\/title>/i)?.[1] || 'Alex Ford Adventures').trim();
+}
+
+function publicHtml(html, cleanPath = null, descriptionOverride = '') {
   let output = html;
   if (!/<base\b/i.test(output)) output = output.replace(/<head([^>]*)>/i, '<head$1><base href="/">');
   if (!output.includes('ADVENTURE_PUBLIC_BUILD')) output = output.replace(/<\/head>/i, '<script>window.ADVENTURE_PUBLIC_BUILD=true;</script></head>');
   if (cleanPath != null) {
-    output = removeStaticUrlMeta(output);
-    const canonical = cleanPath === '/' ? `${SITE}/` : `${SITE}${cleanPath.replace(/\/$/, '')}`;
-    output = output.replace(/<\/head>/i, `<link rel="canonical" href="${attr(canonical)}"><meta property="og:url" content="${attr(canonical)}"></head>`);
+    const title = pageTitle(output);
+    const canonical = cleanPath === '/' ? `${SITE}/` : `${SITE}${cleanPath}`;
+    const existingDescription = output.match(/<meta\b[^>]*name=["']description["'][^>]*content=["']([^"']*)["'][^>]*>/i)?.[1] || '';
+    const description = descriptionOverride || existingDescription || 'Alex Ford Adventures: races, mountains, skiing, biking, and the stories behind them.';
+    output = removeStaticMeta(output);
+    const metadata = [
+      `<meta name="description" content="${attr(description)}">`,
+      `<link rel="canonical" href="${attr(canonical)}">`,
+      '<meta property="og:site_name" content="Alex Ford Adventures">',
+      `<meta property="og:title" content="${attr(title)}">`,
+      `<meta property="og:description" content="${attr(description)}">`,
+      '<meta property="og:type" content="website">',
+      `<meta property="og:url" content="${attr(canonical)}">`,
+      '<meta name="twitter:card" content="summary">',
+      `<meta name="twitter:title" content="${attr(title)}">`,
+      `<meta name="twitter:description" content="${attr(description)}">`,
+    ].join('');
+    output = output.replace(/<\/head>/i, `${metadata}</head>`);
   }
   return output;
 }
@@ -78,17 +110,17 @@ function recordHtml(template, record) {
   const title = `${record.name} | Alex Ford Adventures`;
   const rawDescription = [recordType(record), record.location, displayDate(record.date), record.note].filter(Boolean).join(' · ');
   const description = (rawDescription || `${record.name} in Alex Ford Adventures`).slice(0, 260);
-  let html = publicHtml(template, cleanPath)
-    .replace(/<title>[^<]*<\/title>/i, `<title>${attr(title)}</title>`)
-    .replace(/<meta\b[^>]*name=["']description["'][^>]*>\s*/gi, '')
-    .replace(/<meta\b[^>]*property=["']og:(?:site_name|title|description|type)["'][^>]*>\s*/gi, '')
-    .replace(/<meta\b[^>]*name=["']twitter:(?:card|title|description)["'][^>]*>\s*/gi, '');
+  let html = publicHtml(template)
+    .replace(/<title>[^<]*<\/title>/i, `<title>${attr(title)}</title>`);
+  html = removeStaticMeta(html);
   const metadata = [
     `<meta name="description" content="${attr(description)}">`,
+    `<link rel="canonical" href="${attr(canonical)}">`,
     '<meta property="og:site_name" content="Alex Ford Adventures">',
     `<meta property="og:title" content="${attr(title)}">`,
     `<meta property="og:description" content="${attr(description)}">`,
     '<meta property="og:type" content="article">',
+    `<meta property="og:url" content="${attr(canonical)}">`,
     '<meta name="twitter:card" content="summary">',
     `<meta name="twitter:title" content="${attr(title)}">`,
     `<meta name="twitter:description" content="${attr(description)}">`,
@@ -116,7 +148,8 @@ async function transformLegacyHtml() {
     if (!entry.isFile() || !entry.name.endsWith('.html') || entry.name === '404.html') continue;
     const target = path.join(outDir, entry.name);
     const cleanPath = fileToCleanPath.get(entry.name) ?? null;
-    await fs.writeFile(target, publicHtml(await fs.readFile(target, 'utf8'), cleanPath));
+    const route = [...Object.entries(cleanPages)].find(([, file]) => file === entry.name)?.[0] || '';
+    await fs.writeFile(target, publicHtml(await fs.readFile(target, 'utf8'), cleanPath, route ? pageDescriptions[route] : ''));
   }
 }
 
@@ -125,7 +158,7 @@ async function generateCleanPages() {
     const source = await fs.readFile(path.join(root, file), 'utf8');
     const dir = path.join(outDir, route);
     await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(path.join(dir, 'index.html'), publicHtml(source, `/${route}`));
+    await fs.writeFile(path.join(dir, 'index.html'), publicHtml(source, `/${route}/`, pageDescriptions[route]));
   }
 }
 
@@ -150,7 +183,7 @@ async function generateRecords() {
 }
 
 async function generatePublicIndex(recordSlugs) {
-  const pagePaths = ['/', ...Object.keys(cleanPages).map(route => `/${route}`)];
+  const pagePaths = ['/', ...Object.keys(cleanPages).map(route => `/${route}/`)];
   const urls = [
     ...pagePaths.map(cleanPath => cleanPath === '/' ? `${SITE}/` : `${SITE}${cleanPath}`),
     ...recordSlugs.map(slug => `${SITE}/record/${slug}/`),
