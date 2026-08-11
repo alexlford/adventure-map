@@ -51,7 +51,7 @@ window.AdventureCatalog = (() => {
 
   function validate(records) {
     const errors = [], warnings = [], seen = new Set();
-    const allowedKinds = new Set(['summit','race','adventure','event']);
+    const allowedKinds = new Set(['summit','race','adventure','event','outing']);
     const allowedConfidence = new Set(['confirmed','verified','high','medium','low','unknown']);
     records.forEach((record, index) => {
       const where = record.id || `record ${index + 1}`;
@@ -60,7 +60,7 @@ window.AdventureCatalog = (() => {
       else seen.add(record.id);
       if (!record.name) errors.push(`${where}: missing name`);
       if (!allowedKinds.has(record.kind)) errors.push(`${where}: invalid kind ${record.kind}`);
-      if ((record.kind === 'race' || record.kind === 'event') && !record.discipline) errors.push(`${where}: ${record.kind} missing discipline`);
+      if ((record.kind === 'race' || record.kind === 'event' || record.kind === 'outing') && !record.discipline) errors.push(`${where}: ${record.kind} missing discipline`);
       if (record.date && !/^\d{4}-\d{2}-\d{2}$/.test(record.date)) errors.push(`${where}: invalid date ${record.date}`);
       if (record.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(record.endDate)) errors.push(`${where}: invalid endDate ${record.endDate}`);
       if ((record.lat == null) !== (record.lon == null)) errors.push(`${where}: lat/lon must be provided together`);
@@ -71,7 +71,7 @@ window.AdventureCatalog = (() => {
       if (record.distanceKm != null && (!Number.isFinite(record.distanceKm) || record.distanceKm < 0)) errors.push(`${where}: invalid distanceKm`);
       if (record.elevationFt != null && (!Number.isFinite(record.elevationFt) || record.elevationFt < 0)) errors.push(`${where}: invalid elevationFt`);
       if (record.matchConfidence && !allowedConfidence.has(record.matchConfidence)) warnings.push(`${where}: noncanonical confidence ${record.matchConfidence}`);
-      if (record.kind === 'adventure' && record.discipline === 'mountain-bike') warnings.push(`${where}: mountain-bike event should normally be kind=race`);
+      if (record.kind === 'adventure' && record.discipline === 'mountain-bike') warnings.push(`${where}: mountain-bike event should normally be kind=race or outing`);
       if (record.kind === 'event' && /race/i.test(record.note || '') && !/not a race|rather than a race/i.test(record.note || '')) warnings.push(`${where}: event note mentions race; review classification`);
     });
     return { errors, warnings, valid: errors.length === 0 };
