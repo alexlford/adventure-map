@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "updatedOn": "2026-08-11",
+    "purpose": "Evidence corrections discovered during the ongoing Strava and medal audit."
+  },
+  "adventures": [
+    {
+      "id": "flying-pig-marathon-weekend-2025",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Flying Pig 5K + Marathon Weekend",
+      "year": 2025,
+      "date": "2025-05-03",
+      "endDate": "2025-05-04",
+      "distance": "5K + Marathon",
+      "officialDistance": "5K + 26.2 miles",
+      "officialDistanceMi": 29.31,
+      "officialDistanceKm": 47.17,
+      "location": "Cincinnati, Ohio",
+      "region": "Ohio",
+      "lat": 39.1031,
+      "lon": -84.5120,
+      "coordinatePrecision": "city-placeholder",
+      "routeStatus": "multi-event-match",
+      "matchSource": "User medals + exact-date Strava 5K and marathon records",
+      "matchConfidence": "confirmed",
+      "note": "The official Skyline Chili 4-Way Challenge requires a Saturday 5K and 10K plus Sunday's full marathon. The current evidence confirms the 5K and marathon but not a 10K, so the public archive records only the verified two-race weekend."
+    }
+  ]
+}
