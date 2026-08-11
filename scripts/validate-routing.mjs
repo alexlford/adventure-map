@@ -37,7 +37,8 @@ for(const old of ['detail-phase4.js','story-detail.js','world-major-detail.js','
   if(fs.existsSync(old))errors.push(`${old} is obsolete and must remain removed`);
   if(detail.includes(old)||shared.includes(old))errors.push(`${old} must not be dynamically loaded by the active detail path`);
 }
-if(!detail.includes('detail-phase4.css')||!detail.includes('story-themes.css')||!detail.includes('record-media.css'))errors.push('detail page must load its record presentation styles explicitly');
+if(fs.existsSync('detail-phase4.css'))errors.push('detail-phase4.css is obsolete; permanent detail styles belong in record-detail.css');
+if(!detail.includes('record-detail.css')||!detail.includes('story-themes.css')||!detail.includes('record-media.css'))errors.push('detail page must load its record presentation styles explicitly');
 if(renderer.includes('MutationObserver'))errors.push('record renderer must not depend on MutationObserver composition');
 if(/setTimeout\([^)]*(50|200|600)/.test(renderer))errors.push('record renderer must not use delayed cleanup passes');
 if(!renderer.includes("page.innerHTML=sections.filter(Boolean).join('')"))errors.push('record renderer must compose sections and perform one explicit page render');
