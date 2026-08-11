@@ -1,13 +1,13 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "description": "Canonical normalized record vocabulary for the Personal Adventure Almanac. Source files may retain legacy fields; catalog.js projects them into this schema at load time.",
-  "kinds": ["summit", "race", "adventure", "event"],
+  "kinds": ["summit", "race", "adventure", "event", "outing"],
   "disciplines": ["road", "marathon", "trail", "relay", "mountain-bike", "nordic", "ski-objective", "mountain-loop", "trek", "challenge", "hike", "ski"],
   "confidence": ["confirmed", "verified", "high", "medium", "low", "unknown"],
   "coordinatePrecision": ["gps-course", "gps-area", "venue", "venue-placeholder", "city", "region", "unknown"],
-  "mtbRidingStyle": ["pedal", "lift-served", "mixed"],
+  "mtbRidingStyle": ["mtb", "downhill", "mixed"],
   "normalizedFields": {
-    "recordClass": "Canonical kind: summit, race, adventure, or event.",
+    "recordClass": "Canonical kind: summit, race, adventure, event, or outing.",
     "sport": "Broad sport family used for cross-page grouping.",
     "startDate": "Canonical ISO start date.",
     "finishDate": "Canonical ISO finish date, equal to startDate for one-day records.",
@@ -15,6 +15,6 @@
     "locationInfo": "Object containing label, region, coordinates, and precision.",
     "evidence": "Object describing source text and confidence.",
     "routeInfo": "Object describing route status/provenance when known.",
-    "mtbRidingStyle": "For MTB records/locations: pedal, lift-served, or mixed/needs verification. Lift-served ascent must not be represented as pedaled climbing."
+    "mtbRidingStyle": "Day-level MTB mode: mtb, downhill, or mixed. Downhill ascent is not presented as pedaled climbing."
   }
 }
