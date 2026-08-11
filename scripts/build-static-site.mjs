@@ -100,17 +100,13 @@ function recordHtml(template, record) {
 async function copyPublicTree() {
   await fs.rm(outDir, { recursive: true, force: true });
   await fs.mkdir(outDir, { recursive: true });
-  await fs.cp(root, outDir, {
-    recursive: true,
-    filter(source) {
-      const rel = path.relative(root, source);
-      if (!rel) return true;
-      const parts = rel.split(path.sep);
-      if (excludedTop.has(parts[0])) return false;
-      if (parts.length === 1 && excludedFiles.has(parts[0])) return false;
-      return true;
-    },
-  });
+  const entries = await fs.readdir(root, { withFileTypes: true });
+  for (const entry of entries) {
+    if (excludedTop.has(entry.name) || excludedFiles.has(entry.name)) continue;
+    const source = path.join(root, entry.name);
+    const target = path.join(outDir, entry.name);
+    await fs.cp(source, target, { recursive: entry.isDirectory() });
+  }
   await fs.writeFile(path.join(outDir, '.nojekyll'), '');
 }
 
