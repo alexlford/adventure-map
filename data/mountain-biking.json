@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "source": "Strava export GPX reconstruction + public trail-system verification",
+    "updatedOn": "2026-08-10",
+    "note": "Mountain biking locations are grouped from personal GPS activity clusters. Race classification remains in the canonical event catalog."
+  },
+  "locations": [
+    {
+      "id": "mtb-trestle-winter-park",
+      "name": "Trestle Bike Park / Winter Park",
+      "location": "Winter Park, Colorado",
+      "lat": 39.8818,
+      "lon": -105.7780,
+      "recordedDays": 4,
+      "dates": ["2022-07-16", "2024-07-27", "2024-08-31", "2026-08-05"],
+      "note": "A recurring MTB location in the archive, including two especially large climbing days."
+    },
+    {
+      "id": "mtb-kokopelli-loma",
+      "name": "Kokopelli Trails",
+      "location": "Loma / Fruita, Colorado",
+      "lat": 39.1780,
+      "lon": -108.8260,
+      "recordedDays": 3,
+      "dates": ["2025-06-05", "2025-06-06", "2025-06-07"],
+      "note": "Three consecutive days riding the Kokopelli trail system near Loma."
+    },
+    {
+      "id": "mtb-steamboat",
+      "name": "Steamboat Bike Park",
+      "location": "Steamboat Springs, Colorado",
+      "lat": 40.4601,
+      "lon": -106.7836,
+      "recordedDays": 1,
+      "dates": ["2025-10-05"],
+      "note": "Recorded mountain-bike day in the Steamboat resort trail network."
+    },
+    {
+      "id": "mtb-vail",
+      "name": "Vail trail network",
+      "location": "Vail, Colorado",
+      "lat": 39.6284,
+      "lon": -106.3781,
+      "recordedDays": 1,
+      "dates": ["2025-09-28"],
+      "note": "Long recorded mountain-bike ride in the Vail trail network."
+    },
+    {
+      "id": "mtb-granby-ranch",
+      "name": "Granby Ranch",
+      "location": "Granby, Colorado",
+      "lat": 40.0383,
+      "lon": -105.8974,
+      "recordedDays": 1,
+      "dates": ["2025-07-11"],
+      "note": "Recorded mountain-bike ride at Granby Ranch."
+    },
+    {
+      "id": "mtb-crested-butte",
+      "name": "Crested Butte trail network",
+      "location": "Crested Butte, Colorado",
+      "lat": 38.9008,
+      "lon": -106.9528,
+      "recordedDays": 1,
+      "dates": ["2023-09-24"],
+      "note": "Recorded mountain-bike ride in the Crested Butte trail network."
+    },
+    {
+      "id": "mtb-north-table",
+      "name": "North Table Mountain",
+      "location": "Golden, Colorado",
+      "lat": 39.7819,
+      "lon": -105.2113,
+      "recordedDays": 1,
+      "dates": ["2023-12-02"],
+      "note": "First recorded ride on the new mountain bike."
+    },
+    {
+      "id": "mtb-leadville",
+      "name": "Leadville trail network",
+      "location": "Leadville, Colorado",
+      "lat": 39.2414,
+      "lon": -106.2857,
+      "recordedDays": 1,
+      "dates": ["2026-05-24"],
+      "note": "Two separate mountain-bike activities recorded on the same day around Leadville."
+    },
+    {
+      "id": "mtb-royal-gorge",
+      "name": "Royal Gorge Park",
+      "location": "Cañon City, Colorado",
+      "lat": 38.4710,
+      "lon": -105.3157,
+      "recordedDays": 1,
+      "dates": ["2024-04-21"],
+      "note": "Royal Gorge Groove race day; retained here as a ridden MTB location while the event itself remains classified as a race."
+    }
+  ],
+  "epicRides": [
+    {
+      "id": "trestle-big-day-2024",
+      "name": "Trestle big day",
+      "date": "2024-07-27",
+      "location": "Trestle Bike Park / Winter Park, Colorado",
+      "distanceKm": 45.55,
+      "distanceMi": 28.30,
+      "elevationGainM": 1892.2,
+      "stravaActivityId": "11997305131",
+      "note": "The largest recorded Trestle day in the current archive by both distance and climbing."
+    },
+    {
+      "id": "trestle-climbing-day-2026",
+      "name": "Trestle climbing day",
+      "date": "2026-08-05",
+      "location": "Trestle Bike Park / Winter Park, Colorado",
+      "distanceKm": 34.41,
+      "distanceMi": 21.38,
+      "elevationGainM": 1588.2,
+      "stravaActivityId": "19618505573",
+      "note": "Another high-volume Trestle day with more than 1,500 m of recorded climbing."
+    },
+    {
+      "id": "kokopelli-three-day-2025",
+      "name": "Kokopelli three-day weekend",
+      "date": "2025-06-05",
+      "endDate": "2025-06-07",
+      "location": "Kokopelli Trails, Loma / Fruita, Colorado",
+      "distanceKm": 44.27,
+      "distanceMi": 27.51,
+      "elevationGainM": 664.7,
+      "note": "Three consecutive mountain-bike days on the Kokopelli trail system."
+    }
+  ]
+}
