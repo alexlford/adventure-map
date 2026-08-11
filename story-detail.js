@@ -18,7 +18,15 @@
     if(Number.isFinite(a.elevationGainM))return `${A.fmt.format(Math.round(a.elevationGainM))} m gain`;
     return a.region||a.location||'Adventure';
   };
-  const cleanLegacy=()=>document.querySelectorAll('.sport-detail').forEach(section=>{if(section.querySelector('h2')?.textContent?.trim()==='Adventure story')section.remove()});
+  const cleanLegacy=()=>{
+    document.querySelectorAll('.sport-detail').forEach(section=>{if(section.querySelector('h2')?.textContent?.trim()==='Adventure story')section.remove()});
+    document.querySelectorAll('#page>section').forEach(section=>{if(section.querySelector('.section-title h2')?.textContent?.trim()==='Part of a larger story')section.remove()});
+  };
+  const relabelChronology=()=>{
+    const links=[...document.querySelectorAll('.chronology-nav .chronology-link small')];
+    if(links[0])links[0].textContent='Previous story';
+    if(links[1])links[1].textContent='Next story';
+  };
   Promise.all([A.load(),A.loadRelationships()]).then(([all,relationships])=>{
     const a=all.find(x=>x.id===key||x.slug===key);if(!a||a.kind!=='adventure')return;
     const stories=all.filter(x=>x.kind==='adventure').sort((x,y)=>(x.date||'').localeCompare(y.date||''));
@@ -35,10 +43,10 @@
       if(document.querySelector('.story-record-editorial'))return true;
       document.body.classList.add('story-record-page');
       document.querySelector('.hero')?.classList.add('story-record-hero');
-      document.querySelector('.metrics')?.classList.add('story-record-metrics');
+      document.querySelector('.metrics')?.remove();
       const eyebrow=document.querySelector('.story-record-hero .eyebrow');if(eyebrow)eyebrow.textContent='Adventures · Story';
-      profile.insertAdjacentHTML('beforebegin',html);profile.remove();cleanLegacy();
-      [50,200,600].forEach(ms=>setTimeout(cleanLegacy,ms));
+      profile.insertAdjacentHTML('beforebegin',html);profile.remove();cleanLegacy();relabelChronology();
+      [50,200,600].forEach(ms=>setTimeout(()=>{cleanLegacy();relabelChronology()},ms));
       A.refreshMeta?.(`${typeFor(a)} · ${a.location||'Alex Ford Adventures'} · ${spanFor(a)}`);
       return true;
     };
