@@ -37,7 +37,16 @@ window.AdventureSite = (() => {
       header.insertAdjacentElement('afterend',wrap);
     }
   }
-  function shell(active){ensureNav(active);}
+  function ensureFlow(active){
+    document.querySelector('.chapter-flow-nav')?.remove();
+    if(!activityKeys.has(active))return;
+    const page=document.querySelector('.page');if(!page)return;
+    const idx=ACTIVITIES.findIndex(x=>x[2]===active);const next=ACTIVITIES[idx+1];
+    const nav=document.createElement('nav');nav.className='chronology-nav chapter-flow-nav';nav.setAttribute('aria-label','Continue exploring activity chapters');
+    nav.innerHTML=`<a class="chronology-link" href="activities.html"><small>Activity hub</small><strong>← All activity chapters</strong></a>${next?`<a class="chronology-link next" href="${next[0]}"><small>Next chapter</small><strong>${next[1]} →</strong></a>`:`<a class="chronology-link next" href="adventures.html"><small>Continue exploring</small><strong>Adventures →</strong></a>`}`;
+    page.appendChild(nav);
+  }
+  function shell(active){ensureNav(active);ensureFlow(active);}
   ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,shell};
 })();
 
