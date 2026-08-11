@@ -153,6 +153,38 @@
       "matchSource": "User finisher medal + official event date/distance + virtual-completion Strava activity within the organizer's one-week reporting window",
       "matchConfidence": "verified",
       "note": "The in-person race was February 13 at Washington Park. Strava records the 4.05-mile virtual completion on February 20, the last day of RunDenver's permitted one-week virtual-results window."
+    },
+    {
+      "id": "that-dam-run-10k-2022",
+      "kind": "race",
+      "discipline": "road",
+      "name": "That Dam Run 10K",
+      "eventSeries": "RunDenver Series",
+      "year": 2022,
+      "date": "2022-03-19",
+      "completionDate": "2022-03-23",
+      "participationMode": "virtual",
+      "distance": "10K",
+      "officialDistance": "10K",
+      "officialDistanceKm": 10.0,
+      "officialDistanceMi": 6.21,
+      "location": "Virtual / Denver, Colorado",
+      "region": "Colorado",
+      "stravaActivityId": "6872397933",
+      "stravaActivityName": "Vine Street Houses",
+      "distanceKm": 10.03,
+      "distanceMi": 6.23,
+      "elapsedSeconds": 3602,
+      "movingSeconds": 3333,
+      "stravaDistanceKm": 10.03,
+      "stravaDistanceMi": 6.23,
+      "stravaElapsedSeconds": 3602,
+      "routeStatus": "matched-no-public-route",
+      "resultSource": "RunDenver/HAL Sports That Dam Run 2022 event and virtual-results rules",
+      "resultUrl": "https://www.rundenverseries.com/thatdamrun",
+      "matchSource": "User That Dam Run medal + official March 19 event date + exact 10K-scale Strava completion on March 23 within RunDenver's virtual-results window",
+      "matchConfidence": "verified",
+      "note": "HAL Sports lists That Dam Run 2022 on March 19 with 13.1M, 10K, and 5K options. RunDenver allows virtual results from event day through the following Sunday. The 10.03 km Strava run on March 23 resolves the medal to the 10K virtual distance."
     }
   ]
 }
