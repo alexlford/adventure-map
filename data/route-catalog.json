@@ -1,12 +1,15 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-10",
-  "description": "Canonical route metadata for the Personal Adventure Almanac. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, and privacy treatment.",
+  "updatedOn": "2026-08-11",
+  "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON and encoded activity polylines preserve imported geometry; this file defines public ownership, provenance, and privacy treatment.",
   "routeFiles": [
     "data/routes.geojson",
     "data/mined-routes.geojson",
     "data/historical-routes-v2.geojson",
     "data/event-routes.geojson"
+  ],
+  "polylineFiles": [
+    "data/activity-route-polylines.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
