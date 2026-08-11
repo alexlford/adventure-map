@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedOn": "2026-08-10",
-  "description": "Canonical public-event resolver for the Personal Adventure Almanac. Source files preserve provenance; this manifest defines public precedence, removals, and corrections.",
+  "description": "Canonical public-event resolver for the Personal Adventure Almanac. Source files preserve provenance; this manifest defines public precedence, removals, corrections, and normalized relationships.",
   "sources": [
     {"path":"data/adventures.json","role":"seed","description":"Original alexlford.com summit and race inventory"},
     {"path":"data/discovered-races.json","role":"recovered","description":"High-confidence races recovered from Strava and historical results"},
@@ -11,6 +11,7 @@
     {"path":"data/recovered-events-2026-08.json","role":"confirmed","description":"August 2026 recovered races and corrections"}
   ],
   "matchLayer": "data/strava-matches.json",
+  "relationshipLayer": "data/relationships.json",
   "removeIds": ["smr-stampede-50k-2022"],
   "overrides": {
     "north-star-mountain": {
