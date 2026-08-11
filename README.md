@@ -1,92 +1,131 @@
 # Personal Adventure Almanac
 
-Interactive map and archive of Alex Ford's mountain summits, endurance races, skiing, and stand-alone adventures. The project began with the Athletic Activities section of [alexlford.com/about](https://www.alexlford.com/about) and has been expanded with a Strava account export, Slopes ski records, historical race results, and user-confirmed corrections.
+Interactive map and personal outdoor-history archive for Alex Ford. The project began with the Athletic Activities section of alexlford.com and has grown into a structured Almanac spanning races, summits, alpine skiing, Nordic skiing, mountain biking, and curated Adventures.
 
-## Current state
+## Explore the Almanac
 
-- 19 named summits
-- A growing curated race archive spanning road, trail, marathon, relay, Nordic, and mountain-bike events
-- 111 recorded ski days across 29 ski resorts
-- Featured stand-alone adventures including DeCaLiBron, West Maroon Pass Traverse, Ski the Sky Loop, Ranch Hand, and Royal Gorge Groove Run + Ride
-- River to River Relay appearances in 2006, 2008, and 2010, with the historical full relay course mapped
-- Search, category filters, responsive mobile map, route-aware zooming, popups, and archive pages for Races, Summits, Skiing, and Adventures
+The public information architecture is intentionally simple:
 
-The race inventory is still being reconstructed. Borderline matches remain in `data/research-candidates.json` and are intentionally excluded from the public catalog until the evidence is strong enough.
+- **Overview** — front cover, current pursuits, recent records, and ways into the archive
+- **Map** — geographic view with seven public layers: MTB, Nordic, Road Races, Trail Races, Skiing, Summits, and Adventures
+- **Timeline** — one cross-discipline chronology
+- **Activities** — hub for Races, Summits, Skiing, Nordic, and MTB
+- **Adventures** — curated editorial chapters for objectives and efforts that deserve a larger story
 
-## Phase 1: canonical data architecture
+Individual records use the canonical catalog and route system rather than page-specific copies of the data.
 
-`data/catalog.json` is now the canonical public resolver. Public pages should not independently decide which JSON files win, which records are removed, or which corrections apply.
+## Current archive
 
-`catalog.js` loads the source files in manifest order, merges records by stable ID, applies the Strava match layer, removes stale legacy IDs, applies authoritative corrections, validates the resulting catalog, and returns the same public event set to every page.
+The archive includes named summits, a reconstructed race history, day-level MTB and Nordic outings, a Slopes/Strava-backed Ski Passport, World Marathon Majors progress, and curated Adventures such as DeCaLiBron, West Maroon Pass Traverse, Ski the Sky Loop, Ranch Hand, and Royal Gorge Groove Run + Ride.
 
-This keeps provenance intact while preventing the Overview, Map, Races, Summits, Adventures, and detail pages from drifting apart.
+The initial Strava baseline contains **3,371 activities** through the August 10, 2026 export. Most ordinary training activities are intentionally not public records.
 
-See `docs/data-model.md` for the event schema and precedence rules.
+## Canonical data architecture
 
-## Data sources
+`data/catalog.json` is the canonical public resolver. Public pages should not independently decide which source wins, which record is removed, or which correction applies.
 
-`data/adventures.json` contains the original summit and race inventory seeded from alexlford.com.
+`catalog.js` loads source files in manifest order, merges records by stable ID, applies the Strava match layer, removes stale legacy IDs, applies authoritative corrections, validates the result, and returns the same public record set to every page.
 
-`data/strava-matches.json` contains the original curated Strava match layer.
+Key supporting layers include:
 
-`data/discovered-races.json`, `data/mined-races.json`, `data/user-confirmed-races.json`, and `data/recovered-events-2026-08.json` contain race records recovered through later audit work.
+- `data/relationships.json` — series, challenge, weekend, and multi-record relationships
+- `data/route-catalog.json` — route provenance and record/route overrides
+- `data/activity-days.json` — day-level MTB and Nordic outings
+- `data/skiing.json` — Ski Passport, seasons, resorts, trips, and ski-specific metadata
+- `data/world-majors.json` — World Marathon Majors journey, including future registrations without inflating completed-race totals
+- `data/research-candidates.json` — borderline historical matches excluded from the public catalog
 
-`data/notable-adventures.json` contains stand-alone objectives and stories that are intentionally separated from ordinary activity history.
+See `docs/data-model.md` for schema and precedence details.
 
-`data/skiing.json` contains the ski archive reconciled from Strava and Slopes. Strava is treated as the activity-history backbone; Slopes supplies ski-specific resort, run, vertical, season, and named-trip information.
+## Keeping the Almanac current
 
-`data/research-candidates.json` is intentionally not loaded into the public almanac. It holds borderline matches and known events that still need stronger evidence.
+The site is designed to update incrementally as new activities accumulate.
 
-## Important corrections
+### 1. Scan a fresh Strava export
 
-North Star Mountain was initially unmatched in the first Strava pass. It was later user-confirmed as the September 12, 2020 Strava activity titled `Quartzville`. That correction now lives in `data/catalog.json`, not in page-specific JavaScript.
+```bash
+npm run scan:strava -- /path/to/export.zip
+```
 
-The old single `SMR Stampede 50k Ranch Hand` seed record is suppressed by the catalog and replaced by the actual March 12–13, 2022 Snow Mountain Ranch 25K freestyle + 25K classic records.
+This generates `tmp/update-queue.json` from activities newer than the last fully reviewed Strava snapshot in `data/ingest-state.json`.
 
-The March 1, 2020 Strava ski outlier was confirmed from a calendar record as Liberty Mountain Resort. The user subsequently added the missing day to Slopes, bringing the reconciled ski-day history to 111 days.
+The queue is **review-only**. It never publishes records automatically.
 
-The 2019/20 ski season has three known ski days, but season vertical was not recorded and is intentionally not displayed as zero.
+### 2. Curate the new activity delta
 
-The exact 2020 virtual Chicago Marathon GPS geometry is intentionally **not** committed to the public-map layer because its start/end location may be personally identifying.
+The policy in `data/update-policy.json` keeps the site from becoming an activity feed:
 
-## Validation
+- ordinary training runs stay private unless they are races or become curated Adventures;
+- generic cycling is reviewed before deciding whether it belongs in the MTB chapter;
+- MTB and Nordic can enter day-level outing history;
+- alpine skiing updates the Ski Passport, with Slopes supplying runs, vertical, resort, and trip context where available;
+- organized races, named events, and Adventures are promoted into richer records;
+- routes are published only after provenance and privacy treatment are resolved.
+
+### 3. Validate and advance the reviewed snapshot
+
+After the new snapshot is fully reviewed and any public records/routes are updated:
+
+```bash
+npm run validate:data
+npm run advance:strava -- tmp/update-queue.json --confirm-reviewed
+npm run validate:data
+```
+
+The ingest state stores a timestamp watermark and one-way activity-ID hashes only for activities sharing the exact watermark time. It does not expose the IDs of ordinary historical training activities.
+
+For the full workflow, including historical backfills and ski screenshots, see `docs/updating-the-almanac.md`.
+
+## Validation and CI
 
 Run:
 
 ```bash
 npm run validate:data
+npm run test:update-pipeline
 ```
 
-The validator checks identity fields, event kinds and disciplines, date formatting, coordinate pairing/ranges, numeric sanity, year/date consistency, route references, and suspicious classifications.
+CI checks the canonical catalog, relationships, route provenance, ingest state, update policy, Python maintenance tooling, the update-pipeline smoke test, and generated sitemap/robots files.
 
-## Map behavior
+## Important archive rules
 
-Skiing is mapped at the resort level rather than with one marker for every ski day. When multiple record types share one coordinate, the marker retains the primary geographic category color while the popup can contain multiple records.
+- North Star Mountain is matched to the September 12, 2020 Strava activity `Quartzville` through a canonical override.
+- The stale single `SMR Stampede 50k Ranch Hand` record is suppressed and replaced by the actual March 12–13, 2022 25K freestyle and 25K classic races.
+- Frisco BrewSki is a named Nordic event, not a race.
+- West Maroon Pass Traverse is an Adventure/trek, not a road race.
+- Royal Gorge Groove MTB remains an individual race even though the combined Run + Ride weekend can be a larger chapter.
+- The 2019/20 ski season has three known ski days, but season vertical was not recorded and is intentionally not shown as zero.
+- The exact 2020 virtual Chicago Marathon route is privacy-withheld.
+- MTB riding style belongs to the individual outing, not permanently to the venue.
 
-Recorded GPS and historical routes are displayed where they add useful context and can be published without unnecessary privacy exposure.
+## Map and route behavior
+
+Recorded GPS, historical courses, generalized locations, and privacy-withheld routes are distinguished through the route catalog. The Map is route-first where geometry adds useful context, while dense areas fade non-focused routes so the selected day/course stays readable.
+
+Skiing is mapped primarily at the resort level rather than placing a marker for every ski day.
 
 ## Run locally
 
-Because the page loads JSON with `fetch`, serve the directory rather than opening `index.html` directly:
+Because the site loads JSON with `fetch`, serve the directory rather than opening HTML files directly:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Then open `http://localhost:8000/overview.html`.
 
-## Deploy
+## Deployment
 
-This is a build-free static site hosted through GitHub Pages and designed to be integrated with alexlford.com.
+The current staging deployment is GitHub Pages. Public-index files are generated with:
 
-## Next Phase 1 implementations
+```bash
+npm run build:public-index
+```
 
-1. Migrate remaining legacy corrections/removals out of source-specific files and into the canonical model where appropriate.
-2. Add automated validation to the GitHub deployment workflow so bad records cannot publish silently.
-3. Audit all route references and classify route provenance consistently as personal GPS, historical course, or generalized location.
-4. Normalize series/challenge relationships so River to River, Heartland 39.3, Illinois I-Challenge, Ranch Hand, and Royal Gorge are represented structurally rather than only in page copy.
-5. Continue mining the full Strava archive only after each recovered record can enter the canonical catalog cleanly.
+The recommended production home is **`https://alexlford.com/almanac/`**, as a first-class site section rather than an iframe. The project uses relative application/data paths so the same code can operate under the current GitHub Pages subdirectory or the future `/almanac/` path.
+
+See `docs/alexlford-integration.md` for the proposed clean URL structure and migration sequence.
 
 ## Source notes
 
-The original activity names, years, and listed summit elevations were taken from alexlford.com/about as checked on 2026-08-10. Subsequent corrections and additions come from the supplied Strava export, Slopes screenshots, calendar evidence, historical race results, and direct user confirmation.
+The archive combines alexlford.com history, the supplied Strava export, Slopes screenshots, calendar evidence, historical race results, GPS files, and direct user confirmation. Source disagreements are preserved rather than guessed away.
