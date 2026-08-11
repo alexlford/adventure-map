@@ -1,6 +1,6 @@
 {
   "meta": {
-    "source": "User medal evidence + canonical race records",
+    "source": "User medal/equipment evidence + canonical race records + official organizer challenge definitions",
     "updatedOn": "2026-08-11"
   },
   "adventures": [
@@ -24,6 +24,27 @@
       "matchSource": "User 2015 I-Challenge medal + existing Illinois 5K and marathon records",
       "matchConfidence": "confirmed",
       "note": "The 2015 medal explicitly identifies the I-Challenge as 42K + 5K: the Illinois 5K followed by the full Illinois Marathon."
+    },
+    {
+      "id": "skyline-chili-4-way-2025",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Skyline Chili 4-Way Challenge",
+      "year": 2025,
+      "date": "2025-05-03",
+      "endDate": "2025-05-04",
+      "distance": "5K + 10K + Marathon",
+      "officialDistance": "5K + 10K + 26.2 miles",
+      "officialDistanceMi": 35.52,
+      "officialDistanceKm": 57.20,
+      "location": "Cincinnati, Ohio",
+      "region": "Ohio",
+      "lat": 39.1031,
+      "lon": -84.5120,
+      "routeStatus": "multi-event-match",
+      "matchSource": "User confirmation + official Flying Pig Marathon Skyline Chili 4-Way Challenge definition + existing 5K/marathon records",
+      "matchConfidence": "confirmed",
+      "note": "Completed the Skyline Chili 4-Way Challenge: the 5K and 10K on Saturday followed by the full Flying Pig Marathon on Sunday. Strava contains the 5K and marathon recordings but not a separate 10K recording; the 10K official time remains pending recovery."
     },
     {
       "id": "rocky-mountain-race-weekend-2025",
