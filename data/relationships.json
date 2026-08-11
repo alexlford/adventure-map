@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "updatedOn": "2026-08-10",
+  "relationships": [
+    {
+      "id": "river-to-river-relay-series",
+      "type": "series",
+      "name": "River to River Relay",
+      "years": [2006, 2008, 2010],
+      "memberIds": [
+        "river-to-river-relay-2006",
+        "river-to-river-relay-2008",
+        "river-to-river-relay-2010"
+      ],
+      "summary": "Three editions of the classic Southern Illinois point-to-point team relay from the Mississippi River side to the Ohio River side.",
+      "routeId": "river-to-river-relay-historical-course",
+      "routeScope": "historical-full-course"
+    },
+    {
+      "id": "heartland-39-3-series-2016",
+      "type": "challenge",
+      "name": "Heartland 39.3",
+      "years": [2016],
+      "memberIds": [
+        "rock-parkway-half-2016",
+        "garmin-half-2016",
+        "running-with-cows-half-2016"
+      ],
+      "adventureId": "heartland-39-3-2016",
+      "summary": "Three half marathons in five weeks: Rock the Parkway, Garmin Marathon in the Land of Oz Half, and Running With The Cows."
+    },
+    {
+      "id": "illinois-half-i-challenge-2016-series",
+      "type": "challenge",
+      "name": "Illinois Half I-Challenge",
+      "years": [2016],
+      "memberIds": [
+        "illinois-5k-2016",
+        "illinois-half-2016"
+      ],
+      "adventureId": "illinois-half-i-challenge-2016",
+      "summary": "Friday-night Illinois 5K followed by the Illinois Half Marathon the next morning."
+    },
+    {
+      "id": "ranch-hand-2022",
+      "type": "challenge",
+      "name": "Ranch Hand",
+      "years": [2022],
+      "memberIds": [
+        "smr-stampede-ranch-hand-skate-2022",
+        "smr-stampede-ranch-hand-classic-2022"
+      ],
+      "adventureId": "ranch-hand-weekend-2022",
+      "summary": "Snow Mountain Ranch Stampede: 25K freestyle/skate on Saturday followed by 25K classic on Sunday."
+    },
+    {
+      "id": "royal-gorge-groove-run-ride-2024",
+      "type": "weekend",
+      "name": "Royal Gorge Groove Run + Ride",
+      "years": [2024],
+      "memberIds": [
+        "royal-gorge-groove-trail-2024",
+        "royal-gorge-groove-mtb-2024"
+      ],
+      "adventureId": "royal-gorge-groove-weekend-2024",
+      "summary": "Back-to-back Royal Gorge race weekend: a Saturday trail run followed by a Sunday mountain-bike race."
+    }
+  ]
+}
