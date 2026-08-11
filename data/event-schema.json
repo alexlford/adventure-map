@@ -1,10 +1,11 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "description": "Canonical normalized record vocabulary for the Personal Adventure Almanac. Source files may retain legacy fields; catalog.js projects them into this schema at load time.",
   "kinds": ["summit", "race", "adventure", "event"],
   "disciplines": ["road", "marathon", "trail", "relay", "mountain-bike", "nordic", "ski-objective", "mountain-loop", "trek", "challenge", "hike", "ski"],
   "confidence": ["confirmed", "verified", "high", "medium", "low", "unknown"],
   "coordinatePrecision": ["gps-course", "gps-area", "venue", "venue-placeholder", "city", "region", "unknown"],
+  "mtbRidingStyle": ["pedal", "lift-served", "mixed"],
   "normalizedFields": {
     "recordClass": "Canonical kind: summit, race, adventure, or event.",
     "sport": "Broad sport family used for cross-page grouping.",
@@ -13,6 +14,7 @@
     "distance": "Object with numeric km/mi values and optional display label.",
     "locationInfo": "Object containing label, region, coordinates, and precision.",
     "evidence": "Object describing source text and confidence.",
-    "routeInfo": "Object describing route status/provenance when known."
+    "routeInfo": "Object describing route status/provenance when known.",
+    "mtbRidingStyle": "For MTB records/locations: pedal, lift-served, or mixed/needs verification. Lift-served ascent must not be represented as pedaled climbing."
   }
 }
