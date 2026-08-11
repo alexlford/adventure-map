@@ -113,8 +113,10 @@ window.AdventureSite = (() => {
 
 if (/detail\.html$/.test(location.pathname)) {
   const style=document.createElement('link'); style.rel='stylesheet'; style.href='detail-phase4.css'; document.head.appendChild(style);
+  const mediaStyle=document.createElement('link');mediaStyle.rel='stylesheet';mediaStyle.href='record-media.css';document.head.appendChild(mediaStyle);
   const script=document.createElement('script'); script.src='detail-phase4.js'; script.defer=true; document.head.appendChild(script);
   const story=document.createElement('script');story.src='story-detail.js';story.defer=true;document.head.appendChild(story);
   const major=document.createElement('script');major.src='world-major-detail.js';major.defer=true;document.head.appendChild(major);
+  const media=document.createElement('script');media.src='record-media.js';media.defer=true;document.head.appendChild(media);
   const clean=document.createElement('script');clean.src='clean-route-normalizer.js';clean.defer=true;document.head.appendChild(clean);
 }
