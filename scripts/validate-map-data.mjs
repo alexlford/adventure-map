@@ -17,6 +17,7 @@ for (const id of manifest.removeIds || []) publicIds.delete(id);
 
 const routeCatalog = await readJson('data/route-catalog.json');
 const seenPolylineIds = new Set();
+const usedRepairRoutes = new Set();
 
 function decodePolyline(encoded) {
   let index = 0, lat = 0, lon = 0;
@@ -54,6 +55,17 @@ for (const polylineFile of routeCatalog.polylineFiles || []) {
     if (!route.id) problems.push(`${at}: missing stable route id`);
     if (route.id && seenPolylineIds.has(route.id)) problems.push(`${at}: duplicate route id`);
     if (route.id) seenPolylineIds.add(route.id);
+    const repair = route.id ? routeCatalog.polylineRepairs?.[route.id] : null;
+    if (repair) {
+      usedRepairRoutes.add(route.id);
+      if (typeof repair.note !== 'string' || !repair.note.trim()) problems.push(`${at}: declared polyline repair must include a note`);
+      for (const [lineIndex, trimValue] of Object.entries(repair.trimEndByLine || {})) {
+        const index = Number(lineIndex);
+        const trim = Number(trimValue);
+        if (!Number.isInteger(index) || index < 0 || index >= (route.lines || []).length) problems.push(`${at}: repair references nonexistent line ${lineIndex}`);
+        if (!Number.isInteger(trim) || trim < 1) problems.push(`${at}: repair trim for line ${lineIndex} must be a positive integer`);
+      }
+    }
     if (!Array.isArray(route.lines) || !route.lines.length) {
       problems.push(`${at}: missing encoded route lines`);
     } else {
@@ -62,8 +74,22 @@ for (const polylineFile of routeCatalog.polylineFiles || []) {
           problems.push(`${at}: line ${index} is not an encoded polyline string`);
           continue;
         }
+        const trim = Number(repair?.trimEndByLine?.[String(index)] || 0);
+        let encoded = line;
+        if (trim > 0) {
+          if (trim >= line.length) {
+            problems.push(`${at}: repair trim for line ${index} removes the entire segment`);
+            continue;
+          }
+          try {
+            decodePolyline(line);
+            problems.push(`${at}: line ${index} decodes without repair; declared trim is stale or unnecessary`);
+          } catch {
+            encoded = line.slice(0, -trim);
+          }
+        }
         try {
-          const coordinates = decodePolyline(line);
+          const coordinates = decodePolyline(encoded);
           if (coordinates.length < 2) problems.push(`${at}: line ${index} decodes to fewer than two coordinates`);
           for (const [lon, lat] of coordinates) {
             if (!Number.isFinite(lat) || lat < -90 || lat > 90 || !Number.isFinite(lon) || lon < -180 || lon > 180) {
@@ -72,12 +98,15 @@ for (const polylineFile of routeCatalog.polylineFiles || []) {
             }
           }
         } catch (error) {
-          problems.push(`${at}: line ${index} cannot be decoded (${error.message})`);
+          problems.push(`${at}: line ${index} cannot be decoded${trim ? ' after declared repair' : ''} (${error.message})`);
         }
       }
     }
     for (const id of route.adventureIds || []) if (!publicIds.has(id)) warnings.push(`${at}: references non-public/unknown record ${id}`);
   }
+}
+for (const routeId of Object.keys(routeCatalog.polylineRepairs || {})) {
+  if (!usedRepairRoutes.has(routeId)) problems.push(`route-catalog polylineRepairs references unknown route ${routeId}`);
 }
 
 const skiing = await readJson('data/skiing.json');
@@ -98,10 +127,13 @@ for (const resort of resorts) {
   if (resortIds.has(id)) problems.push(`${at}: generated map entity id collides with another resort (${id})`);
   resortIds.add(id);
 }
-if (Number.isFinite(Number(skiing.summary?.recordedDays)) && resortDayTotal !== Number(skiing.summary.recordedDays)) problems.push(`data/skiing.json: resort day total ${resortDayTotal} does not match summary recordedDays ${skiing.summary.recordedDays}`);
+const distinctSkiDays = Number(skiing.summary?.recordedDays);
+if (Number.isFinite(distinctSkiDays) && resortDayTotal < distinctSkiDays) problems.push(`data/skiing.json: resort day memberships ${resortDayTotal} cannot cover ${distinctSkiDays} distinct recorded ski days`);
 
 console.log(`Map polyline routes: ${seenPolylineIds.size}`);
+console.log(`Declared polyline endpoint repairs: ${usedRepairRoutes.size}`);
 console.log(`Ski resort map entities: ${resorts.length}`);
+console.log(`Ski resort day memberships: ${resortDayTotal} across ${Number.isFinite(distinctSkiDays) ? distinctSkiDays : 'unknown'} distinct ski days`);
 warnings.forEach(message => console.warn(`WARN ${message}`));
 if (problems.length) {
   problems.forEach(message => console.error(`ERROR ${message}`));
