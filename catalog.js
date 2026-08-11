@@ -9,7 +9,7 @@ window.AdventureCatalog = (() => {
 
   function validate(records) {
     const errors = [], warnings = [], seen = new Set();
-    const allowedKinds = new Set(['summit','race','adventure']);
+    const allowedKinds = new Set(['summit','race','adventure','event']);
     records.forEach((record, index) => {
       const where = record.id || `record ${index + 1}`;
       if (!record.id) errors.push(`${where}: missing id`);
@@ -17,7 +17,7 @@ window.AdventureCatalog = (() => {
       else seen.add(record.id);
       if (!record.name) errors.push(`${where}: missing name`);
       if (!allowedKinds.has(record.kind)) errors.push(`${where}: invalid kind ${record.kind}`);
-      if (record.kind === 'race' && !record.discipline) errors.push(`${where}: race missing discipline`);
+      if ((record.kind === 'race' || record.kind === 'event') && !record.discipline) errors.push(`${where}: ${record.kind} missing discipline`);
       if (record.date && !/^\d{4}-\d{2}-\d{2}$/.test(record.date)) errors.push(`${where}: invalid date ${record.date}`);
       if (record.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(record.endDate)) errors.push(`${where}: invalid endDate ${record.endDate}`);
       if ((record.lat == null) !== (record.lon == null)) errors.push(`${where}: lat/lon must be provided together`);
@@ -31,10 +31,7 @@ window.AdventureCatalog = (() => {
     return { errors, warnings, valid: errors.length === 0 };
   }
 
-  async function loadManifest() {
-    return fetchJson('data/catalog.json');
-  }
-
+  async function loadManifest() { return fetchJson('data/catalog.json'); }
   async function load({ fresh = false } = {}) {
     if (cache && !fresh) return cache;
     const manifest = await loadManifest();
@@ -42,25 +39,14 @@ window.AdventureCatalog = (() => {
       Promise.all(manifest.sources.map(source => fetchJson(source.path).then(payload => ({ source, payload })))),
       fetchJson(manifest.matchLayer)
     ]);
-
     const records = new Map();
-    for (const { source, payload } of sourcePayloads) {
-      for (const item of payload.adventures || []) {
-        const prior = records.get(item.id) || {};
-        records.set(item.id, { ...prior, ...item, _catalogSource: source.path });
-      }
-    }
-
-    for (const [id, match] of Object.entries(matches.matches || {})) {
-      if (records.has(id)) records.set(id, { ...records.get(id), ...match });
-    }
-
+    for (const { source, payload } of sourcePayloads) for (const item of payload.adventures || []) records.set(item.id, { ...(records.get(item.id) || {}), ...item, _catalogSource: source.path });
+    for (const [id, match] of Object.entries(matches.matches || {})) if (records.has(id)) records.set(id, { ...records.get(id), ...match });
     for (const id of manifest.removeIds || []) records.delete(id);
     for (const [id, override] of Object.entries(manifest.overrides || {})) {
       if (!records.has(id)) throw new Error(`Catalog override references unknown id: ${id}`);
       records.set(id, { ...records.get(id), ...override });
     }
-
     const adventures = [...records.values()];
     const report = validate(adventures);
     if (!report.valid) throw new Error(`Catalog validation failed: ${report.errors.join('; ')}`);
@@ -68,7 +54,6 @@ window.AdventureCatalog = (() => {
     cache = adventures;
     return adventures;
   }
-
   async function loadRelationships({ fresh = false } = {}) {
     if (relationshipCache && !fresh) return relationshipCache;
     const manifest = await loadManifest();
@@ -77,11 +62,6 @@ window.AdventureCatalog = (() => {
     relationshipCache = payload.relationships || [];
     return relationshipCache;
   }
-
-  async function relationshipsFor(recordId) {
-    const relationships = await loadRelationships();
-    return relationships.filter(rel => (rel.memberIds || []).includes(recordId) || rel.adventureId === recordId);
-  }
-
+  async function relationshipsFor(recordId) { const relationships = await loadRelationships(); return relationships.filter(rel => (rel.memberIds || []).includes(recordId) || rel.adventureId === recordId); }
   return { load, validate, loadRelationships, relationshipsFor };
 })();
