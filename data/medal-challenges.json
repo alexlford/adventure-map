@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "source": "User medal evidence + canonical race records",
+    "updatedOn": "2026-08-11"
+  },
+  "adventures": [
+    {
+      "id": "illinois-i-challenge-2015",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Illinois I-Challenge",
+      "year": 2015,
+      "date": "2015-04-24",
+      "endDate": "2015-04-25",
+      "distance": "5K + Marathon",
+      "officialDistance": "5K + 26.2 miles",
+      "officialDistanceMi": 29.31,
+      "officialDistanceKm": 47.20,
+      "location": "Champaign-Urbana, Illinois",
+      "region": "Illinois",
+      "lat": 40.0998,
+      "lon": -88.2362,
+      "routeStatus": "multi-event-match",
+      "matchSource": "User 2015 I-Challenge medal + existing Illinois 5K and marathon records",
+      "matchConfidence": "confirmed",
+      "note": "The 2015 medal explicitly identifies the I-Challenge as 42K + 5K: the Illinois 5K followed by the full Illinois Marathon."
+    },
+    {
+      "id": "rocky-mountain-race-weekend-2025",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Rocky Mountain 5K + Half Weekend",
+      "year": 2025,
+      "date": "2025-08-01",
+      "endDate": "2025-08-02",
+      "distance": "5K + Half Marathon",
+      "officialDistance": "5K + 13.1 miles",
+      "officialDistanceMi": 16.21,
+      "officialDistanceKm": 26.08,
+      "location": "Estes Park, Colorado",
+      "region": "Colorado",
+      "lat": 40.3772,
+      "lon": -105.5217,
+      "routeStatus": "multi-event-match",
+      "matchSource": "User finisher medals + official Rocky Mountain race weekend structure + Strava",
+      "matchConfidence": "confirmed",
+      "note": "Rocky Mountain 5K on Friday evening followed by the Rocky Mountain Half Marathon the next morning. The event offers this 5K + Half combination as its Elk Double; registration specifically as the Elk Double has not yet been independently verified."
+    }
+  ]
+}
