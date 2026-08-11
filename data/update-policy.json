@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "updatedOn": "2026-08-10",
+  "purpose": "Rules for turning new personal activity data into public Almanac records without turning the site into an activity feed.",
+  "principles": [
+    "Strava is the activity-history backbone and should be scanned incrementally against activity IDs already known to the repository.",
+    "A new activity is a review candidate, not automatically a public record.",
+    "Ordinary training runs are not published. Running enters the Almanac when it is a race, named challenge, or curated Adventure.",
+    "MTB and Nordic are maintained at the individual outing/day level, with races and named events kept distinct from ordinary outings.",
+    "Alpine skiing updates the Ski Passport at the ski-day, resort, season, and named-trip levels; notable objectives may also become Adventures.",
+    "Slopes is the preferred source for ski-specific runs, vertical, resort, and named-trip context when that detail matters.",
+    "No route should be published until its provenance and privacy treatment are resolved."
+  ],
+  "activityPolicies": {
+    "run": {
+      "defaultAction": "review-only",
+      "publicDestinations": ["race", "adventure"],
+      "notes": "Do not add ordinary road or trail training runs to the public catalog or map. Promote organized races and truly notable self-directed objectives only."
+    },
+    "bike": {
+      "defaultAction": "candidate-outing",
+      "publicDestinations": ["outing", "race", "adventure"],
+      "notes": "Resolve location and day-specific MTB mode. Use MTB for human-powered riding, Downhill MTB for lift-served days, and mixed when both meaningfully occur in the same outing."
+    },
+    "nordic": {
+      "defaultAction": "candidate-outing",
+      "publicDestinations": ["outing", "race", "event", "adventure"],
+      "notes": "Ordinary Nordic days can enter the day-level archive. Keep races, untimed named events, and curated standout weekends distinct."
+    },
+    "skiing": {
+      "defaultAction": "ski-passport",
+      "publicDestinations": ["ski-day", "trip", "adventure"],
+      "notes": "Update season day counts and resort history for every reconciled ski day. Add Slopes runs/vertical/trip metadata when available. Named objectives can also be promoted to Adventures."
+    }
+  },
+  "promotionChecklist": [
+    "Confirm date and activity identity.",
+    "Resolve public category and whether it is an ordinary outing, race/event, or Adventure.",
+    "Resolve location/resort and any discipline-specific classification.",
+    "Attach GPS geometry only when useful and privacy-safe.",
+    "Avoid duplicate publication when a race or Adventure already represents the same activity.",
+    "Run the canonical validator before publishing."
+  ]
+}
