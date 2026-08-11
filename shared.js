@@ -24,11 +24,12 @@ window.AdventureSite = (() => {
   const relationshipsFor = (id) => ensureCatalog().then(catalog => catalog.relationshipsFor(id));
   function inferActive(){const p=location.pathname.split('/').pop()||'overview.html';const hit=[...PRIMARY,...ACTIVITIES].find(x=>x[0]===p);return hit?.[2]||null;}
   function primaryKey(active){return activityKeys.has(active)?'activities':active;}
-  function ensureMeta(){
-    const description=document.querySelector('meta[name="description"]')?.content||document.querySelector('.hero p')?.textContent?.trim()||'Alex Ford Personal Adventure Almanac.';
+  function ensureMeta(descriptionOverride=''){
+    const description=descriptionOverride||document.querySelector('meta[name="description"]')?.content||document.querySelector('.hero p')?.textContent?.trim()||'Alex Ford Personal Adventure Almanac.';
     const detail=/detail\.html$/.test(location.pathname);
     const canonicalUrl=`${location.origin}${location.pathname}${detail?location.search:''}`;
     const set=(selector,attrs)=>{let node=document.head.querySelector(selector);if(!node){node=document.createElement(attrs.tag||'meta');document.head.appendChild(node)}Object.entries(attrs).forEach(([k,v])=>{if(k!=='tag')node.setAttribute(k,v)})};
+    set('meta[name="description"]',{name:'description',content:description});
     set('link[rel="canonical"]',{tag:'link',rel:'canonical',href:canonicalUrl});
     set('meta[name="theme-color"]',{name:'theme-color',content:'#f7f4ee'});
     set('meta[property="og:site_name"]',{property:'og:site_name',content:'Alex Ford Personal Adventure Almanac'});
@@ -68,7 +69,7 @@ window.AdventureSite = (() => {
     page.appendChild(nav);
   }
   function shell(active){ensureNav(active);ensureFlow(active);}
-  ensureMeta();ensureAccessibility();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,shell};
+  ensureMeta();ensureAccessibility();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,shell,refreshMeta:ensureMeta};
 })();
 
 if (/detail\.html$/.test(location.pathname)) {
