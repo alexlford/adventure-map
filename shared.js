@@ -113,6 +113,7 @@ window.AdventureSite = (() => {
 
 if (/detail\.html$/.test(location.pathname)) {
   const style=document.createElement('link'); style.rel='stylesheet'; style.href='detail-phase4.css'; document.head.appendChild(style);
+  const storyStyle=document.createElement('link');storyStyle.rel='stylesheet';storyStyle.href='story-themes.css';document.head.appendChild(storyStyle);
   const mediaStyle=document.createElement('link');mediaStyle.rel='stylesheet';mediaStyle.href='record-media.css';document.head.appendChild(mediaStyle);
   const script=document.createElement('script'); script.src='detail-phase4.js'; script.defer=true; document.head.appendChild(script);
   const story=document.createElement('script');story.src='story-detail.js';story.defer=true;document.head.appendChild(story);
