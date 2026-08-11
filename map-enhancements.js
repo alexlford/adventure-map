@@ -20,15 +20,98 @@
     });
   }
 
+  const focusEndpointLayer=window.L&&typeof map!=='undefined'?L.layerGroup().addTo(map):null;
+  state.pinnedFocusId=null;
+
+  function geometrySegments(geometry){
+    if(!geometry)return[];
+    if(geometry.type==='LineString')return[geometry.coordinates||[]];
+    if(geometry.type==='MultiLineString')return geometry.coordinates||[];
+    if(geometry.type==='GeometryCollection')return(geometry.geometries||[]).flatMap(geometrySegments);
+    return[];
+  }
+  function segmentLength(segment){
+    let total=0;
+    for(let i=1;i<segment.length;i+=1){
+      const[x1,y1]=segment[i-1],[x2,y2]=segment[i];
+      if(![x1,y1,x2,y2].every(Number.isFinite))continue;
+      const dx=(x2-x1)*Math.cos(((y1+y2)/2)*Math.PI/180),dy=y2-y1;
+      total+=Math.hypot(dx,dy);
+    }
+    return total;
+  }
+  function endpointIcon(kind,color){
+    const label=kind==='loop'?'↻':kind==='start'?'S':'F';
+    const cls=`route-endpoint ${kind==='finish'?'is-finish':''}${kind==='loop'?' is-loop':''}`;
+    return L.divIcon({className:'route-endpoint-wrap',html:`<span class="${cls}" style="--route-color:${color}">${label}</span>`,iconSize:[26,26],iconAnchor:[13,13]});
+  }
+  function renderFocusEndpoints(){
+    focusEndpointLayer?.clearLayers();
+    if(!focusEndpointLayer||!state.focusId)return;
+    const record=state.adventures.find(a=>a.id===state.focusId);
+    if(!record)return;
+    const segments=visibleRouteFeatures([record]).flatMap(feature=>geometrySegments(feature.geometry)).filter(segment=>segment.length>1);
+    if(!segments.length)return;
+    const segment=segments.slice().sort((a,b)=>segmentLength(b)-segmentLength(a))[0];
+    const start=segment[0],finish=segment[segment.length-1];
+    if(!start||!finish)return;
+    const[startLon,startLat]=start,[finishLon,finishLat]=finish;
+    if(![startLon,startLat,finishLon,finishLat].every(Number.isFinite))return;
+    const color=theme?.routeColor?.(record)||CATEGORY[publicLayerFor(record)]?.color||'#17202a';
+    const dx=(finishLon-startLon)*Math.cos(((startLat+finishLat)/2)*Math.PI/180),dy=finishLat-startLat;
+    const loop=Math.hypot(dx,dy)<.00065;
+    if(loop){
+      L.marker([startLat,startLon],{icon:endpointIcon('loop',color),interactive:false,zIndexOffset:900})
+        .bindTooltip('Start / finish',{direction:'top',offset:[0,-10],className:'route-endpoint-label'})
+        .addTo(focusEndpointLayer);
+      return;
+    }
+    L.marker([startLat,startLon],{icon:endpointIcon('start',color),interactive:false,zIndexOffset:900})
+      .bindTooltip('Start',{direction:'top',offset:[0,-10],className:'route-endpoint-label'})
+      .addTo(focusEndpointLayer);
+    L.marker([finishLat,finishLon],{icon:endpointIcon('finish',color),interactive:false,zIndexOffset:900})
+      .bindTooltip('Finish',{direction:'top',offset:[0,-10],className:'route-endpoint-label'})
+      .addTo(focusEndpointLayer);
+  }
+
+  const originalFocusAdventure=typeof focusAdventure==='function'?focusAdventure:null;
+  if(originalFocusAdventure){
+    focusAdventure=function(a){
+      state.pinnedFocusId=a.id;
+      originalFocusAdventure(a);
+      state.focusId=a.id;
+      applyFocusStyles();
+    };
+  }
+  if(typeof setRouteEmphasis==='function'){
+    setRouteEmphasis=function(id,on){
+      if(on)state.focusId=id;
+      else state.focusId=state.pinnedFocusId||null;
+      applyFocusStyles();
+    };
+  }
+
   if (typeof applyFocusStyles === 'function') {
     applyFocusStyles = function() {
+      if(state.focusId&&!state.adventures.some(a=>a.id===state.focusId)){
+        state.focusId=null;
+        state.pinnedFocusId=null;
+      }
+      const zoom=typeof map!=='undefined'?map.getZoom():7;
+      const low=zoom<=4,mid=zoom>4&&zoom<=6;
+      const routeWeightFactor=low?.5:mid?.72:1;
+      const routeOpacityFactor=low?.48:mid?.7:1;
+      const pointRadius=low?4.3:mid?5.2:6;
+
       state.routeFeatureLayers.forEach(group => group.eachLayer(layer => {
         const feature = layer.feature || {};
         const linked = (feature.properties?.adventureIds || []).map(x => state.adventures.find(a => a.id === x)).filter(Boolean);
         const category = publicLayerFor(linked[0] || {kind:'adventure'});
         const style = baseRouteStyle(feature, category);
         const active = state.focusId && routeContainsId(layer, state.focusId);
-        layer.setStyle?.({...style, weight:active ? Math.max(style.weight + 3, 7) : style.weight, opacity:state.focusId ? (active ? 1 : .12) : style.opacity});
+        const weight=active?Math.max(style.weight+3,7):Math.max(1.5,style.weight*routeWeightFactor);
+        const opacity=state.focusId?(active?1:.1):Math.max(.22,style.opacity*routeOpacityFactor);
+        layer.setStyle?.({...style,weight,opacity});
         if (active) layer.bringToFront?.();
       }));
 
@@ -41,18 +124,26 @@
         const records = ids.map(id => state.adventures.find(a => a.id === id)).filter(Boolean);
         const mixed = new Set(records.map(publicLayerFor)).size > 1;
         const active = Boolean(state.focusId && ids.includes(state.focusId));
-        const baseRadius = ids.length > 1 ? 8 : 6;
+        const groupedBoost=ids.length>1?1.6:0;
+        const baseRadius=pointRadius+groupedBoost;
         marker.setStyle?.({
           radius: active ? baseRadius + 3 : baseRadius,
-          weight: active ? 3 : (mixed ? 3 : 2),
-          fillOpacity: state.focusId ? (active ? .98 : .26) : .9,
-          opacity: state.focusId ? (active ? 1 : .36) : 1
+          weight: active ? 3 : (mixed ? 2.5 : low ? 1.5 : 2),
+          fillOpacity: state.focusId ? (active ? .98 : .24) : (low ? .78 : .9),
+          opacity: state.focusId ? (active ? 1 : .32) : (low ? .88 : 1)
         });
         if (active) marker.bringToFront?.();
       });
 
+      renderFocusEndpoints();
       document.querySelectorAll('.adventure-item').forEach(el => el.classList.toggle('is-context-muted', Boolean(state.focusId) && el.dataset.id !== state.focusId));
     };
+  }
+
+  if(typeof map!=='undefined'){
+    map.on('zoomend',()=>applyFocusStyles());
+    map.on('click',()=>{state.pinnedFocusId=null;focusEndpointLayer?.clearLayers()});
+    setTimeout(()=>applyFocusStyles(),0);
   }
 
   const shell = document.querySelector('.app-shell');
