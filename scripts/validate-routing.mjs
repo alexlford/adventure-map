@@ -33,7 +33,10 @@ if(mapPage.includes('official-results-ui.js')||fs.existsSync('official-results-u
 if(mapEnhancements.includes('detail.html?id=')||mapEnhancements.includes('window.popupCard'))errors.push('map enhancements must not wrap popupCard or inject legacy record links');
 if(!routeCatalogJs.includes('cfg.polylineFiles')||!routeCatalog.includes('"data/activity-route-polylines.json"'))errors.push('route catalog must own day-level activity polylines');
 if(!detail.includes('src="record-renderer.js"'))errors.push('detail page must load the unified record renderer');
-for(const old of ['detail-phase4.js','story-detail.js','world-major-detail.js','record-media.js','clean-route-normalizer.js'])if(detail.includes(old)||shared.includes(old))errors.push(`${old} must not be dynamically loaded by the active detail path`);
+for(const old of ['detail-phase4.js','story-detail.js','world-major-detail.js','record-media.js','clean-route-normalizer.js']){
+  if(fs.existsSync(old))errors.push(`${old} is obsolete and must remain removed`);
+  if(detail.includes(old)||shared.includes(old))errors.push(`${old} must not be dynamically loaded by the active detail path`);
+}
 if(!detail.includes('detail-phase4.css')||!detail.includes('story-themes.css')||!detail.includes('record-media.css'))errors.push('detail page must load its record presentation styles explicitly');
 if(renderer.includes('MutationObserver'))errors.push('record renderer must not depend on MutationObserver composition');
 if(/setTimeout\([^)]*(50|200|600)/.test(renderer))errors.push('record renderer must not use delayed cleanup passes');
