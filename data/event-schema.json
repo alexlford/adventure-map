@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "description": "Canonical normalized record vocabulary for the Personal Adventure Almanac. Source files may retain legacy fields; catalog.js projects them into this schema at load time.",
+  "kinds": ["summit", "race", "adventure", "event"],
+  "disciplines": ["road", "marathon", "trail", "relay", "mountain-bike", "nordic", "ski-objective", "mountain-loop", "trek", "challenge", "hike", "ski"],
+  "confidence": ["confirmed", "verified", "high", "medium", "low", "unknown"],
+  "coordinatePrecision": ["gps-course", "gps-area", "venue", "venue-placeholder", "city", "region", "unknown"],
+  "normalizedFields": {
+    "recordClass": "Canonical kind: summit, race, adventure, or event.",
+    "sport": "Broad sport family used for cross-page grouping.",
+    "startDate": "Canonical ISO start date.",
+    "finishDate": "Canonical ISO finish date, equal to startDate for one-day records.",
+    "distance": "Object with numeric km/mi values and optional display label.",
+    "locationInfo": "Object containing label, region, coordinates, and precision.",
+    "evidence": "Object describing source text and confidence.",
+    "routeInfo": "Object describing route status/provenance when known."
+  }
+}
