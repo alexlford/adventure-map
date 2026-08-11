@@ -29,6 +29,87 @@
   };
   window.AdventureMapTheme = { colors, routeColor };
 
+  function geometrySegments(geometry) {
+    if (!geometry) return [];
+    if (geometry.type === 'LineString') return [geometry.coordinates || []];
+    if (geometry.type === 'MultiLineString') return geometry.coordinates || [];
+    if (geometry.type === 'GeometryCollection') return (geometry.geometries || []).flatMap(geometrySegments);
+    return [];
+  }
+
+  function segmentLength(segment) {
+    let total = 0;
+    for (let i = 1; i < segment.length; i += 1) {
+      const [x1,y1] = segment[i - 1], [x2,y2] = segment[i];
+      if (![x1,y1,x2,y2].every(Number.isFinite)) continue;
+      const dx = (x2 - x1) * Math.cos(((y1 + y2) / 2) * Math.PI / 180);
+      const dy = y2 - y1;
+      total += Math.hypot(dx,dy);
+    }
+    return total;
+  }
+
+  function endpointIcon(kind, color) {
+    const label = kind === 'loop' ? '↻' : kind === 'start' ? 'S' : 'F';
+    const className = `route-endpoint ${kind === 'finish' ? 'is-finish' : ''}${kind === 'loop' ? ' is-loop' : ''}`;
+    return L.divIcon({
+      className:'route-endpoint-wrap',
+      html:`<span class="${className}" style="--route-color:${color}">${label}</span>`,
+      iconSize:[26,26],
+      iconAnchor:[13,13]
+    });
+  }
+
+  function decorateDetailRoute(map, layer) {
+    if (!map || !layer || layer.__adventureEndpointsAdded) return;
+    layer.__adventureEndpointsAdded = true;
+    const payload = layer.toGeoJSON?.();
+    const features = payload?.type === 'FeatureCollection' ? payload.features : payload ? [payload] : [];
+    const segments = features.flatMap(feature => geometrySegments(feature.geometry)).filter(segment => segment.length > 1);
+    if (!segments.length) return;
+    const segment = segments.slice().sort((a,b) => segmentLength(b) - segmentLength(a))[0];
+    const start = segment[0], finish = segment[segment.length - 1];
+    if (!start || !finish) return;
+    const [startLon,startLat] = start, [finishLon,finishLat] = finish;
+    if (![startLon,startLat,finishLon,finishLat].every(Number.isFinite)) return;
+    const bodyAccent = getComputedStyle(document.body).getPropertyValue('--accent').trim();
+    const color = bodyAccent || '#17202a';
+    const dx = (finishLon - startLon) * Math.cos(((startLat + finishLat) / 2) * Math.PI / 180);
+    const dy = finishLat - startLat;
+    const isLoop = Math.hypot(dx,dy) < .00065;
+    const endpointLayer = L.layerGroup().addTo(map);
+    if (isLoop) {
+      L.marker([startLat,startLon], {icon:endpointIcon('loop',color),interactive:false,zIndexOffset:800})
+        .bindTooltip('Start / finish',{permanent:false,direction:'top',offset:[0,-10],className:'route-endpoint-label'})
+        .addTo(endpointLayer);
+      return;
+    }
+    L.marker([startLat,startLon], {icon:endpointIcon('start',color),interactive:false,zIndexOffset:800})
+      .bindTooltip('Start',{permanent:false,direction:'top',offset:[0,-10],className:'route-endpoint-label'})
+      .addTo(endpointLayer);
+    L.marker([finishLat,finishLon], {icon:endpointIcon('finish',color),interactive:false,zIndexOffset:800})
+      .bindTooltip('Finish',{permanent:false,direction:'top',offset:[0,-10],className:'route-endpoint-label'})
+      .addTo(endpointLayer);
+  }
+
+  if (window.L?.map && !L.map.__adventureWrapped) {
+    const originalMap = L.map;
+    const wrappedMap = function(...args) {
+      const map = originalMap.apply(L,args);
+      const container = map.getContainer?.();
+      if (container?.classList?.contains('detail-map')) {
+        map.on('layeradd',event => {
+          if (window.L?.GeoJSON && event.layer instanceof L.GeoJSON) {
+            setTimeout(() => decorateDetailRoute(map,event.layer),0);
+          }
+        });
+      }
+      return map;
+    };
+    wrappedMap.__adventureWrapped = true;
+    L.map = wrappedMap;
+  }
+
   const scheduled = new WeakMap();
 
   function settle(map) {
