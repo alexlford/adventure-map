@@ -47,7 +47,7 @@ body[data-page="nordic"] .detail-map .leaflet-interactive{stroke:#2f6f8f!importa
 body[data-page="mountain-biking"] .detail-map .leaflet-interactive{stroke:#315f9e!important}
 body[data-page="adventures"] .detail-map .leaflet-interactive{stroke:#715a8d!important}
 .detail-map path.leaflet-interactive{filter:drop-shadow(0 1px 0 rgba(255,255,255,.88))}
-.detail-map path.detail-location-point{stroke:#fff!important;stroke-width:2.5px!important;fill:var(--accent)!important;filter:drop-shadow(0 3px 6px rgba(23,32,42,.24))}
+body[data-page] .detail-map path.detail-location-point{stroke:#fff!important;stroke-width:2.5px!important;fill:var(--accent)!important;filter:drop-shadow(0 3px 6px rgba(23,32,42,.24))}
 .leaflet-tooltip.detail-location-label{padding:5px 8px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.96);box-shadow:0 5px 16px rgba(23,32,42,.12);color:var(--ink);font-size:10px;font-weight:800;line-height:1.2}
 .leaflet-tooltip.detail-location-label:before{display:none}
 
