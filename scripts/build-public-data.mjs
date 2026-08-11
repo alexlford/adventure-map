@@ -10,6 +10,8 @@ const outDir = path.resolve(root, outIndex >= 0 && args[outIndex + 1] ? args[out
 
 async function readText(rel) { return fs.readFile(path.join(root, rel), 'utf8'); }
 const stableHash = values => crypto.createHash('sha256').update(values.join('\n')).digest('hex').slice(0, 16);
+const slugify = value => String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').replace(/-+/g,'-');
+const recordSlug = record => record.slug || [record.date || record.year, record.name].filter(Boolean).map(slugify).filter(Boolean).join('-') || slugify(record.id);
 
 function inferProvenance(feature) {
   const p = feature.properties || {};
@@ -68,9 +70,15 @@ async function compileRecords() {
   }
   const relationshipText = manifest.relationshipLayer ? await readText(manifest.relationshipLayer) : '{"relationships":[]}';
   const relationshipPayload = JSON.parse(relationshipText);
-  const list = [...records.values()];
+  const list = [...records.values()].map(record => ({ ...record, slug: recordSlug(record) }));
   const ids = new Set(list.map(record => record.id));
   if (ids.size !== list.length) throw new Error('Compiled public records contain duplicate ids');
+  const slugs = new Set();
+  for (const record of list) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(record.slug || '')) throw new Error(`Compiled public record ${record.id} has invalid slug ${record.slug || '(missing)'}`);
+    if (slugs.has(record.slug)) throw new Error(`Compiled public records contain duplicate slug ${record.slug}`);
+    slugs.add(record.slug);
+  }
   return {
     schemaVersion: 1,
     sourceFingerprint: stableHash([manifestText, ...sourceTexts, matchText, relationshipText]),
