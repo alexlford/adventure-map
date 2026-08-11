@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "source": "2014 Abe's Amble registration archive + Springfield Road Runners Club historical results index + Strava export/GPX",
+    "updatedOn": "2026-08-11",
+    "policy": "Official event distance, date, start time, and venue are canonical. Strava supplies GPS route and fallback elapsed time until the historical individual timing row is recovered."
+  },
+  "adventures": [
+    {
+      "id": "abes-amble-2014",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Abe's Amble 10K",
+      "year": 2014,
+      "date": "2014-08-17",
+      "distance": "10K",
+      "officialDistance": "10K",
+      "officialDistanceKm": 10.0,
+      "officialDistanceMi": 6.21,
+      "location": "Illinois State Fairgrounds, Springfield, Illinois",
+      "region": "Illinois",
+      "lat": 39.837273,
+      "lon": -89.642715,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "641968068",
+      "stravaActivityName": "Ridgely - Springfield",
+      "stravaDistanceKm": 10.101,
+      "stravaDistanceMi": 6.28,
+      "stravaElapsedSeconds": 3789,
+      "stravaMovingSeconds": 3754,
+      "elevationGainM": 44.4,
+      "routeStatus": "gps-source-available",
+      "resultSource": "2014 Abe's Amble registration archive and Springfield Road Runners Club historical results index",
+      "resultUrl": "https://secure.getmeregistered.com/register.php?event_id=10905",
+      "matchSource": "Exact 2014 event date + exact 7:30 AM local Strava start + 10.101 km GPS recording beginning at the Illinois State Fairgrounds + SRRC historical race listing",
+      "matchConfidence": "verified",
+      "note": "The original 2014 registration page specifies a 7:30 AM 10K starting and finishing beside the Grandstand at the Illinois State Fairgrounds. The Strava activity begins at that exact local start time, starts at the fairgrounds, and records 10.101 km. The old TimingIsEverything individual results page is no longer crawler-accessible, so 1:03:09 remains a Strava elapsed-time fallback rather than an asserted official result."
+    }
+  ]
+}
