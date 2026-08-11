@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "source": "OpenSplitTime official event results + RunSignup event archive + Strava export + user medal photo",
+    "updatedOn": "2026-08-11",
+    "policy": "Official race distance/time/place are canonical; Strava is route, elevation and raw-recording evidence."
+  },
+  "adventures": [
+    {
+      "id": "staunton-rocks-half-2022",
+      "kind": "race",
+      "discipline": "trail",
+      "name": "Staunton Rocks! Half Marathon",
+      "year": 2022,
+      "date": "2022-08-27",
+      "distance": "Half marathon",
+      "officialDistance": "Half marathon",
+      "officialDistanceKm": 21.0975,
+      "officialDistanceMi": 13.1,
+      "officialTime": "3:12:14",
+      "officialPlace": 127,
+      "genderPlace": 85,
+      "bib": 62,
+      "age": 34,
+      "location": "Staunton State Park, Pine, Colorado",
+      "region": "Colorado",
+      "stravaActivityId": "7711293400",
+      "stravaActivityName": "Shaffers Crossing - Pine Junction",
+      "stravaDistanceKm": 21.37,
+      "stravaDistanceMi": 13.28,
+      "stravaElapsedSeconds": 11532,
+      "stravaMovingSeconds": 11166,
+      "elevationGainM": 680.6,
+      "elevationGainFt": 2233,
+      "routeStatus": "gps-source-available",
+      "resultSource": "OpenSplitTime Staunton Rocks! Half Marathon 2022 results",
+      "resultUrl": "https://www.opensplittime.org/events/staunton-rocks-marathon-half-2022-half-marathon/spread?sort=overall_rank",
+      "matchSource": "Official individual result + exact-date Strava trail half + user Staunton Rocks finisher medal",
+      "matchConfidence": "verified",
+      "note": "OpenSplitTime lists Alex Ford, age 34, Denver, bib 62, finishing 127th overall / 85th male in 3:12:14. The exact-date Strava recording is 21.37 km in 3:12:12 with about 681 m of climbing."
+    }
+  ]
+}
