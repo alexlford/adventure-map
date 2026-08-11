@@ -18,6 +18,8 @@
       const label=item.textContent.trim();
       if(dot&&legendMap[label])dot.style.background=legendMap[label];
     });
+    const legend=document.querySelector('.legend');
+    if(legend&&!legend.querySelector('.map-mixed-key'))legend.insertAdjacentHTML('beforeend','<span class="map-mixed-key"><i class="legend-dot" style="background:#59636d"></i> Mixed cluster</span>');
   }
 
   const focusEndpointLayer=window.L&&typeof map!=='undefined'?L.layerGroup().addTo(map):null;
@@ -75,10 +77,109 @@
       .addTo(focusEndpointLayer);
   }
 
+  const markerGridSize=zoom=>zoom<=3?52:zoom===4?42:zoom===5?32:zoom===6?24:0;
+  const groupCenter=group=>{
+    const lat=group.reduce((sum,item)=>sum+item.lat,0)/group.length;
+    const lon=group.reduce((sum,item)=>sum+item.lon,0)/group.length;
+    return[lat,lon];
+  };
+  const markerGroupKey=(a,zoom,grid)=>{
+    if(!grid)return coordinateKey(a);
+    const point=map.project([a.lat,a.lon],zoom);
+    return`${Math.floor(point.x/grid)},${Math.floor(point.y/grid)}`;
+  };
+  const markerPopup=group=>{
+    const ordered=group.slice().sort((a,b)=>(recordYear(b)||0)-(recordYear(a)||0)||a.name.localeCompare(b.name));
+    const shown=ordered.slice(0,8).map(popupCard).join('');
+    const more=ordered.length>8?`<p class="map-cluster-more">+ ${ordered.length-8} more nearby records · zoom in to separate them.</p>`:'';
+    return shown+more;
+  };
+  const clusterBounds=group=>{
+    const bounds=L.latLngBounds([]);
+    group.forEach(item=>bounds.extend([item.lat,item.lon]));
+    return bounds;
+  };
+
+  if(typeof renderMarkers==='function'){
+    renderMarkers=function(items){
+      markerLayer.clearLayers();
+      state.markers.clear();
+      const zoom=map.getZoom();
+      const grid=markerGridSize(zoom);
+      const groups=new Map();
+      items.filter(mapped).forEach(a=>{
+        const key=markerGroupKey(a,zoom,grid);
+        if(!groups.has(key))groups.set(key,[]);
+        groups.get(key).push(a);
+      });
+
+      groups.forEach(group=>{
+        const categories=[...new Set(group.map(publicLayerFor))];
+        const mixed=categories.length>1;
+        const category=mixed?null:categories[0];
+        const color=mixed?'#59636d':CATEGORY[category]?.color||CATEGORY.adventures.color;
+        const cluster=Boolean(grid&&group.length>1);
+        const center=cluster?groupCenter(group):[group[0].lat,group[0].lon];
+        const baseRadius=cluster?Math.min(14,5.2+Math.sqrt(group.length)*1.9):(group.length>1?8:6);
+        const marker=L.circleMarker(center,{radius:baseRadius,color:'#fff',weight:mixed?2.5:2,fillColor:color,fillOpacity:.9,bubblingMouseEvents:false});
+        marker.__adventureBaseRadius=baseRadius;
+        marker.__adventureMixed=mixed;
+        marker.__adventureCluster=cluster;
+        marker.addTo(markerLayer);
+
+        if(cluster){
+          marker.bindTooltip(String(group.length),{permanent:true,direction:'center',className:'map-cluster-count',opacity:1});
+          marker.on('click',()=>{
+            state.pinnedFocusId=null;
+            state.focusId=null;
+            focusEndpointLayer?.clearLayers();
+            const bounds=clusterBounds(group);
+            const targetZoom=Math.min(8,zoom+2);
+            const unique=new Set(group.map(coordinateKey)).size;
+            if(unique>1&&bounds.isValid())map.fitBounds(bounds,{padding:[52,52],maxZoom:targetZoom});
+            else map.setView(center,targetZoom);
+          });
+        }else{
+          marker.bindPopup(markerPopup(group),{maxWidth:360});
+          if(group.length>1)marker.bindTooltip(String(group.length),{permanent:true,direction:'center',className:'map-cluster-count',opacity:1});
+          else marker.bindTooltip(group[0].name,{direction:'top',offset:[0,-5],opacity:.94,className:'map-point-label'});
+          if(group.length===1){
+            const record=group[0];
+            marker.on('mouseover',()=>setRouteEmphasis(record.id,true));
+            marker.on('mouseout',()=>setRouteEmphasis(record.id,false));
+            marker.on('click',()=>{
+              state.pinnedFocusId=record.id;
+              state.focusId=record.id;
+              applyFocusStyles();
+            });
+          }
+        }
+
+        marker.on('add',()=>{
+          const node=marker.getElement?.();
+          if(!node)return;
+          const label=cluster?`${group.length} nearby adventure records`:(group.length>1?`${group.length} records at this location`:group[0].name);
+          node.setAttribute('aria-label',label);
+        });
+        group.forEach(record=>state.markers.set(record.id,marker));
+      });
+    };
+  }
+
   const originalFocusAdventure=typeof focusAdventure==='function'?focusAdventure:null;
   if(originalFocusAdventure){
     focusAdventure=function(a){
       state.pinnedFocusId=a.id;
+      const routeGroups=state.routeLayers.get(a.id)||[];
+      if(!routeGroups.length&&mapped(a)){
+        state.focusId=a.id;
+        applyFocusStyles();
+        const openFocused=()=>{state.focusId=a.id;applyFocusStyles();state.markers.get(a.id)?.openPopup?.()};
+        map.once('moveend',openFocused);
+        map.flyTo([a.lat,a.lon],Math.max(map.getZoom(),a.kind==='summit'?9:8),{duration:.8});
+        setTimeout(openFocused,900);
+        return;
+      }
       originalFocusAdventure(a);
       state.focusId=a.id;
       applyFocusStyles();
@@ -126,15 +227,15 @@
       });
       groupedMarkers.forEach((ids,marker) => {
         const records = ids.map(id => state.adventures.find(a => a.id === id)).filter(Boolean);
-        const mixed = new Set(records.map(publicLayerFor)).size > 1;
+        const mixed = marker.__adventureMixed ?? new Set(records.map(publicLayerFor)).size > 1;
         const active = Boolean(state.focusId && ids.includes(state.focusId));
-        const groupedBoost=ids.length>1?1.6:0;
-        const baseRadius=pointRadius+groupedBoost;
+        const fallbackRadius=pointRadius+(ids.length>1?1.6:0);
+        const baseRadius=marker.__adventureBaseRadius||fallbackRadius;
         marker.setStyle?.({
           radius: active ? baseRadius + 3 : baseRadius,
           weight: active ? 3 : (mixed ? 2.5 : (low ? 1.5 : 2)),
-          fillOpacity: state.focusId ? (active ? .98 : .24) : (low ? .78 : .9),
-          opacity: state.focusId ? (active ? 1 : .32) : (low ? .88 : 1)
+          fillOpacity: state.focusId ? (active ? .98 : .22) : (low ? .82 : .9),
+          opacity: state.focusId ? (active ? 1 : .3) : (low ? .9 : 1)
         });
         if (active) marker.bringToFront?.();
       });
@@ -157,7 +258,12 @@
   }
 
   if(typeof map!=='undefined'){
-    map.on('zoomend',()=>applyFocusStyles());
+    let markerZoom=map.getZoom();
+    map.on('zoomend',()=>{
+      const nextZoom=map.getZoom();
+      if(nextZoom!==markerZoom){markerZoom=nextZoom;renderMarkers(filteredAdventures())}
+      applyFocusStyles();
+    });
     map.on('click',()=>{state.pinnedFocusId=null;state.focusId=null;focusEndpointLayer?.clearLayers();applyFocusStyles()});
     setTimeout(()=>applyFocusStyles(),0);
   }
