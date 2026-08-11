@@ -21,6 +21,8 @@ jobs:
           node-version: '22'
       - name: Validate canonical catalog
         run: npm run validate:data
+      - name: Validate maintenance scanner syntax
+        run: python3 -m py_compile scripts/scan_strava_export.py
       - name: Rebuild public index
         run: npm run build:public-index
       - name: Verify public index is current
