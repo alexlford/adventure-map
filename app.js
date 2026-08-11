@@ -5,7 +5,7 @@ const CATEGORY = {
   nordic: { label: 'Nordic ski race', color: '#1779a8' }
 };
 const state={adventures:[],routes:null,filter:'all',search:'',markers:new Map(),routeLayers:new Map()};
-const map=L.map('map',{worldCopyJump:true,zoomControl:true,minZoom:2}).setView([34,-112],3);window.adventureMap=map;L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+const map=L.map('map',{worldCopyJump:true,zoomControl:true,minZoom:2}).setView([34,-112],3);window.adventureMap=map;window.stabilizeLeafletMap?.(map,document.getElementById('map'));L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
 const routeLayer=L.layerGroup().addTo(map),markerLayer=L.layerGroup().addTo(map),searchInput=document.getElementById('searchInput'),fitButton=document.getElementById('fitButton'),adventureList=document.getElementById('adventureList'),resultCount=document.getElementById('resultCount');
 function categoryFor(a){return a.kind==='summit'?'summit':a.discipline} function mapped(a){return Number.isFinite(a.lat)&&Number.isFinite(a.lon)} function formatNumber(v){return new Intl.NumberFormat('en-US').format(v)}
 function formatDate(v){if(!v)return'';const[y,m,d]=v.split('-').map(Number);return new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric'}).format(new Date(y,m-1,d))} function formatDuration(s){if(!Number.isFinite(s)||s<=0)return'';const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=Math.floor(s%60);return h?`${h}:${String(m).padStart(2,'0')}:${String(x).padStart(2,'0')}`:`${m}:${String(x).padStart(2,'0')}`}
