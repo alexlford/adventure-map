@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "source": "Original alexlford.com marathon inventory + Illinois Marathon official historical-results page + exact-date Strava export/GPX",
+    "updatedOn": "2026-08-11",
+    "policy": "Attach definitive Strava route evidence to an already-confirmed race without inventing an official finish time when the historical individual result is not yet crawler-accessible. Official marathon distance is canonical."
+  },
+  "adventures": [
+    {
+      "id": "illinois-marathon-2015",
+      "kind": "race",
+      "discipline": "marathon",
+      "name": "Illinois Marathon",
+      "eventSeries": "Illinois I-Challenge",
+      "year": 2015,
+      "date": "2015-04-25",
+      "distance": "Marathon",
+      "officialDistance": "Marathon",
+      "officialDistanceKm": 42.195,
+      "officialDistanceMi": 26.2,
+      "location": "Champaign-Urbana, Illinois",
+      "region": "Illinois",
+      "lat": 40.094593,
+      "lon": -88.23856,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "641965920",
+      "stravaActivityName": "Illinois Marathon",
+      "stravaDistanceKm": 42.6578,
+      "stravaDistanceMi": 26.51,
+      "stravaElapsedSeconds": 13672,
+      "stravaMovingSeconds": 13529,
+      "elevationGainM": 83.7,
+      "routeStatus": "gps-source-available",
+      "resultSource": "Illinois Marathon official historical-results index (2015 archive linked through Xact)",
+      "resultUrl": "https://illinoismarathon.com/resultscertificatesphotos/",
+      "matchSource": "Existing alexlford.com Illinois Marathon record + user 2015 I-Challenge medal + exact-date explicitly named Strava marathon activity and GPX starting at the Memorial Stadium race area",
+      "matchConfidence": "verified",
+      "note": "The Strava activity is an exact-date, explicitly named Illinois Marathon recording and its GPX starts at 40.094593,-88.23856 near Memorial Stadium. The organizer still links the 2015 results archive, but the legacy Xact interface is not exposing the individual row to the crawler. No official finish time is asserted here; the website's separate 3:49:35 marathon PR remains unassigned until an individual official result is recovered."
+    }
+  ]
+}
