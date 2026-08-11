@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "source": "Official event archives + user-uploaded medal/photo evidence + Strava export",
+    "updatedOn": "2026-08-11",
+    "precedence": "Official event distance/date are canonical when verified; Strava remains route evidence and fallback timing when an individual official finish time has not been recovered."
+  },
+  "adventures": [
+    {
+      "id": "gobble-cobble-5k-2019",
+      "name": "Gobble Cobble 5K",
+      "kind": "race",
+      "discipline": "road",
+      "date": "2019-11-28",
+      "year": 2019,
+      "location": "Baltimore Inner Harbor, Maryland",
+      "region": "Maryland",
+      "lat": 39.2904,
+      "lon": -76.6122,
+      "coordinatePrecision": "city-placeholder",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5.0,
+      "officialDistanceMi": 3.11,
+      "distance": "5K",
+      "distanceKm": 5.0,
+      "distanceMi": 3.11,
+      "stravaActivityId": "4312787170",
+      "stravaActivityName": "Marriott Baltimore Waterfront",
+      "stravaDistanceKm": 4.92,
+      "stravaDistanceMi": 3.06,
+      "stravaElapsedSeconds": 1503,
+      "stravaElapsed": "25:03",
+      "movingSeconds": 1480,
+      "routeStatus": "matched-no-public-route",
+      "resultSource": "Maryland Timing 2019 race calendar/results archive",
+      "resultUrl": "https://www.mdtiming.com/2019races.html",
+      "matchSource": "User Gobble Cobble Turkey Trot 5K medal + official Nov. 28, 2019 Baltimore Inner Harbor event archive + exact-date Strava activity named Marriott Baltimore Waterfront",
+      "matchConfidence": "verified",
+      "note": "Official event distance is 5K. The individual official result row has not yet been recovered, so the 25:03 Strava elapsed time remains a labeled fallback rather than an asserted chip time."
+    },
+    {
+      "id": "colfax-marathon-2025",
+      "name": "Denver Colfax Marathon",
+      "kind": "race",
+      "discipline": "marathon",
+      "date": "2025-05-18",
+      "year": 2025,
+      "location": "Denver, Colorado",
+      "region": "Colorado",
+      "officialDistance": "Marathon",
+      "officialDistanceKm": 42.195,
+      "officialDistanceMi": 26.2,
+      "resultSource": "Denver Colfax Marathon official race-results archive",
+      "resultUrl": "https://www.runcolfax.org/races/race-results/",
+      "matchSource": "Original alexlford.com marathon inventory + user Colfax Marathon medal + official 2025 marathon weekend archive + exact-date 42.66 km Strava activity",
+      "matchConfidence": "verified",
+      "note": "The official marathon distance is canonical. Strava activity 14522257426 recorded 42.66 km in 5:00:11 elapsed on May 18, 2025; that time remains GPS fallback until the individual official result row is recovered."
+    }
+  ]
+}
