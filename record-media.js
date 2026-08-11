@@ -26,7 +26,7 @@
       }
       let mediaDone=!media.length||!!document.getElementById('recordMedia');
       if(!mediaDone){
-        const anchor=document.querySelector('.story-record-connections,.major-story-slot,.detail-route-section');
+        const anchor=document.querySelector('.mountain-loop-feature,.story-objective-feature,.story-record-connections,.major-story-slot,.detail-route-section');
         if(anchor){anchor.insertAdjacentHTML('beforebegin',mediaHtml);document.body.classList.add('has-record-media');mediaDone=true;}
       }
       return companionDone&&mediaDone;
