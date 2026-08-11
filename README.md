@@ -73,7 +73,7 @@ npm run validate:data
 
 The ingest state stores a timestamp watermark and one-way activity-ID hashes only for activities sharing the exact watermark time. It does not expose the IDs of ordinary historical training activities.
 
-For the full workflow, including historical backfills and ski screenshots, see `docs/updating-the-almanac.md`.
+For the full workflow, including historical backfills, ski screenshots, Stories, and editorial media, see `docs/updating-adventures.md`.
 
 ## Validation and CI
 
@@ -85,7 +85,7 @@ npm run validate:routing
 npm run test:update-pipeline
 ```
 
-CI checks the canonical catalog, relationships, route provenance, ingest state, update policy, production routing, public branding, Python maintenance tooling, the update-pipeline smoke test, and generated sitemap/robots files.
+CI checks the canonical catalog, relationships, route provenance, ingest state, update policy, editorial media metadata/local asset paths, production routing, public branding, Python maintenance tooling, the update-pipeline smoke test, and generated sitemap/robots files.
 
 ## Important archive rules
 
@@ -97,6 +97,19 @@ CI checks the canonical catalog, relationships, route provenance, ingest state, 
 - The 2019/20 ski season has three known ski days, but season vertical was not recorded and is intentionally not shown as zero.
 - The exact 2020 virtual Chicago Marathon route is privacy-withheld.
 - MTB riding style belongs to the individual outing, not permanently to the venue.
+
+## Editorial Stories
+
+Stories share a common magazine system but adapt to the documented structure of the objective:
+
+- mountain loops can show a linked summit chain and route scale;
+- traverses emphasize multi-day span, distance, and gain;
+- ski objectives emphasize runs, distance, and descent;
+- challenges/weekends show their component records in sequence.
+
+The Story layer stays factual unless personal narrative has been explicitly supplied. It should not invent recollections merely to make a page feel more editorial.
+
+Photo essays are optional and render only when genuine record media exists. Local repository-owned images with meaningful alt text are preferred; media entries are validated in CI.
 
 ## World Marathon Majors
 
@@ -136,4 +149,4 @@ Production record links use `/record/<slug>/`; the GitHub Pages fallback resolve
 
 ## Source notes
 
-The archive combines alexlford.com history, the supplied Strava export, Slopes screenshots, calendar evidence, historical race results, GPS files, and direct user confirmation. Source disagreements are preserved rather than guessed away.
+The archive combines alexlford.com history, the supplied Strava export, Slopes screenshots, calendar evidence, historical race results, GPS files, photos, and direct user confirmation. Source disagreements are preserved rather than guessed away.
