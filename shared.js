@@ -15,7 +15,9 @@ window.AdventureSite = (() => {
     return catalogPromise;
   };
   const load = () => ensureCatalog().then(catalog => catalog.load());
+  const loadRelationships = () => ensureCatalog().then(catalog => catalog.loadRelationships());
+  const relationshipsFor = (id) => ensureCatalog().then(catalog => catalog.relationshipsFor(id));
   function ensureNav(){const nav=document.querySelector('.nav');if(!nav)return;if(!nav.querySelector('a[href="overview.html"]')){const a=document.createElement('a');a.href='overview.html';a.textContent='Overview';a.dataset.nav='overview';nav.insertBefore(a,nav.firstChild);}if(!nav.querySelector('a[href="skiing.html"]')){const a=document.createElement('a');a.href='skiing.html';a.textContent='Skiing';a.dataset.nav='skiing';const adventures=nav.querySelector('a[href="adventures.html"]');if(adventures)nav.insertBefore(a,adventures);else nav.appendChild(a);}}
   function shell(active){ensureNav();document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('is-active',a.dataset.nav===active));}
-  ensureNav(); return {load,esc,formatDate,formatDuration,fmt,raceType,adventureType,recordType,shell};
+  ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,adventureType,recordType,shell};
 })();
