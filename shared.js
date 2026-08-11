@@ -8,7 +8,9 @@ window.AdventureSite = (() => {
   const outingType = (a) => a.discipline === 'nordic' ? 'Nordic outing' : a.discipline === 'mountain-bike' ? (a.mtbMode === 'downhill' ? 'Downhill MTB' : a.mtbMode === 'mixed' ? 'MTB + Downhill MTB' : 'MTB') : 'Outing';
   const adventureType = (a) => a.discipline === 'ski-objective' ? 'Ski objective' : a.discipline === 'mountain-loop' ? 'Mountain loop' : a.discipline === 'trek' ? 'Trek / traverse' : a.discipline === 'challenge' ? 'Challenge' : a.kind === 'summit' ? 'Summit' : 'Adventure';
   const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'event' ? eventType(a) : a.kind === 'outing' ? outingType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
-  const recordHref = (record) => `detail.html?record=${encodeURIComponent(record.slug || record.id)}`;
+  const productionHost='almanac.alexlford.com';
+  const isProduction=()=>location.hostname===productionHost;
+  const recordHref = (record) => isProduction()?`/record/${encodeURIComponent(record.slug || record.id)}/`:`detail.html?record=${encodeURIComponent(record.slug || record.id)}`;
   const PRIMARY=[['overview.html','Overview','overview'],['index.html','Map','map'],['timeline.html','Timeline','timeline'],['activities.html','Activities','activities'],['adventures.html','Adventures','adventures']];
   const ACTIVITIES=[['races.html','Races','races'],['summits.html','Summits','summits'],['skiing.html','Skiing','skiing'],['nordic.html','Nordic','nordic'],['mountain-biking.html','MTB','mountain-biking']];
   const activityKeys=new Set(ACTIVITIES.map(x=>x[2]));
@@ -77,7 +79,7 @@ window.AdventureSite = (() => {
     page.appendChild(nav);
   }
   function shell(active){ensureNav(active);ensureFlow(active);}
-  applyPageIdentity();ensureMeta();ensureAccessibility();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,shell,refreshMeta:ensureMeta};
+  applyPageIdentity();ensureMeta();ensureAccessibility();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,shell,refreshMeta:ensureMeta,isProduction};
 })();
 
 if (/detail\.html$/.test(location.pathname)) {
