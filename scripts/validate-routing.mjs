@@ -40,6 +40,7 @@ for(const old of ['detail-phase4.js','story-detail.js','world-major-detail.js','
 if(!detail.includes('detail-phase4.css')||!detail.includes('story-themes.css')||!detail.includes('record-media.css'))errors.push('detail page must load its record presentation styles explicitly');
 if(renderer.includes('MutationObserver'))errors.push('record renderer must not depend on MutationObserver composition');
 if(/setTimeout\([^)]*(50|200|600)/.test(renderer))errors.push('record renderer must not use delayed cleanup passes');
+if(!renderer.includes("page.innerHTML=sections.filter(Boolean).join('')"))errors.push('record renderer must compose sections and perform one explicit page render');
 if(!renderer.includes('const features=(collection.features||[])'))errors.push('record renderer must consume AdventureRoutes.loadAll() as one merged FeatureCollection');
 if(!renderer.includes("A.pageHref('map.html')"))errors.push('record renderer map action is not production-safe');
 if(!renderer.includes("history.replaceState(null,'',A.recordHref(a))"))errors.push('record renderer does not restore the clean record URL after data and map loading');
