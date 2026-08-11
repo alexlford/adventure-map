@@ -52,30 +52,6 @@
       "candidate": "Charles Street 12 virtual completion in 2021",
       "confidence": "high but not yet result-verified",
       "reason": "19.32 km is essentially exactly 12 miles, recorded in Denver during the 2021 Charles Street 12 race weekend/virtual period. Seek the archived virtual result or registration record before promotion."
-    },
-    {
-      "stravaActivityId": "4312802712",
-      "date": "2016-11-24",
-      "stravaActivityName": "Thursday Afternoon Run",
-      "distanceKm": 5.65,
-      "elapsedSeconds": 1845,
-      "area": "Unknown from export index",
-      "candidate": "runLawrence Thanksgiving Day 5K",
-      "confidence": "borderline",
-      "userMemory": "maybe",
-      "reason": "The activity is on the exact 2016 race date and is 5K-ish; user says this is possible but does not remember clearly. FIT-based GPS location still needs independent event-course reconciliation and no indexed individual result has been found."
-    },
-    {
-      "stravaActivityId": "4312796414",
-      "date": "2017-11-23",
-      "stravaActivityName": "Thursday Afternoon Run",
-      "distanceKm": 5.08,
-      "elapsedSeconds": 1917,
-      "area": "Unknown from export index",
-      "candidate": "runLawrence Thanksgiving Day 5K",
-      "confidence": "borderline",
-      "userMemory": "maybe",
-      "reason": "The activity is almost exactly 5K on the exact 2017 race date; user says this is possible but does not remember clearly. FIT-based GPS location still needs independent event-course reconciliation and no indexed individual result has been found."
     }
   ],
   "resolved": [
@@ -147,6 +123,24 @@
     {
       "candidate": "Garmin Marathon in the Land of Oz 2017",
       "reason": "User owns a 2017 Garmin medal but the official 2017 results archive contains no Alex/Alexander Ford match in the half marathon search, contemporary 2017 event material lists marathon/half/10K rather than a virtual option, and the Strava export has no half-marathon-scale activity around April 22, 2017. Keep out of the public archive unless stronger evidence appears."
+    },
+    {
+      "stravaActivityId": "4312802712",
+      "date": "2016-11-24",
+      "candidate": "runLawrence Thanksgiving Day 5K",
+      "reason": "Rejected after timestamp reconciliation. The historical race began at 8:30 AM, while the Strava activity's UTC timestamp corresponds to roughly 12:15 PM CST, several hours after the race start. No independent official result supports the match."
+    },
+    {
+      "stravaActivityId": "4312796414",
+      "date": "2017-11-23",
+      "candidate": "runLawrence Thanksgiving Day 5K",
+      "reason": "Rejected after timestamp and GPS reconciliation. The Strava timestamp corresponds to roughly 2:53 PM CST rather than the morning race, and decoded FIT GPS starts near 39.82671,-88.90829 in central Illinois rather than Lawrence, Kansas."
+    },
+    {
+      "stravaActivityId": "4312802996",
+      "date": "2016-11-13",
+      "candidate": "Gobbler Grind 5K",
+      "reason": "Rejected after FIT GPS reconciliation. Although the date and 5.076 km distance match the Gobbler Grind calendar, the route starts at 38.96215,-95.24453 in Lawrence, Kansas, not the Overland Park event area."
     },
     {
       "stravaActivityId": "4312787872",
