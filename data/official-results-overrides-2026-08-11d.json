@@ -19,14 +19,17 @@
       "divisionPlace": 1644,
       "officialAge": 27,
       "officialCity": "Lawrence, Kansas",
+      "stravaActivityId": "641964287",
+      "stravaActivityName": "Morning Run",
       "stravaDistanceKm": 43.2295,
       "stravaDistanceMi": 26.86,
       "stravaElapsedSeconds": 19069,
+      "routeStatus": "gps-source-available",
       "resultSource": "MTEC archived results via Raceberry Jam",
       "resultUrl": "https://www.raceberryjam.com/2015/tcmmen.html",
-      "matchSource": "Published result listing Alex Ford, age 27, Lawrence KS + exact-date Strava marathon activity",
+      "matchSource": "Published result listing Alex Ford, age 27, Lawrence KS + exact-date Strava marathon activity 641964287",
       "matchConfidence": "verified",
-      "note": "Official net time is 5:25:40. The 5:33:59 value is clock/gun time. Official race distance overrides the longer GPS-recorded Strava distance."
+      "note": "Official net time is 5:25:40. The 5:33:59 value is clock/gun time. Strava activity 641964287 is the exact-date marathon GPS recording; official race distance overrides its 43.23 km GPS measurement."
     }
   ]
 }
