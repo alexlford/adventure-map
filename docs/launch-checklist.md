@@ -1,6 +1,6 @@
 # Personal Adventure Almanac launch checklist
 
-This checklist is for the eventual production cutover to `https://almanac.alexlford.com/`. The GitHub Pages site remains staging until every production item below is complete.
+This checklist is for the eventual production cutover to `https://adventures.alexlford.com/`. The GitHub Pages site remains staging until every production item below is complete.
 
 ## 1. Release-candidate QA
 
@@ -27,13 +27,14 @@ Do not launch with an unreviewed Strava delta queue.
 
 ## 3. Production host preparation
 
-Preferred host: `almanac.alexlford.com`.
+Preferred host: `adventures.alexlford.com`.
 
-- Inspect the existing Squarespace DNS record used for `sports.alexlford.com` and mirror that proven pattern where appropriate.
-- Add only the `almanac` host record required by the hosting target.
+- In GitHub repository Settings → Pages, set the custom domain to `adventures.alexlford.com` before adding the DNS record.
+- In Squarespace DNS, create only the `adventures` CNAME required by GitHub Pages.
+- CNAME Alias Data: `alexlford.github.io` — no `https://`, no path, and no `/adventure-map` repository name.
 - Do not change apex/root `alexlford.com` records.
 - Do not alter or remove `sports.alexlford.com`.
-- Confirm the hosting provider recognizes `almanac.alexlford.com` before changing canonical/indexing metadata.
+- Confirm GitHub Pages recognizes `adventures.alexlford.com` before changing canonical/indexing metadata.
 - Confirm HTTPS/TLS is valid on the production subdomain.
 
 ## 4. Routing behavior
@@ -54,7 +55,7 @@ If the final hosting platform supports rewrites, prefer a true server/edge rewri
 Immediately before cutover:
 
 ```bash
-SITE_URL=https://almanac.alexlford.com npm run build:public-index
+SITE_URL=https://adventures.alexlford.com npm run build:public-index
 ```
 
 Then verify:
@@ -67,9 +68,9 @@ Then verify:
 
 ## 6. Squarespace/main-site integration
 
-- Add a clear Almanac entry point on `alexlford.com` rather than embedding the app in an iframe.
-- Suggested label: `Personal Adventure Almanac` or `Adventure Almanac`.
-- Link directly to `https://almanac.alexlford.com/`.
+- Add a clear Adventures/Almanac entry point on `alexlford.com` rather than embedding the app in an iframe.
+- Suggested label: `Personal Adventure Almanac`, `Adventure Almanac`, or simply `Adventures`.
+- Link directly to `https://adventures.alexlford.com/`.
 - Preserve the Almanac's own navigation after the visitor crosses into the subdomain.
 
 ## 7. Launch-day smoke test
