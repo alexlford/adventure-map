@@ -23,6 +23,8 @@ jobs:
         run: npm run validate:data
       - name: Validate stable record slugs
         run: npm run validate:slugs
+      - name: Validate production routing
+        run: npm run validate:routing
       - name: Validate maintenance scripts
         run: python3 -m py_compile scripts/scan_strava_export.py scripts/advance_strava_state.py scripts/test_update_pipeline.py
       - name: Test maintenance pipeline
