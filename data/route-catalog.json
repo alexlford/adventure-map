@@ -5,7 +5,8 @@
   "routeFiles": [
     "data/routes.geojson",
     "data/mined-routes.geojson",
-    "data/historical-routes-v2.geojson"
+    "data/historical-routes-v2.geojson",
+    "data/event-routes.geojson"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -14,28 +15,12 @@
     "privacy-withheld": "Personal geometry exists but is intentionally not published for privacy."
   },
   "featureOverrides": {
-    "strava-6814188054": {
-      "adventureIds": ["smr-stampede-ranch-hand-skate-2022"],
-      "provenance": "personal-gps",
-      "sourceLabel": "Strava GPS export",
-      "note": "Saturday 25K freestyle/skate leg of the 2022 Snow Mountain Ranch Ranch Hand challenge."
-    },
-    "strava-6819611723": {
-      "adventureIds": ["smr-stampede-ranch-hand-classic-2022"],
-      "provenance": "personal-gps",
-      "sourceLabel": "Strava GPS export",
-      "note": "Sunday 25K classic leg completing the 2022 Snow Mountain Ranch Ranch Hand challenge."
-    },
-    "river-to-river-relay-historical-course": {
-      "provenance": "historical-course",
-      "sourceLabel": "Official River to River course description + public historical GPS reference",
-      "note": "Shared historical full relay course for the 2006, 2008, and 2010 entries; not a personal GPS recording."
-    }
+    "strava-6814188054": {"adventureIds":["smr-stampede-ranch-hand-skate-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Saturday 25K freestyle/skate leg of the 2022 Snow Mountain Ranch Ranch Hand challenge."},
+    "strava-6819611723": {"adventureIds":["smr-stampede-ranch-hand-classic-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Sunday 25K classic leg completing the 2022 Snow Mountain Ranch Ranch Hand challenge."},
+    "strava-10926255561": {"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Personal GPS recording from the 2024 Frisco BrewSki."},
+    "river-to-river-relay-historical-course": {"provenance":"historical-course","sourceLabel":"Official River to River course description + public historical GPS reference","note":"Shared historical full relay course for the 2006, 2008, and 2010 entries; not a personal GPS recording."}
   },
   "recordOverrides": {
-    "chicago-marathon-virtual-2020": {
-      "provenance": "privacy-withheld",
-      "note": "Exact personal route geometry is intentionally withheld from the public site."
-    }
+    "chicago-marathon-virtual-2020": {"provenance":"privacy-withheld","note":"Exact personal route geometry is intentionally withheld from the public site."}
   }
 }
