@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Alex Ford's skiing logbook, resort history, Nordic events, ski trips, runs and vertical.">
+  <meta name="description" content="Alex Ford's alpine skiing logbook, resort history, ski trips, runs, vertical, and notable objectives.">
   <title>Skiing | Alex Ford Adventures</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="section.css">
@@ -18,7 +18,7 @@
     <section class="hero">
       <p class="eyebrow">Adventures · Skiing</p>
       <h1>Seasons on snow.</h1>
-      <p>A season-by-season record of ski days, resorts, runs, vertical, named trips and memorable objectives.</p>
+      <p>A season-by-season record of alpine ski days, resorts, runs, vertical, named trips and memorable objectives.</p>
     </section>
 
     <section class="metrics">
@@ -30,7 +30,7 @@
 
     <section class="chapter-map-section" aria-labelledby="skiMapTitle">
       <div class="chapter-map-head">
-        <div><h2 id="skiMapTitle">Resort geography</h2><p>The ski logbook as a travel footprint, with the most-visited mountains given slightly more visual weight without turning the page into another master map.</p></div>
+        <div><h2 id="skiMapTitle">Resort geography</h2><p>The alpine logbook as a travel footprint, with the most-visited mountains given slightly more visual weight without turning the page into another master map.</p></div>
         <div class="chapter-map-summary" data-map-count="skiResortMap">Loading mapped resorts</div>
       </div>
       <div class="chapter-map-frame"><div id="skiResortMap" class="chapter-map" aria-label="Map of ski resorts visited"></div></div>
@@ -40,8 +40,8 @@
     <div class="section-title"><h2>Season logbook</h2><p id="coverage">Loading ski archive…</p></div>
     <div id="seasons"></div>
 
-    <div class="section-title"><h2>Nordic races & events</h2><p>Competitive and named cross-country ski events, kept distinct so social events do not inflate race totals.</p></div>
-    <div class="grid" id="nordicGrid"></div>
+    <div class="section-title"><h2>Nordic skiing</h2><p>Cross-country locations, races, named events, and standout Nordic days have their own chapter rather than being duplicated in the alpine logbook.</p></div>
+    <div class="grid"><a class="card" href="nordic.html"><p class="card-kicker">Separate chapter</p><h3>Nordic</h3><p class="card-meta">Trail systems, true races, social events, and memorable days on skinny skis.</p><div class="card-value">Open Nordic →</div></a></div>
 
     <div class="section-title"><h2>Ski trips & logbooks</h2><p>Named trips preserve the larger chapter and, where Slopes detail is available, the individual ski days inside it.</p></div>
     <div class="ski-trip-grid" id="tripGrid"></div>
@@ -60,10 +60,7 @@
     const A=AdventureSite;
     const fmtMinutes=m=>{if(!Number.isFinite(m))return '';const h=Math.floor(m/60),min=m%60;return h?`${h}h ${min}m`:`${min}m`};
 
-    Promise.all([
-      fetch('data/skiing.json').then(r=>{if(!r.ok)throw new Error('Unable to load ski archive');return r.json()}),
-      A.load()
-    ]).then(([d,records])=>{
+    fetch('data/skiing.json').then(r=>{if(!r.ok)throw new Error('Unable to load ski archive');return r.json()}).then(d=>{
       A.shell('skiing');
       const s=d.summary;
       days.textContent=s.recordedDays;
@@ -75,9 +72,6 @@
       AdventureChapterMap.mount({elementId:'skiResortMap',records:d.resorts,color:'#2f8ca6',countLabel:'resorts',valueFor:r=>r.days,kicker:'Ski resort',metaFor:r=>r.region||'',valueLabelFor:r=>`${r.days} recorded day${r.days===1?'':'s'}`,hrefFor:()=>null,maxZoom:5});
 
       seasons.innerHTML=d.seasons.slice().reverse().map(x=>`<div class="timeline-year"><h3>${x.season}</h3><div class="timeline-items"><div class="timeline-item"><div><strong>${x.days} days</strong><span>recorded ski days</span></div>${Number.isFinite(x.verticalFtApprox)?`<div><strong>${Number(x.verticalFtApprox).toLocaleString()} ft</strong><span>season vertical</span></div>`:'<div><strong>Not recorded</strong><span>season vertical</span></div>'}</div></div></div>`).join('');
-
-      const nordic=records.filter(x=>x.discipline==='nordic'&&(x.kind==='race'||x.kind==='event')).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-      nordicGrid.innerHTML=nordic.map(x=>`<article class="card"><p class="card-kicker">${A.esc(x.kind==='race'?'Nordic race':'Nordic event')} · ${A.esc(A.formatDate(x.date))}</p><h3><a href="${A.recordHref(x)}">${A.esc(x.name)}</a></h3><p class="card-meta">${A.esc(x.location||'')}${x.distanceMi?` · ${A.esc(x.distanceMi)} mi`:''}</p><div class="card-value">${A.esc(x.kind==='race'?'Race':'Event')}</div></article>`).join('')||'<div class="empty">No Nordic events recovered yet.</div>';
 
       tripGrid.innerHTML=d.trips.map(t=>{
         const total=`${t.runs} runs${Number.isFinite(t.durationMinutes)?` · ${fmtMinutes(t.durationMinutes)}`:''} · ${Number(t.verticalFt).toLocaleString()} ft`;
