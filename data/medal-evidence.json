@@ -7,18 +7,6 @@
   },
   "evidence": [
     {
-      "id": "garmin-land-of-oz-2017-medal",
-      "event": "Garmin Marathon in the Land of Oz",
-      "year": 2017,
-      "eventDate": "2017-04-22",
-      "location": "Olathe, Kansas",
-      "visibleEvidence": ["Garmin Marathon event branding", "Olathe ribbon text", "2017 ribbon text"],
-      "distance": "probable half marathon",
-      "stravaMatch": null,
-      "status": "probable-half-needs-official-participant-match",
-      "note": "User recalls the 2017 entry as likely the Half Marathon. The official Online Race Results archive confirms that the April 22, 2017 event offered Marathon, Half Marathon, and 10K races, but current search indexing has not produced an Alex Ford participant record in any distance. Do not publish a distance or finish time as verified until the participant result is recovered."
-    },
-    {
       "id": "snow-mountain-ranch-age-class-award",
       "event": "Snow Mountain Ranch Stampede 25K Classic",
       "year": 2022,
