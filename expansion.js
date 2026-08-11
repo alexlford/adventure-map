@@ -27,16 +27,10 @@ function mergeSupplementalRoutes(payloads, attempt = 0) {
 
 window.addEventListener('load', async () => {
   try {
-    const [minedRouteResponse, historicalRouteResponse] = await Promise.all([
-      fetch('data/mined-routes.geojson'),
-      fetch('data/historical-routes-v2.geojson')
-    ]);
-    if (!minedRouteResponse.ok) throw new Error(`Unable to load mined routes (${minedRouteResponse.status})`);
-    if (!historicalRouteResponse.ok) throw new Error(`Unable to load historical routes (${historicalRouteResponse.status})`);
-    const [minedRoutes, historicalRoutes] = await Promise.all([
-      AdventureRoutes.normalizeCollection(await minedRouteResponse.json()),
-      AdventureRoutes.normalizeCollection(await historicalRouteResponse.json())
-    ]);
-    mergeSupplementalRoutes([minedRoutes, historicalRoutes]);
+    const urls=['data/mined-routes.geojson','data/historical-routes-v2.geojson','data/event-routes.geojson'];
+    const responses=await Promise.all(urls.map(url=>fetch(url)));
+    responses.forEach((response,i)=>{if(!response.ok)throw new Error(`Unable to load supplemental routes ${urls[i]} (${response.status})`)});
+    const payloads=await Promise.all(responses.map(response=>response.json().then(x=>AdventureRoutes.normalizeCollection(x))));
+    mergeSupplementalRoutes(payloads);
   } catch (error) { console.error(error); }
 });
