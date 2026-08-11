@@ -49,6 +49,23 @@ for (const record of records.values()) {
   if (record.kind === 'adventure' && record.discipline === 'mountain-bike') warnings.push(`${at}: mountain-bike event should normally be kind=race`);
 }
 
+if (manifest.relationshipLayer) {
+  const payload = await readJson(manifest.relationshipLayer);
+  const seenRelationships = new Set();
+  for (const rel of payload.relationships || []) {
+    if (!rel.id) { problems.push(`${manifest.relationshipLayer}: relationship missing id`); continue; }
+    if (seenRelationships.has(rel.id)) problems.push(`${manifest.relationshipLayer}: duplicate relationship id ${rel.id}`);
+    seenRelationships.add(rel.id);
+    if (!rel.name) problems.push(`${rel.id}: relationship missing name`);
+    if (!Array.isArray(rel.memberIds) || !rel.memberIds.length) problems.push(`${rel.id}: relationship has no memberIds`);
+    for (const id of rel.memberIds || []) {
+      if (!records.has(id)) problems.push(`${rel.id}: member references unknown/non-public record ${id}`);
+    }
+    if (rel.adventureId && !records.has(rel.adventureId)) problems.push(`${rel.id}: adventureId references unknown/non-public record ${rel.adventureId}`);
+    if (rel.adventureId && records.get(rel.adventureId)?.kind !== 'adventure') warnings.push(`${rel.id}: adventureId ${rel.adventureId} is not kind=adventure`);
+  }
+}
+
 for (const routeFile of ['data/routes.geojson','data/mined-routes.geojson','data/historical-routes-v2.geojson']) {
   const payload = await readJson(routeFile);
   for (const feature of payload.features || []) {
