@@ -72,9 +72,11 @@ window.AdventureSite = (() => {
   }
   function ensureMeta(descriptionOverride=''){
     const description=descriptionOverride||document.querySelector('meta[name="description"]')?.content||document.querySelector('.hero p')?.textContent?.trim()||'Alex Ford Adventures: races, mountains, skiing, biking and the stories behind them.';
-    const detail=/detail\.html$/.test(location.pathname);
+    const legacyDetail=/detail\.html$/.test(location.pathname);
+    const cleanRecord=/^\/record\/[^/]+\/?$/.test(location.pathname);
+    const recordPage=legacyDetail||cleanRecord;
     const canonicalOrigin=isPublicBuild()?productionOrigin:location.origin;
-    const canonicalUrl=`${canonicalOrigin}${location.pathname}${detail?location.search:''}`;
+    const canonicalUrl=`${canonicalOrigin}${location.pathname}${legacyDetail?location.search:''}`;
     const set=(selector,attrs)=>{let node=document.head.querySelector(selector);if(!node){node=document.createElement(attrs.tag||'meta');document.head.appendChild(node)}Object.entries(attrs).forEach(([k,v])=>{if(k!=='tag')node.setAttribute(k,v)})};
     set('meta[name="description"]',{name:'description',content:description});
     set('link[rel="canonical"]',{tag:'link',rel:'canonical',href:canonicalUrl});
@@ -82,7 +84,7 @@ window.AdventureSite = (() => {
     set('meta[property="og:site_name"]',{property:'og:site_name',content:'Alex Ford Adventures'});
     set('meta[property="og:title"]',{property:'og:title',content:document.title});
     set('meta[property="og:description"]',{property:'og:description',content:description});
-    set('meta[property="og:type"]',{property:'og:type',content:'website'});
+    set('meta[property="og:type"]',{property:'og:type',content:recordPage?'article':'website'});
     set('meta[property="og:url"]',{property:'og:url',content:canonicalUrl});
     set('meta[name="twitter:card"]',{name:'twitter:card',content:'summary'});
     set('meta[name="twitter:title"]',{name:'twitter:title',content:document.title});
