@@ -55,7 +55,8 @@
       else if(a.kind==='outing'&&(a.discipline==='mountain-bike'||a.discipline==='nordic'))html=outingModule(a,all);
       else if(a.kind==='adventure')html=adventureModule(a,related);
       else return;
-      const wait=()=>{const route=document.querySelector('.detail-route-section');if(route){route.insertAdjacentHTML('beforebegin',html);return true}return false};
+      const refreshMeta=()=>A.refreshMeta?.(`${A.recordType(a)} · ${a.location||'Personal Adventure Almanac'}${a.date?` · ${A.formatDate(a.date)}`:''}`);
+      const wait=()=>{const route=document.querySelector('.detail-route-section');if(route){route.insertAdjacentHTML('beforebegin',html);refreshMeta();return true}return false};
       if(wait())return;
       const obs=new MutationObserver(()=>{if(wait())obs.disconnect()});obs.observe(document.getElementById('page'),{childList:true,subtree:true});
     }catch(e){console.error('Phase 4 detail module',e)}
