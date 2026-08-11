@@ -85,3 +85,38 @@ test('Mobile Map sidebar remains scrollable', async ({ page }) => {
   if (scrollState.hasOverflow) expect(scrollState.moved).toBeTruthy();
   expect(errors).toEqual([]);
 });
+
+test('Coarse-touch Map is passive until explicitly activated', async ({ browser }) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+    deviceScaleFactor: 2,
+  });
+  const page = await context.newPage();
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+
+  const coarse = await page.evaluate(() => matchMedia('(max-width:820px) and (pointer:coarse)').matches);
+  expect(coarse).toBeTruthy();
+  await expect(page.locator('.map-panel')).toHaveClass(/is-touch-passive/);
+  await expect(page.locator('.map-touch-toggle')).toBeVisible();
+  await expect(page.locator('.map-touch-toggle')).toHaveText('Explore map');
+  await expect(page.locator('.map-touch-toggle')).toHaveAttribute('aria-pressed','false');
+  expect(await page.evaluate(() => window.adventureMap.dragging.enabled())).toBeFalsy();
+  expect(await page.evaluate(() => window.adventureMap.touchZoom.enabled())).toBeFalsy();
+
+  await page.locator('.map-touch-toggle').click();
+  await expect(page.locator('.map-panel')).toHaveClass(/is-touch-active/);
+  await expect(page.locator('.map-touch-toggle')).toHaveText('Done');
+  await expect(page.locator('.map-touch-toggle')).toHaveAttribute('aria-pressed','true');
+  expect(await page.evaluate(() => window.adventureMap.dragging.enabled())).toBeTruthy();
+  expect(await page.evaluate(() => window.adventureMap.touchZoom.enabled())).toBeTruthy();
+
+  await page.locator('.map-touch-toggle').click();
+  await expect(page.locator('.map-panel')).toHaveClass(/is-touch-passive/);
+  expect(await page.evaluate(() => window.adventureMap.dragging.enabled())).toBeFalsy();
+  expect(errors).toEqual([]);
+  await context.close();
+});
