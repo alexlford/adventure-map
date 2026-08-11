@@ -6,6 +6,7 @@
   if(!key)return;
   const uniq=items=>[...new Map(items.filter(Boolean).map(x=>[x.id,x])).values()];
   const typeFor=a=>A.adventureType(a);
+  const themeFor=a=>a.discipline==='ski-objective'?'ski':a.discipline==='mountain-loop'?'mountain':a.discipline==='trek'?'traverse':'challenge';
   const spanFor=a=>a.endDate?`${A.formatDate(a.date)} – ${A.formatDate(a.endDate)}`:(a.date?A.formatDate(a.date):String(a.year||'—'));
   const headlineFor=a=>{
     if(a.discipline==='ski-objective'&&a.runs)return `${a.runs} runs`;
@@ -41,7 +42,8 @@
     const place=()=>{
       const profile=document.querySelector('.profile');if(!profile)return false;
       if(document.querySelector('.story-record-editorial'))return true;
-      document.body.classList.add('story-record-page');
+      document.body.classList.add('story-record-page',`story-theme-${themeFor(a)}`);
+      document.body.dataset.storyTheme=themeFor(a);
       document.querySelector('.hero')?.classList.add('story-record-hero');
       document.querySelector('.metrics')?.remove();
       const eyebrow=document.querySelector('.story-record-hero .eyebrow');if(eyebrow)eyebrow.textContent='Adventures · Story';
