@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "source": "User BeerFit medal + Strava export/GPX + historical Kansas City event identification",
+    "updatedOn": "2026-08-11",
+    "policy": "Upgrade an existing medal-confirmed event with exact GPS evidence. Official 5K distance is canonical; Strava elapsed time remains fallback because an individual timing row has not been recovered."
+  },
+  "adventures": [
+    {
+      "id": "beerfit-kansas-city-5k-2016",
+      "kind": "race",
+      "discipline": "road",
+      "name": "BeerFit Kansas City 5K Classic",
+      "year": 2016,
+      "date": "2016-06-04",
+      "distance": "5K",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5.0,
+      "officialDistanceMi": 3.11,
+      "location": "Arrowhead Stadium, Kansas City, Missouri",
+      "region": "Missouri",
+      "lat": 39.048164,
+      "lon": -94.488180,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "641962129",
+      "stravaActivityName": "Morning Run",
+      "stravaDistanceKm": 4.9865,
+      "stravaDistanceMi": 3.10,
+      "stravaElapsedSeconds": 1363,
+      "stravaMovingSeconds": 1360,
+      "elevationGainM": 13.7,
+      "routeStatus": "gps-source-available",
+      "matchSource": "User BeerFit 5K Classic finisher medal + exact June 4, 2016 Strava 5K-scale run + GPX start at Arrowhead Stadium",
+      "matchConfidence": "verified",
+      "note": "The previously medal-confirmed BeerFit entry is now tied to Strava activity 641962129. The GPX starts at 39.048164,-94.488180 at the Arrowhead complex and records 4.9865 km. No indexed individual official timing record was recovered, so 22:43 is shown only as Strava elapsed time."
+    }
+  ]
+}
