@@ -1,5 +1,6 @@
 window.AdventureCatalog = (() => {
   let cache = null;
+  let relationshipCache = null;
   const fetchJson = async (path) => {
     const response = await fetch(path, { cache: 'no-cache' });
     if (!response.ok) throw new Error(`Failed to load ${path} (${response.status})`);
@@ -30,9 +31,13 @@ window.AdventureCatalog = (() => {
     return { errors, warnings, valid: errors.length === 0 };
   }
 
+  async function loadManifest() {
+    return fetchJson('data/catalog.json');
+  }
+
   async function load({ fresh = false } = {}) {
     if (cache && !fresh) return cache;
-    const manifest = await fetchJson('data/catalog.json');
+    const manifest = await loadManifest();
     const [sourcePayloads, matches] = await Promise.all([
       Promise.all(manifest.sources.map(source => fetchJson(source.path).then(payload => ({ source, payload })))),
       fetchJson(manifest.matchLayer)
@@ -64,5 +69,19 @@ window.AdventureCatalog = (() => {
     return adventures;
   }
 
-  return { load, validate };
+  async function loadRelationships({ fresh = false } = {}) {
+    if (relationshipCache && !fresh) return relationshipCache;
+    const manifest = await loadManifest();
+    if (!manifest.relationshipLayer) return [];
+    const payload = await fetchJson(manifest.relationshipLayer);
+    relationshipCache = payload.relationships || [];
+    return relationshipCache;
+  }
+
+  async function relationshipsFor(recordId) {
+    const relationships = await loadRelationships();
+    return relationships.filter(rel => (rel.memberIds || []).includes(recordId) || rel.adventureId === recordId);
+  }
+
+  return { load, validate, loadRelationships, relationshipsFor };
 })();
