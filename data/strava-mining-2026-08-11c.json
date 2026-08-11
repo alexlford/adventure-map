@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "source": "Strava export + user medal evidence + official Denver Colfax sources",
+    "updatedOn": "2026-08-11",
+    "policy": "Newly recovered races hidden behind generic Strava titles. Official event distance takes precedence over GPS distance; Strava provides route/recording evidence."
+  },
+  "adventures": [
+    {
+      "id": "colfax-urban-10-2024",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Denver Colfax Urban 10 Miler",
+      "eventSeries": "Denver Colfax Marathon",
+      "year": 2024,
+      "date": "2024-05-19",
+      "distance": "10 miles",
+      "officialDistance": "10 miles",
+      "officialDistanceMi": 10.0,
+      "officialDistanceKm": 16.093,
+      "location": "Lakewood to Denver, Colorado",
+      "region": "Colorado",
+      "lat": 39.742632,
+      "lon": -105.070323,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "11449222885",
+      "stravaActivityName": "Nike Run Club: Sunday Morning Run",
+      "distanceKm": 16.1732,
+      "distanceMi": 10.05,
+      "elapsedSeconds": 6272,
+      "movingSeconds": 6178,
+      "elevationGainM": 300,
+      "stravaDistanceKm": 16.1732,
+      "stravaDistanceMi": 10.05,
+      "stravaElapsedSeconds": 6272,
+      "routeStatus": "gps-source-available",
+      "matchSource": "User 2024 Urban 10 medal + Strava GPS/date/distance + Denver Colfax official 2024 medal and race sources",
+      "matchConfidence": "verified",
+      "resultSource": "Denver Colfax official event archive; individual Xact chip result pending recovery",
+      "note": "The generic Strava activity is resolved as the 2024 Urban 10 Miler. GPS starts in the remote Urban 10 start area and finishes at City Park. Official race distance is 10 miles; Strava elapsed time is retained only as a fallback until the official individual result is recovered."
+    }
+  ]
+}
