@@ -38,7 +38,7 @@
   ],
   "matchLayer": "data/strava-matches.json",
   "relationshipLayer": "data/relationships.json",
-  "removeIds": ["smr-stampede-50k-2022", "flying-pig-10k-2025", "skyline-chili-4-way-2025"],
+  "removeIds": ["smr-stampede-50k-2022", "flying-pig-10k-2025", "skyline-chili-4-way-2025", "mile-high-turkey-trot-2025"],
   "overrides": {
     "north-star-mountain": {
       "date": "2020-09-12",
