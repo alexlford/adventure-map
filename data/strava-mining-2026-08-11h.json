@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "source": "2020 cancellation reporting + 2021 Baltimore Shamrock virtual-race instructions + Strava export + user B3 medal evidence",
+    "updatedOn": "2026-08-11",
+    "policy": "Canceled/deferred events are published only when the organizer's replacement participation window and an exact compatible Strava completion can be independently reconciled."
+  },
+  "adventures": [
+    {
+      "id": "baltimore-shamrock-5k-2020-deferred-virtual",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Kelly Benefits St. Patrick's Day Shamrock 5K",
+      "eventSeries": "B3 Distance Series",
+      "year": 2020,
+      "date": "2020-03-15",
+      "completionDate": "2021-03-14",
+      "participationMode": "virtual",
+      "eventStatus": "cancelled-deferred-to-virtual",
+      "distance": "5K virtual",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5.0,
+      "officialDistanceMi": 3.11,
+      "location": "Virtual / Denver, Colorado",
+      "region": "Colorado",
+      "stravaActivityId": "5115941734",
+      "stravaActivityName": "Monday Afternoon Run",
+      "stravaDistanceKm": 5.0204,
+      "stravaDistanceMi": 3.12,
+      "stravaElapsedSeconds": 1550,
+      "stravaMovingSeconds": 1546,
+      "routeStatus": "matched-no-public-route",
+      "resultSource": "2020 cancellation/deferment announcement + 2021 Baltimore Shamrock virtual participation instructions",
+      "resultUrl": "https://patch.com/maryland/baltimore/baltimore-cancels-st-patricks-day-parade",
+      "matchSource": "User 2020 B3 registration/medal evidence + official deferment + organizer instructions to 2020 registrants + exact 5.02 km Strava completion on the final permitted virtual day",
+      "matchConfidence": "verified",
+      "note": "The March 15, 2020 in-person Shamrock 5K was canceled and registrations were deferred. In 2021 the race was virtual, with 2020 registrants specifically instructed to complete 3.1 miles between March 6 and March 14. Strava records 5.0204 km on March 14, 2021. This verifies the deferred Shamrock leg but does not by itself verify completion of the full 2020 B3 Distance Series."
+    }
+  ]
+}
