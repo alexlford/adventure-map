@@ -31,6 +31,12 @@ jobs:
         run: npm run validate:routing
       - name: Validate map entities and routes
         run: npm run validate:map-data
+      - name: Compile browser-facing public data
+        run: |
+          npm run build:public-data -- --out-dir /tmp/adventures-public-data
+          test -s /tmp/adventures-public-data/public-records.json
+          test -s /tmp/adventures-public-data/public-routes.geojson
+          test -s /tmp/adventures-public-data/public-map-entities.json
       - name: Install browser smoke-test tooling
         run: npm install --no-save @playwright/test@1.55.0
       - name: Install Chromium
