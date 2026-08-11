@@ -20,10 +20,12 @@ if(!fallback.includes("clean.match(/^record\\/([^/]+)$/)"))errors.push('404.html
 for(const [route,file] of Object.entries({home:'index.html',map:'map.html',explore:'activities.html',timeline:'timeline.html',races:'races.html',summits:'summits.html',skiing:'skiing.html',nordic:'nordic.html',mtb:'mountain-biking.html',stories:'adventures.html'}))if(!fallback.includes(`${route}:'${file}'`))errors.push(`404.html missing route mapping for ${route}`);
 if(normalizer.includes('history.replaceState'))errors.push('record normalizer must not change browser history before relative data/map fetches finish');
 if(!normalizer.includes('link[rel="canonical"]')||!normalizer.includes("meta[property=\"og:url\"]"))errors.push('record normalizer does not publish clean canonical/share URLs');
-if(!mapApp.includes("location.hostname==='adventures.alexlford.com'"))errors.push('map app does not emit clean production record links');
 if(!mapApp.includes('AdventureRoutes.loadAll()'))errors.push('map app must load the complete canonical route catalog before rendering');
 if(mapApp.includes("fetch('data/routes.geojson')"))errors.push('map app must not bypass the canonical route catalog');
-if(!mapPage.includes('href="index.html"')||!mapPage.includes("'index.html':'/'"))errors.push('map page must keep relative staging links and rewrite them only on production');
+if(!mapApp.includes('recordHref=A.recordHref')||!mapApp.includes('formatDate=A.formatDate')||!mapApp.includes('escapeHtml=A.esc'))errors.push('map app must use AdventureSite shared URL and formatting helpers');
+if(/function\s+(recordHref|formatDate|formatDuration|escapeHtml)\b/.test(mapApp))errors.push('map app must not reimplement shared URL, date, duration, or escaping helpers');
+if(!mapPage.includes('href="index.html"')||!mapPage.includes('src="shared.js"'))errors.push('map page must keep relative staging links and load the shared site shell');
+if(mapPage.indexOf('src="shared.js"')>mapPage.indexOf('src="app.js"'))errors.push('map page must load shared.js before app.js');
 if(mapPage.includes('notable.js')||fs.existsSync('notable.js'))errors.push('obsolete notable.js map extension must remain removed');
 if(mapPage.includes('expansion.js')||fs.existsSync('expansion.js'))errors.push('obsolete supplemental route loader must remain removed');
 if(mapEnhancements.includes('detail.html?id=')||mapEnhancements.includes('window.popupCard'))errors.push('map enhancements must not wrap popupCard or inject legacy record links');
