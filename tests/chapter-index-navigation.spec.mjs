@@ -12,8 +12,26 @@ for (const pagePath of ['/races.html','/summits.html','/skiing.html','/nordic.ht
     expect(href).toMatch(/^#chapter-|^#[A-Za-z]/);
     const target = page.locator(href);
     await expect(target).toHaveAttribute('data-chapter-anchor','true');
+    await expect(index.locator('a[aria-current="location"]')).toHaveCount(1);
   });
 }
+
+test('Race chapter index picks up the asynchronously rendered Majors feature', async ({ page }) => {
+  await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
+  const index = page.locator('.chapter-index');
+  await expect(index.getByRole('link',{name:'A marathon journey around the world.'})).toBeVisible();
+});
+
+test('Chapter index follows the section being read', async ({ page }) => {
+  await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
+  const index = page.locator('.chapter-index');
+  const links = index.locator('a');
+  await expect(links.nth(1)).toBeVisible();
+  const href = await links.nth(1).getAttribute('href');
+  await page.locator(href).scrollIntoViewIfNeeded();
+  await expect.poll(async () => await links.nth(1).getAttribute('aria-current')).toBe('location');
+  await expect(links.nth(1)).toHaveClass(/is-current/);
+});
 
 test('Chapter index stays compact and horizontally navigable on phone widths', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
