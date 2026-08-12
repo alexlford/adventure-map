@@ -49,14 +49,11 @@
     return readyPromise;
   };
 
-  const api = {
-    version: 1,
+  const core = Object.freeze({
     leaflet: map,
     ready,
-    state: snapshot,
-    record(recordOrId) {
-      return resolveRecord(recordOrId);
-    },
+    snapshot,
+    resolveRecord,
     records,
     filteredRecords,
     visibleRoutes,
@@ -104,6 +101,27 @@
       if (fit && typeof fitVisible === 'function') fitVisible(filteredRecords());
       return snapshot();
     }
+  });
+
+  const api = {
+    version: 1,
+    leaflet: core.leaflet,
+    ready: core.ready,
+    state: core.snapshot,
+    record(recordOrId) {
+      return core.resolveRecord(recordOrId);
+    },
+    records: core.records,
+    filteredRecords: core.filteredRecords,
+    visibleRoutes: core.visibleRoutes,
+    layerFor: core.layerFor,
+    popupHtml: core.popupHtml,
+    focus: core.focus,
+    emphasize: core.emphasize,
+    clearFocus: core.clearFocus,
+    fit: core.fit,
+    refresh: core.refresh,
+    setViewState: core.setViewState
   };
 
   window.AdventureMap = Object.freeze(api);
