@@ -2041,11 +2041,12 @@
     {
       "id": "pi-day-half-2015",
       "kind": "race",
-      "discipline": "road",
+      "discipline": "trail",
       "name": "Pi Day River Rotation Half Marathon",
+      "eventSeries": "Pi Day River Rotation",
       "year": 2015,
       "date": "2015-03-14",
-      "distance": "Half marathon",
+      "distance": "Trail half marathon",
       "distanceKm": 21.15,
       "distanceMi": 13.14,
       "location": "Lawrence, Kansas",
@@ -2059,8 +2060,9 @@
       "movingSeconds": 6610,
       "elevationGainM": 0,
       "routeStatus": "matched-no-public-route",
-      "matchSource": "Strava export",
-      "matchConfidence": "high",
+      "matchSource": "Strava export + user confirmation of trail race",
+      "matchConfidence": "confirmed",
+      "note": "User confirms the Pi Day River Rotation Half Marathon was a trail race in Lawrence.",
       "_catalogSource": "data/discovered-races.json",
       "slug": "2015-03-14-pi-day-river-rotation-half-marathon",
       "recordClass": "race",
@@ -2070,7 +2072,7 @@
       "distanceInfo": {
         "km": 21.15,
         "mi": 13.14,
-        "label": "Half marathon",
+        "label": "Trail half marathon",
         "source": "recorded"
       },
       "locationInfo": {
@@ -2081,10 +2083,10 @@
         "precision": "event-area-placeholder"
       },
       "evidence": {
-        "source": "Strava export",
-        "matchSource": "Strava export",
+        "source": "Strava export + user confirmation of trail race",
+        "matchSource": "Strava export + user confirmation of trail race",
         "resultSource": null,
-        "confidence": "high"
+        "confidence": "confirmed"
       },
       "routeInfo": {
         "status": "matched-no-public-route",
