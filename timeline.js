@@ -42,11 +42,12 @@
     document.head.appendChild(style);
   }
 
-  const childLabel=children=>{
+  const childLabel=(entry,children)=>{
     if(!children.length)return'';
     const groups=[...new Set(children.map(groupFor))];
     if(groups.length===1&&groups[0]==='summits')return`${children.length} summit${children.length===1?'':'s'}`;
     if(groups.length===1&&groups[0]==='races')return`${children.length} race${children.length===1?'':'s'}`;
+    if(entry?.discipline==='challenge')return`${children.length} leg${children.length===1?'':'s'}`;
     return`${children.length} linked event${children.length===1?'':'s'}`;
   };
 
@@ -77,7 +78,7 @@
         const children=visibleChildren(entry,active);
         if(!children.length)return renderItem(entry);
         const nested=children.map(child=>renderItem(child,{child:true})).join('');
-        return `<div class="timeline-group">${renderItem(entry,{groupCount:childLabel(children)})}<div class="timeline-children">${nested}</div></div>`;
+        return `<div class="timeline-group">${renderItem(entry,{groupCount:childLabel(entry,children)})}<div class="timeline-children">${nested}</div></div>`;
       }).join('');
       return `<section class="timeline-year"><h3>${year}</h3><div class="timeline-items">${items}</div></section>`;
     }).join('')||'<div class="empty">No entries in this view yet.</div>';
