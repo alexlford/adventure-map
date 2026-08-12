@@ -52,13 +52,27 @@ const privacyIds = new Set(Object.entries(routeCatalog.recordOverrides || {})
 
 const records = recordsPayload.records || recordsPayload;
 const audit = [];
+const recordsWithoutStrava = [];
 for (const record of records) {
   const activityIds = [
     ...(record.stravaActivityIds || []),
     ...(record.stravaActivityId != null ? [record.stravaActivityId] : []),
   ].filter(value => value != null).map(String);
   const uniqueActivityIds = [...new Set(activityIds)];
-  if (!uniqueActivityIds.length) continue;
+  if (!uniqueActivityIds.length) {
+    recordsWithoutStrava.push({
+      id: record.id,
+      slug: record.slug,
+      date: record.date || record.startDate || null,
+      endDate: record.endDate || null,
+      completionDate: record.completionDate || null,
+      name: record.name,
+      kind: record.kind || record.recordClass || null,
+      discipline: record.discipline || null,
+      routeStatus: record.routeStatus || record.routeInfo?.status || null,
+    });
+    continue;
+  }
 
   const privacyWithheld = privacyIds.has(record.id) || record.routeStatus === 'withheld-privacy' || record.routeInfo?.status === 'withheld-privacy';
   const explicitPersonalRoute = (record.routeFeatureIds || []).some(id => personalFeatureIds.has(String(id)));
@@ -87,12 +101,18 @@ const intentionalPrivacy = audit.filter(item => item.missingActivityIds.length &
 const fullyCovered = audit.filter(item => !item.missingActivityIds.length);
 
 console.log(JSON.stringify({
+  totalPublicRecords: records.length,
   recordsWithStrava: audit.length,
+  recordsWithoutStrava: recordsWithoutStrava.length,
   fullyCovered: fullyCovered.length,
   actionableMissing: actionableMissing.length,
   intentionalPrivacy: intentionalPrivacy.length,
 }, null, 2));
 
+if (recordsWithoutStrava.length) {
+  console.log('\nNO_STRAVA_LINK');
+  for (const item of recordsWithoutStrava) console.log(JSON.stringify(item));
+}
 if (intentionalPrivacy.length) {
   console.log('\nINTENTIONAL_PRIVACY');
   for (const item of intentionalPrivacy) console.log(JSON.stringify(item));
