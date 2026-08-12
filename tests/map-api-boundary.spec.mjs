@@ -47,3 +47,35 @@ test('AdventureMap public facade is isolated behind one frozen core boundary', a
   expect(result.mapZoom).toBe(2);
   expect(errors).toEqual([]);
 });
+
+test('Supplemental route ingestion goes through AdventureMap instead of raw map globals', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+  await expect(page.locator('#routeCount')).not.toHaveText('—');
+
+  const result = await page.evaluate(async () => {
+    const [expansionSource, base] = await Promise.all([
+      fetch('/expansion.js').then(response => response.text()),
+      fetch('/data/routes.geojson').then(response => response.json()),
+    ]);
+    const api = window.AdventureMap;
+    await api.ready();
+    return {
+      expansionSource,
+      hasAppendRoutes: typeof api.appendRoutes === 'function',
+      baseFeatureCount: base.features?.length || 0,
+      routeFeatureCount: api.state().routeFeatureCount,
+      publicRouteCount: Number(document.getElementById('routeCount')?.textContent || 0),
+    };
+  });
+
+  expect(result.hasAppendRoutes).toBeTruthy();
+  expect(result.expansionSource).toContain('api.appendRoutes(payloads)');
+  expect(result.expansionSource).not.toContain('state.routes');
+  expect(result.expansionSource).not.toContain('renderPreservingFocus');
+  expect(result.expansionSource).not.toContain('map.closePopup');
+  expect(result.routeFeatureCount).toBeGreaterThan(result.baseFeatureCount);
+  expect(result.publicRouteCount).toBeGreaterThan(result.baseFeatureCount);
+  expect(errors).toEqual([]);
+});
