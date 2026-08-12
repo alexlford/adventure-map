@@ -19,6 +19,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
+      - name: Validate Strava source format extraction
+        run: python3 scripts/test_strava_route_formats.py
       - name: Compile public routes
         run: node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
       - name: Validate compiled route contract
