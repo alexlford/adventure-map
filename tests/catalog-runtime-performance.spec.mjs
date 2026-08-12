@@ -66,7 +66,7 @@ test('Record dossier reuses the same lean catalog bootstrap before optional rout
   expect(requests).not.toContain('/data/strava-matches.json');
 });
 
-test('Catalog falls back to canonical source layers if the compiled artifact is unavailable', async ({ page }) => {
+test('Catalog fails closed if the compiled publication artifact is unavailable', async ({ page }) => {
   const requests = [];
   await page.route('**/data/public-records.json', route => route.fulfill({ status: 503, contentType: 'application/json', body: '{"error":"test outage"}' }));
   page.on('request', request => {
@@ -75,10 +75,11 @@ test('Catalog falls back to canonical source layers if the compiled artifact is 
   });
 
   await page.goto('/timeline/', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#timeline')).not.toBeEmpty();
+  await expect(page.locator('#timeline .empty')).toBeVisible();
+  await expect(page.locator('#timeline .empty')).toContainText('Failed to load data/public-records.json');
 
   expect(requests).toContain('/data/public-records.json');
-  expect(requests).toContain('/data/catalog.json');
-  expect(requests).toContain('/data/adventures.json');
-  expect(requests).toContain('/data/strava-matches.json');
+  expect(requests).not.toContain('/data/catalog.json');
+  expect(requests).not.toContain('/data/adventures.json');
+  expect(requests).not.toContain('/data/strava-matches.json');
 });
