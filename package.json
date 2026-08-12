@@ -12,10 +12,11 @@
     "validate:majors": "node scripts/validate-world-majors.mjs",
     "validate:stories": "node scripts/validate-story-context.mjs",
     "validate:static": "node scripts/validate-static-publishing.mjs",
+    "build:shared": "node scripts/build-shared.mjs",
     "build:public-records": "node scripts/build-public-records.mjs",
     "build:static-site": "node scripts/build-static-site.mjs",
     "build:public-index": "node scripts/build-public-index.mjs",
-    "build:publish": "npm run build:public-records && npm run build:static-site && npm run build:public-index",
+    "build:publish": "npm run build:shared && npm run build:public-records && npm run build:static-site && npm run build:public-index",
     "scan:strava": "python3 scripts/scan_strava_export.py",
     "advance:strava": "python3 scripts/advance_strava_state.py",
     "test:update-pipeline": "python3 scripts/test_update_pipeline.py"
