@@ -43,14 +43,14 @@
     }
 
     @media(max-width:650px){
-      /* Compact passport-book rhythm: equal cards without the large empty lower halves. */
+      /* Compact passport-book rhythm: equal cards, with substantially less empty lower space. */
       .majors-passport-grid{
-        gap:8px!important;
-        grid-auto-rows:clamp(204px,48vw,218px)!important;
+        gap:7px!important;
+        grid-auto-rows:184px!important;
       }
       .major-passport{
-        padding:14px 12px 14px 50px!important;
-        border-radius:16px!important;
+        padding:13px 11px 12px 48px!important;
+        border-radius:15px!important;
         overflow:hidden!important;
       }
       .major-passport.completed,
@@ -58,49 +58,49 @@
         background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,.91))!important;
       }
       .passport-number{
-        left:13px!important;
-        top:14px!important;
-        font-size:1.05rem!important;
+        left:12px!important;
+        top:13px!important;
+        font-size:1rem!important;
         color:rgba(33,58,49,.18)!important;
       }
       .major-passport .card-kicker{
-        margin:0 0 6px!important;
-        font-size:.56rem!important;
-        line-height:1.08!important;
-        letter-spacing:.12em!important;
+        margin:0 0 5px!important;
+        font-size:.54rem!important;
+        line-height:1.06!important;
+        letter-spacing:.115em!important;
       }
       .major-passport h3{
         margin:0!important;
         padding-right:0!important;
-        font-size:1.34rem!important;
+        font-size:1.3rem!important;
         line-height:1.01!important;
         letter-spacing:-.025em!important;
         overflow-wrap:normal!important;
         word-break:normal!important;
       }
       .major-passport .card-meta{
-        margin-top:10px!important;
+        margin-top:8px!important;
         padding-right:0!important;
-        font-size:.69rem!important;
-        line-height:1.27!important;
+        font-size:.67rem!important;
+        line-height:1.24!important;
         color:#68747a!important;
         overflow-wrap:normal!important;
         word-break:normal!important;
       }
 
-      /* Put the stamp in the quiet lower corner so it reads as a real passport mark, not a title badge. */
+      /* Keep the completion mark as a quiet passport stamp rather than a title badge. */
       .passport-earned-stamp{
-        right:11px!important;
+        right:9px!important;
         top:auto!important;
-        bottom:11px!important;
-        width:49px!important;
-        height:49px!important;
+        bottom:9px!important;
+        width:44px!important;
+        height:44px!important;
         border:2px solid rgba(39,101,78,.58)!important;
         border-radius:50%!important;
         opacity:.78!important;
         transform:rotate(-9deg)!important;
       }
-      .passport-earned-stamp::before{font-size:.30rem!important}
+      .passport-earned-stamp::before{font-size:.27rem!important}
       .passport-earned-stamp::after{
         content:''!important;
         position:absolute!important;
@@ -111,11 +111,11 @@
     }
 
     @media(max-width:390px){
-      .majors-passport-grid{grid-auto-rows:212px!important}
-      .major-passport{padding-left:47px!important}
-      .passport-number{left:12px!important}
-      .major-passport h3{font-size:1.27rem!important}
-      .major-passport .card-meta{font-size:.67rem!important}
+      .majors-passport-grid{grid-auto-rows:184px!important}
+      .major-passport{padding-left:46px!important}
+      .passport-number{left:11px!important}
+      .major-passport h3{font-size:1.24rem!important}
+      .major-passport .card-meta{font-size:.65rem!important}
     }
   `;
   if(!document.getElementById(style.id))document.head.appendChild(style);
