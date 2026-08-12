@@ -20,7 +20,8 @@
     "data/strava-route-full-resolution-ranch-hand-skate-2022.json",
     "data/strava-route-full-resolution-ranch-hand-classic-2022.json",
     "data/strava-route-decalibron-2023.json",
-    "data/strava-route-full-resolution-flying-pig-2025.json"
+    "data/strava-route-full-resolution-flying-pig-2025.json",
+    "data/activity-route-full-resolution-01.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
