@@ -1,12 +1,18 @@
 /* Master Adventure Map information hierarchy and popup polish. */
+:root{--muted:#68737d;--accent:#16836d;--focus:var(--accent)}
 .app-shell{grid-template-columns:minmax(340px,420px) 1fr}
 .sidebar{padding:28px 24px 22px}
 .brand-block{margin-bottom:18px}
 .lede{margin-top:11px;font-size:.94rem}
-.stats{gap:6px;margin-bottom:14px}
-.stat{padding:10px 8px;border-radius:12px}
-.stat-value{font-size:1.28rem}
-.controls{margin:0 0 15px}
+.section-nav{gap:8px}
+.section-nav a{border-color:transparent;background:transparent;padding:7px 10px;font-size:.8rem;font-weight:650}
+.section-nav a:hover,.section-nav a.is-active{border-color:var(--ink)}
+.stats{gap:8px;margin-bottom:16px}
+.stat{position:relative;padding:13px 11px 12px;border-radius:18px;background:rgba(255,255,255,.68);overflow:hidden}
+.stat:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--accent);opacity:.78}
+.stat-value{font-size:1.34rem}
+.stat-label{font-size:.7rem}
+.controls{margin:0 0 16px}
 .control-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 8px}
 .control-label{color:var(--ink);font-size:.7rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase}
 .control-hint{color:var(--muted);font-size:.66rem}
@@ -21,19 +27,20 @@
 .filter-button[data-filter="summits"]:before{background:#357662}
 .filter-button[data-filter="adventures"]:before{background:#715a8d}
 .filter-button.is-active:before{box-shadow:0 0 0 1px rgba(255,255,255,.65)}
-.refine-controls{margin-top:8px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.48);overflow:hidden}
-.refine-controls summary{display:flex;align-items:center;gap:10px;padding:9px 11px;cursor:pointer;list-style:none;color:var(--ink);font-size:.74rem;font-weight:800;user-select:none}
+.filter-button:focus-visible,.secondary-button:focus-visible,.year-reset:focus-visible,input:focus-visible,select:focus-visible,.adventure-item:focus-visible,.section-nav a:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 38%,transparent);outline-offset:3px}
+.refine-controls{margin-top:8px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.52);overflow:hidden}
+.refine-controls summary{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;list-style:none;color:var(--ink);font-size:.74rem;font-weight:800;user-select:none}
 .refine-controls summary::-webkit-details-marker{display:none}
 .refine-controls summary small{margin-left:auto;color:var(--muted);font-size:.64rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%}
 .refine-controls summary:after{content:"+";display:grid;place-items:center;width:18px;height:18px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--muted);font-size:.8rem;line-height:1}
 .refine-controls[open] summary{border-bottom:1px solid var(--line)}
 .refine-controls[open] summary:after{content:"−"}
-.refine-body{padding:10px}
+.refine-body{padding:11px}
 .refine-body .year-controls{margin:0 0 10px;padding:0;border:0;background:transparent}
 .refine-body .search-label{font-size:.69rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .refine-body #searchInput{padding:8px 11px;font-size:.76rem}
 .refine-body .secondary-button{padding:8px 10px;font-size:.72rem}
-.results-heading{margin-top:4px;padding-top:2px}
+.results-heading{margin-top:5px;padding-top:2px}
 .adventure-list{gap:5px}
 .adventure-item{position:relative;padding:9px 8px;transition:background 120ms ease,border-color 120ms ease,opacity 120ms ease,transform 120ms ease}
 .adventure-item.is-focused{background:#fff;border-color:var(--line);box-shadow:0 5px 16px rgba(23,32,42,.06)}
@@ -43,6 +50,12 @@
 .item-title{font-size:.91rem}
 .item-meta{font-size:.72rem}
 .item-value{font-size:.7rem;font-weight:700}
+.archive-state,.adventure-list>p{display:grid;align-content:center;gap:5px;min-height:92px;margin:0;padding:20px;border:1px dashed var(--line);border-radius:18px;background:rgba(255,255,255,.52);color:var(--muted);font-size:.76rem;line-height:1.5}
+.archive-state strong{color:var(--ink);font-size:.84rem}
+.archive-state-loading{border-style:solid}
+.archive-state-loading strong:after{content:"";display:inline-block;width:7px;height:7px;margin-left:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 13%,transparent)}
+.archive-state-error{border-color:color-mix(in srgb,#b45309 38%,var(--line));background:color-mix(in srgb,#fff 88%,#b45309)}
+.sidebar-footer{margin-top:28px;padding-top:18px}
 
 /* Popup hierarchy: one clear title, one location line, one headline result, then compact supporting metrics. */
 .leaflet-popup-content .popup-card-refined{position:relative;padding-left:12px}
@@ -76,12 +89,13 @@
 @media(max-width:520px){
   .sidebar{padding:21px 15px 18px}
   .lede{font-size:.9rem}
-  .stats{gap:5px}
-  .stat{padding:9px 7px}
-  .stat-value{font-size:1.18rem}
-  .refine-controls summary{padding:9px 10px}
+  .stats{gap:6px}
+  .stat{padding:11px 9px 10px}
+  .stat-value{font-size:1.22rem}
+  .refine-controls summary{padding:10px 11px}
   .refine-controls summary small{max-width:50%}
-  .refine-body{padding:9px}
+  .refine-body{padding:10px}
+  .archive-state,.adventure-list>p{min-height:84px;padding:18px}
   .leaflet-popup-content{min-width:0!important;width:min(280px,calc(100vw - 64px));max-height:48vh}
   .popup-card-refined .popup-title{font-size:.98rem}
   .popup-headline strong{font-size:1.23rem}
