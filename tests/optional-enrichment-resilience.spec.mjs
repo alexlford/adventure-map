@@ -38,7 +38,7 @@ test('Record dossier survives relationship enrichment failure', async ({ page })
     body: '{"error":"test relationship outage"}'
   }));
 
-  await page.goto('/record/chicago-marathon-2021/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/detail.html?record=chicago-marathon-2021', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('h1')).toContainText('Chicago Marathon');
   await expect(page.locator('body')).toContainText(/Race dossier|Official race result/i);
   await expect(page.locator('#page > .empty')).toHaveCount(0);
