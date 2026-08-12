@@ -57,6 +57,25 @@ window.AdventureRoutes = (() => {
       features: (collection.features || []).filter(feature => !superseded.has(keyFor(feature)))
     }));
   }
+  function dedupeFeatureIds(collections) {
+    const winners = new Map();
+    collections.forEach((collection, collectionIndex) => {
+      (collection.features || []).forEach((feature, featureIndex) => {
+        const id = keyFor(feature);
+        if (id) winners.set(id, { collectionIndex, featureIndex });
+      });
+    });
+    if (!winners.size) return collections;
+    return collections.map((collection, collectionIndex) => ({
+      ...collection,
+      features: (collection.features || []).filter((feature, featureIndex) => {
+        const id = keyFor(feature);
+        if (!id) return true;
+        const winner = winners.get(id);
+        return winner?.collectionIndex === collectionIndex && winner?.featureIndex === featureIndex;
+      })
+    }));
+  }
   function decodeComponent(encoded, state, label) {
     let result = 0;
     let shift = 0;
@@ -142,7 +161,7 @@ window.AdventureRoutes = (() => {
     ]);
     const collections = [...normalizedRoutes, ...polylinePayloads];
     if (!collections.length && (routeFiles.length || polylineFiles.length)) throw new Error('Unable to load public route geometry.');
-    const preferredCollections = suppressSupersededFeatures(collections);
+    const preferredCollections = dedupeFeatureIds(suppressSupersededFeatures(collections));
     return expandRelationshipOwnership(preferredCollections, relationshipPayload);
   }
   function loadAll({ fresh = false } = {}) {
