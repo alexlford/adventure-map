@@ -26,3 +26,16 @@ test('Timeline category filter is shareable and restores cleanly', async ({ page
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expect(page.locator('[data-filter="skiing"]')).toHaveClass(/is-active/);
 });
+
+test('Story archive category restores and remains shareable', async ({ page }) => {
+  await page.goto('/adventures.html?view=mountain', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('[data-filter="mountain"]')).toHaveClass(/is-active/);
+  await expect(page.locator('#storyIndex .story-index-row').first()).toBeVisible();
+
+  await page.locator('[data-filter="challenge"]').click();
+  await expect.poll(() => new URL(page.url()).searchParams.get('view')).toBe('challenge');
+  await expect(page.locator('[data-filter="challenge"]')).toHaveAttribute('aria-pressed','true');
+
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(page.locator('[data-filter="challenge"]')).toHaveClass(/is-active/);
+});
