@@ -41,18 +41,22 @@ test('Chapter index follows the section being read without moving the page verti
   expect(Math.abs(after-before)).toBeLessThan(4);
 });
 
-test('Chapter index stays compact and horizontally navigable on phone widths', async ({ page }) => {
+test('Chapter index stays sticky and horizontally navigable on phone widths', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
   const index = page.locator('.chapter-index');
   await expect(index).toBeVisible();
   const metrics = await index.evaluate(node => ({
     overflowX:getComputedStyle(node).overflowX,
+    position:getComputedStyle(node).position,
+    top:parseFloat(getComputedStyle(node).top),
     scrollWidth:node.scrollWidth,
     clientWidth:node.clientWidth,
     whiteSpace:getComputedStyle(node.querySelector('a')).whiteSpace
   }));
   expect(['auto','scroll']).toContain(metrics.overflowX);
+  expect(metrics.position).toBe('sticky');
+  expect(metrics.top).toBeGreaterThan(0);
   expect(metrics.whiteSpace).toBe('nowrap');
   expect(metrics.scrollWidth).toBeGreaterThanOrEqual(metrics.clientWidth);
 });
