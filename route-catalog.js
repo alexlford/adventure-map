@@ -25,10 +25,69 @@ window.AdventureRoutes = (() => {
   async function normalizeCollection(collection) {
     return { ...collection, features: await Promise.all((collection.features || []).map(normalizeFeature)) };
   }
+  function decodeComponent(encoded, state, label) {
+    let result = 0;
+    let shift = 0;
+    let b;
+    do {
+      if (state.index >= encoded.length) throw new Error(`Truncated ${label}`);
+      b = encoded.charCodeAt(state.index++) - 63;
+      result |= (b & 0x1f) << shift;
+      shift += 5;
+    } while (b >= 0x20);
+    return (result & 1) ? ~(result >> 1) : (result >> 1);
+  }
+  function decodePolyline(encoded) {
+    const state = { index: 0 };
+    let lat = 0;
+    let lon = 0;
+    const coordinates = [];
+    while (state.index < encoded.length) {
+      lat += decodeComponent(encoded, state, 'latitude');
+      lon += decodeComponent(encoded, state, 'longitude');
+      const point = [lon / 1e5, lat / 1e5];
+      if (!Number.isFinite(point[0]) || !Number.isFinite(point[1]) || point[0] < -180 || point[0] > 180 || point[1] < -90 || point[1] > 90) {
+        throw new Error('Encoded route contains an out-of-range coordinate');
+      }
+      coordinates.push(point);
+    }
+    if (coordinates.length < 2) throw new Error('Encoded route contains fewer than two coordinates');
+    return coordinates;
+  }
+  async function polylineCollection(path) {
+    const payload = await fetchJson(path);
+    const features = (payload.routes || []).map(route => {
+      if (!route.id || !Array.isArray(route.lines) || !route.lines.length) throw new Error(`${path}: invalid encoded route`);
+      const lines = route.lines.map(decodePolyline);
+      return {
+        type: 'Feature',
+        id: route.id,
+        properties: {
+          featureId: route.id,
+          stravaActivityId: route.stravaActivityId || null,
+          adventureIds: route.adventureIds || [],
+          provenance: 'personal-gps',
+          source: payload.source || 'Strava GPS export',
+          category: route.category || null,
+          mtbMode: route.mtbMode || null
+        },
+        geometry: lines.length === 1
+          ? { type: 'LineString', coordinates: lines[0] }
+          : { type: 'MultiLineString', coordinates: lines }
+      };
+    });
+    return normalizeCollection({ type: 'FeatureCollection', features });
+  }
   async function loadAll() {
     const cfg = await config();
-    const payloads = await Promise.all(cfg.routeFiles.map(fetchJson));
-    return Promise.all(payloads.map(normalizeCollection));
+    const routeFiles = cfg.routeFiles || [];
+    const polylineFiles = cfg.polylineFiles?.length ? cfg.polylineFiles : ['data/activity-route-polylines.json'];
+    const [routePayloads, polylinePayloads] = await Promise.all([
+      Promise.all(routeFiles.map(fetchJson)),
+      Promise.all(polylineFiles.map(polylineCollection))
+    ]);
+    const normalizedRoutes = await Promise.all(routePayloads.map(normalizeCollection));
+    return [...normalizedRoutes, ...polylinePayloads];
   }
   async function recordProvenance(recordId) {
     const cfg = await config();
