@@ -48,6 +48,7 @@ test('Chapter index stays sticky and horizontally navigable on phone widths', as
   await page.goto('/races.html', { waitUntil:'domcontentloaded' });
   const index = page.locator('.chapter-index');
   await expect(index).toBeVisible();
+  await expect.poll(async () => index.evaluate(node => getComputedStyle(node).overflowX)).toBe('auto');
   const metrics = await index.evaluate(node => ({
     overflowX:getComputedStyle(node).overflowX,
     position:getComputedStyle(node).position,
@@ -56,7 +57,7 @@ test('Chapter index stays sticky and horizontally navigable on phone widths', as
     clientWidth:node.clientWidth,
     whiteSpace:getComputedStyle(node.querySelector('a')).whiteSpace
   }));
-  expect(['auto','scroll']).toContain(metrics.overflowX);
+  expect(metrics.overflowX).toBe('auto');
   expect(metrics.position).toBe('sticky');
   expect(metrics.top).toBeGreaterThan(0);
   expect(metrics.whiteSpace).toBe('nowrap');
