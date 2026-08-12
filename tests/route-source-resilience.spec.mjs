@@ -1,21 +1,11 @@
 import { test, expect } from '@playwright/test';
+import fs from 'node:fs/promises';
 
+const routeCatalog = JSON.parse(await fs.readFile(new URL('../data/route-catalog.json', import.meta.url), 'utf8'));
 const geometrySources = [
-  'routes.geojson',
-  'mined-routes.geojson',
-  'historical-routes-v2.geojson',
-  'event-routes.geojson',
-  'activity-route-polylines.json',
-  'strava-route-backfill-01.json',
-  'strava-route-backfill-02.json',
-  'strava-route-backfill-03.json',
-  'strava-route-backfill-04.json',
-  'strava-route-backfill-05.json',
-  'strava-route-backfill-06.json',
-  'ski-the-sky-runs.json',
-  'strava-route-full-resolution-ranch-hand-skate-2022.json',
-  'strava-route-full-resolution-ranch-hand-classic-2022.json'
-];
+  ...(routeCatalog.routeFiles || []),
+  ...(routeCatalog.polylineFiles || [])
+].map(source => source.replace(/^data\//, ''));
 
 async function installRouteRuntime(page) {
   await page.goto('/index.html', { waitUntil: 'domcontentloaded' });

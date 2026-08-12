@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-11",
+  "updatedOn": "2026-08-12",
   "description": "Canonical route metadata for the Personal Adventure Almanac. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, and privacy treatment.",
   "routeFiles": [
     "data/routes.geojson",
@@ -18,7 +18,8 @@
     "data/strava-route-backfill-06.json",
     "data/ski-the-sky-runs.json",
     "data/strava-route-full-resolution-ranch-hand-skate-2022.json",
-    "data/strava-route-full-resolution-ranch-hand-classic-2022.json"
+    "data/strava-route-full-resolution-ranch-hand-classic-2022.json",
+    "data/strava-route-decalibron-2023.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -30,6 +31,7 @@
     "strava-6814188054": {"adventureIds":["smr-stampede-ranch-hand-skate-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Saturday 25K freestyle/skate leg of the 2022 Snow Mountain Ranch Ranch Hand challenge."},
     "strava-6819611723": {"adventureIds":["smr-stampede-ranch-hand-classic-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Sunday 25K classic leg completing the 2022 Snow Mountain Ranch Ranch Hand challenge."},
     "strava-10926255561": {"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Personal GPS recording from the 2024 Frisco BrewSki."},
+    "strava-9642214422": {"adventureIds":["decalibron-2023","mount-democrat","mount-cameron","mount-lincoln","mount-bross"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Personal GPS recording of the August 13, 2023 DeCaLiBron loop; 1,039 recorded source points retained by deterministic every-20th-point sampling from the 20,755-point FIT track for detailed public rendering."},
     "river-to-river-relay-historical-course": {"provenance":"historical-course","sourceLabel":"Official River to River course description + public historical GPS reference","note":"Shared historical full relay course for the 2006, 2008, and 2010 entries; not a personal GPS recording."}
   },
   "recordOverrides": {
