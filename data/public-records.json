@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 132,
+  "recordCount": 133,
   "records": [
     {
       "id": "mount-lincoln",
@@ -3826,6 +3826,56 @@
       },
       "routeInfo": {
         "status": "multi-activity-match",
+        "provenance": null
+      }
+    },
+    {
+      "id": "ski-colorado-triathlon-leg",
+      "kind": "adventure",
+      "discipline": "ski-objective",
+      "name": "Colorado Triathlon · Ski Leg",
+      "year": 2023,
+      "date": "2023-12-02",
+      "location": "Eldora Mountain Resort, Colorado",
+      "region": "Colorado",
+      "lat": 39.9372,
+      "lon": -105.5827,
+      "coordinatePrecision": "resort",
+      "stravaActivityId": "10318237034",
+      "routeFeatureIds": [
+        "strava-10318237034"
+      ],
+      "routeStatus": "gps",
+      "matchSource": "Strava export + user-confirmed Colorado Triathlon context",
+      "matchConfidence": "confirmed",
+      "note": "Leg 2 of the self-described Colorado Triathlon: alpine skiing at Eldora between the COLDERBolder 5K and the North Table Mountain MTB leg.",
+      "_catalogSource": "data/notable-adventures.json",
+      "slug": "2023-12-02-colorado-triathlon-ski-leg",
+      "recordClass": "adventure",
+      "sport": "alpine-skiing",
+      "startDate": "2023-12-02",
+      "finishDate": "2023-12-02",
+      "distanceInfo": {
+        "km": null,
+        "mi": null,
+        "label": null,
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Eldora Mountain Resort, Colorado",
+        "region": "Colorado",
+        "lat": 39.9372,
+        "lon": -105.5827,
+        "precision": "resort"
+      },
+      "evidence": {
+        "source": "Strava export + user-confirmed Colorado Triathlon context",
+        "matchSource": "Strava export + user-confirmed Colorado Triathlon context",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "gps",
         "provenance": null
       }
     },
