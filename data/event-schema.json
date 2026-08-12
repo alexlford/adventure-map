@@ -1,33 +1,114 @@
 {
-  "schemaVersion": 2,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adventures.alexlford.com/schema/event-record.schema.json",
+  "title": "Alex Ford Adventures public record",
+  "description": "Canonical contract for resolved public adventure records. Source-layer fragments may be partial; this schema applies after catalog resolution and normalization.",
+  "schemaVersion": 3,
+  "type": "object",
+  "required": ["id", "name", "kind"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "slug": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "name": {"type": "string", "minLength": 1},
+    "kind": {"type": "string", "enum": ["summit", "race", "adventure", "event", "outing"]},
+    "discipline": {"type": "string", "enum": ["road", "marathon", "trail", "relay", "mountain-bike", "nordic", "ski-objective", "mountain-loop", "trek", "challenge", "hike", "hiking", "ski"]},
+    "recordClass": {"type": "string", "enum": ["summit", "race", "adventure", "event", "outing"]},
+    "sport": {"type": "string", "enum": ["mountaineering", "nordic-skiing", "mountain-biking", "alpine-skiing", "hiking", "running", "adventure"]},
+    "date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "endDate": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "startDate": {"type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "finishDate": {"type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "lat": {"type": "number", "minimum": -90, "maximum": 90},
+    "lon": {"type": "number", "minimum": -180, "maximum": 180},
+    "matchConfidence": {"type": "string", "enum": ["confirmed", "verified", "high", "medium", "low", "probable", "unknown"]},
+    "coordinatePrecision": {"type": "string", "enum": ["gps-course", "gps-area", "gps-start", "venue", "venue-placeholder", "event-area", "event-area-placeholder", "start-area-placeholder", "resort", "resort-placeholder", "city", "city-placeholder", "city-privacy", "region", "summit", "unknown"]},
+    "distanceMi": {"type": "number", "minimum": 0},
+    "distanceKm": {"type": "number", "minimum": 0},
+    "officialDistanceMi": {"type": "number", "minimum": 0},
+    "officialDistanceKm": {"type": "number", "minimum": 0},
+    "elevationFt": {"type": "number", "minimum": 0},
+    "elapsedSeconds": {"type": "number", "minimum": 0},
+    "media": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["src", "alt"],
+        "properties": {
+          "type": {"type": "string", "enum": ["image"]},
+          "src": {"type": "string", "minLength": 1},
+          "alt": {"type": "string", "minLength": 1},
+          "caption": {"type": "string"},
+          "credit": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "distanceInfo": {
+      "type": "object",
+      "required": ["km", "mi", "label", "source"],
+      "properties": {
+        "km": {"type": ["number", "null"], "minimum": 0},
+        "mi": {"type": ["number", "null"], "minimum": 0},
+        "label": {"type": ["string", "null"]},
+        "source": {"type": "string", "enum": ["official", "recorded"]}
+      },
+      "additionalProperties": true
+    },
+    "locationInfo": {
+      "type": "object",
+      "required": ["label", "region", "lat", "lon", "precision"],
+      "properties": {
+        "label": {"type": ["string", "null"]},
+        "region": {"type": ["string", "null"]},
+        "lat": {"type": ["number", "null"], "minimum": -90, "maximum": 90},
+        "lon": {"type": ["number", "null"], "minimum": -180, "maximum": 180},
+        "precision": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["source", "matchSource", "resultSource", "confidence"],
+      "properties": {
+        "source": {"type": ["string", "null"]},
+        "matchSource": {"type": ["string", "null"]},
+        "resultSource": {"type": ["string", "null"]},
+        "confidence": {"type": "string", "enum": ["confirmed", "verified", "high", "medium", "low", "probable", "unknown"]}
+      },
+      "additionalProperties": true
+    },
+    "routeInfo": {
+      "type": "object",
+      "required": ["status", "provenance"],
+      "properties": {
+        "status": {"type": ["string", "null"]},
+        "provenance": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    }
+  },
+  "dependentRequired": {
+    "lat": ["lon"],
+    "lon": ["lat"]
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"kind": {"const": "race"}}, "required": ["kind"]},
+      "then": {"required": ["discipline"]}
+    },
+    {
+      "if": {"properties": {"kind": {"const": "event"}}, "required": ["kind"]},
+      "then": {"required": ["discipline"]}
+    }
+  ],
+  "additionalProperties": true,
   "kinds": ["summit", "race", "adventure", "event", "outing"],
   "disciplines": ["road", "marathon", "trail", "relay", "mountain-bike", "nordic", "ski-objective", "mountain-loop", "trek", "challenge", "hike", "hiking", "ski"],
   "confidence": ["confirmed", "verified", "high", "medium", "low", "probable", "unknown"],
-  "coordinatePrecision": [
-    "gps-course",
-    "gps-area",
-    "gps-start",
-    "venue",
-    "venue-placeholder",
-    "event-area",
-    "event-area-placeholder",
-    "start-area-placeholder",
-    "resort-placeholder",
-    "city",
-    "city-placeholder",
-    "city-privacy",
-    "region",
-    "summit",
-    "unknown"
-  ],
-  "required": {
-    "all": ["id", "name", "kind"],
-    "dated": ["date"],
-    "race": ["discipline"],
-    "event": ["discipline"]
-  },
+  "coordinatePrecision": ["gps-course", "gps-area", "gps-start", "venue", "venue-placeholder", "event-area", "event-area-placeholder", "start-area-placeholder", "resort", "resort-placeholder", "city", "city-placeholder", "city-privacy", "region", "summit", "unknown"],
   "notes": {
-    "hikeVsHiking": "Both values are accepted while the historical summit inventory is normalized incrementally.",
+    "scope": "This schema validates resolved and normalized public records, not partial evidence/source fragments.",
+    "hikeVsHiking": "Both values remain accepted while the historical summit inventory is normalized incrementally.",
     "coordinatePrecision": "Precision labels describe evidence quality or privacy treatment, not survey-grade geodetic accuracy.",
     "probable": "Probable is retained for legacy evidence that is stronger than an unknown match but not fully confirmed."
   }
