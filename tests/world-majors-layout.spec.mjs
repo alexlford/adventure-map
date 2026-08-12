@@ -23,6 +23,9 @@ test('standalone World Majors passport stays compact and aligned on phone widths
   const completed = cards.filter({ hasText: 'Chicago' }).first();
   const stamp = completed.locator('.passport-earned-stamp');
   await expect(stamp).toHaveCount(1);
+  await expect(stamp).toHaveText('Completed');
+  await expect(stamp).not.toContainText('Major');
+  await expect(stamp).not.toContainText('✓');
   const stampBackground = await stamp.evaluate(node => getComputedStyle(node).backgroundColor);
   expect(stampBackground).toBe('rgba(0, 0, 0, 0)');
 
@@ -33,4 +36,8 @@ test('standalone World Majors passport stays compact and aligned on phone widths
     return !(title.right <= stamp.left || title.left >= stamp.right || title.bottom <= stamp.top || title.top >= stamp.bottom);
   });
   expect(overlap).toBeFalsy();
+
+  await expect(page.locator('#worldMajorsCompletedStampFix')).toHaveCount(0);
+  const measuredHeightVariable = await grid.evaluate(node => node.style.getPropertyValue('--passport-card-height'));
+  expect(measuredHeightVariable).toBe('');
 });
