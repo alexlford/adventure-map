@@ -29,6 +29,53 @@
   };
   window.AdventureMapTheme = { colors, routeColor };
 
+  function textFromPopup(content) {
+    if (typeof content !== 'string') return '';
+    const holder = document.createElement('div');
+    holder.innerHTML = content;
+    const titles = [...holder.querySelectorAll('.popup-title,h3')].map(node => node.textContent?.trim()).filter(Boolean);
+    if (titles.length > 1) return `${titles[0]} and ${titles.length - 1} more record${titles.length === 2 ? '' : 's'}`;
+    if (titles[0]) return titles[0];
+    return (holder.textContent || '').replace(/\s+/g,' ').trim().slice(0,120);
+  }
+
+  function decoratePopupLayer(layer,content) {
+    if (!layer || layer.__adventureKeyboardPopup) return;
+    layer.__adventureKeyboardPopup = true;
+    const label = layer.options?.accessibilityLabel || textFromPopup(content) || 'Open map details';
+    const apply = () => {
+      const node = layer.getElement?.();
+      if (!node || node.dataset.adventureKeyboard === 'true') return;
+      node.dataset.adventureKeyboard = 'true';
+      node.setAttribute('role','button');
+      node.setAttribute('tabindex','0');
+      node.setAttribute('aria-label',label);
+      node.setAttribute('aria-haspopup','dialog');
+      node.setAttribute('aria-keyshortcuts','Enter Space');
+      node.addEventListener('keydown',event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        event.stopPropagation();
+        layer.openPopup?.();
+      });
+      node.addEventListener('focus',() => layer.fire?.('mouseover'));
+      node.addEventListener('blur',() => layer.fire?.('mouseout'));
+    };
+    layer.on?.('add',() => requestAnimationFrame(apply));
+    requestAnimationFrame(apply);
+  }
+
+  if (window.L?.Path?.prototype?.bindPopup && !L.Path.prototype.bindPopup.__adventureKeyboardWrapped) {
+    const originalBindPopup = L.Path.prototype.bindPopup;
+    const wrappedBindPopup = function(content,...rest) {
+      const result = originalBindPopup.call(this,content,...rest);
+      decoratePopupLayer(this,content);
+      return result;
+    };
+    wrappedBindPopup.__adventureKeyboardWrapped = true;
+    L.Path.prototype.bindPopup = wrappedBindPopup;
+  }
+
   function geometrySegments(geometry) {
     if (!geometry) return [];
     if (geometry.type === 'LineString') return [geometry.coordinates || []];
