@@ -15,6 +15,7 @@
     skiing.resorts.forEach(resort=>{const id=`ski-resort-${resort.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}`;if(existingIds.has(id))return;state.adventures.push({id,kind:'ski',discipline:'ski',name:resort.name,skiDays:resort.days,location:resort.region,region:resort.region,lat:resort.lat,lon:resort.lon,coordinatePrecision:'resort'});existingIds.add(id)});
     const skiCount=document.getElementById('skiCount');if(skiCount)skiCount.textContent=skiing.summary.resortCount;
     const shouldRefit=!state.focusId&&!state.search&&(state.filter==='all'||state.filter==='skiing');
+    map.closePopup?.();
     renderPreservingFocus();if(shouldRefit)fitVisible(filteredAdventures());
   }
 
