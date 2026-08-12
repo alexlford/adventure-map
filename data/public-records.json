@@ -1,7 +1,64 @@
 {
   "schemaVersion": 1,
-  "recordCount": 127,
+  "recordCount": 132,
   "records": [
+    {
+      "id": "mount-lincoln",
+      "kind": "summit",
+      "discipline": "hiking",
+      "name": "Mount Lincoln",
+      "elevationFt": 14293,
+      "location": "Park County, Colorado",
+      "region": "Colorado",
+      "lat": 39.3514512,
+      "lon": -106.1115668,
+      "coordinatePrecision": "summit",
+      "routeStatus": "gps",
+      "_catalogSource": "data/adventures.json",
+      "date": "2023-08-13",
+      "stravaActivityId": "9642214422",
+      "stravaActivityName": "Morning Hike",
+      "activityType": "Hike",
+      "distanceM": 14668.7,
+      "distanceKm": 14.67,
+      "distanceMi": 9.11,
+      "elapsedSeconds": 20993,
+      "movingSeconds": 16816,
+      "elevationGainM": 1098.8,
+      "routeFeatureIds": [
+        "strava-9642214422"
+      ],
+      "matchSource": "Strava export",
+      "matchConfidence": "high",
+      "slug": "2023-08-13-mount-lincoln",
+      "recordClass": "summit",
+      "sport": "mountaineering",
+      "startDate": "2023-08-13",
+      "finishDate": "2023-08-13",
+      "distanceInfo": {
+        "km": 14.67,
+        "mi": 9.11,
+        "label": null,
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Park County, Colorado",
+        "region": "Colorado",
+        "lat": 39.3514512,
+        "lon": -106.1115668,
+        "precision": "summit"
+      },
+      "evidence": {
+        "source": "Strava export",
+        "matchSource": "Strava export",
+        "resultSource": null,
+        "confidence": "high"
+      },
+      "routeInfo": {
+        "status": "gps",
+        "provenance": null
+      }
+    },
     {
       "id": "mount-evans",
       "kind": "summit",
@@ -61,6 +118,177 @@
       }
     },
     {
+      "id": "mount-cameron",
+      "kind": "summit",
+      "discipline": "hiking",
+      "name": "Mount Cameron",
+      "elevationFt": 14248,
+      "location": "Park County, Colorado",
+      "region": "Colorado",
+      "lat": 39.3463459,
+      "lon": -106.1189002,
+      "coordinatePrecision": "summit",
+      "routeStatus": "gps",
+      "_catalogSource": "data/adventures.json",
+      "date": "2023-08-13",
+      "stravaActivityId": "9642214422",
+      "stravaActivityName": "Morning Hike",
+      "activityType": "Hike",
+      "distanceM": 14668.7,
+      "distanceKm": 14.67,
+      "distanceMi": 9.11,
+      "elapsedSeconds": 20993,
+      "movingSeconds": 16816,
+      "elevationGainM": 1098.8,
+      "routeFeatureIds": [
+        "strava-9642214422"
+      ],
+      "matchSource": "Strava export",
+      "matchConfidence": "high",
+      "slug": "2023-08-13-mount-cameron",
+      "recordClass": "summit",
+      "sport": "mountaineering",
+      "startDate": "2023-08-13",
+      "finishDate": "2023-08-13",
+      "distanceInfo": {
+        "km": 14.67,
+        "mi": 9.11,
+        "label": null,
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Park County, Colorado",
+        "region": "Colorado",
+        "lat": 39.3463459,
+        "lon": -106.1189002,
+        "precision": "summit"
+      },
+      "evidence": {
+        "source": "Strava export",
+        "matchSource": "Strava export",
+        "resultSource": null,
+        "confidence": "high"
+      },
+      "routeInfo": {
+        "status": "gps",
+        "provenance": null
+      }
+    },
+    {
+      "id": "mount-bross",
+      "kind": "summit",
+      "discipline": "hiking",
+      "name": "Mount Bross",
+      "elevationFt": 14178,
+      "location": "Park County, Colorado",
+      "region": "Colorado",
+      "lat": 39.335446,
+      "lon": -106.1077257,
+      "coordinatePrecision": "summit",
+      "routeStatus": "gps",
+      "_catalogSource": "data/adventures.json",
+      "date": "2023-08-13",
+      "stravaActivityId": "9642214422",
+      "stravaActivityName": "Morning Hike",
+      "activityType": "Hike",
+      "distanceM": 14668.7,
+      "distanceKm": 14.67,
+      "distanceMi": 9.11,
+      "elapsedSeconds": 20993,
+      "movingSeconds": 16816,
+      "elevationGainM": 1098.8,
+      "routeFeatureIds": [
+        "strava-9642214422"
+      ],
+      "matchSource": "Strava export",
+      "matchConfidence": "high",
+      "slug": "2023-08-13-mount-bross",
+      "recordClass": "summit",
+      "sport": "mountaineering",
+      "startDate": "2023-08-13",
+      "finishDate": "2023-08-13",
+      "distanceInfo": {
+        "km": 14.67,
+        "mi": 9.11,
+        "label": null,
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Park County, Colorado",
+        "region": "Colorado",
+        "lat": 39.335446,
+        "lon": -106.1077257,
+        "precision": "summit"
+      },
+      "evidence": {
+        "source": "Strava export",
+        "matchSource": "Strava export",
+        "resultSource": null,
+        "confidence": "high"
+      },
+      "routeInfo": {
+        "status": "gps",
+        "provenance": null
+      }
+    },
+    {
+      "id": "mount-democrat",
+      "kind": "summit",
+      "discipline": "hiking",
+      "name": "Mount Democrat",
+      "elevationFt": 14154,
+      "location": "Park County, Colorado",
+      "region": "Colorado",
+      "lat": 39.3396098,
+      "lon": -106.1400401,
+      "coordinatePrecision": "summit",
+      "routeStatus": "gps",
+      "_catalogSource": "data/adventures.json",
+      "date": "2023-08-13",
+      "stravaActivityId": "9642214422",
+      "stravaActivityName": "Morning Hike",
+      "activityType": "Hike",
+      "distanceM": 14668.7,
+      "distanceKm": 14.67,
+      "distanceMi": 9.11,
+      "elapsedSeconds": 20993,
+      "movingSeconds": 16816,
+      "elevationGainM": 1098.8,
+      "routeFeatureIds": [
+        "strava-9642214422"
+      ],
+      "matchSource": "Strava export",
+      "matchConfidence": "high",
+      "slug": "2023-08-13-mount-democrat",
+      "recordClass": "summit",
+      "sport": "mountaineering",
+      "startDate": "2023-08-13",
+      "finishDate": "2023-08-13",
+      "distanceInfo": {
+        "km": 14.67,
+        "mi": 9.11,
+        "label": null,
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Park County, Colorado",
+        "region": "Colorado",
+        "lat": 39.3396098,
+        "lon": -106.1400401,
+        "precision": "summit"
+      },
+      "evidence": {
+        "source": "Strava export",
+        "matchSource": "Strava export",
+        "resultSource": null,
+        "confidence": "high"
+      },
+      "routeInfo": {
+        "status": "gps",
+        "provenance": null
+      }
+    },
+    {
       "id": "mount-sherman",
       "kind": "summit",
       "discipline": "hiking",
@@ -104,6 +332,63 @@
         "region": "Colorado",
         "lat": 39.2249903,
         "lon": -106.1697431,
+        "precision": "summit"
+      },
+      "evidence": {
+        "source": "Strava export",
+        "matchSource": "Strava export",
+        "resultSource": null,
+        "confidence": "high"
+      },
+      "routeInfo": {
+        "status": "gps",
+        "provenance": null
+      }
+    },
+    {
+      "id": "mount-spalding",
+      "kind": "summit",
+      "discipline": "hiking",
+      "name": "Mount Spalding",
+      "elevationFt": 13842,
+      "location": "Clear Creek County, Colorado",
+      "region": "Colorado",
+      "lat": 39.59958,
+      "lon": -105.65644,
+      "coordinatePrecision": "summit",
+      "routeStatus": "gps",
+      "_catalogSource": "data/adventures.json",
+      "date": "2022-07-31",
+      "stravaActivityId": "7560672014",
+      "stravaActivityName": "Morning Hike",
+      "activityType": "Hike",
+      "distanceM": 10119.1,
+      "distanceKm": 10.12,
+      "distanceMi": 6.29,
+      "elapsedSeconds": 16652,
+      "movingSeconds": 13247,
+      "elevationGainM": 607.4,
+      "routeFeatureIds": [
+        "strava-7560672014"
+      ],
+      "matchSource": "Strava export",
+      "matchConfidence": "high",
+      "slug": "2022-07-31-mount-spalding",
+      "recordClass": "summit",
+      "sport": "mountaineering",
+      "startDate": "2022-07-31",
+      "finishDate": "2022-07-31",
+      "distanceInfo": {
+        "km": 10.12,
+        "mi": 6.29,
+        "label": null,
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Clear Creek County, Colorado",
+        "region": "Colorado",
+        "lat": 39.59958,
+        "lon": -105.65644,
         "precision": "summit"
       },
       "evidence": {

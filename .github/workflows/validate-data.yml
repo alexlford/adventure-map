@@ -33,6 +33,8 @@ jobs:
         run: npm run validate:majors
       - name: Validate production routing and branding
         run: npm run validate:routing
+      - name: Validate route record references
+        run: npm run validate:route-references
       - name: Validate source dependencies
         run: npm run validate:dependencies
       - name: Validate static publishing contract
