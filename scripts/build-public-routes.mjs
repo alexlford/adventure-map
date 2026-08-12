@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -8,7 +9,6 @@ const args = process.argv.slice(2);
 const outIndex = args.indexOf('--out');
 const output = path.resolve(root, outIndex >= 0 && args[outIndex + 1] ? args[outIndex + 1] : 'tmp/public-routes.geojson');
 const readText = rel => fs.readFile(path.join(root, rel), 'utf8');
-const readJson = async rel => JSON.parse(await readText(rel));
 const fingerprint = values => crypto.createHash('sha256').update(values.join('\n')).digest('hex').slice(0,16);
 
 const catalogText = await readText('data/route-catalog.json');
@@ -41,9 +41,10 @@ function normalizeFeature(feature) {
 function addFeature(feature) {
   const normalized = normalizeFeature(feature);
   const id = featureId(normalized);
-  if (id && seenIds.has(id)) return;
+  if (id && seenIds.has(id)) return false;
   if (id) seenIds.add(id);
   features.push(normalized);
+  return true;
 }
 
 function decodeComponent(encoded, state, label) {
@@ -86,21 +87,23 @@ function decodePolyline(encoded, context) {
   return coordinates;
 }
 
-for (const routeFile of catalog.routeFiles || []) {
-  const text = await readText(routeFile);
-  sourceTexts.push(text);
-  const collection = JSON.parse(text);
-  if (collection.type !== 'FeatureCollection' || !Array.isArray(collection.features)) throw new Error(`${routeFile}: expected FeatureCollection`);
-  for (const feature of collection.features) addFeature(feature);
-}
-
-const polylineFiles = catalog.polylineFiles?.length ? catalog.polylineFiles : ['data/activity-route-polylines.json'];
-for (const polylineFile of polylineFiles) {
+async function readPolylinePayload(polylineFile) {
   const text = await readText(polylineFile);
   sourceTexts.push(text);
-  const payload = JSON.parse(text);
+  if (polylineFile.endsWith('.gz.b64')) {
+    const json = zlib.gunzipSync(Buffer.from(text.trim(), 'base64')).toString('utf8');
+    return JSON.parse(json);
+  }
+  return JSON.parse(text);
+}
+
+async function addPolylineFile(polylineFile) {
+  const payload = await readPolylinePayload(polylineFile);
   for (const route of payload.routes || []) {
     if (!route.id) throw new Error(`${polylineFile}: encoded route missing id`);
+    // Preferred high-resolution sources are compiled first. Skip a duplicate route
+    // before decoding its legacy geometry so the older simplified copy cannot win.
+    if (seenIds.has(route.id)) continue;
     if (!Array.isArray(route.lines) || !route.lines.length) throw new Error(`${route.id}: encoded route has no lines`);
     const lines = route.lines.map((line, lineIndex) => decodePolyline(line, { routeId: route.id, lineIndex }));
     addFeature({
@@ -111,8 +114,14 @@ for (const polylineFile of polylineFiles) {
         adventureIds: route.adventureIds || [],
         provenance: 'personal-gps',
         category: route.category,
-        source: 'Strava GPS export',
+        source: payload.source || 'Strava GPS export',
         mtbMode: route.mtbMode || null,
+        stravaActivityId: route.stravaActivityId || null,
+        sourceActivityIds: route.sourceActivityIds || route.activityIds || [],
+        density: route.density || payload.quality?.mode || null,
+        sourcePointCount: route.sourcePointCount || null,
+        publishedPointCount: route.publishedPointCount || null,
+        splitGapMeters: route.splitGapMeters || payload.quality?.splitGapMeters || null,
       },
       geometry: lines.length === 1
         ? { type: 'LineString', coordinates: lines[0] }
@@ -121,12 +130,27 @@ for (const polylineFile of polylineFiles) {
   }
 }
 
+const preferredPolylineFiles = catalog.preferredPolylineFiles || [];
+for (const polylineFile of preferredPolylineFiles) await addPolylineFile(polylineFile);
+
+for (const routeFile of catalog.routeFiles || []) {
+  const text = await readText(routeFile);
+  sourceTexts.push(text);
+  const collection = JSON.parse(text);
+  if (collection.type !== 'FeatureCollection' || !Array.isArray(collection.features)) throw new Error(`${routeFile}: expected FeatureCollection`);
+  for (const feature of collection.features) addFeature(feature);
+}
+
+const polylineFiles = catalog.polylineFiles?.length ? catalog.polylineFiles : ['data/activity-route-polylines.json'];
+for (const polylineFile of polylineFiles) await addPolylineFile(polylineFile);
+
 const payload = {
   type: 'FeatureCollection',
   metadata: {
     schemaVersion: 1,
     sourceFingerprint: fingerprint(sourceTexts),
     featureCount: features.length,
+    sourcePreferredPolylineFiles: preferredPolylineFiles,
     sourceRouteFiles: catalog.routeFiles || [],
     sourcePolylineFiles: polylineFiles,
     repairs,
