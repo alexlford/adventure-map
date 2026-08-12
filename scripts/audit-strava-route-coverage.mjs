@@ -59,6 +59,11 @@ for (const record of records) {
     ...(record.stravaActivityId != null ? [record.stravaActivityId] : []),
   ].filter(value => value != null).map(String);
   const uniqueActivityIds = [...new Set(activityIds)];
+  const explicitPersonalRoute = (record.routeFeatureIds || []).some(id => personalFeatureIds.has(String(id)));
+  const ownedPersonalRoute = personalOwnedRecordIds.has(String(record.id));
+  const coveredActivityIds = uniqueActivityIds.filter(activityId => routeActivityIds.has(activityId) || personalFeatureIds.has(`strava-${activityId}`));
+  const hasPersonalRoute = explicitPersonalRoute || ownedPersonalRoute || coveredActivityIds.length > 0;
+
   if (!uniqueActivityIds.length) {
     recordsWithoutStrava.push({
       id: record.id,
@@ -70,15 +75,13 @@ for (const record of records) {
       kind: record.kind || record.recordClass || null,
       discipline: record.discipline || null,
       routeStatus: record.routeStatus || record.routeInfo?.status || null,
+      hasPersonalRoute,
+      coverageMode: explicitPersonalRoute ? 'record-routeFeatureIds' : (ownedPersonalRoute ? 'route-adventureIds' : null),
     });
     continue;
   }
 
   const privacyWithheld = privacyIds.has(record.id) || record.routeStatus === 'withheld-privacy' || record.routeInfo?.status === 'withheld-privacy';
-  const explicitPersonalRoute = (record.routeFeatureIds || []).some(id => personalFeatureIds.has(String(id)));
-  const ownedPersonalRoute = personalOwnedRecordIds.has(String(record.id));
-  const coveredActivityIds = uniqueActivityIds.filter(activityId => routeActivityIds.has(activityId) || personalFeatureIds.has(`strava-${activityId}`));
-  const hasPersonalRoute = explicitPersonalRoute || ownedPersonalRoute || coveredActivityIds.length > 0;
   const missingActivityIds = hasPersonalRoute ? [] : uniqueActivityIds;
 
   audit.push({
@@ -99,6 +102,8 @@ for (const record of records) {
 const actionableMissing = audit.filter(item => item.missingActivityIds.length && !item.privacyWithheld);
 const intentionalPrivacy = audit.filter(item => item.missingActivityIds.length && item.privacyWithheld);
 const fullyCovered = audit.filter(item => !item.missingActivityIds.length);
+const unlinkedWithPersonalRoute = recordsWithoutStrava.filter(item => item.hasPersonalRoute);
+const unlinkedWithoutPersonalRoute = recordsWithoutStrava.filter(item => !item.hasPersonalRoute);
 
 console.log(JSON.stringify({
   totalPublicRecords: records.length,
@@ -107,6 +112,8 @@ console.log(JSON.stringify({
   fullyCovered: fullyCovered.length,
   actionableMissing: actionableMissing.length,
   intentionalPrivacy: intentionalPrivacy.length,
+  recordsWithoutStravaWithPersonalRoute: unlinkedWithPersonalRoute.length,
+  recordsWithoutStravaWithoutPersonalRoute: unlinkedWithoutPersonalRoute.length,
 }, null, 2));
 
 if (recordsWithoutStrava.length) {
