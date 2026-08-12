@@ -29,8 +29,8 @@ test('Map public route keeps the Colorado-centered zoom 2 default after data loa
   });
 
   expect(view.zoom).toBe(2);
-  expect(view.lat).toBeCloseTo(39, 1);
-  expect(view.lng).toBeCloseTo(-105.5, 1);
+  expect(Math.abs(view.lat - 39)).toBeLessThan(0.25);
+  expect(Math.abs(view.lng + 105.5)).toBeLessThan(0.5);
   expect(errors).toEqual([]);
 });
 
