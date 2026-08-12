@@ -24,9 +24,15 @@
     const shown=records.filter(a=>active==='all'||a.group===active);
     host.innerHTML=shown.map((a,i)=>`<a class="story-index-row" href="${A.recordHref(a)}"><span class="story-index-no">${String(i+1).padStart(2,'0')}</span><span class="story-index-main"><small>${esc(type(a))} · ${esc(dateLine(a))}</small><strong>${esc(a.name)}</strong><span>${esc(a.location||'')}</span></span><span class="story-index-value">${esc(metric(a))}</span><span class="story-index-arrow" aria-hidden="true">↗</span></a>`).join('')||'<div class="empty">No stories in this view yet.</div>';
   }
-  A.load().then(all=>{
+  Promise.all([A.load(),A.loadRelationships()]).then(([all,relationships])=>{
     A.shell('adventures');
-    records=all.filter(a=>a.kind==='adventure').map(a=>({...a,group:group(a)})).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+    const recordIds=new Set(all.map(a=>a.id));
+    const nestedMemberIds=new Set();
+    for(const relationship of relationships){
+      if(!relationship?.adventureId||!recordIds.has(relationship.adventureId)||!Array.isArray(relationship.memberIds))continue;
+      for(const memberId of relationship.memberIds)nestedMemberIds.add(memberId);
+    }
+    records=all.filter(a=>a.kind==='adventure'&&!nestedMemberIds.has(a.id)).map(a=>({...a,group:group(a)})).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
     renderLead();renderShelf();
     AdventureFilterState.setup({param:'view',allowed:['all','ski','mountain','challenge'],fallback:'all',onChange:value=>{active=value;renderIndex()}});
   }).catch(e=>{const host=document.getElementById('storyIndex');if(host)host.innerHTML=`<div class="empty">${esc(e.message)}</div>`});
