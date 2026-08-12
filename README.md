@@ -25,6 +25,8 @@ The initial Strava baseline contains **3,371 activities** through the August 10,
 
 `catalog.js` loads source files in manifest order, merges records by stable ID, applies the Strava match layer, removes stale legacy IDs, applies authoritative corrections, validates the result, and returns the same public record set to every page.
 
+`data/public-records.json` is the generated publication snapshot of that canonical resolver. It is rebuilt by `npm run build:publish` and is used to generate deterministic clean record pages. Do not hand-edit the generated snapshot or generated clean-path pages.
+
 Key supporting layers include:
 
 - `data/relationships.json` — series, challenge, weekend, and multi-record relationships
@@ -61,31 +63,59 @@ The policy in `data/update-policy.json` keeps the site from becoming an activity
 - organized races, named events, and Adventures are promoted into richer records;
 - routes are published only after provenance and privacy treatment are resolved.
 
-### 3. Validate and advance the reviewed snapshot
+### 3. Build, validate, and advance the reviewed snapshot
 
-After the new snapshot is fully reviewed and any public records/routes are updated:
+After canonical data/routes/media are updated, rebuild the deterministic publication before committing:
 
 ```bash
+npm run build:publish
 npm run validate:data
+npm run validate:duplicates
+npm run validate:routing
+npm run validate:dependencies
+npm run validate:static
+```
+
+After the entire new Strava snapshot is reviewed, advance the ingest watermark:
+
+```bash
 npm run advance:strava -- tmp/update-queue.json --confirm-reviewed
+npm run build:publish
 npm run validate:data
 ```
 
-The ingest state stores a timestamp watermark and one-way activity-ID hashes only for activities sharing the exact watermark time. It does not expose the IDs of ordinary historical training activities.
+Generated publication artifacts are committed. CI rebuilds them and fails if the checked-in output drifts from the canonical source.
 
 For the full workflow, including historical backfills, ski screenshots, Stories, and editorial media, see `docs/updating-adventures.md`.
 
 ## Validation and CI
 
-Run:
+The main validation workflow checks the entire source-to-publication contract. Useful local commands are:
 
 ```bash
+npm run build:publish
 npm run validate:data
+npm run validate:duplicates
+npm run validate:slugs
+npm run validate:stories
+npm run validate:majors
 npm run validate:routing
+npm run validate:dependencies
+npm run validate:static
 npm run test:update-pipeline
 ```
 
-CI checks the canonical catalog, relationships, route provenance, ingest state, update policy, editorial media metadata/local asset paths, production routing, public branding, Python maintenance tooling, the update-pipeline smoke test, and generated sitemap/robots files.
+CI also runs Playwright browser smoke tests, Map-specific route/entity validation, compiled clean-route validation, Python maintenance-tool checks, and a generated-artifact drift check.
+
+The validation layers are intentionally separate:
+
+- canonical data and relationships;
+- duplicate-race integrity;
+- stable public record identity/slugs;
+- Story/media and World Marathon Majors contracts;
+- source links/assets and production routing;
+- deterministic static publication;
+- browser behavior and map/route behavior.
 
 ## Important archive rules
 
@@ -121,6 +151,8 @@ Completed and registered races remain separate so future start lines never infla
 
 Recorded GPS, historical courses, generalized locations, and privacy-withheld routes are distinguished through the route catalog. The Map is route-first where geometry adds useful context, while dense areas fade non-focused routes so the selected day/course stays readable.
 
+Map layer/year/search state and focused records are represented in the URL so useful views can be shared directly. Record pages deep-link back to the matching focused map record.
+
 Skiing is mapped primarily at the resort level rather than placing a marker for every ski day.
 
 ## Run locally
@@ -133,19 +165,23 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000/`.
 
+Run `npm run build:publish` first whenever canonical data or the clean publication structure has changed.
+
 ## Deployment
 
 Production is GitHub Pages on the custom domain:
 
 **https://adventures.alexlford.com/**
 
-The repository `CNAME` must remain `adventures.alexlford.com`. GitHub Pages publishes from the root of the `main` branch. Public-index files are generated with:
+The repository `CNAME` must remain `adventures.alexlford.com`. GitHub Pages publishes from the root of the `main` branch.
 
-```bash
-npm run build:public-index
-```
+`npm run build:publish` materializes the public site before deployment:
 
-Production record links use `/record/<slug>/`; the GitHub Pages fallback resolves the route to the static detail renderer and restores the clean URL after the record data and map have loaded. Top-level navigation is rooted on production so it continues to work from clean record URLs.
+1. `build:public-records` resolves the canonical catalog into `data/public-records.json`;
+2. `build:static-site` writes deterministic clean-path documents such as `/map/index.html` and `/record/<slug>/index.html`;
+3. `build:public-index` refreshes `sitemap.xml` and `robots.txt`.
+
+`404.html` remains a true not-found page; clean records do not depend on a client-side fallback router. The generated clean pages use the shared root assets and canonical record renderer, so behavior stays consistent with their source pages while still being directly addressable and crawlable.
 
 ## Source notes
 

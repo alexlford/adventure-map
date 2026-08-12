@@ -1,6 +1,6 @@
 # Updating Alex Ford Adventures
 
-Adventures is designed to stay curated as new running, mountain biking, Nordic skiing, alpine skiing, races, stories, and media accumulate. The update workflow is incremental: compare a fresh Strava export against the last fully reviewed snapshot watermark, review only the new relevant activities, promote the appropriate records, then advance the watermark.
+Adventures is designed to stay curated as new running, mountain biking, Nordic skiing, alpine skiing, races, stories, and media accumulate. The update workflow is incremental: compare a fresh Strava export against the last fully reviewed snapshot watermark, review only the new relevant activities, promote the appropriate records, rebuild the deterministic publication, then advance the watermark.
 
 ## Current baseline
 
@@ -20,10 +20,15 @@ The initial full-history review is baselined in `data/ingest-state.json` at **3,
 4. Resolve location, record type, and any discipline-specific classification for the candidates worth publishing.
 5. Extract or generalize GPS geometry only for records where a route adds value and is privacy-safe.
 6. Update the appropriate canonical source files.
-7. Run:
+7. Rebuild the publication and run the relevant validation stack:
 
    ```bash
+   npm run build:publish
    npm run validate:data
+   npm run validate:duplicates
+   npm run validate:routing
+   npm run validate:dependencies
+   npm run validate:static
    ```
 
 8. Once the entire new Strava snapshot has been reviewed, advance the watermark:
@@ -32,9 +37,24 @@ The initial full-history review is baselined in `data/ingest-state.json` at **3,
    npm run advance:strava -- tmp/update-queue.json --confirm-reviewed
    ```
 
-9. Run validation again, commit, and publish.
+9. Rebuild once more after the watermark change, validate, commit the canonical changes **and** generated publication artifacts, then publish:
+
+   ```bash
+   npm run build:publish
+   npm run validate:data
+   ```
 
 The watermark means a full Strava export can be supplied every time without resurfacing thousands of old training activities. The queue includes a proposed next watermark, but it is only accepted after review.
+
+### Publication artifacts
+
+`npm run build:publish` is part of the normal maintenance contract, not an optional deployment convenience. It performs three deterministic stages:
+
+1. `build:public-records` resolves the canonical catalog into `data/public-records.json`;
+2. `build:static-site` materializes clean pages such as `/map/index.html`, `/races/index.html`, and `/record/<slug>/index.html`;
+3. `build:public-index` refreshes `sitemap.xml` and `robots.txt`.
+
+Do not hand-edit generated clean-path pages or `data/public-records.json`. Change canonical source or shared rendering code, rebuild, and commit the resulting publication. CI rebuilds the publication and fails if checked-in generated output is stale.
 
 ### Historical backfills
 
@@ -117,7 +137,7 @@ Routes should never publish merely because a GPX/FIT file exists. Before adding 
 
 Some new activities require more than the automated delta scan. When a race or Story is promoted, add the contextual layer too: official result where available, event-series relationship, challenge/weekend relationship, factual chapter deck, and route provenance.
 
-For a race, a new record should not be considered complete merely because Strava contains the GPS activity.
+For a race, a new record should not be considered complete merely because Strava contains the GPS activity. Duplicate-race validation is intentionally separate from general schema validation so same-date/location/distance candidates receive explicit review before publication.
 
 For a Story, keep narrative claims evidence-based. The editorial renderer can emphasize the documented structure of the objective without inventing personal recollections:
 
@@ -156,7 +176,7 @@ A screenshot from Slopes, a race result, medal/photo, calendar entry, or direct 
 
 ## Updating through ChatGPT
 
-The lowest-friction workflow is simple: upload a fresh Strava export and any new Slopes screenshots or photos, then ask to **update Adventures**. The same delta policy should be followed: scan from the reviewed watermark, review the new relevant subset, update canonical data/routes/media, validate, advance the watermark, and publish. You should not need to re-explain the site architecture each time.
+The lowest-friction workflow is simple: upload a fresh Strava export and any new Slopes screenshots or photos, then ask to **update Adventures**. The same delta policy should be followed: scan from the reviewed watermark, review the new relevant subset, update canonical data/routes/media, rebuild and validate the static publication, advance the watermark, rebuild again, and publish. You should not need to re-explain the site architecture each time.
 
 For ordinary ongoing use, a fresh full Strava export is preferable to manually listing recent activities because it also catches rides, ski days, renamed activities, and new GPS files consistently.
 
