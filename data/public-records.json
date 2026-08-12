@@ -1676,6 +1676,14 @@
       "lon": -89.425,
       "coordinatePrecision": "start-area-placeholder",
       "routeStatus": "pending",
+      "teamName": "Cambria Moonsnakes",
+      "teamFinishTime": "10:11:21",
+      "teamOverallPlace": 54,
+      "teamDivision": "Open",
+      "teamDivisionPlace": 17,
+      "resultSource": "River to River Relay 2006 complete results",
+      "resultUrl": "https://r2rrelay.com/results/result2006.html",
+      "note": "2006 River to River Relay team: Cambria Moonsnakes. Official results list the team 54th overall, 17th in the Open division, in 10:11:21.",
       "_catalogSource": "data/adventures.json",
       "slug": "2006-river-to-river-relay",
       "recordClass": "race",
@@ -1696,9 +1704,9 @@
         "precision": "start-area-placeholder"
       },
       "evidence": {
-        "source": null,
+        "source": "River to River Relay 2006 complete results",
         "matchSource": null,
-        "resultSource": null,
+        "resultSource": "River to River Relay 2006 complete results",
         "confidence": "unknown"
       },
       "routeInfo": {
@@ -1718,6 +1726,14 @@
       "lon": -89.425,
       "coordinatePrecision": "start-area-placeholder",
       "routeStatus": "pending",
+      "teamName": "Team Swampass",
+      "teamFinishTime": "10:27:44",
+      "teamOverallPlace": 143,
+      "teamDivision": "Open",
+      "teamDivisionPlace": 55,
+      "teamRaceNumber": "852",
+      "resultSource": "2008 River to River Relay official results spreadsheet supplied by the user",
+      "note": "2008 River to River Relay team: Team Swampass. The official results spreadsheet lists race number 852, 143rd overall, 55th in the Open division, with a 10:27:44 finish.",
       "_catalogSource": "data/adventures.json",
       "slug": "2008-river-to-river-relay",
       "recordClass": "race",
@@ -1738,9 +1754,9 @@
         "precision": "start-area-placeholder"
       },
       "evidence": {
-        "source": null,
+        "source": "2008 River to River Relay official results spreadsheet supplied by the user",
         "matchSource": null,
-        "resultSource": null,
+        "resultSource": "2008 River to River Relay official results spreadsheet supplied by the user",
         "confidence": "unknown"
       },
       "routeInfo": {
@@ -1760,6 +1776,14 @@
       "lon": -89.425,
       "coordinatePrecision": "start-area-placeholder",
       "routeStatus": "pending",
+      "teamName": "Legion of Doom",
+      "teamFinishTime": "10:35:54",
+      "teamOverallPlace": 95,
+      "teamDivision": "Mixed",
+      "teamDivisionPlace": 20,
+      "resultSource": "River to River Relay 2010 complete results",
+      "resultUrl": "https://r2rrelay.com/results/results10.htm",
+      "note": "2010 River to River Relay team: Legion of Doom. Official results list the team 95th overall, 20th in the Mixed division, in 10:35:54.",
       "_catalogSource": "data/adventures.json",
       "slug": "2010-river-to-river-relay",
       "recordClass": "race",
@@ -1780,9 +1804,9 @@
         "precision": "start-area-placeholder"
       },
       "evidence": {
-        "source": null,
+        "source": "River to River Relay 2010 complete results",
         "matchSource": null,
-        "resultSource": null,
+        "resultSource": "River to River Relay 2010 complete results",
         "confidence": "unknown"
       },
       "routeInfo": {
