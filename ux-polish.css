@@ -6,11 +6,24 @@ body[data-page="mountain-biking"]{--accent:#2f7d4a}
 .card:has(h3>a:hover),.card:has(h3>a:focus-visible){transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:0 14px 35px rgba(25,32,38,.08)}
 .card:has(h3>a:focus-visible){outline:3px solid color-mix(in srgb,var(--accent) 38%,transparent);outline-offset:3px}
 .card h3>a:focus-visible{outline:0}
+body.is-activity-chapter .metrics{margin-bottom:46px}
 body.is-activity-chapter .section-title{margin-top:60px}
+body.is-activity-chapter .section-title h2{line-height:.96}
+body.is-activity-chapter .section-title p{max-width:520px}
 .empty{display:grid;align-content:center;min-height:92px;padding:22px 24px;border:1px dashed var(--line);border-radius:18px;background:rgba(255,255,255,.52);color:var(--muted);font-size:.84rem;line-height:1.55}
 .chapter-sibling-link{margin-top:0}
 .chapter-sibling-link .section-title{margin-top:54px}
-.chapter-sibling-link .grid{grid-template-columns:minmax(0,1fr);max-width:560px}
-.chapter-sibling-link .card{min-height:170px}
-@media(max-width:760px){body.is-activity-chapter .section-title{margin-top:52px}}
-@media(max-width:560px){.empty{min-height:84px;padding:20px}.chapter-sibling-link .section-title{margin-top:46px}}
+.chapter-sibling-link .grid,.chapter-crosslink-grid{grid-template-columns:minmax(0,1fr);max-width:560px}
+.chapter-sibling-link .card,.chapter-crosslink-grid .card{min-height:172px}
+.chapter-card-date{margin-top:auto;padding-top:18px;color:var(--ink);font-size:.92rem;font-weight:780;line-height:1.35}
+body[data-page="nordic"] #locationGrid .card,body[data-page="mountain-biking"] #locationGrid .card{min-height:190px}
+.timeline-item{margin:0 -10px;padding:14px 10px;border-radius:12px;transition:background .15s ease,transform .15s ease}
+.timeline-item:hover{background:rgba(255,255,255,.62)}
+.timeline-item>div:last-child{text-align:right}
+body[data-page="races"] .timeline-year h3{color:var(--accent);font-size:clamp(1.75rem,3vw,2.35rem);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+body[data-page="summits"] .rank{position:relative;margin:0 -10px;padding:15px 10px;border-radius:12px;transition:background .15s ease,transform .15s ease}
+body[data-page="summits"] .rank:hover{background:rgba(255,255,255,.62);transform:translateX(2px)}
+body[data-page="summits"] .rank-num{color:var(--accent);font-variant-numeric:tabular-nums}
+body[data-page="timeline"] .filters{margin-top:16px;margin-bottom:28px}
+@media(max-width:760px){body.is-activity-chapter .section-title{margin-top:52px}.timeline-item{margin-left:0;margin-right:0}.timeline-item>div:last-child{text-align:left}}
+@media(max-width:560px){.empty{min-height:84px;padding:20px}.chapter-sibling-link .section-title{margin-top:46px}.chapter-crosslink-grid{max-width:none}.chapter-card-date{padding-top:14px}.timeline-item{padding:13px 8px}}
