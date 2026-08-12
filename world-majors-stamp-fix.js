@@ -5,11 +5,25 @@
     /* Internal provenance states stay in the data model, not in the public race UI. */
     .verification-badge.verified,.verification-badge.confirmed{display:none!important}
 
-    /* Completed Major stamp: one clear word, with no checkmark/Major overlap. */
+    /* Keep every passport card the same size within the grid. */
+    .majors-passport-grid{
+      align-items:stretch!important;
+      grid-auto-rows:1fr!important;
+    }
+    .major-passport{
+      width:100%!important;
+      height:100%!important;
+      min-width:0!important;
+      box-sizing:border-box!important;
+    }
+
+    /* Completed Major stamp: transparent paper, ink only. */
     .passport-earned-stamp{
       display:grid!important;
       place-items:center!important;
       padding:0!important;
+      background:transparent!important;
+      box-shadow:none!important;
       line-height:1!important;
       font-size:0!important;
       letter-spacing:0!important;
