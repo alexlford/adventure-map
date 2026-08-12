@@ -12,8 +12,12 @@ const readText = rel => fs.readFile(path.join(root, rel), 'utf8');
 const fingerprint = values => crypto.createHash('sha256').update(values.join('\n')).digest('hex').slice(0,16);
 
 const catalogText = await readText('data/route-catalog.json');
+const recordsText = await readText('data/public-records.json');
+const relationshipsText = await readText('data/relationships.json');
 const catalog = JSON.parse(catalogText);
-const sourceTexts = [catalogText];
+const recordsPayload = JSON.parse(recordsText);
+const relationshipPayload = JSON.parse(relationshipsText);
+const sourceTexts = [catalogText, recordsText, relationshipsText];
 const features = [];
 const seenIds = new Set();
 const repairs = [];
@@ -45,6 +49,73 @@ function addFeature(feature) {
   if (id) seenIds.add(id);
   features.push(normalized);
   return true;
+}
+
+function sourceActivityIds(feature) {
+  const p = feature.properties || {};
+  const ids = new Set((p.sourceActivityIds || []).filter(Boolean).map(String));
+  if (p.stravaActivityId != null) ids.add(String(p.stravaActivityId));
+  const match = String(featureId(feature) || '').match(/^strava-(\d+)$/);
+  if (match) ids.add(match[1]);
+  return [...ids];
+}
+
+function isPersonalGps(feature) {
+  const p = feature.properties || {};
+  const id = String(featureId(feature) || '');
+  if (p.provenance === 'historical-course' || p.provenance === 'location-only' || p.provenance === 'privacy-withheld') return false;
+  return p.provenance === 'personal-gps' || p.stravaActivityId != null || id.startsWith('strava-') || id.startsWith('activity-') || `${p.source || ''} ${p.sourceLabel || ''}`.toLowerCase().includes('strava');
+}
+
+function attachRecordOwnership(items) {
+  const ownersByActivity = new Map();
+  for (const record of recordsPayload.records || recordsPayload || []) {
+    if (!record?.id) continue;
+    const ids = [
+      ...(record.stravaActivityIds || []),
+      ...(record.stravaActivityId != null ? [record.stravaActivityId] : [])
+    ].filter(Boolean).map(String);
+    for (const activityId of ids) {
+      if (!ownersByActivity.has(activityId)) ownersByActivity.set(activityId, new Set());
+      ownersByActivity.get(activityId).add(String(record.id));
+    }
+  }
+  return items.map(feature => {
+    const owners = new Set((feature.properties?.adventureIds || []).map(String));
+    for (const activityId of sourceActivityIds(feature)) {
+      for (const owner of ownersByActivity.get(activityId) || []) owners.add(owner);
+    }
+    return { ...feature, properties: { ...(feature.properties || {}), adventureIds: [...owners] } };
+  });
+}
+
+function expandRelationshipOwnership(items) {
+  const rels = (relationshipPayload.relationships || []).filter(rel => rel.adventureId && Array.isArray(rel.memberIds) && rel.memberIds.length);
+  return items.map(feature => {
+    const owners = new Set(feature.properties?.adventureIds || []);
+    for (const rel of rels) {
+      if (rel.memberIds.some(memberId => owners.has(memberId))) owners.add(rel.adventureId);
+    }
+    return { ...feature, properties: { ...(feature.properties || {}), adventureIds: [...owners] } };
+  });
+}
+
+function suppressLegacyPersonalGps(items) {
+  const preferred = items.filter(feature => feature.properties?.preferredGeometry);
+  if (!preferred.length) return items;
+  const preferredOwners = new Set(preferred.flatMap(feature => feature.properties?.adventureIds || []).map(String));
+  const preferredActivityIds = new Set(preferred.flatMap(sourceActivityIds));
+  return items.filter(feature => {
+    if (feature.properties?.preferredGeometry) return true;
+    if (!isPersonalGps(feature)) return true;
+    if (sourceActivityIds(feature).some(id => preferredActivityIds.has(id))) return false;
+    return !(feature.properties?.adventureIds || []).some(id => preferredOwners.has(String(id)));
+  });
+}
+
+function suppressExplicitSuperseded(items) {
+  const superseded = new Set(items.map(feature => feature.properties?.supersedesFeatureId).filter(Boolean));
+  return superseded.size ? items.filter(feature => !superseded.has(featureId(feature))) : items;
 }
 
 function decodeComponent(encoded, state, label) {
@@ -97,12 +168,10 @@ async function readPolylinePayload(polylineFile) {
   return JSON.parse(text);
 }
 
-async function addPolylineFile(polylineFile) {
+async function addPolylineFile(polylineFile, { preferred = false } = {}) {
   const payload = await readPolylinePayload(polylineFile);
   for (const route of payload.routes || []) {
     if (!route.id) throw new Error(`${polylineFile}: encoded route missing id`);
-    // Preferred high-resolution sources are compiled first. Skip a duplicate route
-    // before decoding its legacy geometry so the older simplified copy cannot win.
     if (seenIds.has(route.id)) continue;
     if (!Array.isArray(route.lines) || !route.lines.length) throw new Error(`${route.id}: encoded route has no lines`);
     const lines = route.lines.map((line, lineIndex) => decodePolyline(line, { routeId: route.id, lineIndex }));
@@ -122,6 +191,8 @@ async function addPolylineFile(polylineFile) {
         sourcePointCount: route.sourcePointCount || null,
         publishedPointCount: route.publishedPointCount || null,
         splitGapMeters: route.splitGapMeters || payload.quality?.splitGapMeters || null,
+        preferredGeometry: preferred || route.preferredGeometry === true,
+        supersedesFeatureId: route.supersedesFeatureId || null,
       },
       geometry: lines.length === 1
         ? { type: 'LineString', coordinates: lines[0] }
@@ -131,7 +202,7 @@ async function addPolylineFile(polylineFile) {
 }
 
 const preferredPolylineFiles = catalog.preferredPolylineFiles || [];
-for (const polylineFile of preferredPolylineFiles) await addPolylineFile(polylineFile);
+for (const polylineFile of preferredPolylineFiles) await addPolylineFile(polylineFile, { preferred: true });
 
 for (const routeFile of catalog.routeFiles || []) {
   const text = await readText(routeFile);
@@ -144,24 +215,28 @@ for (const routeFile of catalog.routeFiles || []) {
 const polylineFiles = catalog.polylineFiles?.length ? catalog.polylineFiles : ['data/activity-route-polylines.json'];
 for (const polylineFile of polylineFiles) await addPolylineFile(polylineFile);
 
+const ownedFeatures = attachRecordOwnership(features);
+const relatedFeatures = expandRelationshipOwnership(ownedFeatures);
+const publicFeatures = suppressExplicitSuperseded(suppressLegacyPersonalGps(relatedFeatures));
+
 const payload = {
   type: 'FeatureCollection',
   metadata: {
     schemaVersion: 1,
     sourceFingerprint: fingerprint(sourceTexts),
-    featureCount: features.length,
+    featureCount: publicFeatures.length,
     sourcePreferredPolylineFiles: preferredPolylineFiles,
     sourceRouteFiles: catalog.routeFiles || [],
     sourcePolylineFiles: polylineFiles,
     repairs,
     recordOverrides: catalog.recordOverrides || {},
   },
-  features,
+  features: publicFeatures,
 };
 
 await fs.mkdir(path.dirname(output), { recursive: true });
 await fs.writeFile(output, `${JSON.stringify(payload)}\n`);
-console.log(`Compiled ${features.length} public route features.`);
+console.log(`Compiled ${publicFeatures.length} public route features.`);
 console.log(`Recovered ${repairs.length} incomplete encoded-polyline tails.`);
 for (const repair of repairs) console.log(`REPAIR ${repair.routeId} line ${repair.lineIndex}: trim ${repair.trimEnd} (${repair.reason})`);
 console.log(`Public routes: ${path.relative(root, output)}`);
