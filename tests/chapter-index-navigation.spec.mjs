@@ -17,15 +17,16 @@ for (const pagePath of ['/races.html','/summits.html','/skiing.html','/nordic.ht
 }
 
 test('Race chapter index picks up the asynchronously rendered Majors feature', async ({ page }) => {
-  await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
+  await page.goto('/races.html', { waitUntil:'domcontentloaded' });
   const index = page.locator('.chapter-index');
   await expect(index.getByRole('link',{name:'A marathon journey around the world.'})).toBeVisible();
 });
 
 test('Chapter index follows the section being read without moving the page vertically', async ({ page }) => {
-  await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
+  await page.goto('/races.html', { waitUntil:'domcontentloaded' });
   await page.addStyleTag({content:'html{scroll-behavior:auto!important}'});
   const index = page.locator('.chapter-index');
+  await expect(index.getByRole('link',{name:'A marathon journey around the world.'})).toBeVisible();
   const links = index.locator('a');
   await expect(links.nth(1)).toBeVisible();
   const href = await links.nth(1).getAttribute('href');
@@ -44,7 +45,7 @@ test('Chapter index follows the section being read without moving the page verti
 
 test('Chapter index stays sticky and horizontally navigable on phone widths', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
+  await page.goto('/races.html', { waitUntil:'domcontentloaded' });
   const index = page.locator('.chapter-index');
   await expect(index).toBeVisible();
   const metrics = await index.evaluate(node => ({
