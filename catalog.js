@@ -156,18 +156,21 @@ window.AdventureCatalog = (() => {
     return loadPromise;
   }
 
-  async function resolveRelationships({ fresh = false } = {}) {
-    const manifest = await loadManifest({ fresh });
-    if (!manifest.relationshipLayer) return [];
-    const payload = await fetchJson(manifest.relationshipLayer);
-    relationshipCache = payload.relationships || [];
+  async function resolveRelationships() {
+    try {
+      const payload = await fetchJson('data/relationships.json');
+      relationshipCache = Array.isArray(payload.relationships) ? payload.relationships : [];
+    } catch (error) {
+      console.warn('Adventure relationships unavailable; continuing without related-record enrichment.', error);
+      relationshipCache = [];
+    }
     return relationshipCache;
   }
 
   function loadRelationships({ fresh = false } = {}) {
     if (relationshipCache && !fresh) return Promise.resolve(relationshipCache);
     if (relationshipPromise && !fresh) return relationshipPromise;
-    const pending = resolveRelationships({ fresh });
+    const pending = resolveRelationships();
     if (fresh) return pending;
     relationshipPromise = pending.finally(() => { relationshipPromise = null; });
     return relationshipPromise;
