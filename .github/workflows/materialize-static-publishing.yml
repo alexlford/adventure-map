@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/materialize-static-publishing.yml'
       - 'package.json'
+      - 'package-lock.json'
       - 'site-routes.js'
       - 'shared.template.js'
       - 'data/**'
@@ -44,6 +45,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
+      - name: Materialize dependency lockfile
+        run: npm install --package-lock-only --ignore-scripts
       - name: Generate public records and static pages
         run: npm run build:publish
       - name: Validate generated structure
@@ -54,7 +57,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add shared.js data/public-records.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb
+          git add package-lock.json shared.js data/public-records.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb
           if git diff --cached --quiet; then
             echo "Publication artifacts are already current."
             exit 0

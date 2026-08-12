@@ -19,6 +19,9 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
+          cache: 'npm'
+      - name: Install locked Node dependencies
+        run: npm ci
       - name: Build publication artifacts
         run: npm run build:publish
       - name: Validate canonical catalog
@@ -39,8 +42,6 @@ jobs:
         run: npm run validate:dependencies
       - name: Validate static publishing contract
         run: npm run validate:static
-      - name: Install browser smoke-test tooling
-        run: npm install --no-save @playwright/test@1.62.0
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
       - name: Run browser smoke tests
@@ -62,7 +63,7 @@ jobs:
         run: npm run test:update-pipeline
       - name: Verify publication artifacts are committed
         run: |
-          CHANGES="$(git status --porcelain --untracked-files=all -- data/public-records.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
+          CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/public-records.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
           if [ -n "$CHANGES" ]; then
             echo "$CHANGES"
             echo "Generated publication artifacts are not current. Run npm run build:publish and commit the results."
