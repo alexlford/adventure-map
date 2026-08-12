@@ -1,0 +1,63 @@
+/* Final World Marathon Majors passport presentation. This component stylesheet owns
+   passport-card sizing and the completed stamp; no runtime style patching is needed. */
+.majors-passport-grid{align-items:stretch;grid-auto-rows:1fr}
+.major-passport{display:block;min-width:0;min-height:0;width:100%;height:100%;box-sizing:border-box;padding:18px 18px 18px 60px}
+.major-passport .card-kicker{margin:0 0 5px}
+.major-passport h3{margin:0;line-height:1.06;overflow-wrap:normal;word-break:normal}
+.major-passport .card-meta{margin:7px 0 0;line-height:1.38;overflow-wrap:normal;word-break:normal}
+.passport-number{left:16px;right:auto;top:16px;font-size:1.35rem;color:rgba(33,58,49,.24)}
+.passport-grow{margin-top:14px;padding-right:0;gap:5px}
+.passport-grow span{padding:4px 7px}
+.passport-state{display:none}
+.major-passport.completed{padding-right:66px}
+
+/* Completed stamp: transparent paper, ink only. */
+.passport-earned-stamp{position:absolute;right:13px;top:13px;width:46px;height:46px;display:grid;place-items:center;padding:0;border:2px solid rgba(39,101,78,.58);border-radius:50%;background:transparent;box-shadow:none;color:#27654e;line-height:1;letter-spacing:0;text-transform:none;transform:rotate(-9deg);pointer-events:none}
+.passport-earned-stamp::before{content:'Completed';display:block;font-size:.34rem;font-weight:900;letter-spacing:.075em;line-height:1;text-transform:uppercase;white-space:nowrap}
+.passport-earned-stamp::after{content:'';position:absolute;inset:5px;border:1px solid rgba(39,101,78,.38);border-radius:50%}
+
+/* World map styling belongs to the World Majors component, not injected JavaScript. */
+.majors-world{height:clamp(300px,34vw,390px);aspect-ratio:auto;background:#e7ede9;background-image:none;border:1px solid rgba(33,58,49,.12)}
+.majors-world.leaflet-container{font-family:inherit}
+.majors-world .leaflet-tile-pane{filter:saturate(.58) contrast(.94) brightness(1.05)}
+.majors-world .leaflet-control-attribution{padding:2px 5px;background:rgba(247,244,238,.8);font-size:8px;color:#66736d}
+.majors-leaflet-label.leaflet-tooltip{padding:4px 7px;border:1px solid rgba(33,58,49,.13);border-radius:999px;background:rgba(255,255,255,.95);box-shadow:0 4px 14px rgba(23,32,42,.12);color:#33443d;font-size:.58rem;font-weight:850;line-height:1;white-space:nowrap}
+.majors-leaflet-label.leaflet-tooltip::before{display:none}
+.majors-leaflet-label.completed{border-color:rgba(39,101,78,.34);color:#27654e}
+.majors-leaflet-label.registered{border-color:rgba(180,127,45,.42);color:#80591d}
+.majors-leaflet-label.candidate{border-style:dashed;color:#66736d}
+.majors-map-index{display:grid;place-items:center;width:22px;height:22px;border:2px solid #fff;border-radius:50%;background:#87928d;color:#fff;box-shadow:0 2px 7px rgba(23,32,42,.24);font-size:.5rem;font-weight:900;line-height:1}
+.majors-map-index.completed{background:#27654e}
+.majors-map-index.registered{background:#b47f2d}
+.majors-map-index.candidate{background:#fff;color:#66736d;border-color:#66736d;border-style:dashed}
+.majors-mobile-map-list{display:none}
+
+@media(max-width:650px){
+  .majors-passport-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;align-items:start;grid-auto-rows:auto}
+  .major-passport{height:var(--passport-card-height,auto);min-height:0;padding:13px 11px 12px 48px;border-radius:15px;overflow:hidden}
+  .major-passport.completed,.major-passport.registered{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,.91))}
+  .major-passport.completed{padding-right:11px}
+  .major-passport:not(.completed){padding-right:11px}
+  .passport-number{left:12px;top:13px;font-size:1rem;color:rgba(33,58,49,.18)}
+  .major-passport .card-kicker{margin:0 0 5px;font-size:.54rem;line-height:1.06;letter-spacing:.115em}
+  .major-passport h3{font-size:1.3rem;line-height:1.01;letter-spacing:-.025em}
+  .major-passport .card-meta{margin-top:8px;padding-right:0;font-size:.67rem;line-height:1.24;color:#68747a}
+  .passport-grow{display:none}
+  .passport-earned-stamp{right:9px;top:auto;bottom:9px;width:44px;height:44px;opacity:.78}
+  .passport-earned-stamp::before{font-size:.27rem}
+  .passport-earned-stamp::after{inset:4px}
+  .majors-world{height:245px;margin-top:12px;border-radius:15px}
+  .majors-world .leaflet-control-attribution{font-size:7px}
+  .majors-mobile-map-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}
+  .majors-mobile-map-item{display:grid;grid-template-columns:24px minmax(0,1fr);gap:7px;align-items:center;padding:7px 8px;border:1px solid rgba(33,58,49,.08);border-radius:11px;background:rgba(255,255,255,.68)}
+  .major-mobile-index{display:grid;place-items:center;width:23px;height:23px;font-size:.5rem}
+  .majors-mobile-map-item strong{display:block;font-size:.67rem;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .majors-mobile-map-item small{display:block;margin-top:2px;font-size:.53rem;line-height:1.15;color:var(--muted,#66736d)}
+}
+@media(max-width:390px){
+  .major-passport{padding-left:46px}
+  .passport-number{left:11px}
+  .major-passport h3{font-size:1.24rem}
+  .major-passport .card-meta{font-size:.65rem}
+}
+@media(max-width:370px){.majors-mobile-map-list{grid-template-columns:1fr}}
