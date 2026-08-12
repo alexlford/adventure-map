@@ -4,26 +4,45 @@ const readJson = path => JSON.parse(fs.readFileSync(path, 'utf8'));
 const recordsPayload = readJson('data/public-records.json');
 const routeCatalog = readJson('data/route-catalog.json');
 
-const featureIds = new Set();
+const personalFeatureIds = new Set();
 const routeActivityIds = new Set();
+const personalOwnedRecordIds = new Set();
+
+const addAdventureIds = values => {
+  const ids = Array.isArray(values) ? values : (values ? [values] : []);
+  for (const id of ids) personalOwnedRecordIds.add(String(id));
+};
+
+const isPersonalGps = (id, properties = {}) => {
+  if (properties.provenance === 'personal-gps') return true;
+  if (properties.stravaActivityId != null) return true;
+  if (id && String(id).startsWith('strava-')) return true;
+  const source = `${properties.source || ''} ${properties.sourceLabel || ''} ${properties.routeType || ''}`.toLowerCase();
+  return (source.includes('strava') || source.includes('personal gps')) && !source.includes('historical');
+};
 
 for (const routeFile of routeCatalog.routeFiles || []) {
   const payload = readJson(routeFile);
   for (const feature of payload.features || []) {
     const id = feature.id || feature.properties?.featureId || feature.properties?.id;
-    if (id) featureIds.add(String(id));
-    const activityId = feature.properties?.stravaActivityId;
+    const override = id ? routeCatalog.featureOverrides?.[id] : null;
+    const properties = { ...(feature.properties || {}), ...(override || {}) };
+    if (!isPersonalGps(id, properties)) continue;
+    if (id) personalFeatureIds.add(String(id));
+    const activityId = properties.stravaActivityId;
     if (activityId != null) routeActivityIds.add(String(activityId));
     if (id && String(id).startsWith('strava-')) routeActivityIds.add(String(id).slice(7));
+    addAdventureIds(properties.adventureIds);
   }
 }
 
 for (const polylineFile of routeCatalog.polylineFiles?.length ? routeCatalog.polylineFiles : ['data/activity-route-polylines.json']) {
   const payload = readJson(polylineFile);
   for (const route of payload.routes || []) {
-    if (route.id) featureIds.add(String(route.id));
+    if (route.id) personalFeatureIds.add(String(route.id));
     if (route.stravaActivityId != null) routeActivityIds.add(String(route.stravaActivityId));
     if (route.id && String(route.id).startsWith('strava-')) routeActivityIds.add(String(route.id).slice(7));
+    addAdventureIds(route.adventureIds);
   }
 }
 
@@ -42,8 +61,11 @@ for (const record of records) {
   if (!uniqueActivityIds.length) continue;
 
   const privacyWithheld = privacyIds.has(record.id) || record.routeStatus === 'withheld-privacy' || record.routeInfo?.status === 'withheld-privacy';
-  const coveredActivityIds = uniqueActivityIds.filter(activityId => routeActivityIds.has(activityId) || featureIds.has(`strava-${activityId}`));
-  const missingActivityIds = uniqueActivityIds.filter(activityId => !coveredActivityIds.includes(activityId));
+  const explicitPersonalRoute = (record.routeFeatureIds || []).some(id => personalFeatureIds.has(String(id)));
+  const ownedPersonalRoute = personalOwnedRecordIds.has(String(record.id));
+  const coveredActivityIds = uniqueActivityIds.filter(activityId => routeActivityIds.has(activityId) || personalFeatureIds.has(`strava-${activityId}`));
+  const hasPersonalRoute = explicitPersonalRoute || ownedPersonalRoute || coveredActivityIds.length > 0;
+  const missingActivityIds = hasPersonalRoute ? [] : uniqueActivityIds;
 
   audit.push({
     id: record.id,
@@ -54,6 +76,7 @@ for (const record of records) {
     routeStatus: record.routeStatus || record.routeInfo?.status || null,
     activityIds: uniqueActivityIds,
     coveredActivityIds,
+    coverageMode: explicitPersonalRoute ? 'record-routeFeatureIds' : (ownedPersonalRoute ? 'route-adventureIds' : (coveredActivityIds.length ? 'strava-activity-id' : null)),
     missingActivityIds,
     privacyWithheld,
   });
