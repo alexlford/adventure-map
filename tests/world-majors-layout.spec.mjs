@@ -19,6 +19,7 @@ test('standalone World Majors passport stays compact and aligned on phone widths
   expect(Math.max(...widths) - Math.min(...widths)).toBeLessThanOrEqual(1);
   expect(Math.max(...heights) - Math.min(...heights)).toBeLessThanOrEqual(1);
   expect(Math.max(...heights)).toBeLessThan(230);
+  expect(await grid.evaluate(node => node.style.getPropertyValue('--passport-card-height'))).toBe('');
 
   const completed = cards.filter({ hasText: 'Chicago' }).first();
   const stamp = completed.locator('.passport-earned-stamp');
