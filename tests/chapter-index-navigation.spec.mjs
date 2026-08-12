@@ -24,6 +24,7 @@ test('Race chapter index picks up the asynchronously rendered Majors feature', a
 
 test('Chapter index follows the section being read without moving the page vertically', async ({ page }) => {
   await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
+  await page.addStyleTag({content:'html{scroll-behavior:auto!important}'});
   const index = page.locator('.chapter-index');
   const links = index.locator('a');
   await expect(links.nth(1)).toBeVisible();
@@ -32,11 +33,11 @@ test('Chapter index follows the section being read without moving the page verti
     const top = window.scrollY + element.getBoundingClientRect().top - 180;
     window.scrollTo(0,Math.max(0,top));
   });
-  await page.waitForTimeout(100);
+  await page.waitForTimeout(50);
   const before = await page.evaluate(() => window.scrollY);
   await expect.poll(async () => await links.nth(1).getAttribute('aria-current')).toBe('location');
   await expect(links.nth(1)).toHaveClass(/is-current/);
-  await page.waitForTimeout(150);
+  await page.waitForTimeout(100);
   const after = await page.evaluate(() => window.scrollY);
   expect(Math.abs(after-before)).toBeLessThan(4);
 });
