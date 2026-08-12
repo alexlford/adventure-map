@@ -12,21 +12,52 @@ for (const pagePath of ['/races.html','/summits.html','/skiing.html','/nordic.ht
     expect(href).toMatch(/^#chapter-|^#[A-Za-z]/);
     const target = page.locator(href);
     await expect(target).toHaveAttribute('data-chapter-anchor','true');
+    await expect(index.locator('a[aria-current="location"]')).toHaveCount(1);
   });
 }
 
-test('Chapter index stays compact and horizontally navigable on phone widths', async ({ page }) => {
+test('Race chapter index picks up the asynchronously rendered Majors feature', async ({ page }) => {
+  await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
+  const index = page.locator('.chapter-index');
+  await expect(index.getByRole('link',{name:'A marathon journey around the world.'})).toBeVisible();
+});
+
+test('Chapter index follows the section being read without moving the page vertically', async ({ page }) => {
+  await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
+  await page.addStyleTag({content:'html{scroll-behavior:auto!important}'});
+  const index = page.locator('.chapter-index');
+  const links = index.locator('a');
+  await expect(links.nth(1)).toBeVisible();
+  const href = await links.nth(1).getAttribute('href');
+  await page.locator(href).evaluate(element => {
+    const top = window.scrollY + element.getBoundingClientRect().top - 180;
+    window.scrollTo(0,Math.max(0,top));
+  });
+  await page.waitForTimeout(50);
+  const before = await page.evaluate(() => window.scrollY);
+  await expect.poll(async () => await links.nth(1).getAttribute('aria-current')).toBe('location');
+  await expect(links.nth(1)).toHaveClass(/is-current/);
+  await page.waitForTimeout(100);
+  const after = await page.evaluate(() => window.scrollY);
+  expect(Math.abs(after-before)).toBeLessThan(4);
+});
+
+test('Chapter index stays sticky and horizontally navigable on phone widths', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
   const index = page.locator('.chapter-index');
   await expect(index).toBeVisible();
   const metrics = await index.evaluate(node => ({
     overflowX:getComputedStyle(node).overflowX,
+    position:getComputedStyle(node).position,
+    top:parseFloat(getComputedStyle(node).top),
     scrollWidth:node.scrollWidth,
     clientWidth:node.clientWidth,
     whiteSpace:getComputedStyle(node.querySelector('a')).whiteSpace
   }));
   expect(['auto','scroll']).toContain(metrics.overflowX);
+  expect(metrics.position).toBe('sticky');
+  expect(metrics.top).toBeGreaterThan(0);
   expect(metrics.whiteSpace).toBe('nowrap');
   expect(metrics.scrollWidth).toBeGreaterThanOrEqual(metrics.clientWidth);
 });
