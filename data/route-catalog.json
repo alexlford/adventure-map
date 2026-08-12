@@ -19,7 +19,8 @@
     "data/ski-the-sky-runs.json",
     "data/strava-route-full-resolution-ranch-hand-skate-2022.json",
     "data/strava-route-full-resolution-ranch-hand-classic-2022.json",
-    "data/strava-route-decalibron-2023.json"
+    "data/strava-route-decalibron-2023.json",
+    "data/strava-route-full-resolution-flying-pig-2025.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -55,6 +56,16 @@
         "id": "strava-9642214422",
         "minPoints": 1000,
         "resolutionPrefix": "every-20th-source-point"
+      },
+      {
+        "id": "strava-14364821809",
+        "minPoints": 350,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-14377032125",
+        "minPoints": 3800,
+        "resolutionPrefix": "full-source-track"
       }
     ]
   },
