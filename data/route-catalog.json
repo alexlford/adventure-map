@@ -14,7 +14,8 @@
     "data/strava-route-backfill-02.json",
     "data/strava-route-backfill-03.json",
     "data/strava-route-backfill-04.json",
-    "data/strava-route-backfill-05.json"
+    "data/strava-route-backfill-05.json",
+    "data/strava-route-backfill-06.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -29,6 +30,6 @@
     "river-to-river-relay-historical-course": {"provenance":"historical-course","sourceLabel":"Official River to River course description + public historical GPS reference","note":"Shared historical full relay course for the 2006, 2008, and 2010 entries; not a personal GPS recording."}
   },
   "recordOverrides": {
-    "chicago-marathon-virtual-2020": {"provenance":"privacy-withheld","note":"Exact personal route geometry is intentionally withheld from the public site."}
+    "chicago-marathon-virtual-2020": {"provenance":"personal-gps","note":"Personal GPS route publication approved by Alex on 2026-08-11; this is a former residence area and no longer current."}
   }
 }
