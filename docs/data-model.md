@@ -14,7 +14,9 @@ Allowed `kind` values are:
 - `outing`
 - `adventure`
 
-A race or event also requires a discipline. The canonical discipline vocabulary currently includes `road`, `marathon`, `trail`, `relay`, `mountain-bike`, `nordic`, `ski-objective`, `mountain-loop`, `trek`, `challenge`, `hike`, and `ski`.
+A race or event also requires a discipline. The accepted discipline vocabulary currently includes `road`, `marathon`, `trail`, `relay`, `mountain-bike`, `nordic`, `ski-objective`, `mountain-loop`, `trek`, `challenge`, `hike`, `hiking`, and `ski`.
+
+`hike` and `hiking` are both accepted while the historical summit inventory is normalized incrementally. Do not rewrite old source evidence merely to remove that harmless vocabulary difference.
 
 Stable public slugs are generated from canonical records and validated separately so record identity can survive routing changes.
 
@@ -22,7 +24,23 @@ Stable public slugs are generated from canonical records and validated separatel
 
 Use `date` and optional `endDate` in `YYYY-MM-DD` format. `year` may be retained for legacy records, but when both exist the year must agree with the date.
 
-Coordinates use numeric `lat` and `lon` together. Do not publish only one coordinate. `coordinatePrecision` describes whether the coordinate is GPS-backed, a venue, a city, a region, or another intentionally generalized location.
+Coordinates use numeric `lat` and `lon` together. Do not publish only one coordinate. `coordinatePrecision` describes the evidence quality or intentional generalization of that location; it is not a claim of survey-grade geodetic accuracy.
+
+Accepted precision labels currently include:
+
+- GPS-backed: `gps-course`, `gps-area`, `gps-start`;
+- venue/event: `venue`, `venue-placeholder`, `event-area`, `event-area-placeholder`, `start-area-placeholder`;
+- resort/place: `resort-placeholder`, `city`, `city-placeholder`, `region`, `summit`;
+- privacy-aware: `city-privacy`;
+- legacy fallback: `unknown`.
+
+Use the most specific label supported by the evidence without publishing unnecessary private location detail.
+
+## Evidence confidence
+
+`matchConfidence` may use `confirmed`, `verified`, `high`, `medium`, `low`, `probable`, or `unknown`.
+
+`probable` is retained for legacy evidence that is stronger than an unknown match but not fully confirmed. Confidence describes the evidence behind the record or match; it should not be upgraded simply to make the archive look cleaner.
 
 ## Activity metrics
 
@@ -61,6 +79,10 @@ Recorded GPS, historical courses, generalized locations, and privacy-withheld ro
 
 `data/catalog.json` defines source order. Later sources override earlier fields for the same ID. The Strava match layer is applied after source merging. Catalog `removeIds` suppress stale legacy records, and catalog `overrides` applies authoritative corrections last.
 
+A repeated ID across source layers is therefore expected provenance behavior, not automatically a data problem. Validation reports the number of layered merges as informational output. If the full layer-by-layer precedence trace is needed, run validation with `VERBOSE_VALIDATION=1`.
+
+`removeIds` are catalog tombstones. A tombstone may remain even when the suppressed ID is not present in the current source set; this keeps stale records from resurfacing if an older provenance layer is restored later.
+
 The current North Star Mountain correction lives in the catalog override rather than page code. The obsolete single-record Snow Mountain Ranch `50K Ranch Hand` entry is removed by the catalog and replaced by the actual two-day 25K + 25K race records.
 
 ## Validation
@@ -73,5 +95,13 @@ npm run validate:routing
 ```
 
 Validation covers identity, kinds, disciplines, date formats, coordinate pairing/ranges, numeric sanity, relationships, route provenance, media paths/alt text, ingest state, update policy, and stable record routing.
+
+The validation output intentionally separates three concepts:
+
+- **errors**: broken contracts that fail CI;
+- **review warnings**: unusual data that deserves human attention but may still be valid;
+- **informational counts**: expected provenance mechanics such as layered merges and tombstones.
+
+The goal is not zero output. It is for any future review warning to be visible enough that it is actually reviewed.
 
 New public records should pass validation before deployment.

@@ -1,20 +1,34 @@
 {
-  "schemaVersion": 3,
-  "description": "Canonical normalized record vocabulary for Alex Ford Adventures. Source files may retain legacy fields; catalog.js projects them into this schema at load time.",
+  "schemaVersion": 2,
   "kinds": ["summit", "race", "adventure", "event", "outing"],
-  "disciplines": ["road", "marathon", "trail", "relay", "mountain-bike", "nordic", "ski-objective", "mountain-loop", "trek", "challenge", "hike", "ski"],
-  "confidence": ["confirmed", "verified", "high", "medium", "low", "unknown"],
-  "coordinatePrecision": ["gps-course", "gps-area", "venue", "venue-placeholder", "city", "region", "unknown"],
-  "mtbRidingStyle": ["mtb", "downhill", "mixed"],
-  "normalizedFields": {
-    "recordClass": "Canonical kind: summit, race, adventure, event, or outing.",
-    "sport": "Broad sport family used for cross-page grouping.",
-    "startDate": "Canonical ISO start date.",
-    "finishDate": "Canonical ISO finish date, equal to startDate for one-day records.",
-    "distance": "Object with numeric km/mi values and optional display label.",
-    "locationInfo": "Object containing label, region, coordinates, and precision.",
-    "evidence": "Object describing source text and confidence.",
-    "routeInfo": "Object describing route status/provenance when known.",
-    "mtbRidingStyle": "Day-level MTB mode: mtb, downhill, or mixed. Downhill ascent is not presented as pedaled climbing."
+  "disciplines": ["road", "marathon", "trail", "relay", "mountain-bike", "nordic", "ski-objective", "mountain-loop", "trek", "challenge", "hike", "hiking", "ski"],
+  "confidence": ["confirmed", "verified", "high", "medium", "low", "probable", "unknown"],
+  "coordinatePrecision": [
+    "gps-course",
+    "gps-area",
+    "gps-start",
+    "venue",
+    "venue-placeholder",
+    "event-area",
+    "event-area-placeholder",
+    "start-area-placeholder",
+    "resort-placeholder",
+    "city",
+    "city-placeholder",
+    "city-privacy",
+    "region",
+    "summit",
+    "unknown"
+  ],
+  "required": {
+    "all": ["id", "name", "kind"],
+    "dated": ["date"],
+    "race": ["discipline"],
+    "event": ["discipline"]
+  },
+  "notes": {
+    "hikeVsHiking": "Both values are accepted while the historical summit inventory is normalized incrementally.",
+    "coordinatePrecision": "Precision labels describe evidence quality or privacy treatment, not survey-grade geodetic accuracy.",
+    "probable": "Probable is retained for legacy evidence that is stronger than an unknown match but not fully confirmed."
   }
 }
