@@ -39,8 +39,8 @@ for (const feature of compiled.features || []) {
   }
 }
 
-const privacyStatuses = new Set(['withheld-privacy', 'privacy-withheld', 'matched-no-public-route']);
-const explicitNoRoute = record => privacyStatuses.has(record.routeStatus) || record.routeInfo?.provenance === 'privacy-withheld';
+const privacyStatuses = new Set(['withheld-privacy', 'privacy-withheld']);
+const privacyWithheld = record => privacyStatuses.has(record.routeStatus) || record.routeInfo?.provenance === 'privacy-withheld';
 const stravaIdsFor = record => [...new Set([
   record.stravaActivityId,
   ...(Array.isArray(record.stravaActivityIds) ? record.stravaActivityIds : []),
@@ -51,10 +51,11 @@ const rows = records.map(record => {
   const stravaIds = stravaIdsFor(record);
   const personal = personalFeaturesFor(record.id);
   const routePoints = personal.reduce((sum, feature) => sum + feature.points, 0);
-  const expected = stravaIds.length > 0 && !explicitNoRoute(record);
-  const status = explicitNoRoute(record) ? 'privacy-or-explicit-no-route'
+  const expected = stravaIds.length > 0 && !privacyWithheld(record);
+  const status = privacyWithheld(record) ? 'privacy-withheld'
     : expected && personal.length ? 'route-ready'
     : expected ? 'missing-route'
+    : personal.length ? 'route-present-without-record-strava-id'
     : 'no-direct-strava-route-expected';
   return {
     id: record.id,
@@ -85,10 +86,10 @@ for (const rel of relationships) {
       stravaActivityIds: row?.stravaActivityIds || [],
       routeFeatureIds: row?.personalRouteFeatureIds || [],
       routePoints: row?.routePoints || 0,
-      explicitNoRoute: explicitNoRoute(member),
+      privacyWithheld: privacyWithheld(member),
     };
   });
-  const expectedMembers = memberAudit.filter(member => member.stravaActivityIds.length && !member.explicitNoRoute);
+  const expectedMembers = memberAudit.filter(member => (member.stravaActivityIds.length || member.routeFeatureIds.length) && !member.privacyWithheld);
   const coveredMembers = expectedMembers.filter(member => member.routeFeatureIds.length);
   challengeRows.push({
     relationshipId: rel.id,
@@ -108,17 +109,17 @@ const expectedRows = rows.filter(row => row.expected);
 const missing = expectedRows.filter(row => row.status === 'missing-route');
 const ready = expectedRows.filter(row => row.status === 'route-ready');
 const overlaysIncomplete = challengeRows.filter(row => row.status === 'overlay-incomplete');
-const privacy = rows.filter(row => row.status === 'privacy-or-explicit-no-route');
-const lowPoint = ready.filter(row => row.routePoints < 100);
+const privacy = rows.filter(row => row.status === 'privacy-withheld');
+const lowPoint = rows.filter(row => row.personalRouteFeatureIds.length && row.routePoints < 100 && row.status !== 'privacy-withheld');
 
 const report = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
   publicRecordCount: records.length,
   directStravaRouteExpectedCount: expectedRows.length,
   directStravaRouteReadyCount: ready.length,
   directStravaRouteMissingCount: missing.length,
-  privacyOrExplicitNoRouteCount: privacy.length,
+  privacyWithheldCount: privacy.length,
   lowPointRouteCount: lowPoint.length,
   combinedStoryCount: challengeRows.length,
   combinedOverlayIncompleteCount: overlaysIncomplete.length,
@@ -132,7 +133,7 @@ console.log(`STRAVA_ROUTE_AUDIT_SUMMARY ${JSON.stringify({
   directExpected: report.directStravaRouteExpectedCount,
   directReady: report.directStravaRouteReadyCount,
   directMissing: report.directStravaRouteMissingCount,
-  privacyOrExplicitNoRoute: report.privacyOrExplicitNoRouteCount,
+  privacyWithheld: report.privacyWithheldCount,
   lowPointRoutes: report.lowPointRouteCount,
   combinedStories: report.combinedStoryCount,
   combinedOverlayIncomplete: report.combinedOverlayIncompleteCount,
