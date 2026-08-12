@@ -27,7 +27,7 @@
   A.load().then(all=>{
     A.shell('adventures');
     records=all.filter(a=>a.kind==='adventure').map(a=>({...a,group:group(a)})).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-    renderLead();renderShelf();renderIndex();
+    renderLead();renderShelf();
+    AdventureFilterState.setup({param:'view',allowed:['all','ski','mountain','challenge'],fallback:'all',onChange:value=>{active=value;renderIndex()}});
   }).catch(e=>{const host=document.getElementById('storyIndex');if(host)host.innerHTML=`<div class="empty">${esc(e.message)}</div>`});
-  document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>{active=button.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('is-active',x===button));renderIndex()}));
 })();
