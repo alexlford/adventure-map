@@ -1,6 +1,7 @@
 window.AdventureRoutes = (() => {
   let configPromise;
   let relationshipsPromise;
+  let allPromise;
   const fetchJson = async path => {
     const r = await fetch(path, { cache: 'no-cache' });
     if (!r.ok) throw new Error(`Failed to load ${path} (${r.status})`);
@@ -101,7 +102,7 @@ window.AdventureRoutes = (() => {
     });
     return normalizeCollection({ type: 'FeatureCollection', features });
   }
-  async function loadAll() {
+  async function resolveAll() {
     const cfg = await config();
     const routeFiles = cfg.routeFiles || [];
     const polylineFiles = cfg.polylineFiles?.length ? cfg.polylineFiles : ['data/activity-route-polylines.json'];
@@ -112,6 +113,14 @@ window.AdventureRoutes = (() => {
     ]);
     const normalizedRoutes = await Promise.all(routePayloads.map(normalizeCollection));
     return expandRelationshipOwnership([...normalizedRoutes, ...polylinePayloads], relationshipPayload);
+  }
+  function loadAll({ fresh = false } = {}) {
+    if (fresh) return resolveAll();
+    if (!allPromise) allPromise = resolveAll().catch(error => {
+      allPromise = null;
+      throw error;
+    });
+    return allPromise;
   }
   async function recordProvenance(recordId) {
     const cfg = await config();
