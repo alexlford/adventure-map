@@ -57,6 +57,42 @@ test('Map marker clustering is owned by the core renderer instead of an enhancem
   expect(errors).toEqual([]);
 });
 
+test('Map focus and pinning are owned by the core instead of enhancement monkey-patches', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+
+  const ownership = await page.evaluate(async () => {
+    const [coreSource, enhancementSource] = await Promise.all([
+      fetch('/app.js').then(response => response.text()),
+      fetch('/map-enhancements.js').then(response => response.text()),
+    ]);
+    const api = window.AdventureMap;
+    const record = api.records().find(item => Number.isFinite(item.lat) && Number.isFinite(item.lon) && api.visibleRoutes([item]).length === 0);
+    if (!record) return { coreSource, enhancementSource, record: null };
+    api.focus(record.id);
+    const focused = api.state();
+    api.emphasize(record.id, false);
+    const afterBlur = api.state();
+    api.clearFocus();
+    const cleared = api.state();
+    return { coreSource, enhancementSource, record: record.id, focused, afterBlur, cleared };
+  });
+
+  expect(ownership.record, 'catalog should contain a mapped record without route geometry').toBeTruthy();
+  expect(ownership.coreSource).toContain('function pinnedIsVisible()');
+  expect(ownership.coreSource).toContain('state.pinnedFocusId=a.id');
+  expect(ownership.enhancementSource).not.toMatch(/focusAdventure\s*=/);
+  expect(ownership.enhancementSource).not.toMatch(/setRouteEmphasis\s*=/);
+  expect(ownership.focused.focusId).toBe(ownership.record);
+  expect(ownership.focused.pinnedFocusId).toBe(ownership.record);
+  expect(ownership.afterBlur.focusId).toBe(ownership.record);
+  expect(ownership.afterBlur.pinnedFocusId).toBe(ownership.record);
+  expect(ownership.cleared.focusId).toBeNull();
+  expect(ownership.cleared.pinnedFocusId).toBeNull();
+  expect(errors).toEqual([]);
+});
+
 test('Map public route keeps the Colorado-centered zoom 2 default after data loads', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/map/', { waitUntil: 'domcontentloaded' });
