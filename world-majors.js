@@ -3,6 +3,33 @@
   const cityName=x=>x.name.replace(' Marathon','').replace('TCS New York City','New York City');
   const statusLabel=x=>x.status==='completed'?'Completed':x.status==='registered'?'Registered':x.membership==='joins-2027'?'Joining the Majors in 2027':'Future target';
   const markerColor=x=>x.status==='completed'?'#27654e':x.status==='registered'?'#b47f2d':x.membership==='joins-2027'?'#2f6f8f':'#87928d';
+  function ensurePassportCardFix(){
+    if(document.getElementById('majorsPassportCardFix'))return;
+    const style=document.createElement('style');
+    style.id='majorsPassportCardFix';
+    style.textContent=`
+      .majors-passport-grid{align-items:start}
+      .major-passport{min-height:0!important;padding:18px 58px 18px 18px!important;display:block!important}
+      .major-passport:not(.completed){padding-right:18px!important}
+      .major-passport .card-kicker{margin:0 0 5px!important}
+      .major-passport h3{margin:0!important}
+      .major-passport .card-meta{margin:7px 0 0!important;line-height:1.38}
+      .passport-number{top:13px!important;right:14px!important;font-size:1.45rem!important}
+      .passport-earned-stamp{top:15px!important;right:14px!important;width:46px!important;height:46px!important;font-size:.42rem!important;letter-spacing:.055em!important}
+      .passport-earned-stamp:after{bottom:5px!important;font-size:.33rem!important}
+      .passport-grow{margin-top:14px!important;padding-right:0!important;gap:5px!important}
+      .passport-grow span{padding:4px 7px!important}
+      .passport-state{display:none!important}
+      @media(max-width:650px){
+        .major-passport{padding:15px 58px 15px 54px!important}
+        .major-passport:not(.completed){padding-right:15px!important}
+        .passport-number{left:15px!important;right:auto!important;top:15px!important;font-size:1.15rem!important}
+        .passport-earned-stamp{top:12px!important;right:12px!important;width:42px!important;height:42px!important}
+        .passport-grow{margin-top:10px!important}
+      }
+    `;
+    document.head.appendChild(style);
+  }
   function mountWorldMap(majors,candidates){
     const element=document.getElementById('majorsWorldMap');
     if(!element)return;
@@ -25,6 +52,7 @@
     if(typeof ResizeObserver!=='undefined'){const observer=new ResizeObserver(()=>requestAnimationFrame(fit));observer.observe(element);element.__majorsMapResizeObserver=observer;}
     element.__majorsLeafletMap=map;
   }
+  ensurePassportCardFix();
   Promise.all([
     fetch('data/world-majors.json').then(r=>{if(!r.ok)throw new Error('Unable to load World Majors journey');return r.json()}),
     A.load()
