@@ -1,0 +1,88 @@
+/* Master Adventure Map information hierarchy and popup polish. */
+.app-shell{grid-template-columns:minmax(340px,420px) 1fr}
+.sidebar{padding:28px 24px 22px}
+.brand-block{margin-bottom:18px}
+.lede{margin-top:11px;font-size:.94rem}
+.stats{gap:6px;margin-bottom:14px}
+.stat{padding:10px 8px;border-radius:12px}
+.stat-value{font-size:1.28rem}
+.controls{margin:0 0 15px}
+.control-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 8px}
+.control-label{color:var(--ink);font-size:.7rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase}
+.control-hint{color:var(--muted);font-size:.66rem}
+.filter-row{gap:6px;margin-bottom:9px}
+.filter-button{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;font-size:.72rem;font-weight:750}
+.filter-button:before{content:"";width:7px;height:7px;flex:0 0 auto;border-radius:50%;background:#59636d;box-shadow:0 0 0 1px rgba(23,32,42,.06)}
+.filter-button[data-filter="mtb"]:before{background:#315f9e}
+.filter-button[data-filter="nordic"]:before{background:#2f6f8f}
+.filter-button[data-filter="road-races"]:before{background:#b76b26}
+.filter-button[data-filter="trail-races"]:before{background:#8b5a31}
+.filter-button[data-filter="skiing"]:before{background:#2f8ca6}
+.filter-button[data-filter="summits"]:before{background:#357662}
+.filter-button[data-filter="adventures"]:before{background:#715a8d}
+.filter-button.is-active:before{box-shadow:0 0 0 1px rgba(255,255,255,.65)}
+.refine-controls{margin-top:8px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.48);overflow:hidden}
+.refine-controls summary{display:flex;align-items:center;gap:10px;padding:9px 11px;cursor:pointer;list-style:none;color:var(--ink);font-size:.74rem;font-weight:800;user-select:none}
+.refine-controls summary::-webkit-details-marker{display:none}
+.refine-controls summary small{margin-left:auto;color:var(--muted);font-size:.64rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%}
+.refine-controls summary:after{content:"+";display:grid;place-items:center;width:18px;height:18px;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--muted);font-size:.8rem;line-height:1}
+.refine-controls[open] summary{border-bottom:1px solid var(--line)}
+.refine-controls[open] summary:after{content:"−"}
+.refine-body{padding:10px}
+.refine-body .year-controls{margin:0 0 10px;padding:0;border:0;background:transparent}
+.refine-body .search-label{font-size:.69rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.refine-body #searchInput{padding:8px 11px;font-size:.76rem}
+.refine-body .secondary-button{padding:8px 10px;font-size:.72rem}
+.results-heading{margin-top:4px;padding-top:2px}
+.adventure-list{gap:5px}
+.adventure-item{position:relative;padding:9px 8px;transition:background 120ms ease,border-color 120ms ease,opacity 120ms ease,transform 120ms ease}
+.adventure-item.is-focused{background:#fff;border-color:var(--line);box-shadow:0 5px 16px rgba(23,32,42,.06)}
+.adventure-item.is-focused:after{content:"";position:absolute;inset:7px auto 7px 0;width:3px;border-radius:999px;background:var(--focus)}
+.adventure-item.is-context-muted{opacity:.44}
+.adventure-item.is-focused.is-context-muted{opacity:1}
+.item-title{font-size:.91rem}
+.item-meta{font-size:.72rem}
+.item-value{font-size:.7rem;font-weight:700}
+
+/* Popup hierarchy: one clear title, one location line, one headline result, then compact supporting metrics. */
+.leaflet-popup-content .popup-card-refined{position:relative;padding-left:12px}
+.leaflet-popup-content .popup-card-refined:before{content:"";position:absolute;left:0;top:1px;bottom:1px;width:3px;border-radius:999px;background:var(--popup-accent,#59636d)}
+.leaflet-popup-content .popup-card-refined+.popup-card-refined{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.leaflet-popup-content .popup-card-refined+.popup-card-refined:before{top:15px}
+.popup-card-refined .popup-kicker{margin:0 0 4px;color:var(--popup-accent,#59636d);font-size:.6rem;font-weight:850;letter-spacing:.08em}
+.popup-card-refined .popup-title{font-size:1.02rem;line-height:1.16;letter-spacing:-.015em}
+.popup-card-refined .popup-location{margin:5px 0 0;color:var(--muted);font-size:.72rem;line-height:1.35}
+.popup-card-refined .popup-alias{margin:4px 0 0;color:var(--muted);font-size:.7rem}
+.popup-headline{display:flex;align-items:baseline;gap:7px;margin:9px 0 0}
+.popup-headline strong{font-size:1.34rem;line-height:1;letter-spacing:-.025em}
+.popup-headline small{color:var(--muted);font-size:.6rem;font-weight:750;text-transform:uppercase;letter-spacing:.06em}
+.popup-metrics{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.popup-metric{display:inline-flex;align-items:center;padding:4px 6px;border:1px solid var(--line);border-radius:999px;background:rgba(247,244,238,.72);color:var(--muted);font-size:.64rem;font-weight:750;line-height:1}
+.popup-card-refined .popup-detail{margin-top:10px}
+.popup-card-refined .popup-detail a{display:inline-flex;align-items:center;gap:4px;color:var(--ink);font-size:.7rem;font-weight:850;text-decoration-thickness:1px;text-underline-offset:3px}
+.leaflet-popup-content{max-height:min(58vh,460px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+
+@media(max-width:820px){
+  .app-shell{display:block}
+  .sidebar{padding:24px 20px 20px}
+  .stats{margin-top:4px}
+  .control-heading{margin-bottom:7px}
+  .filter-row{margin-left:-2px;margin-right:-2px;padding:2px 2px 5px}
+  .filter-button{padding:7px 9px}
+  .refine-controls{margin-top:5px}
+  .results-section{max-height:none!important;overflow:visible!important}
+}
+
+@media(max-width:520px){
+  .sidebar{padding:21px 15px 18px}
+  .lede{font-size:.9rem}
+  .stats{gap:5px}
+  .stat{padding:9px 7px}
+  .stat-value{font-size:1.18rem}
+  .refine-controls summary{padding:9px 10px}
+  .refine-controls summary small{max-width:50%}
+  .refine-body{padding:9px}
+  .leaflet-popup-content{min-width:0!important;width:min(280px,calc(100vw - 64px));max-height:48vh}
+  .popup-card-refined .popup-title{font-size:.98rem}
+  .popup-headline strong{font-size:1.23rem}
+}
