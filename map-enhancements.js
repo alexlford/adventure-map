@@ -23,13 +23,48 @@
   }
 
   if(typeof map!=='undefined'){
+    const ROUTE_DETAIL_ZOOM=7;
     let markerZoom=map.getZoom();
+
+    function applyRouteZoomPresentation(){
+      applyFocusStyles();
+      const zoom=map.getZoom();
+      const detailMode=zoom>=ROUTE_DETAIL_ZOOM;
+      map.getContainer()?.classList.toggle('is-gps-route-detail',detailMode);
+      if(!detailMode||typeof state!=='object')return;
+
+      state.routeFeatureLayers.forEach(group=>group.eachLayer(layer=>{
+        const feature=layer.feature||{};
+        const linked=(feature.properties?.adventureIds||[]).map(id=>state.adventures.find(a=>a.id===id)).filter(Boolean);
+        const category=publicLayerFor(linked[0]||{kind:'adventure'});
+        const style=baseRouteStyle(feature,category);
+        const active=Boolean(state.focusId&&routeContainsId(layer,state.focusId));
+        if(state.focusId&&!active)return;
+        layer.setStyle?.({...style,weight:active?Math.max(style.weight+3,7):Math.max(style.weight,5.5),opacity:active?1:.96});
+        layer.bringToFront?.();
+      }));
+
+      const groupedMarkers=new Map();
+      state.markers.forEach((marker,id)=>{
+        if(!groupedMarkers.has(marker))groupedMarkers.set(marker,[]);
+        groupedMarkers.get(marker).push(id);
+      });
+      groupedMarkers.forEach((ids,marker)=>{
+        const hasGpsRoute=ids.some(id=>state.routeLayers.has(id));
+        if(!hasGpsRoute)return;
+        const active=Boolean(state.focusId&&ids.includes(state.focusId));
+        if(state.focusId&&!active)return;
+        const baseRadius=marker.__adventureBaseRadius||6;
+        marker.setStyle?.({radius:active?baseRadius+3:Math.min(baseRadius,4.5),fillOpacity:active?.98:.58,opacity:active?1:.72});
+      });
+    }
+
     map.on('zoomend',()=>{
       const nextZoom=map.getZoom();
       if(nextZoom!==markerZoom){markerZoom=nextZoom;renderMarkers(filteredAdventures())}
-      applyFocusStyles();
+      applyRouteZoomPresentation();
     });
-    setTimeout(()=>applyFocusStyles(),0);
+    setTimeout(()=>applyRouteZoomPresentation(),0);
   }
 
   const shell = document.querySelector('.app-shell');
