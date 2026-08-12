@@ -93,35 +93,6 @@ window.AdventureCatalog = (() => {
     return { errors, warnings, valid: errors.length === 0 };
   }
 
-  const recordQuality = (record) => {
-    let score = 0;
-    if (record.resultSource) score += 8;
-    if (record.officialDistance || Number.isFinite(Number(record.officialDistanceKm)) || Number.isFinite(Number(record.officialDistanceMi))) score += 6;
-    if (record.matchConfidence === 'verified') score += 4;
-    else if (record.matchConfidence === 'confirmed') score += 3;
-    if (record.officialTime) score += 2;
-    if (record.date) score += 1;
-    return score;
-  };
-
-  function dedupeSharedActivities(records) {
-    const byActivity = new Map();
-    for (const record of records.values()) {
-      const activityId = record.stravaActivityId != null ? String(record.stravaActivityId) : null;
-      if (!activityId) continue;
-      const current = byActivity.get(activityId);
-      if (!current || recordQuality(record) > recordQuality(current)) byActivity.set(activityId, record);
-    }
-    if (!byActivity.size) return records;
-    const deduped = new Map();
-    for (const [id, record] of records) {
-      const activityId = record.stravaActivityId != null ? String(record.stravaActivityId) : null;
-      if (!activityId || byActivity.get(activityId) === record) deduped.set(id, record);
-      else console.warn(`Adventure catalog: suppressing duplicate ${id}; Strava activity ${activityId} is represented by ${byActivity.get(activityId).id}`);
-    }
-    return deduped;
-  }
-
   async function loadManifest() { return fetchJson('data/catalog.json'); }
   async function load({ fresh = false } = {}) {
     if (cache && !fresh) return cache;
@@ -130,7 +101,7 @@ window.AdventureCatalog = (() => {
       Promise.all(manifest.sources.map(source => fetchJson(source.path).then(payload => ({ source, payload })))),
       fetchJson(manifest.matchLayer)
     ]);
-    let records = new Map();
+    const records = new Map();
     for (const { source, payload } of sourcePayloads) for (const item of payload.adventures || []) records.set(item.id, { ...(records.get(item.id) || {}), ...item, _catalogSource: source.path });
     for (const [id, match] of Object.entries(matches.matches || {})) if (records.has(id)) records.set(id, { ...records.get(id), ...match });
     for (const id of manifest.removeIds || []) records.delete(id);
@@ -138,7 +109,9 @@ window.AdventureCatalog = (() => {
       if (!records.has(id)) throw new Error(`Catalog override references unknown id: ${id}`);
       records.set(id, { ...records.get(id), ...override });
     }
-    records = dedupeSharedActivities(records);
+    // Do not collapse records solely because they share one GPS activity. A single hike
+    // can legitimately produce several summit records; duplicate identity is resolved
+    // explicitly in the canonical catalog through layered IDs and tombstones.
     const adventures = [...records.values()].map(normalizeRecord);
     const report = validate(adventures);
     if (!report.valid) throw new Error(`Catalog validation failed: ${report.errors.join('; ')}`);
