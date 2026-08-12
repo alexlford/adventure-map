@@ -2,10 +2,21 @@ window.AdventureRoutes = (() => {
   let configPromise;
   let relationshipsPromise;
   let allPromise;
-  const fetchJson = async path => {
+  const fetchText = async path => {
     const r = await fetch(path, { cache: 'no-cache' });
     if (!r.ok) throw new Error(`Failed to load ${path} (${r.status})`);
-    return r.json();
+    return r.text();
+  };
+  const fetchJson = async path => JSON.parse(await fetchText(path));
+  const fetchPolylinePayload = async path => {
+    if (!path.endsWith('.gz.b64')) return fetchJson(path);
+    const encoded = (await fetchText(path)).trim();
+    const binary = atob(encoded);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+    if (typeof DecompressionStream !== 'function') throw new Error('This browser cannot decompress the high-resolution route archive.');
+    const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+    return JSON.parse(await new Response(stream).text());
   };
   const config = () => configPromise ||= fetchJson('data/route-catalog.json');
   const relationships = () => relationshipsPromise ||= fetchJson('data/relationships.json').catch(() => ({ relationships: [] }));
@@ -54,6 +65,19 @@ window.AdventureRoutes = (() => {
       features: (collection.features || []).filter(feature => !superseded.has(keyFor(feature)))
     }));
   }
+  function dedupeCollections(collections) {
+    const seen = new Set();
+    return collections.map(collection => ({
+      ...collection,
+      features: (collection.features || []).filter(feature => {
+        const id = keyFor(feature);
+        if (!id) return true;
+        if (seen.has(id)) return false;
+        seen.add(id);
+        return true;
+      })
+    })).filter(collection => (collection.features || []).length);
+  }
   function decodeComponent(encoded, state, label) {
     let result = 0;
     let shift = 0;
@@ -91,7 +115,7 @@ window.AdventureRoutes = (() => {
     return coordinates;
   }
   async function polylineCollection(path) {
-    const payload = await fetchJson(path);
+    const payload = await fetchPolylinePayload(path);
     const features = (payload.routes || []).map(route => {
       if (!route.id || !Array.isArray(route.lines) || !route.lines.length) throw new Error(`${path}: invalid encoded route`);
       const lines = route.lines.map(decodePolyline);
@@ -101,12 +125,16 @@ window.AdventureRoutes = (() => {
         properties: {
           featureId: route.id,
           stravaActivityId: route.stravaActivityId || null,
+          sourceActivityIds: route.sourceActivityIds || route.activityIds || [],
           adventureIds: route.adventureIds || [],
           provenance: 'personal-gps',
           source: payload.source || 'Strava GPS export',
           category: route.category || null,
           mtbMode: route.mtbMode || null,
-          density: route.density || null,
+          density: route.density || payload.quality?.mode || null,
+          sourcePointCount: route.sourcePointCount || null,
+          publishedPointCount: route.publishedPointCount || null,
+          splitGapMeters: route.splitGapMeters || payload.quality?.splitGapMeters || null,
           segmentType: route.segmentType || null,
           segmentCount: route.segmentCount || null,
           note: route.note || null,
@@ -121,15 +149,18 @@ window.AdventureRoutes = (() => {
   }
   async function resolveAll() {
     const cfg = await config();
+    const preferredPolylineFiles = cfg.preferredPolylineFiles || [];
     const routeFiles = cfg.routeFiles || [];
     const polylineFiles = cfg.polylineFiles?.length ? cfg.polylineFiles : ['data/activity-route-polylines.json'];
-    const [routePayloads, polylinePayloads, relationshipPayload] = await Promise.all([
+    const [preferredPayloads, routePayloads, polylinePayloads, relationshipPayload] = await Promise.all([
+      Promise.all(preferredPolylineFiles.map(polylineCollection)),
       Promise.all(routeFiles.map(fetchJson)),
       Promise.all(polylineFiles.map(polylineCollection)),
       relationships()
     ]);
     const normalizedRoutes = await Promise.all(routePayloads.map(normalizeCollection));
-    const preferredCollections = suppressSupersededFeatures([...normalizedRoutes, ...polylinePayloads]);
+    const ordered = dedupeCollections([...preferredPayloads, ...normalizedRoutes, ...polylinePayloads]);
+    const preferredCollections = suppressSupersededFeatures(ordered);
     return expandRelationshipOwnership(preferredCollections, relationshipPayload);
   }
   function loadAll({ fresh = false } = {}) {
