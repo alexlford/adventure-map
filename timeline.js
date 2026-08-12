@@ -14,7 +14,7 @@
   };
   const labelFor=a=>a._timelineLabel||A.recordType(a);
   const dateFor=a=>a.date||`${a.year||'0000'}-01-01`;
-  const valueFor=a=>a._timelineValue||a.officialTime||(a.kind==='summit'&&Number.isFinite(a.elevationFt)?`${Number(a.elevationFt).toLocaleString()} ft`:a.distanceMi?`${a.distanceMi} mi`:a.distance||'');
+  const valueFor=a=>a._timelineValue||a.teamFinishTime||a.officialTime||(a.kind==='summit'&&Number.isFinite(a.elevationFt)?`${Number(a.elevationFt).toLocaleString()} ft`:a.distanceMi?`${a.distanceMi} mi`:a.distance||'');
   const dateLabelFor=a=>a.date?A.formatDate(a.date):(a._timelineDateLabel||'');
   const hrefFor=a=>a._timelineSynthetic?null:(a._timelineHref||A.recordHref(a));
 
@@ -57,7 +57,8 @@
     const hrefAttr=href?` href="${A.esc(href)}"`:'';
     const value=valueFor(x);
     const groupBadge=groupCount?`<span class="timeline-group-count">${A.esc(groupCount)}</span>`:'';
-    return `<${tag} class="timeline-item${child?' timeline-child-item':''}"${hrefAttr}><div><strong>${A.esc(x.name)}</strong><span>${A.esc(labelFor(x))}${x.location?` · ${A.esc(x.location)}`:''}</span>${groupBadge}</div><div><strong>${A.esc(value)}</strong><span>${A.esc(dateLabelFor(x))}</span></div></${tag}>`;
+    const context=[labelFor(x),x.teamName?`Team: ${x.teamName}`:'',x.location||''].filter(Boolean).join(' · ');
+    return `<${tag} class="timeline-item${child?' timeline-child-item':''}"${hrefAttr}><div><strong>${A.esc(x.name)}</strong><span>${A.esc(context)}</span>${groupBadge}</div><div><strong>${A.esc(value)}</strong><span>${A.esc(dateLabelFor(x))}</span></div></${tag}>`;
   }
 
   const visibleChildren=(entry,filter)=>{
