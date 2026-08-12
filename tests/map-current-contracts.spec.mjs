@@ -16,6 +16,7 @@ test('Map public route keeps the Colorado-centered zoom 2 default after data loa
   const errors = collectRuntimeErrors(page);
   await page.goto('/map/', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#resultCount')).toContainText('shown');
+  await expect(page.locator('#skiCount')).not.toHaveText('—');
 
   const view = await page.evaluate(() => {
     const map = window.adventureMap;
