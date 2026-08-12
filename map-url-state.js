@@ -6,6 +6,7 @@
   const initial = new URLSearchParams(location.search);
   const initialLayer = initial.get('layer');
   const initialSearch = initial.get('q') || '';
+  const initialRecord = initial.get('record') || '';
   const parseYear = value => {
     const year = Number(value);
     return Number.isFinite(year) && year >= 1900 && year <= 2200 ? year : null;
@@ -44,6 +45,50 @@
       }
       return result;
     };
+  }
+
+  function requestedRecord() {
+    if (!initialRecord || !Array.isArray(state.adventures) || !state.adventures.length) return null;
+    return state.adventures.find(record => record.id === initialRecord || record.slug === initialRecord) || null;
+  }
+
+  function focusRequestedRecord() {
+    const record = requestedRecord();
+    if (!record || typeof focusAdventure !== 'function') return false;
+
+    if (typeof filteredAdventures === 'function' && !filteredAdventures().some(item => item.id === record.id)) {
+      state.filter = 'all';
+      state.search = '';
+      state.yearFrom = null;
+      state.yearTo = null;
+      if (typeof searchInput !== 'undefined' && searchInput) searchInput.value = '';
+      if (typeof yearFrom !== 'undefined' && yearFrom) yearFrom.value = '';
+      if (typeof yearTo !== 'undefined' && yearTo) yearTo.value = '';
+      reflectLayer();
+      if (typeof render === 'function') render();
+    }
+
+    focusAdventure(record);
+    const item = document.querySelector(`.adventure-item[data-id="${CSS.escape(record.id)}"]`);
+    item?.scrollIntoView?.({block:'nearest',inline:'nearest'});
+    return true;
+  }
+
+  if (initialRecord) {
+    let timer = null;
+    const scheduleFocus = () => {
+      clearTimeout(timer);
+      timer = setTimeout(focusRequestedRecord,60);
+    };
+    const list = document.getElementById('adventureList');
+    const observer = list ? new MutationObserver(scheduleFocus) : null;
+    observer?.observe(list,{childList:true});
+    scheduleFocus();
+    window.addEventListener('load',() => {
+      scheduleFocus();
+      setTimeout(scheduleFocus,500);
+      setTimeout(() => observer?.disconnect(),10000);
+    },{once:true});
   }
 
   function syncUrl() {
