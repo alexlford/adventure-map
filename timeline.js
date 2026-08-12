@@ -110,7 +110,7 @@
       attach(byId.get(rel.adventureId),rel.memberIds||[]);
     });
 
-    (relationships||[]).filter(rel=>!rel.adventureId&&(rel.type==='same-day'||rel.type==='weekend')).forEach(rel=>{
+    (relationships||[]).filter(rel=>!rel.adventureId&&['same-day','weekend','multi-day'].includes(rel.type)).forEach(rel=>{
       const members=(rel.memberIds||[]).map(id=>byId.get(id)).filter(Boolean).filter(member=>!claimedChildren.has(member.id));
       if(members.length<2)return;
       const ordered=members.slice().sort((a,b)=>dateFor(a).localeCompare(dateFor(b)));
@@ -124,7 +124,7 @@
         year:Number(dateFor(first).slice(0,4)),
         location:ordered.every(item=>item.location===first.location)?first.location:'',
         _timelineGroup:groupFor(first),
-        _timelineLabel:rel.type==='weekend'?'Weekend':'Multi-event day',
+        _timelineLabel:rel.type==='weekend'?'Weekend':rel.type==='multi-day'?'Multi-day outing':'Multi-event day',
         _timelineSynthetic:true
       };
       synthetic.push(parent);
