@@ -15,11 +15,15 @@ test('Master map record deep link focuses the matching archive entry', async ({ 
   await page.goto(`/map.html?record=${recordKey}`, { waitUntil: 'domcontentloaded' });
 
   const item = page.locator(`.adventure-item[data-id="${recordKey}"]`);
+  const popup = page.locator('#map .leaflet-popup');
   await expect(item).toBeVisible();
   await expect(item).toHaveAttribute('aria-pressed','true');
-  await expect(page.locator('#map .leaflet-popup')).toBeVisible();
-  await expect(page.locator('#map .leaflet-popup')).toContainText('Chicago Marathon');
+  await expect(popup).toBeVisible();
+  await expect(popup).toHaveCount(1);
+  await expect(popup).toContainText('Chicago Marathon');
   await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordKey);
+  await page.waitForTimeout(650);
+  await expect(popup).toHaveCount(1);
 });
 
 test('Changing map state releases a record deep link cleanly', async ({ page }) => {
