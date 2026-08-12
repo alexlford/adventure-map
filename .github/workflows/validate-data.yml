@@ -28,6 +28,8 @@ jobs:
         run: npm ci
       - name: Build publication artifacts
         run: npm run build:publish
+      - name: Validate evidence source manifest
+        run: npm run validate:evidence-sources
       - name: Validate compiled catalog record layer
         run: npm run validate:catalog-layer
       - name: Validate public record schema
