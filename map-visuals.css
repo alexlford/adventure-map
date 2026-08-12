@@ -14,6 +14,7 @@
 .leaflet-interactive[role="button"]{cursor:pointer}
 .leaflet-interactive[role="button"]:focus{outline:none}
 .leaflet-interactive[role="button"]:focus-visible{outline:none;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 4px rgba(23,32,42,.86))}
+.route-endpoint-wrap,.leaflet-tooltip.route-endpoint-label{display:none!important}
 
 .leaflet-bar{border:0!important;box-shadow:var(--map-control-shadow)!important}
 .leaflet-bar a,.leaflet-bar a:hover{width:36px;height:36px;line-height:36px;border:1px solid var(--map-control-line)!important;background:var(--map-control)!important;color:var(--ink)!important}
