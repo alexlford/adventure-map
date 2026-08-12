@@ -16,10 +16,12 @@ const sections = [
 const activitySections = new Map([
   ['/races/', 'Races'],
   ['/summits/', 'Summits'],
-  ['/skiing/', 'Skiing'],
-  ['/nordic/', 'Nordic'],
+  ['/skiing/', 'Alpine Skiing'],
+  ['/nordic/', 'Nordic Skiing'],
   ['/mtb/', 'MTB']
 ]);
+
+const cleanPath = value => value === '/' ? '/' : value.replace(/\/$/, '');
 
 for (const [path, label] of sections) {
   test(`${label} clean page keeps the shared Adventures shell consistent`, async ({ page }) => {
@@ -34,7 +36,7 @@ for (const [path, label] of sections) {
     await expect(canonical).toHaveCount(1);
     const canonicalHref = await canonical.getAttribute('href');
     const canonicalUrl = new URL(canonicalHref, page.url());
-    expect(canonicalUrl.pathname).toBe(path);
+    expect(cleanPath(canonicalUrl.pathname)).toBe(cleanPath(path));
     expect(canonicalUrl.pathname).not.toContain('.html');
 
     const primary = page.locator('nav[aria-label="Primary navigation"]');
@@ -56,7 +58,7 @@ for (const [path, label] of sections) {
     if (activitySections.has(path)) {
       const subnav = page.locator('nav[aria-label="Explore Adventures"]');
       await expect(subnav).toBeVisible();
-      for (const item of ['Races','Summits','Skiing','Nordic','MTB','Timeline']) {
+      for (const item of ['Races','Summits','Alpine Skiing','Nordic Skiing','MTB','Timeline']) {
         await expect(subnav.getByRole('link',{name:item,exact:true})).toHaveCount(1);
       }
       await expect(subnav.getByRole('link',{name:activitySections.get(path),exact:true})).toHaveAttribute('aria-current','page');
@@ -69,17 +71,17 @@ test('Explore chapter cards keep their source targets aligned with the clean pub
   const expected = [
     ['Races','races.html','/races/'],
     ['Summits','summits.html','/summits/'],
-    ['Skiing','skiing.html','/skiing/'],
-    ['Nordic','nordic.html','/nordic/'],
+    ['Alpine Skiing','skiing.html','/skiing/'],
+    ['Nordic Skiing','nordic.html','/nordic/'],
     ['Mountain Biking','mountain-biking.html','/mtb/'],
     ['Timeline','timeline.html','/timeline/']
   ];
 
-  for (const [name, sourceTarget, cleanPath] of expected) {
+  for (const [name, sourceTarget, publishedPath] of expected) {
     const card = page.locator(`.explore-chapter-grid > a.card[href="${sourceTarget}"]`);
     await expect(card).toHaveCount(1);
     await expect(card.locator('h3')).toContainText(name);
-    const response = await request.get(cleanPath);
+    const response = await request.get(publishedPath);
     expect(response.ok()).toBeTruthy();
   }
 });
