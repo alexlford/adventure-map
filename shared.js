@@ -98,6 +98,29 @@ window.AdventureSite = (() => {
     }
     requestAnimationFrame(()=>document.querySelector('.nav .is-active,.activity-subnav .is-active')?.scrollIntoView({block:'nearest',inline:'center'}));
   }
+  function chapterAnchor(text,index,used){
+    const base=String(text||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||`section-${index+1}`;
+    let id=`chapter-${base}`,n=2;
+    while(used.has(id)||document.getElementById(id))id=`chapter-${base}-${n++}`;
+    used.add(id);return id;
+  }
+  function ensureChapterIndex(active){
+    document.querySelector('.chapter-index')?.remove();
+    if(!activityKeys.has(active))return;
+    const page=document.querySelector('.page');if(!page)return;
+    if(!document.querySelector('link[data-chapter-index]')){const style=document.createElement('link');style.rel='stylesheet';style.href='chapter-index.css';style.dataset.chapterIndex='true';document.head.appendChild(style)}
+    const candidates=[...page.querySelectorAll('section h2,.section-title h2')].filter((heading,index,array)=>heading.textContent?.trim()&&!heading.closest('.metrics')&&array.indexOf(heading)===index);
+    if(candidates.length<2)return;
+    const used=new Set();
+    const links=candidates.slice(0,7).map((heading,index)=>{
+      if(!heading.id)heading.id=chapterAnchor(heading.textContent,index,used);else used.add(heading.id);
+      heading.dataset.chapterAnchor='true';
+      return `<a href="#${esc(heading.id)}">${esc(heading.textContent.trim())}</a>`;
+    });
+    const nav=document.createElement('nav');nav.className='chapter-index';nav.setAttribute('aria-label','On this page');nav.innerHTML=`<span class="chapter-index-label">On this page</span>${links.join('')}`;
+    const metrics=page.querySelector(':scope > .metrics');const hero=page.querySelector(':scope > .hero');
+    if(metrics)metrics.insertAdjacentElement('afterend',nav);else if(hero)hero.insertAdjacentElement('afterend',nav);else page.insertAdjacentElement('afterbegin',nav);
+  }
   function ensureFlow(active){
     document.querySelector('.chapter-flow-nav')?.remove();
     if(!activityKeys.has(active))return;
@@ -107,6 +130,6 @@ window.AdventureSite = (() => {
     nav.innerHTML=`<a class="chronology-link" href="${pageHref('activities.html')}"><small>Explore</small><strong>← All activity chapters</strong></a>${next?`<a class="chronology-link next" href="${pageHref(next[0])}"><small>Next chapter</small><strong>${next[1]} →</strong></a>`:`<a class="chronology-link next" href="${pageHref('adventures.html')}"><small>Continue exploring</small><strong>Stories →</strong></a>`}`;
     page.appendChild(nav);
   }
-  function shell(active){ensureNav(active);ensureFlow(active);rewritePublicLinks();}
+  function shell(active){ensureNav(active);ensureChapterIndex(active);ensureFlow(active);rewritePublicLinks();if(activityKeys.has(active))setTimeout(()=>ensureChapterIndex(active),260);}
   normalizePublicUrl();applyPageIdentity();ensureMeta();ensureAccessibility();ensureBranding();rewritePublicLinks();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,pageHref,shell,refreshMeta:ensureMeta,isProduction};
 })();
