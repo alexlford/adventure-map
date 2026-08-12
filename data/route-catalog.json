@@ -15,7 +15,8 @@
     "data/strava-route-backfill-03.json",
     "data/strava-route-backfill-04.json",
     "data/strava-route-backfill-05.json",
-    "data/strava-route-backfill-06.json"
+    "data/strava-route-backfill-06.json",
+    "data/ski-the-sky-runs.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
