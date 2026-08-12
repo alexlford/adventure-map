@@ -1,5 +1,5 @@
 const CATEGORY={
-  mtb:{label:'MTB',color:'#2563eb'},nordic:{label:'Nordic',color:'#1779a8'},'road-races':{label:'Road race',color:'#d97706'},'trail-races':{label:'Trail race',color:'#b45309'},skiing:{label:'Skiing',color:'#16a6c9'},summits:{label:'Summit',color:'#16836d'},adventures:{label:'Adventure',color:'#8b5cf6'}
+  mtb:{label:'MTB',color:'#2f7d4a'},nordic:{label:'Nordic',color:'#1779a8'},'road-races':{label:'Road race',color:'#d97706'},'trail-races':{label:'Trail race',color:'#b45309'},skiing:{label:'Skiing',color:'#16a6c9'},summits:{label:'Summit',color:'#16836d'},adventures:{label:'Adventure',color:'#8b5cf6'}
 };
 const state={adventures:[],routes:null,filter:'all',search:'',yearFrom:null,yearTo:null,markers:new Map(),routeLayers:new Map(),routeFeatureLayers:new Map(),focusId:null};
 const map=L.map('map',{worldCopyJump:true,zoomControl:true,minZoom:2}).setView([34,-112],3);window.adventureMap=map;window.stabilizeLeafletMap?.(map,document.getElementById('map'));L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
