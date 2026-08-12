@@ -18,6 +18,54 @@
     if (button) button.textContent = label;
   });
 
+  // Archive rows should have one consistent visual weight. An unmapped record is
+  // still a first-class archive record; only its map interactivity differs.
+  const archiveStyle = document.createElement('style');
+  archiveStyle.textContent = '.adventure-item.is-unmapped{opacity:1}';
+  document.head.appendChild(archiveStyle);
+
+  const archiveDateKey = record => {
+    if (!record) return '0000-00-00';
+    const date = String(record.date || '').trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) return date;
+    const year = typeof recordYear === 'function' ? recordYear(record) : Number(record.year);
+    return Number.isFinite(year) && year > 1900 ? `${String(year).padStart(4,'0')}-00-00` : '0000-00-00';
+  };
+
+  const compareArchiveRecords = (a,b) => {
+    const aDate = archiveDateKey(a);
+    const bDate = archiveDateKey(b);
+    if (aDate !== bDate) return bDate.localeCompare(aDate);
+    if (a?.kind === 'summit' && b?.kind === 'summit') {
+      const elevationDifference = (b.elevationFt ?? 0) - (a.elevationFt ?? 0);
+      if (elevationDifference) return elevationDifference;
+    }
+    return String(a?.name || '').localeCompare(String(b?.name || ''));
+  };
+
+  const archiveList = document.getElementById('adventureList');
+  let archiveObserver = null;
+  const orderArchiveList = () => {
+    if (!archiveList || typeof state !== 'object' || !Array.isArray(state.adventures)) return;
+    const nodes = [...archiveList.querySelectorAll('.adventure-item')];
+    if (nodes.length < 2) return;
+    const recordsById = new Map(state.adventures.map(record => [String(record.id),record]));
+    const ordered = nodes.slice().sort((left,right) => compareArchiveRecords(
+      recordsById.get(String(left.dataset.id)),
+      recordsById.get(String(right.dataset.id))
+    ));
+    if (nodes.every((node,index) => node === ordered[index])) return;
+    archiveObserver?.disconnect();
+    ordered.forEach(node => archiveList.appendChild(node));
+    archiveObserver?.observe(archiveList,{childList:true});
+  };
+
+  if (archiveList && 'MutationObserver' in window) {
+    archiveObserver = new MutationObserver(() => queueMicrotask(orderArchiveList));
+    archiveObserver.observe(archiveList,{childList:true});
+    queueMicrotask(orderArchiveList);
+  }
+
   function updateRefineSummary() {
     if (!refineSummary || typeof state !== 'object') return;
     const parts = [];
