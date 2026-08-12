@@ -8,15 +8,15 @@ const args = process.argv.slice(2);
 const outIndex = args.indexOf('--out');
 const output = path.resolve(root, outIndex >= 0 && args[outIndex + 1] ? args[outIndex + 1] : 'tmp/public-routes.geojson');
 const readText = rel => fs.readFile(path.join(root, rel), 'utf8');
-const readJson = async rel => JSON.parse(await readText(rel));
 const fingerprint = values => crypto.createHash('sha256').update(values.join('\n')).digest('hex').slice(0,16);
 
 const catalogText = await readText('data/route-catalog.json');
 const catalog = JSON.parse(catalogText);
 const sourceTexts = [catalogText];
 const features = [];
-const seenIds = new Set();
+const featureIndexById = new Map();
 const repairs = [];
+const duplicateSelections = [];
 
 function featureId(feature) {
   return feature.id || feature.properties?.featureId || feature.properties?.id || null;
@@ -38,12 +38,46 @@ function normalizeFeature(feature) {
   return { ...feature, properties };
 }
 
-function addFeature(feature) {
+function geometryPointCount(feature) {
+  const geometry = feature.geometry;
+  if (!geometry) return 0;
+  if (geometry.type === 'LineString') return geometry.coordinates?.length || 0;
+  if (geometry.type === 'MultiLineString') return (geometry.coordinates || []).reduce((sum, line) => sum + (line?.length || 0), 0);
+  return 0;
+}
+
+function addFeature(feature, sourceFile = null) {
   const normalized = normalizeFeature(feature);
   const id = featureId(normalized);
-  if (id && seenIds.has(id)) return;
-  if (id) seenIds.add(id);
-  features.push(normalized);
+  if (!id) {
+    features.push(normalized);
+    return;
+  }
+
+  const existingIndex = featureIndexById.get(id);
+  if (existingIndex == null) {
+    featureIndexById.set(id, features.length);
+    features.push(normalized);
+    return;
+  }
+
+  const existing = features[existingIndex];
+  const existingPoints = geometryPointCount(existing);
+  const candidatePoints = geometryPointCount(normalized);
+  const bothPersonalGps = existing.properties?.provenance === 'personal-gps' && normalized.properties?.provenance === 'personal-gps';
+
+  // The repository contains legacy coarse route approximations plus later GPS
+  // backfills for some of the same Strava feature IDs. Prefer the denser
+  // personal-GPS geometry instead of whichever file happened to be read first.
+  if (bothPersonalGps && candidatePoints > existingPoints) {
+    features[existingIndex] = normalized;
+    duplicateSelections.push({
+      id,
+      replacedPointCount: existingPoints,
+      selectedPointCount: candidatePoints,
+      selectedSourceFile: sourceFile,
+    });
+  }
 }
 
 function decodeComponent(encoded, state, label) {
@@ -91,7 +125,7 @@ for (const routeFile of catalog.routeFiles || []) {
   sourceTexts.push(text);
   const collection = JSON.parse(text);
   if (collection.type !== 'FeatureCollection' || !Array.isArray(collection.features)) throw new Error(`${routeFile}: expected FeatureCollection`);
-  for (const feature of collection.features) addFeature(feature);
+  for (const feature of collection.features) addFeature(feature, routeFile);
 }
 
 const polylineFiles = catalog.polylineFiles?.length ? catalog.polylineFiles : ['data/activity-route-polylines.json'];
@@ -103,6 +137,9 @@ for (const polylineFile of polylineFiles) {
     if (!route.id) throw new Error(`${polylineFile}: encoded route missing id`);
     if (!Array.isArray(route.lines) || !route.lines.length) throw new Error(`${route.id}: encoded route has no lines`);
     const lines = route.lines.map((line, lineIndex) => decodePolyline(line, { routeId: route.id, lineIndex }));
+    const sourceActivityIds = Array.isArray(route.stravaActivityIds)
+      ? route.stravaActivityIds.map(String)
+      : route.stravaActivityId != null ? [String(route.stravaActivityId)] : [];
     addFeature({
       type: 'Feature',
       id: route.id,
@@ -113,11 +150,15 @@ for (const polylineFile of polylineFiles) {
         category: route.category,
         source: 'Strava GPS export',
         mtbMode: route.mtbMode || null,
+        stravaActivityId: sourceActivityIds.length === 1 ? sourceActivityIds[0] : null,
+        stravaActivityIds: sourceActivityIds,
+        routeResolution: route.sampling || payload.sampling || null,
+        sourcePointCount: route.sourcePointCount || null,
       },
       geometry: lines.length === 1
         ? { type: 'LineString', coordinates: lines[0] }
         : { type: 'MultiLineString', coordinates: lines },
-    });
+    }, polylineFile);
   }
 }
 
@@ -130,6 +171,7 @@ const payload = {
     sourceRouteFiles: catalog.routeFiles || [],
     sourcePolylineFiles: polylineFiles,
     repairs,
+    duplicateSelections,
     recordOverrides: catalog.recordOverrides || {},
   },
   features,
@@ -139,5 +181,7 @@ await fs.mkdir(path.dirname(output), { recursive: true });
 await fs.writeFile(output, `${JSON.stringify(payload)}\n`);
 console.log(`Compiled ${features.length} public route features.`);
 console.log(`Recovered ${repairs.length} incomplete encoded-polyline tails.`);
+console.log(`Selected ${duplicateSelections.length} denser duplicate GPS geometries.`);
 for (const repair of repairs) console.log(`REPAIR ${repair.routeId} line ${repair.lineIndex}: trim ${repair.trimEnd} (${repair.reason})`);
+for (const selection of duplicateSelections) console.log(`DENSER ${selection.id}: ${selection.replacedPointCount} -> ${selection.selectedPointCount} points (${selection.selectedSourceFile})`);
 console.log(`Public routes: ${path.relative(root, output)}`);
