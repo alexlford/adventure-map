@@ -16,7 +16,9 @@
     "data/strava-route-backfill-04.json",
     "data/strava-route-backfill-05.json",
     "data/strava-route-backfill-06.json",
-    "data/ski-the-sky-runs.json"
+    "data/ski-the-sky-runs.json",
+    "data/strava-route-full-resolution-ranch-hand-skate-2022.json",
+    "data/strava-route-full-resolution-ranch-hand-classic-2022.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
