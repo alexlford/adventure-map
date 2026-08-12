@@ -19,6 +19,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
+      - name: Validate source-derived GPS archive
+        run: node scripts/validate-source-rdp-routes.mjs
       - name: Compile public routes
         run: node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
       - name: Validate compiled route contract

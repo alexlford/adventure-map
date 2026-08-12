@@ -20,7 +20,25 @@
     "data/strava-route-full-resolution-ranch-hand-skate-2022.json",
     "data/strava-route-full-resolution-ranch-hand-classic-2022.json",
     "data/strava-route-decalibron-2023.json",
-    "data/strava-route-full-resolution-flying-pig-2025.json"
+    "data/strava-route-full-resolution-flying-pig-2025.json",
+    "data/strava-route-rdp3-01.json",
+    "data/strava-route-rdp3-02.json",
+    "data/strava-route-rdp3-03.json",
+    "data/strava-route-rdp3-04.json",
+    "data/strava-route-rdp3-05.json",
+    "data/strava-route-rdp3-06.json",
+    "data/strava-route-rdp3-07.json",
+    "data/strava-route-rdp3-08.json",
+    "data/strava-route-rdp3-09.json",
+    "data/strava-route-rdp3-10.json",
+    "data/strava-route-rdp3-11.json",
+    "data/strava-route-rdp3-12.json",
+    "data/strava-route-rdp3-13.json",
+    "data/strava-route-rdp3-14.json",
+    "data/strava-route-rdp3-15.json",
+    "data/strava-route-rdp3-16.json",
+    "data/strava-route-rdp3-17.json",
+    "data/strava-route-rdp3-18.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -67,7 +85,15 @@
         "minPoints": 3800,
         "resolutionPrefix": "full-source-track"
       }
-    ]
+    ],
+    "sourceRdpArchive": {
+      "routeCount": 54,
+      "sourcePointCount": 360768,
+      "publishedPointCount": 23321,
+      "simplificationToleranceMeters": 3,
+      "splitGapMeters": 180,
+      "shardCount": 18
+    }
   },
   "featureOverrides": {
     "strava-6814188054": {"adventureIds":["smr-stampede-ranch-hand-skate-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Saturday 25K freestyle/skate leg of the 2022 Snow Mountain Ranch Ranch Hand challenge."},
