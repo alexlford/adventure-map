@@ -97,6 +97,10 @@ for (const full of files) {
   }
 }
 
+if (localLeafletReferences === 0) {
+  problems.push('No local Leaflet runtime references were found; public map surfaces must load vendor/leaflet assets.');
+}
+
 console.log(`Source dependency references checked: ${checked.size}`);
 console.log(`Local Leaflet runtime references checked: ${localLeafletReferences}`);
 if (problems.length) {
