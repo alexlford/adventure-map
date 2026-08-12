@@ -19,6 +19,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Build publication artifacts
+        run: npm run build:publish
       - name: Validate canonical catalog
         run: npm run validate:data
       - name: Validate stable record slugs
@@ -29,6 +31,8 @@ jobs:
         run: npm run validate:majors
       - name: Validate production routing and branding
         run: npm run validate:routing
+      - name: Validate static publishing contract
+        run: npm run validate:static
       - name: Install browser smoke-test tooling
         run: npm install --no-save @playwright/test@1.55.0
       - name: Install Chromium
@@ -49,7 +53,11 @@ jobs:
         run: python3 -m py_compile scripts/scan_strava_export.py scripts/advance_strava_state.py scripts/test_update_pipeline.py
       - name: Test maintenance pipeline
         run: npm run test:update-pipeline
-      - name: Rebuild public index
-        run: npm run build:public-index
-      - name: Verify public index is current
-        run: git diff --exit-code -- sitemap.xml robots.txt
+      - name: Verify publication artifacts are committed
+        run: |
+          CHANGES="$(git status --porcelain --untracked-files=all -- data/public-records.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
+          if [ -n "$CHANGES" ]; then
+            echo "$CHANGES"
+            echo "Generated publication artifacts are not current. Run npm run build:publish and commit the results."
+            exit 1
+          fi
