@@ -18,6 +18,18 @@ window.AdventureChapterIndexState = (() => {
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
     let activeId = '';
     let frame = 0;
+    const revealHorizontally = active => {
+      if (!active || nav.scrollWidth <= nav.clientWidth) return;
+      const pad = 18;
+      const left = active.offsetLeft;
+      const right = left + active.offsetWidth;
+      const visibleLeft = nav.scrollLeft + pad;
+      const visibleRight = nav.scrollLeft + nav.clientWidth - pad;
+      let next = null;
+      if (left < visibleLeft) next = Math.max(0,left - pad);
+      else if (right > visibleRight) next = Math.max(0,right - nav.clientWidth + pad);
+      if (next != null) nav.scrollTo({left:next,behavior:reducedMotion?'auto':'smooth'});
+    };
     const setActive = id => {
       if (!id || id === activeId || !links.has(id)) return;
       activeId = id;
@@ -27,8 +39,7 @@ window.AdventureChapterIndexState = (() => {
         if (current) link.setAttribute('aria-current','location');
         else link.removeAttribute('aria-current');
       });
-      const active = links.get(id);
-      active?.scrollIntoView?.({block:'nearest',inline:'nearest',behavior:reducedMotion?'auto':'smooth'});
+      revealHorizontally(links.get(id));
     };
 
     const update = () => {
