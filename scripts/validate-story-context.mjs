@@ -1,24 +1,10 @@
-import fs from 'node:fs/promises';
+import { resolvePublicRecords } from './lib/resolve-public-records.mjs';
 
-const readJson=async path=>JSON.parse(await fs.readFile(path,'utf8'));
-const manifest=await readJson('data/catalog.json');
-const records=new Map();
+const records=await resolvePublicRecords();
 const errors=[];
 const warnings=[];
 
-for(const source of manifest.sources){
-  const payload=await readJson(source.path);
-  for(const item of payload.adventures||[]){
-    if(!item.id)continue;
-    records.set(item.id,{...(records.get(item.id)||{}),...item});
-  }
-}
-const matches=await readJson(manifest.matchLayer);
-for(const [id,match] of Object.entries(matches.matches||{}))if(records.has(id))records.set(id,{...records.get(id),...match});
-for(const id of manifest.removeIds||[])records.delete(id);
-for(const [id,override] of Object.entries(manifest.overrides||{}))if(records.has(id))records.set(id,{...records.get(id),...override});
-
-for(const record of records.values()){
+for(const record of records){
   const at=record.id;
   if(record.companions!=null&&!Array.isArray(record.companions))errors.push(`${at}: companions must be an array`);
   const companionNames=new Set();
@@ -49,4 +35,4 @@ for(const record of records.values()){
 
 if(errors.length){errors.forEach(x=>console.error(`ERROR ${x}`));process.exit(1)}
 warnings.forEach(x=>console.warn(`WARN ${x}`));
-console.log(`Story context validation passed for ${records.size} public records.`);
+console.log(`Story context validation passed for ${records.length} public records.`);
