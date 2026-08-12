@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedOn": "2026-08-12",
-  "description": "Canonical route metadata for the Personal Adventure Almanac. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, and privacy treatment.",
+  "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
     "data/mined-routes.geojson",
@@ -26,6 +26,37 @@
     "historical-course": "Historical or published event-course geometry, not represented as Alex's personal GPS track.",
     "location-only": "No route geometry is published; the record is represented by a place or venue marker.",
     "privacy-withheld": "Personal geometry exists but is intentionally not published for privacy."
+  },
+  "qualityExpectations": {
+    "allowedTailRecoveries": [
+      {
+        "routeId": "activity-mtb-day-2026-05-24",
+        "lineIndex": 1,
+        "maxTrimEnd": 8
+      },
+      {
+        "routeId": "activity-nordic-day-2023-01-28",
+        "lineIndex": 0,
+        "maxTrimEnd": 8
+      }
+    ],
+    "denseRoutes": [
+      {
+        "id": "strava-6814188054",
+        "minPoints": 1500,
+        "resolutionPrefix": "dense-source-track"
+      },
+      {
+        "id": "strava-6819611723",
+        "minPoints": 900,
+        "resolutionPrefix": "dense-source-track"
+      },
+      {
+        "id": "strava-9642214422",
+        "minPoints": 1000,
+        "resolutionPrefix": "every-20th-source-point"
+      }
+    ]
   },
   "featureOverrides": {
     "strava-6814188054": {"adventureIds":["smr-stampede-ranch-hand-skate-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Saturday 25K freestyle/skate leg of the 2022 Snow Mountain Ranch Ranch Hand challenge."},
