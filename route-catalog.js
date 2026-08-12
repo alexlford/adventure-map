@@ -41,6 +41,18 @@ window.AdventureRoutes = (() => {
       })
     }));
   }
+  function suppressSupersededFeatures(collections) {
+    const superseded = new Set(
+      collections.flatMap(collection => collection.features || [])
+        .map(feature => feature.properties?.supersedesFeatureId)
+        .filter(Boolean)
+    );
+    if (!superseded.size) return collections;
+    return collections.map(collection => ({
+      ...collection,
+      features: (collection.features || []).filter(feature => !superseded.has(keyFor(feature)))
+    }));
+  }
   function decodeComponent(encoded, state, label) {
     let result = 0;
     let shift = 0;
@@ -92,7 +104,12 @@ window.AdventureRoutes = (() => {
           provenance: 'personal-gps',
           source: payload.source || 'Strava GPS export',
           category: route.category || null,
-          mtbMode: route.mtbMode || null
+          mtbMode: route.mtbMode || null,
+          density: route.density || null,
+          segmentType: route.segmentType || null,
+          segmentCount: route.segmentCount || null,
+          note: route.note || null,
+          supersedesFeatureId: route.supersedesFeatureId || null
         },
         geometry: lines.length === 1
           ? { type: 'LineString', coordinates: lines[0] }
@@ -111,7 +128,8 @@ window.AdventureRoutes = (() => {
       relationships()
     ]);
     const normalizedRoutes = await Promise.all(routePayloads.map(normalizeCollection));
-    return expandRelationshipOwnership([...normalizedRoutes, ...polylinePayloads], relationshipPayload);
+    const preferredCollections = suppressSupersededFeatures([...normalizedRoutes, ...polylinePayloads]);
+    return expandRelationshipOwnership(preferredCollections, relationshipPayload);
   }
   async function recordProvenance(recordId) {
     const cfg = await config();
