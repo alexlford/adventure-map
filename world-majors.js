@@ -34,40 +34,11 @@
     element.__majorsLeafletMap=map;
   }
 
-  function fitPassportCards(host){
-    const grid=host.querySelector('.majors-passport-grid');
-    const cards=grid?[...grid.querySelectorAll('.major-passport')]:[];
-    if(!grid||!cards.length)return;
-    const mobileQuery=window.matchMedia?.('(max-width:650px)');
-    let frame=0;
-    const fit=()=>{
-      cancelAnimationFrame(frame);
-      grid.style.removeProperty('--passport-card-height');
-      if(!mobileQuery?.matches)return;
-      frame=requestAnimationFrame(()=>{
-        const height=Math.ceil(Math.max(...cards.map(card=>card.getBoundingClientRect().height)));
-        if(height>0)grid.style.setProperty('--passport-card-height',`${height}px`);
-      });
-    };
-    let timer=0;
-    const schedule=()=>{clearTimeout(timer);timer=setTimeout(fit,0)};
-    fit();
-    window.addEventListener('resize',schedule,{passive:true});
-    mobileQuery?.addEventListener?.('change',schedule);
-    document.fonts?.ready?.then(schedule).catch(()=>{});
-    host.__majorsPassportCleanup=()=>{
-      cancelAnimationFrame(frame);clearTimeout(timer);
-      window.removeEventListener('resize',schedule);
-      mobileQuery?.removeEventListener?.('change',schedule);
-    };
-  }
-
   Promise.all([
     fetch('data/world-majors.json').then(r=>{if(!r.ok)throw new Error('Unable to load World Majors journey');return r.json()}),
     A.load()
   ]).then(([d,all])=>{
     const host=document.getElementById('worldMajorsFeature');if(!host)return;
-    host.__majorsPassportCleanup?.();
     const majors=d.majors||[],candidates=d.candidates||[],completed=majors.filter(x=>x.status==='completed'),registered=majors.filter(x=>x.status==='registered').sort((a,b)=>(a.year||9999)-(b.year||9999)),confirmedTotal=majors.length,committed=completed.length+registered.length,byId=new Map(all.map(x=>[x.id,x]));
     const recordFor=x=>x?.recordId?byId.get(x.recordId)||null:null;
     const chicago=recordFor(majors.find(x=>x.id==='chicago'));
@@ -88,7 +59,6 @@
     }).join('');
     const candidateCards=candidates.map(x=>`<article class="major-watch"><p class="card-kicker">Series watch</p><h3>${A.esc(x.name)}</h3><p>${A.esc(x.city)} · ${A.esc(x.label)}</p></article>`).join('');
     host.innerHTML=`<section class="majors-feature" id="world-majors"><div class="majors-feature-head"><div><p class="eyebrow">World Marathon Majors passport</p><h2>A marathon journey around the world.</h2><p class="majors-intro">Chicago is complete. New York 2026 and Tokyo 2027 are on the calendar. The series itself is expanding, so this passport follows the confirmed Majors rather than locking the pursuit to a fixed number.</p><div class="majors-status-row"><span class="majors-status-pill">${completed.length} completed</span><span class="majors-status-pill">${registered.length} registered</span><span class="majors-status-pill">${confirmedTotal} confirmed Majors for 2027</span></div></div><div class="majors-score"><strong>${committed}/${confirmedTotal}</strong><span>completed or registered</span></div></div><div class="majors-progress-wrap"><div class="majors-progress-label"><strong>Personal progress</strong><span>${pct(completed.length)}% completed · ${pct(committed)}% committed</span></div><div class="majors-progress" aria-label="${completed.length} of ${confirmedTotal} completed; ${committed} of ${confirmedTotal} completed or registered"><span class="majors-progress-committed" style="width:${pct(committed)}%"></span><span class="majors-progress-completed" style="width:${pct(completed.length)}%"></span></div></div><div class="majors-world-wrap"><div class="majors-world-head"><div><p class="eyebrow">World view</p><h3>The passport map</h3></div><p>Confirmed Majors plus candidate races under evaluation.</p></div><div id="majorsWorldMap" class="majors-world" role="img" aria-label="World map showing confirmed World Marathon Majors and candidate races"></div><div class="majors-mobile-map-list">${mapList}</div><div class="majors-map-key"><span><i class="completed"></i>Completed</span><span><i class="registered"></i>Registered</span><span><i class="future"></i>Confirmed Major / future target</span><span><i class="candidate"></i>Candidate</span></div></div><div class="majors-runway"><article class="majors-runway-card completed"><small>Completed</small><strong>Chicago</strong><p>${chicago?[A.formatDate(chicago.date),chicago.officialTime||A.formatDuration(chicago.elapsedSeconds)].filter(Boolean).join(' · '):'First completed Major'}</p></article><div class="majors-runway-arrow">→</div><article class="majors-runway-card is-next"><small>Next start line</small><strong>New York</strong><p>Registered · 2026</p></article><div class="majors-runway-arrow">→</div><article class="majors-runway-card registered"><small>On deck</small><strong>Tokyo</strong><p>Registered · 2027</p></article></div><div class="majors-stars-title"><div><p class="eyebrow">Passport</p><h3>Every confirmed Major, one evolving journey.</h3></div><p>On completed Majors, ✓ means the asset is already in Adventures; + marks what can be added next.</p></div><div class="majors-passport-grid">${passportCards}</div><div class="majors-horizon"><article class="majors-horizon-card"><p class="eyebrow">Series expansion</p><h3>Cape Town joins in 2027.</h3><p>The passport expands with the official series. Cape Town is included as a confirmed future Major rather than being treated as a candidate.</p></article><div>${candidateCards||'<article class="major-watch"><p class="card-kicker">Series watch</p><h3>No active candidates</h3></article>'}</div></div></section>`;
-    fitPassportCards(host);
     mountWorldMap(majors,candidates);
   }).catch(e=>{
     const host=document.getElementById('worldMajorsFeature');if(host)host.innerHTML=`<div class="empty">${A.esc(e.message)}</div>`;
