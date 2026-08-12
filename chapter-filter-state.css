@@ -1,0 +1,11 @@
+/* Shared filter bar behavior for chapter and timeline views. */
+.filters[aria-label]{scroll-margin-top:110px}
+.filters .filter{font-weight:750}
+@media(max-width:700px){
+  .filters{display:flex;flex-wrap:nowrap;gap:7px;overflow-x:auto;margin-left:calc(0px - clamp(20px,5vw,72px));margin-right:calc(0px - clamp(20px,5vw,72px));padding:2px clamp(20px,5vw,72px) 7px;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  .filters::-webkit-scrollbar{display:none}
+  .filters .filter{flex:0 0 auto;white-space:nowrap}
+}
+@media(max-width:560px){
+  .filters{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px}
+}
