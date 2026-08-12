@@ -8,6 +8,8 @@ const mapPage=fs.readFileSync('map.html','utf8');
 const chapterMap=fs.readFileSync('chapter-map.js','utf8');
 const detail=fs.readFileSync('detail.html','utf8');
 const recordRenderer=fs.readFileSync('record-renderer.js','utf8');
+const worldMajors=fs.readFileSync('world-majors.js','utf8');
+const worldMajorsPassport=fs.readFileSync('world-majors-passport.css','utf8');
 const sitemap=fs.readFileSync('sitemap.xml','utf8');
 const publicPages=[...new Set([...siteRoutes.map(route=>route.source),'detail.html','404.html'])];
 const errors=[];
@@ -35,6 +37,10 @@ for(const legacy of ['detail-phase4.js','story-detail.js','world-major-detail.js
   if(detail.includes(`src="${legacy}"`))errors.push(`detail page still loads legacy patch script ${legacy}`);
   if(shared.includes(`src='${legacy}'`)||shared.includes(`src="${legacy}"`))errors.push(`shared.js still injects legacy patch script ${legacy}`);
 }
+if(fs.existsSync('world-majors-stamp-fix.js'))errors.push('retired World Majors patch script must not ship');
+if(worldMajors.includes('fitPassportCards')||worldMajors.includes('--passport-card-height'))errors.push('World Majors card sizing must remain CSS-only');
+if(worldMajorsPassport.includes('--passport-card-height'))errors.push('World Majors passport CSS must not depend on a runtime-measured height variable');
+if(!worldMajorsPassport.includes('grid-auto-rows:1fr'))errors.push('World Majors passport CSS must equalize card rows through the grid');
 if(recordRenderer.includes('MutationObserver'))errors.push('record renderer must not depend on MutationObserver DOM patching');
 if(!recordRenderer.includes("A.pageHref('map.html')"))errors.push('record renderer map action is not production-safe');
 if(!recordRenderer.includes('await renderRecordMap(record)'))errors.push('record renderer must finish relative route loading before URL canonicalization');
