@@ -5,13 +5,14 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const readJson = async rel => JSON.parse(await fs.readFile(path.join(root, rel), 'utf8'));
 
-export async function compileCatalogRecordLayer(manifest = await readJson('data/catalog.json')) {
+export async function compileCatalogRecordLayer(manifest = null) {
+  const activeManifest = manifest || await readJson('data/catalog.json');
   const records = new Map();
   const sourceTrailById = new Map();
   const sourcePaths = new Set();
   const layeredMerges = [];
 
-  for (const source of manifest.sources || []) {
+  for (const source of activeManifest.sources || []) {
     if (!source?.path || typeof source.path !== 'string') throw new Error('catalog source missing path');
     if (sourcePaths.has(source.path)) throw new Error(`catalog sources contains duplicate path ${source.path}`);
     sourcePaths.add(source.path);
@@ -43,9 +44,10 @@ export async function compileCatalogRecordLayer(manifest = await readJson('data/
   };
 }
 
-export async function writeCatalogRecordLayer(manifest = await readJson('data/catalog.json')) {
-  const outputPath = manifest.compiledRecordLayer || 'data/catalog-layers/records.json';
-  const payload = await compileCatalogRecordLayer(manifest);
+export async function writeCatalogRecordLayer(manifest = null) {
+  const activeManifest = manifest || await readJson('data/catalog.json');
+  const outputPath = activeManifest.compiledRecordLayer || 'data/catalog-layers/records.json';
+  const payload = await compileCatalogRecordLayer(activeManifest);
   const absolute = path.join(root, outputPath);
   await fs.mkdir(path.dirname(absolute), { recursive: true });
   await fs.writeFile(absolute, `${JSON.stringify(payload, null, 2)}\n`);
