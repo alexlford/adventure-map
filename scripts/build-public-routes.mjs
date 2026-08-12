@@ -8,14 +8,15 @@ const args = process.argv.slice(2);
 const outIndex = args.indexOf('--out');
 const output = path.resolve(root, outIndex >= 0 && args[outIndex + 1] ? args[outIndex + 1] : 'tmp/public-routes.geojson');
 const readText = rel => fs.readFile(path.join(root, rel), 'utf8');
-const readJson = async rel => JSON.parse(await readText(rel));
 const fingerprint = values => crypto.createHash('sha256').update(values.join('\n')).digest('hex').slice(0,16);
 
 const catalogText = await readText('data/route-catalog.json');
 const catalog = JSON.parse(catalogText);
-const sourceTexts = [catalogText];
+const relationshipsText = await readText('data/relationships.json');
+const relationships = JSON.parse(relationshipsText).relationships || [];
+const sourceTexts = [catalogText, relationshipsText];
 const features = [];
-const seenIds = new Set();
+const featureIndexById = new Map();
 const repairs = [];
 
 function featureId(feature) {
@@ -38,12 +39,54 @@ function normalizeFeature(feature) {
   return { ...feature, properties };
 }
 
+function featurePriority(feature) {
+  const props = feature.properties || {};
+  if (props.density === 'dense') return 30;
+  if (props.provenance === 'personal-gps') return 20;
+  if (props.provenance === 'historical-course') return 10;
+  return 0;
+}
+
+function unionAdventureIds(a, b) {
+  return [...new Set([...(a || []), ...(b || [])])];
+}
+
 function addFeature(feature) {
   const normalized = normalizeFeature(feature);
   const id = featureId(normalized);
-  if (id && seenIds.has(id)) return;
-  if (id) seenIds.add(id);
-  features.push(normalized);
+  if (!id) {
+    features.push(normalized);
+    return;
+  }
+  const existingIndex = featureIndexById.get(id);
+  if (existingIndex === undefined) {
+    featureIndexById.set(id, features.length);
+    features.push(normalized);
+    return;
+  }
+  const current = features[existingIndex];
+  const adventureIds = unionAdventureIds(current.properties?.adventureIds, normalized.properties?.adventureIds);
+  const preferred = featurePriority(normalized) > featurePriority(current) ? normalized : current;
+  features[existingIndex] = {
+    ...preferred,
+    properties: { ...(preferred.properties || {}), adventureIds }
+  };
+}
+
+function expandCombinedStoryIds(feature) {
+  const ids = new Set(feature.properties?.adventureIds || []);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const rel of relationships) {
+      if (!rel.adventureId || ids.has(rel.adventureId)) continue;
+      if ((rel.memberIds || []).some(id => ids.has(id))) {
+        ids.add(rel.adventureId);
+        changed = true;
+      }
+    }
+  }
+  feature.properties = { ...(feature.properties || {}), adventureIds: [...ids] };
 }
 
 function decodeComponent(encoded, state, label) {
@@ -103,6 +146,7 @@ for (const polylineFile of polylineFiles) {
     if (!route.id) throw new Error(`${polylineFile}: encoded route missing id`);
     if (!Array.isArray(route.lines) || !route.lines.length) throw new Error(`${route.id}: encoded route has no lines`);
     const lines = route.lines.map((line, lineIndex) => decodePolyline(line, { routeId: route.id, lineIndex }));
+    const activityIds = (route.activityIds || []).map(String);
     addFeature({
       type: 'Feature',
       id: route.id,
@@ -112,7 +156,10 @@ for (const polylineFile of polylineFiles) {
         provenance: 'personal-gps',
         category: route.category,
         source: 'Strava GPS export',
+        density: route.density || null,
         mtbMode: route.mtbMode || null,
+        stravaActivityIds: activityIds,
+        stravaActivityId: activityIds.length === 1 ? activityIds[0] : null,
       },
       geometry: lines.length === 1
         ? { type: 'LineString', coordinates: lines[0] }
@@ -121,10 +168,12 @@ for (const polylineFile of polylineFiles) {
   }
 }
 
+for (const feature of features) expandCombinedStoryIds(feature);
+
 const payload = {
   type: 'FeatureCollection',
   metadata: {
-    schemaVersion: 1,
+    schemaVersion: 2,
     sourceFingerprint: fingerprint(sourceTexts),
     featureCount: features.length,
     sourceRouteFiles: catalog.routeFiles || [],
