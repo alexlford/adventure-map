@@ -32,9 +32,8 @@ jobs:
           const ids=payload.features.map(feature=>feature.id||feature.properties?.featureId||feature.properties?.id).filter(Boolean);
           if(new Set(ids).size!==ids.length)throw new Error('compiled route collection contains duplicate feature ids');
           const repairs=payload.metadata?.repairs||[];
-          if(repairs.length!==2)throw new Error(`expected the two known incomplete-tail recoveries, found ${repairs.length}`);
-          if(repairs.some(repair=>!Number.isInteger(repair.trimEnd)||repair.trimEnd<1||repair.trimEnd>8))throw new Error('compiled route recovery metadata is invalid');
-          console.log(`Compiled route contract passed with ${payload.features.length} features and ${repairs.length} explicit recoveries.`);
+          if(repairs.length!==0)throw new Error(`preferred high-resolution routes should require no encoded-tail repairs; found ${repairs.length}`);
+          console.log(`Compiled route contract passed with ${payload.features.length} unique features and no route repairs.`);
           NODE
-      - name: Audit GPS route point quality
-        run: node scripts/audit-route-quality.mjs
+      - name: Enforce GPS route point quality
+        run: node scripts/audit-route-quality.mjs --enforce
