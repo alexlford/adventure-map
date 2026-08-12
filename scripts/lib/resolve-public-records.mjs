@@ -73,14 +73,18 @@ export const normalizeRecord = record => {
 
 export async function resolvePublicRecords() {
   const manifest = await readJson('data/catalog.json');
-  const sourcePayloads = await Promise.all((manifest.sources || []).map(async source => ({ source, payload: await readJson(source.path) })));
+  if (!manifest.compiledRecordLayer) throw new Error('Catalog is missing compiledRecordLayer. Run npm run build:catalog-layer.');
+  const compiledLayer = await readJson(manifest.compiledRecordLayer);
+  if (compiledLayer.schemaVersion !== 1 || !Array.isArray(compiledLayer.adventures)) throw new Error(`Invalid compiled catalog record layer: ${manifest.compiledRecordLayer}`);
+  if (Number.isFinite(compiledLayer.recordCount) && compiledLayer.recordCount !== compiledLayer.adventures.length) throw new Error(`Compiled catalog record layer count mismatch: ${manifest.compiledRecordLayer}`);
+
   const records = new Map();
-  for (const { source, payload } of sourcePayloads) {
-    for (const item of payload.adventures || []) {
-      if (!item.id) throw new Error(`${source.path}: record missing id`);
-      records.set(item.id, { ...(records.get(item.id) || {}), ...item, _catalogSource: source.path });
-    }
+  for (const item of compiledLayer.adventures) {
+    if (!item.id) throw new Error(`${manifest.compiledRecordLayer}: record missing id`);
+    if (records.has(item.id)) throw new Error(`${manifest.compiledRecordLayer}: duplicate record id ${item.id}`);
+    records.set(item.id, { ...item });
   }
+
   const matches = await readJson(manifest.matchLayer);
   for (const [id, match] of Object.entries(matches.matches || {})) {
     if (records.has(id)) records.set(id, { ...records.get(id), ...match });
@@ -93,7 +97,7 @@ export async function resolvePublicRecords() {
 
   // A single GPS activity can legitimately represent several public records, such as
   // multiple summits reached on one hike. Identity decisions belong in the canonical
-  // catalog (layered IDs, tombstones, and explicit overrides), never in the publisher.
+  // catalog (compiled evidence, matches, tombstones, and explicit overrides), never in the publisher.
   const publicRecords = [...records.values()].map(normalizeRecord);
   const ids = new Set();
   const slugs = new Set();

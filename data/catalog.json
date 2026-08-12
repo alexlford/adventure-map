@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 2,
-  "updatedOn": "2026-08-11",
-  "description": "Canonical public-record resolver for Alex Ford Adventures. Source files preserve provenance; official race-result fields are preferred over Strava metrics when verified.",
+  "schemaVersion": 3,
+  "updatedOn": "2026-08-12",
+  "description": "Canonical public-record resolver for Alex Ford Adventures. Evidence source files preserve provenance and are compiled into one stable record layer before matches, tombstones and explicit overrides are applied. Official race-result fields remain authoritative when verified; Strava remains GPS evidence and fallback.",
   "sources": [
     {"path":"data/adventures.json","role":"seed","description":"Original alexlford.com summit and race inventory"},
     {"path":"data/discovered-races.json","role":"recovered","description":"High-confidence races recovered from Strava and historical results"},
@@ -37,6 +37,7 @@
     {"path":"data/official-results-overrides-2026-08-11j.json","role":"official","description":"Official Staunton Rocks! Half Marathon checkpoints, finish, placement, bib, and course elevation profile from OpenSplitTime."},
     {"path":"data/chicago-marathon-2021-official.json","role":"official","description":"User-supplied official individual result link for the 2021 Chicago Marathon; loaded last so the published result source is canonical."}
   ],
+  "compiledRecordLayer": "data/catalog-layers/records.json",
   "matchLayer": "data/strava-matches.json",
   "relationshipLayer": "data/relationships.json",
   "removeIds": ["smr-stampede-50k-2022", "flying-pig-10k-2025", "skyline-chili-4-way-2025", "royal-gorge-groove-trail-2024"],
