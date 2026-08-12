@@ -40,6 +40,23 @@ test('Map exposes a stable AdventureMap runtime API', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test('Map marker clustering is owned by the core renderer instead of an enhancement monkey-patch', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+
+  const [coreSource, enhancementSource] = await page.evaluate(() => Promise.all([
+    fetch('/app.js').then(response => response.text()),
+    fetch('/map-enhancements.js').then(response => response.text()),
+  ]));
+
+  expect(coreSource).toContain('markerGridSize');
+  expect(coreSource).toContain('__adventureCluster');
+  expect(enhancementSource).not.toMatch(/renderMarkers\s*=/);
+  expect(enhancementSource).not.toContain("if(typeof renderMarkers==='function')");
+  expect(errors).toEqual([]);
+});
+
 test('Map public route keeps the Colorado-centered zoom 2 default after data loads', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/map/', { waitUntil: 'domcontentloaded' });
