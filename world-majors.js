@@ -4,13 +4,13 @@
   const statusLabel=x=>x.status==='completed'?'Completed':x.status==='registered'?'Registered':x.membership==='joins-2027'?'Joining the Majors in 2027':'Future target';
   const markerColor=x=>x.status==='completed'?'#27654e':x.status==='registered'?'#b47f2d':x.membership==='joins-2027'?'#2f6f8f':'#87928d';
 
-  function ensureMajorsFixStyles(){
+  function ensureMajorsStyles(){
     if(document.getElementById('majorsResponsiveFix'))return;
     const style=document.createElement('style');
     style.id='majorsResponsiveFix';
     style.textContent=`
-      .majors-passport-grid{align-items:start}
-      .major-passport{display:block!important;min-height:0!important;padding:18px 18px 18px 60px!important}
+      .majors-passport-grid{align-items:stretch!important;grid-auto-rows:1fr!important}
+      .major-passport{display:block!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;box-sizing:border-box!important;padding:18px 18px 18px 60px!important}
       .major-passport .card-kicker{margin:0 0 5px!important}
       .major-passport h3{margin:0!important;line-height:1.06}
       .major-passport .card-meta{margin:7px 0 0!important;line-height:1.38}
@@ -18,11 +18,9 @@
       .passport-grow{margin-top:14px!important;padding-right:0!important;gap:5px!important}
       .passport-grow span{padding:4px 7px!important}
       .passport-state{display:none!important}
-      .major-passport.completed{padding-right:66px!important}
-      .passport-earned-stamp{position:absolute!important;right:13px!important;top:13px!important;width:46px!important;height:46px!important;border:2px solid rgba(39,101,78,.6)!important;border-radius:50%!important;box-shadow:inset 0 0 0 3px rgba(39,101,78,.08)!important;color:#27654e!important;background:rgba(255,255,255,.9)!important;transform:rotate(-7deg)!important;display:grid!important;grid-template-rows:1fr auto!important;place-items:center!important;padding:7px 3px 6px!important;line-height:1!important;letter-spacing:0!important}
-      .passport-earned-stamp span{display:block;font-size:1.18rem;font-weight:900;line-height:.9}
-      .passport-earned-stamp small{display:block;font-size:.31rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;line-height:1}
-      .passport-earned-stamp:after{content:none!important}
+      .major-passport.completed{padding-right:72px!important}
+      .passport-earned-stamp{position:absolute!important;right:13px!important;top:13px!important;width:46px!important;height:46px!important;display:grid!important;place-items:center!important;padding:0!important;border:2px solid rgba(39,101,78,.58)!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;color:#27654e!important;font-size:.34rem!important;font-weight:900!important;letter-spacing:.075em!important;line-height:1!important;text-transform:uppercase!important;white-space:nowrap!important;opacity:.82!important;transform:rotate(-9deg)!important}
+      .passport-earned-stamp::after{content:''!important;position:absolute!important;inset:4px!important;border:1px solid rgba(39,101,78,.42)!important;border-radius:50%!important}
 
       .majors-world{height:clamp(300px,34vw,390px)!important;aspect-ratio:auto!important;background:#e7ede9!important;background-image:none!important;border:1px solid rgba(33,58,49,.12)}
       .majors-world.leaflet-container{font-family:inherit}
@@ -40,10 +38,15 @@
       .majors-mobile-map-list{display:none!important}
 
       @media(max-width:650px){
-        .major-passport{padding:15px 15px 15px 54px!important}
-        .major-passport.completed{padding-right:62px!important}
-        .passport-number{left:15px!important;top:15px!important;font-size:1.12rem!important}
-        .passport-earned-stamp{right:11px!important;top:11px!important;width:44px!important;height:44px!important}
+        .majors-passport-grid{gap:7px!important;align-items:stretch!important;grid-auto-rows:1fr!important}
+        .major-passport{height:100%!important;min-height:0!important;padding:13px 11px 12px 48px!important;border-radius:15px!important;overflow:hidden!important}
+        .major-passport.completed,.major-passport.registered{background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,.91))!important}
+        .major-passport.completed{padding-right:11px!important}
+        .passport-number{left:12px!important;top:13px!important;font-size:1rem!important;color:rgba(33,58,49,.18)!important}
+        .major-passport .card-kicker{margin:0 0 5px!important;font-size:.54rem!important;line-height:1.06!important;letter-spacing:.115em!important}
+        .major-passport h3{margin:0!important;padding-right:0!important;font-size:1.3rem!important;line-height:1.01!important;letter-spacing:-.025em!important;overflow-wrap:normal!important;word-break:normal!important}
+        .major-passport .card-meta{margin-top:8px!important;padding-right:0!important;font-size:.67rem!important;line-height:1.24!important;color:#68747a!important;overflow-wrap:normal!important;word-break:normal!important}
+        .passport-earned-stamp{right:9px!important;top:auto!important;bottom:9px!important;width:44px!important;height:44px!important;font-size:.27rem!important}
         .passport-grow{margin-top:10px!important}
         .majors-world{height:245px!important;margin-top:12px!important;border-radius:15px!important}
         .majors-world .leaflet-control-attribution{font-size:7px}
@@ -52,6 +55,12 @@
         .major-mobile-index{display:grid!important;place-items:center!important;width:23px!important;height:23px!important;font-size:.5rem!important}
         .majors-mobile-map-item strong{display:block;font-size:.67rem;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .majors-mobile-map-item small{display:block;margin-top:2px;font-size:.53rem;line-height:1.15;color:var(--muted,#66736d)}
+      }
+      @media(max-width:390px){
+        .major-passport{padding-left:46px!important}
+        .passport-number{left:11px!important}
+        .major-passport h3{font-size:1.24rem!important}
+        .major-passport .card-meta{font-size:.65rem!important}
       }
       @media(max-width:370px){.majors-mobile-map-list{grid-template-columns:1fr!important}}
     `;
@@ -88,7 +97,7 @@
     element.__majorsLeafletMap=map;
   }
 
-  ensureMajorsFixStyles();
+  ensureMajorsStyles();
   Promise.all([
     fetch('data/world-majors.json').then(r=>{if(!r.ok)throw new Error('Unable to load World Majors journey');return r.json()}),
     A.load()
@@ -103,7 +112,7 @@
     const asset=(label,available)=>`<span class="${available?'available':'planned'}">${available?'✓':'+'} ${A.esc(label)}</span>`;
     const passportCards=majors.map((x,i)=>{
       const record=recordFor(x);
-      const earned=x.status==='completed'?'<div class="passport-earned-stamp" aria-label="Completed Major"><span>✓</span><small>Major</small></div>':'';
+      const earned=x.status==='completed'?'<div class="passport-earned-stamp" aria-label="Completed" title="Completed">Completed</div>':'';
       let grow='';
       if(x.status==='completed'){
         const resultAvailable=Boolean(record&&(record.officialTime||record.elapsedSeconds||record.resultUrl)),courseAvailable=Boolean(record&&(record.routeStatus==='gps'||(record.routeFeatureIds||[]).length)),photosAvailable=hasPhotos(record)||Boolean(x.photoUrl||(x.photos||[]).length),storyAvailable=Boolean(record?.story||record?.storyBody||x.storyUrl||x.storyRecordId);
