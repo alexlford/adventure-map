@@ -75,6 +75,7 @@
     focusAdventure(record);
     const item = document.querySelector(`.adventure-item[data-id="${CSS.escape(record.id)}"]`);
     item?.scrollIntoView?.({block:'nearest',inline:'nearest'});
+    stopRecordFocus();
     return true;
   }
 
