@@ -6,6 +6,7 @@
   const initial = new URLSearchParams(location.search);
   const initialLayer = initial.get('layer');
   const initialSearch = initial.get('q') || '';
+  const initialRecord = initial.get('record') || '';
   const parseYear = value => {
     const year = Number(value);
     return Number.isFinite(year) && year >= 1900 && year <= 2200 ? year : null;
@@ -46,6 +47,62 @@
     };
   }
 
+  let recordFocusActive = Boolean(initialRecord);
+  let recordObserver = null;
+  let recordTimer = null;
+
+  function requestedRecord() {
+    if (!recordFocusActive || !initialRecord || !Array.isArray(state.adventures) || !state.adventures.length) return null;
+    return state.adventures.find(record => record.id === initialRecord || record.slug === initialRecord) || null;
+  }
+
+  function focusRequestedRecord() {
+    const record = requestedRecord();
+    if (!record || typeof focusAdventure !== 'function') return false;
+
+    if (typeof filteredAdventures === 'function' && !filteredAdventures().some(item => item.id === record.id)) {
+      state.filter = 'all';
+      state.search = '';
+      state.yearFrom = null;
+      state.yearTo = null;
+      if (typeof searchInput !== 'undefined' && searchInput) searchInput.value = '';
+      if (typeof yearFrom !== 'undefined' && yearFrom) yearFrom.value = '';
+      if (typeof yearTo !== 'undefined' && yearTo) yearTo.value = '';
+      reflectLayer();
+      if (typeof render === 'function') render();
+    }
+
+    focusAdventure(record);
+    const item = document.querySelector(`.adventure-item[data-id="${CSS.escape(record.id)}"]`);
+    item?.scrollIntoView?.({block:'nearest',inline:'nearest'});
+    return true;
+  }
+
+  function scheduleRecordFocus() {
+    if (!recordFocusActive) return;
+    clearTimeout(recordTimer);
+    recordTimer = setTimeout(focusRequestedRecord,60);
+  }
+
+  function stopRecordFocus() {
+    if (!recordFocusActive) return;
+    recordFocusActive = false;
+    clearTimeout(recordTimer);
+    recordObserver?.disconnect();
+  }
+
+  if (initialRecord) {
+    const list = document.getElementById('adventureList');
+    recordObserver = list ? new MutationObserver(scheduleRecordFocus) : null;
+    recordObserver?.observe(list,{childList:true});
+    scheduleRecordFocus();
+    window.addEventListener('load',() => {
+      scheduleRecordFocus();
+      setTimeout(scheduleRecordFocus,500);
+      setTimeout(() => recordObserver?.disconnect(),10000);
+    },{once:true});
+  }
+
   function syncUrl() {
     const params = new URLSearchParams();
     if (state.filter && state.filter !== 'all') params.set('layer',state.filter);
@@ -57,12 +114,19 @@
     history.replaceState(null,'',`${cleanPath}${query?`?${query}`:''}${location.hash}`);
   }
 
-  const syncSoon = () => queueMicrotask(syncUrl);
+  const syncSoon = () => {
+    stopRecordFocus();
+    queueMicrotask(syncUrl);
+  };
   document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click',syncSoon));
   if (typeof searchInput !== 'undefined' && searchInput) searchInput.addEventListener('input',syncSoon);
   if (typeof yearFrom !== 'undefined' && yearFrom) yearFrom.addEventListener('change',syncSoon);
   if (typeof yearTo !== 'undefined' && yearTo) yearTo.addEventListener('change',syncSoon);
   if (typeof yearReset !== 'undefined' && yearReset) yearReset.addEventListener('click',syncSoon);
+  document.getElementById('adventureList')?.addEventListener('click',event => {
+    if (event.target.closest('.adventure-item')) syncSoon();
+  });
+  if (typeof map !== 'undefined') map.on('click',syncSoon);
 
   window.addEventListener('popstate',() => location.reload());
 })();
