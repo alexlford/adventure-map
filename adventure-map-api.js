@@ -54,7 +54,9 @@
     leaflet: map,
     ready,
     state: snapshot,
-    record: resolveRecord,
+    record(recordOrId) {
+      return resolveRecord(recordOrId);
+    },
     records,
     filteredRecords,
     visibleRoutes,
