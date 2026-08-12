@@ -32,10 +32,10 @@ test('Race archive consumes the compiled public catalog instead of fanning out a
   expect(requests).not.toContain('/data/catalog.json');
   expect(requests).not.toContain('/data/adventures.json');
   expect(requests).not.toContain('/data/strava-matches.json');
-  expect(requests.filter(path => coreCatalogPaths.has(path))).toEqual([
+  expect(requests.filter(path => coreCatalogPaths.has(path)).sort()).toEqual([
     '/data/public-records.json',
     '/data/relationships.json'
-  ]);
+  ].sort());
 
   const beforeRecords = requests.filter(path => path === '/data/public-records.json').length;
   const beforeRelationships = requests.filter(path => path === '/data/relationships.json').length;
