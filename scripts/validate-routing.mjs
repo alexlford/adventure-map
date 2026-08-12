@@ -7,6 +7,7 @@ const routeSource=fs.readFileSync('site-routes.js','utf8');
 const fallback=fs.readFileSync('404.html','utf8');
 const mapApp=fs.readFileSync('app.js','utf8');
 const mapApi=fs.readFileSync('adventure-map-api.js','utf8');
+const mapUrlState=fs.readFileSync('map-url-state.js','utf8');
 const mapPage=fs.readFileSync('map.html','utf8');
 const chapterMap=fs.readFileSync('chapter-map.js','utf8');
 const detail=fs.readFileSync('detail.html','utf8');
@@ -35,7 +36,11 @@ if(/const\s+routes\s*=\s*\{[^}]*index\.html/.test(mapPage))errors.push('map page
 if(!mapPage.includes('<script src="app.js"></script><script src="adventure-map-api.js"></script>'))errors.push('map page must attach AdventureMap API immediately after the core app');
 if(!mapPage.includes('<script src="adventure-map-api.js"></script><script src="map-url-state.js"></script>'))errors.push('map extensions must load after the stable AdventureMap API');
 if(!mapApi.includes('window.AdventureMap = Object.freeze(api)'))errors.push('adventure-map-api.js must expose a frozen AdventureMap contract');
-for(const method of ['filteredRecords','visibleRoutes','popupHtml','focus','emphasize','clearFocus','fit','refresh','setViewState'])if(!mapApi.includes(`${method}(`)&&!mapApi.includes(`${method},`))errors.push(`AdventureMap API missing ${method}`);
+for(const method of ['ready','record','filteredRecords','visibleRoutes','popupHtml','focus','emphasize','clearFocus','fit','refresh','setViewState'])if(!mapApi.includes(`${method}(`)&&!mapApi.includes(`${method},`))errors.push(`AdventureMap API missing ${method}`);
+if(!mapUrlState.includes('const api = window.AdventureMap')||!mapUrlState.includes('api.ready()'))errors.push('map URL state must operate through the AdventureMap API');
+if(mapUrlState.includes('MutationObserver'))errors.push('map URL state must not use DOM observation for readiness');
+if(/initYearControls\s*=/.test(mapUrlState))errors.push('map URL state must not monkey-patch initYearControls');
+for(const legacyCall of ['filteredAdventures(','focusAdventure(','publicLayerFor(','render()'])if(mapUrlState.includes(legacyCall))errors.push(`map URL state still calls legacy map global ${legacyCall}`);
 if(mapPage.includes('notable.js')||fs.existsSync('notable.js'))errors.push('retired notable.js compatibility script must not ship');
 if(!chapterMap.includes('const A = window.AdventureSite')||!chapterMap.includes('const esc = A.esc'))errors.push('chapter map must use AdventureSite shared helpers');
 if(!chapterMap.includes("A.pageHref('map.html')")||!chapterMap.includes('A.recordHref(item)'))errors.push('chapter map must use shared page and record URL helpers');
@@ -67,4 +72,4 @@ for(const file of publicPages){
   if(/\bAlmanac\b/.test(text))errors.push(`${file} exposes retired Almanac branding; use Adventures, Stories, Explore, records, or archive as appropriate`);
 }
 if(errors.length){console.error(errors.join('\n'));process.exit(1)}
-console.log(`Canonical route-registry validation passed for ${siteRoutes.length} public routes with a stable AdventureMap runtime boundary.`);
+console.log(`Canonical route-registry validation passed for ${siteRoutes.length} public routes with API-based map URL state.`);

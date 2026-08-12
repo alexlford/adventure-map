@@ -27,10 +27,36 @@
   const filteredRecords = () => typeof filteredAdventures === 'function' ? filteredAdventures().slice() : records();
   const visibleRoutes = items => typeof visibleRouteFeatures === 'function' ? visibleRouteFeatures(items || filteredRecords()).slice() : [];
 
+  let readyPromise = null;
+  const ready = ({ timeoutMs = 15000 } = {}) => {
+    if (state.adventures.length && state.routes) return Promise.resolve(snapshot());
+    if (readyPromise) return readyPromise;
+    readyPromise = new Promise((resolve, reject) => {
+      const started = performance.now();
+      const check = () => {
+        if (state.adventures.length && state.routes) {
+          requestAnimationFrame(() => resolve(snapshot()));
+          return;
+        }
+        if (performance.now() - started >= timeoutMs) {
+          reject(new Error('Adventure map did not become ready in time.'));
+          return;
+        }
+        requestAnimationFrame(check);
+      };
+      check();
+    }).finally(() => { readyPromise = null; });
+    return readyPromise;
+  };
+
   const api = {
     version: 1,
     leaflet: map,
+    ready,
     state: snapshot,
+    record(recordOrId) {
+      return resolveRecord(recordOrId);
+    },
     records,
     filteredRecords,
     visibleRoutes,
