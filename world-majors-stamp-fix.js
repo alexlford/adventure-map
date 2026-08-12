@@ -43,12 +43,15 @@
     }
 
     @media(max-width:650px){
-      /* Compact passport-book rhythm: equal cards, with substantially less empty lower space. */
+      /* Let the longest card define the compact mobile height, then share it across all eight cards. */
       .majors-passport-grid{
         gap:7px!important;
-        grid-auto-rows:184px!important;
+        align-items:start!important;
+        grid-auto-rows:auto!important;
       }
       .major-passport{
+        height:var(--passport-card-height,auto)!important;
+        min-height:0!important;
         padding:13px 11px 12px 48px!important;
         border-radius:15px!important;
         overflow:hidden!important;
@@ -111,7 +114,6 @@
     }
 
     @media(max-width:390px){
-      .majors-passport-grid{grid-auto-rows:184px!important}
       .major-passport{padding-left:46px!important}
       .passport-number{left:11px!important}
       .major-passport h3{font-size:1.24rem!important}
@@ -120,14 +122,40 @@
   `;
   if(!document.getElementById(style.id))document.head.appendChild(style);
 
+  const mobileQuery=window.matchMedia?.('(max-width:650px)');
+  let fitFrame=0;
+  const fitPassportCards=()=>{
+    const grid=document.querySelector('.majors-passport-grid');
+    if(!grid)return;
+    const cards=[...grid.querySelectorAll('.major-passport')];
+    if(!cards.length)return;
+    grid.style.removeProperty('--passport-card-height');
+    if(!mobileQuery?.matches)return;
+    cancelAnimationFrame(fitFrame);
+    fitFrame=requestAnimationFrame(()=>{
+      const height=Math.ceil(Math.max(...cards.map(card=>card.getBoundingClientRect().height)));
+      if(height>0)grid.style.setProperty('--passport-card-height',`${height}px`);
+    });
+  };
+
+  let fitTimer=0;
+  const scheduleFit=()=>{
+    clearTimeout(fitTimer);
+    fitTimer=setTimeout(fitPassportCards,0);
+  };
+
   const apply=()=>{
     document.querySelectorAll('.passport-earned-stamp').forEach(stamp=>{
       stamp.setAttribute('aria-label','Completed');
       stamp.title='Completed';
     });
+    scheduleFit();
   };
 
   apply();
   const observer=new MutationObserver(apply);
   observer.observe(document.documentElement,{childList:true,subtree:true});
+  window.addEventListener('resize',scheduleFit,{passive:true});
+  mobileQuery?.addEventListener?.('change',scheduleFit);
+  document.fonts?.ready?.then(scheduleFit).catch(()=>{});
 })();
