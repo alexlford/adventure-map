@@ -1,5 +1,5 @@
 /* Local navigation for long activity chapters. */
-.chapter-index{display:flex;align-items:center;gap:7px;margin:0 0 44px;padding:10px 11px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.58);overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.chapter-index{position:sticky;top:var(--chapter-index-top,72px);z-index:14;display:flex;align-items:center;gap:7px;margin:0 0 44px;padding:10px 11px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.84);box-shadow:0 7px 24px rgba(23,32,42,.07);backdrop-filter:blur(12px);overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
 .chapter-index::-webkit-scrollbar{display:none}
 .chapter-index-label{flex:0 0 auto;margin:0 4px 0 1px;color:var(--muted);font-size:.64rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .chapter-index a{flex:0 0 auto;padding:6px 9px;border:1px solid transparent;border-radius:999px;color:var(--muted);font-size:.72rem;font-weight:750;text-decoration:none;white-space:nowrap;transition:background 120ms ease,color 120ms ease,border-color 120ms ease}
@@ -12,7 +12,7 @@
   .page h2[data-chapter-anchor]{scroll-margin-top:176px}
 }
 @media(max-width:560px){
-  .chapter-index{margin-left:-20px;margin-right:-20px;margin-bottom:32px;padding-left:20px;padding-right:20px;border-left:0;border-right:0;border-radius:0;background:rgba(255,255,255,.48)}
+  .chapter-index{margin-left:-20px;margin-right:-20px;margin-bottom:32px;padding-left:20px;padding-right:20px;border-left:0;border-right:0;border-radius:0;background:rgba(247,244,238,.92);box-shadow:0 7px 20px rgba(23,32,42,.08)}
   .chapter-index-label{position:sticky;left:0;z-index:1;padding-right:8px;background:linear-gradient(90deg,var(--paper) 72%,transparent)}
   .page h2[data-chapter-anchor]{scroll-margin-top:190px}
 }
