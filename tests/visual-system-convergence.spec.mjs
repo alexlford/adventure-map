@@ -24,9 +24,12 @@ test('Map shell shares chapter tokens and renders a useful no-results state', as
   expect(errors).toEqual([]);
 });
 
-test('Map data failure uses the shared error-state treatment', async ({ page }) => {
+test('Map data failure uses the shared error-state treatment and survives late enrichment', async ({ page }) => {
   await page.route('**/data/routes.geojson',route=>route.abort());
   await page.goto('/map/',{waitUntil:'domcontentloaded'});
+  await expect(page.locator('#resultCount')).toHaveText('Unavailable');
+  await expect(page.locator('.archive-state-error')).toContainText('Map archive unavailable');
+  await page.waitForTimeout(1200);
   await expect(page.locator('#resultCount')).toHaveText('Unavailable');
   await expect(page.locator('.archive-state-error')).toContainText('Map archive unavailable');
 });
