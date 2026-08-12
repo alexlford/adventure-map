@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const decalibron = ['mount-democrat','mount-cameron','mount-lincoln','mount-bross'];
 const blueSkyOuting = ['mount-evans','mount-spalding'];
 
-test('One GPS outing can publish every distinct summit reached on it', async ({ request }) => {
+test('A single GPS outing can publish every distinct summit reached on it', async ({ request }) => {
   const response = await request.get('/data/public-records.json');
   expect(response.ok()).toBeTruthy();
   const payload = await response.json();
