@@ -65,7 +65,9 @@ async function walk(dir = root) {
   const entries = await fs.readdir(dir, { withFileTypes: true });
   const files = [];
   for (const entry of entries) {
-    if (['.git', 'node_modules', 'test-results', 'playwright-report'].includes(entry.name)) continue;
+    // Only browser-delivered source belongs in this scan. Tests, build/maintenance
+    // scripts, and CI use different path semantics and validate themselves separately.
+    if (['.git', '.github', 'node_modules', 'scripts', 'tests', 'test-results', 'playwright-report'].includes(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) files.push(...await walk(full));
     else files.push(full);
