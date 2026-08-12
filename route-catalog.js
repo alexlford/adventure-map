@@ -1,11 +1,13 @@
 window.AdventureRoutes = (() => {
   let configPromise;
+  let relationshipsPromise;
   const fetchJson = async path => {
     const r = await fetch(path, { cache: 'no-cache' });
     if (!r.ok) throw new Error(`Failed to load ${path} (${r.status})`);
     return r.json();
   };
   const config = () => configPromise ||= fetchJson('data/route-catalog.json');
+  const relationships = () => relationshipsPromise ||= fetchJson('data/relationships.json').catch(() => ({ relationships: [] }));
   const keyFor = feature => feature.id || feature.properties?.featureId || feature.properties?.id || null;
   const inferProvenance = feature => {
     const p = feature.properties || {};
@@ -24,6 +26,20 @@ window.AdventureRoutes = (() => {
   }
   async function normalizeCollection(collection) {
     return { ...collection, features: await Promise.all((collection.features || []).map(normalizeFeature)) };
+  }
+  function expandRelationshipOwnership(collections, payload) {
+    const rels = (payload?.relationships || []).filter(rel => rel.adventureId && Array.isArray(rel.memberIds) && rel.memberIds.length);
+    if (!rels.length) return collections;
+    return collections.map(collection => ({
+      ...collection,
+      features: (collection.features || []).map(feature => {
+        const owners = new Set(feature.properties?.adventureIds || []);
+        for (const rel of rels) {
+          if (rel.memberIds.some(memberId => owners.has(memberId))) owners.add(rel.adventureId);
+        }
+        return { ...feature, properties: { ...(feature.properties || {}), adventureIds: [...owners] } };
+      })
+    }));
   }
   function decodeComponent(encoded, state, label) {
     let result = 0;
@@ -89,12 +105,13 @@ window.AdventureRoutes = (() => {
     const cfg = await config();
     const routeFiles = cfg.routeFiles || [];
     const polylineFiles = cfg.polylineFiles?.length ? cfg.polylineFiles : ['data/activity-route-polylines.json'];
-    const [routePayloads, polylinePayloads] = await Promise.all([
+    const [routePayloads, polylinePayloads, relationshipPayload] = await Promise.all([
       Promise.all(routeFiles.map(fetchJson)),
-      Promise.all(polylineFiles.map(polylineCollection))
+      Promise.all(polylineFiles.map(polylineCollection)),
+      relationships()
     ]);
     const normalizedRoutes = await Promise.all(routePayloads.map(normalizeCollection));
-    return [...normalizedRoutes, ...polylinePayloads];
+    return expandRelationshipOwnership([...normalizedRoutes, ...polylinePayloads], relationshipPayload);
   }
   async function recordProvenance(recordId) {
     const cfg = await config();
