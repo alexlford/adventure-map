@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 128,
+  "recordCount": 127,
   "records": [
     {
       "id": "mount-evans",
@@ -3904,57 +3904,6 @@
       },
       "routeInfo": {
         "status": "gps",
-        "provenance": null
-      }
-    },
-    {
-      "id": "royal-gorge-groove-trail-2024",
-      "kind": "race",
-      "discipline": "trail",
-      "name": "Royal Gorge Groove Trail Race",
-      "eventSeries": "Royal Gorge Groove Run + Ride",
-      "year": 2024,
-      "date": "2024-04-20",
-      "distance": "Trail 5K",
-      "distanceKm": 5.66,
-      "distanceMi": 3.52,
-      "location": "Royal Gorge Park, Cañon City, Colorado",
-      "region": "Colorado",
-      "lat": 38.4756,
-      "lon": -105.3253,
-      "coordinatePrecision": "gps-area",
-      "elevationGainM": 127,
-      "routeStatus": "gps-source-available",
-      "matchSource": "Strava export + user confirmation + historical event schedule",
-      "matchConfidence": "confirmed",
-      "note": "Saturday trail-running race of the Royal Gorge Groove weekend.",
-      "_catalogSource": "data/recovered-events-2026-08.json",
-      "slug": "2024-04-20-royal-gorge-groove-trail-race",
-      "recordClass": "race",
-      "sport": "running",
-      "startDate": "2024-04-20",
-      "finishDate": "2024-04-20",
-      "distanceInfo": {
-        "km": 5.66,
-        "mi": 3.52,
-        "label": "Trail 5K",
-        "source": "recorded"
-      },
-      "locationInfo": {
-        "label": "Royal Gorge Park, Cañon City, Colorado",
-        "region": "Colorado",
-        "lat": 38.4756,
-        "lon": -105.3253,
-        "precision": "gps-area"
-      },
-      "evidence": {
-        "source": "Strava export + user confirmation + historical event schedule",
-        "matchSource": "Strava export + user confirmation + historical event schedule",
-        "resultSource": null,
-        "confidence": "confirmed"
-      },
-      "routeInfo": {
-        "status": "gps-source-available",
         "provenance": null
       }
     },
