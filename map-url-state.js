@@ -1,7 +1,9 @@
 (() => {
   'use strict';
 
-  if (typeof state !== 'object') return;
+  const api = window.AdventureMap;
+  if (!api) return;
+
   const validLayers = new Set(['mtb','nordic','road-races','trail-races','skiing','summits','adventures']);
   const initial = new URLSearchParams(location.search);
   const initialLayer = initial.get('layer');
@@ -11,172 +13,143 @@
     const year = Number(value);
     return Number.isFinite(year) && year >= 1900 && year <= 2200 ? year : null;
   };
-  const initialFrom = parseYear(initial.get('from'));
+  let initialFrom = parseYear(initial.get('from'));
   const initialThrough = parseYear(initial.get('through'));
+  if (initialFrom && initialThrough && initialFrom > initialThrough) initialFrom = initialThrough;
 
-  if (validLayers.has(initialLayer)) state.filter = initialLayer;
-  if (initialSearch) state.search = initialSearch;
-  if (typeof searchInput !== 'undefined' && searchInput) searchInput.value = initialSearch;
-  if (initialFrom) state.yearFrom = initialFrom;
-  if (initialThrough) state.yearTo = initialThrough;
+  const initialView = {};
+  if (validLayers.has(initialLayer)) initialView.filter = initialLayer;
+  if (initialSearch) initialView.search = initialSearch;
+  if (initialFrom) initialView.yearFrom = initialFrom;
+  if (initialThrough) initialView.yearTo = initialThrough;
+  api.setViewState(initialView, { renderNow: false });
+
+  const searchField = document.getElementById('searchInput');
+  const yearFromField = document.getElementById('yearFrom');
+  const yearToField = document.getElementById('yearTo');
+  const yearResetButton = document.getElementById('yearReset');
+  if (searchField) searchField.value = initialSearch;
 
   const reflectLayer = () => {
+    const current = api.state().filter;
     document.querySelectorAll('[data-filter]').forEach(button => {
-      button.classList.toggle('is-active',button.dataset.filter === state.filter || (state.filter === 'all' && button.dataset.filter === 'all'));
+      button.classList.toggle('is-active', button.dataset.filter === current || (current === 'all' && button.dataset.filter === 'all'));
     });
+  };
+  const reflectYears = () => {
+    const current = api.state();
+    if (yearFromField) yearFromField.value = current.yearFrom ? String(current.yearFrom) : '';
+    if (yearToField) yearToField.value = current.yearTo ? String(current.yearTo) : '';
   };
   reflectLayer();
 
-  if (typeof initYearControls === 'function') {
-    const originalInitYearControls = initYearControls;
-    initYearControls = function(...args) {
-      const result = originalInitYearControls(...args);
-      if (initialFrom && typeof yearFrom !== 'undefined' && yearFrom) {
-        state.yearFrom = initialFrom;
-        yearFrom.value = String(initialFrom);
-      }
-      if (initialThrough && typeof yearTo !== 'undefined' && yearTo) {
-        state.yearTo = initialThrough;
-        yearTo.value = String(initialThrough);
-      }
-      if (state.yearFrom && state.yearTo && state.yearFrom > state.yearTo) {
-        state.yearFrom = state.yearTo;
-        if (typeof yearFrom !== 'undefined' && yearFrom) yearFrom.value = String(state.yearFrom);
-      }
-      return result;
-    };
+  const registry = window.AdventureSiteRoutes;
+  const mapRoute = registry?.routes?.find(route => route.key === 'map');
+  const productionHost = registry?.origin ? new URL(registry.origin).hostname : 'adventures.alexlford.com';
+  const canonicalMapPath = mapRoute?.path || '/map';
+  const currentMapPath = () => location.hostname === productionHost ? canonicalMapPath : location.pathname;
+
+  const paramsForState = ({ includeRecord = true, fallbackRecord = '' } = {}) => {
+    const current = api.state();
+    const params = new URLSearchParams();
+    if (current.filter && current.filter !== 'all') params.set('layer', current.filter);
+    if (current.yearFrom) params.set('from', String(current.yearFrom));
+    if (current.yearTo) params.set('through', String(current.yearTo));
+    if (current.search?.trim()) params.set('q', current.search.trim());
+    if (includeRecord) {
+      const focused = api.record(current.pinnedFocusId || current.focusId);
+      const key = focused?.slug || focused?.id || fallbackRecord;
+      if (key) params.set('record', key);
+    }
+    return params;
+  };
+
+  function replaceUrl(params) {
+    const query = params.toString();
+    history.replaceState(null, '', `${currentMapPath()}${query ? `?${query}` : ''}${location.hash}`);
+  }
+
+  function syncUrl() {
+    replaceUrl(paramsForState());
   }
 
   let recordFocusActive = Boolean(initialRecord);
-  let suppressInitialPopupSync = Boolean(initialRecord);
-  let recordObserver = null;
-  let recordTimer = null;
+  let suppressNextPopupSync = Boolean(initialRecord);
 
-  function requestedRecord() {
-    if (!recordFocusActive || !initialRecord || !Array.isArray(state.adventures) || !state.adventures.length) return null;
-    return state.adventures.find(record => record.id === initialRecord || record.slug === initialRecord) || null;
-  }
-
-  function inferredLayerFor(record) {
-    if (!record || typeof publicLayerFor !== 'function') return null;
-    const layer = publicLayerFor(record);
-    return validLayers.has(layer) ? layer : null;
-  }
-
-  function setNaturalLayer(record) {
-    const layer = inferredLayerFor(record);
-    if (!layer || state.filter === layer) return false;
-    state.filter = layer;
+  function setNaturalLayer(record, { renderNow = true } = {}) {
+    const layer = api.layerFor(record);
+    if (!layer || !validLayers.has(layer) || api.state().filter === layer) return false;
+    api.setViewState({ filter: layer }, { renderNow });
     reflectLayer();
-    if (typeof render === 'function') render();
     return true;
   }
 
-  function syncInitialRecordUrl(record) {
-    if (!initialRecord) return;
-    const params = new URLSearchParams();
-    if (state.filter && state.filter !== 'all') params.set('layer',state.filter);
-    if (state.yearFrom) params.set('from',String(state.yearFrom));
-    if (state.yearTo) params.set('through',String(state.yearTo));
-    if (state.search?.trim()) params.set('q',state.search.trim());
-    params.set('record',record?.slug || record?.id || initialRecord);
-    const cleanPath = location.hostname === 'adventures.alexlford.com' ? '/map' : location.pathname;
-    history.replaceState(null,'',`${cleanPath}?${params.toString()}${location.hash}`);
-  }
-
-  function focusRequestedRecord() {
-    const record = requestedRecord();
-    if (!record || typeof focusAdventure !== 'function') return false;
-
-    if (!validLayers.has(initialLayer) && state.filter === 'all') setNaturalLayer(record);
-
-    if (typeof filteredAdventures === 'function' && !filteredAdventures().some(item => item.id === record.id)) {
-      setNaturalLayer(record);
-      state.search = '';
-      state.yearFrom = null;
-      state.yearTo = null;
-      if (typeof searchInput !== 'undefined' && searchInput) searchInput.value = '';
-      if (typeof yearFrom !== 'undefined' && yearFrom) yearFrom.value = '';
-      if (typeof yearTo !== 'undefined' && yearTo) yearTo.value = '';
-      reflectLayer();
-      if (typeof render === 'function') render();
-    }
-
-    focusAdventure(record);
-    const item = document.querySelector(`.adventure-item[data-id="${CSS.escape(record.id)}"]`);
-    item?.scrollIntoView?.({block:'nearest',inline:'nearest'});
-    syncInitialRecordUrl(record);
-    stopRecordFocus();
-    return true;
-  }
-
-  function scheduleRecordFocus() {
-    if (!recordFocusActive) return;
-    clearTimeout(recordTimer);
-    recordTimer = setTimeout(focusRequestedRecord,60);
-  }
-
-  function stopRecordFocus() {
-    if (!recordFocusActive) return;
-    recordFocusActive = false;
-    clearTimeout(recordTimer);
-    recordObserver?.disconnect();
-  }
-
-  if (initialRecord) {
-    const list = document.getElementById('adventureList');
-    recordObserver = list ? new MutationObserver(scheduleRecordFocus) : null;
-    recordObserver?.observe(list,{childList:true});
-    scheduleRecordFocus();
-    window.addEventListener('load',() => {
-      scheduleRecordFocus();
-      setTimeout(scheduleRecordFocus,500);
-      setTimeout(() => recordObserver?.disconnect(),10000);
-    },{once:true});
-  }
-
-  const focusedRecord = () => {
-    const id = state.pinnedFocusId || null;
-    if (!id || !Array.isArray(state.adventures)) return null;
-    return state.adventures.find(record => record.id === id) || null;
-  };
-
-  function syncUrl() {
-    const params = new URLSearchParams();
-    if (state.filter && state.filter !== 'all') params.set('layer',state.filter);
-    if (state.yearFrom) params.set('from',String(state.yearFrom));
-    if (state.yearTo) params.set('through',String(state.yearTo));
-    if (state.search?.trim()) params.set('q',state.search.trim());
-    const focused = focusedRecord();
-    if (focused) params.set('record',focused.slug || focused.id);
-    const query = params.toString();
-    const cleanPath = location.hostname === 'adventures.alexlford.com' ? '/map' : location.pathname;
-    history.replaceState(null,'',`${cleanPath}${query?`?${query}`:''}${location.hash}`);
-  }
-
-  const syncSoon = () => {
-    stopRecordFocus();
-    suppressInitialPopupSync = false;
-    queueMicrotask(syncUrl);
-  };
-  document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click',syncSoon));
-  if (typeof searchInput !== 'undefined' && searchInput) searchInput.addEventListener('input',syncSoon);
-  if (typeof yearFrom !== 'undefined' && yearFrom) yearFrom.addEventListener('change',syncSoon);
-  if (typeof yearTo !== 'undefined' && yearTo) yearTo.addEventListener('change',syncSoon);
-  if (typeof yearReset !== 'undefined' && yearReset) yearReset.addEventListener('click',syncSoon);
-  document.getElementById('adventureList')?.addEventListener('click',event => {
-    if (event.target.closest('.adventure-item')) syncSoon();
-  });
-  if (typeof map !== 'undefined') {
-    map.on('click',syncSoon);
-    map.on('popupopen',() => queueMicrotask(() => {
-      if (suppressInitialPopupSync) {
-        suppressInitialPopupSync = false;
+  async function focusRequestedRecord() {
+    if (!recordFocusActive || !initialRecord) return;
+    try {
+      await api.ready();
+      reflectYears();
+      const record = api.record(initialRecord);
+      if (!record) {
+        recordFocusActive = false;
+        suppressNextPopupSync = false;
         return;
       }
-      syncUrl();
-    }));
+
+      const current = api.state();
+      if (!validLayers.has(initialLayer) && current.filter === 'all') setNaturalLayer(record);
+
+      if (!api.filteredRecords().some(item => item.id === record.id)) {
+        const natural = api.layerFor(record);
+        api.setViewState({
+          filter: validLayers.has(natural) ? natural : 'all',
+          search: '',
+          yearFrom: null,
+          yearTo: null
+        });
+        if (searchField) searchField.value = '';
+        reflectYears();
+        reflectLayer();
+      }
+
+      api.focus(record);
+      document.querySelector(`.adventure-item[data-id="${CSS.escape(record.id)}"]`)?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+      replaceUrl(paramsForState({ fallbackRecord: record.slug || record.id }));
+      recordFocusActive = false;
+      suppressNextPopupSync = false;
+    } catch (error) {
+      recordFocusActive = false;
+      suppressNextPopupSync = false;
+      console.warn('Unable to restore map record focus from the URL.', error);
+    }
   }
 
-  window.addEventListener('popstate',() => location.reload());
+  api.ready().then(() => {
+    reflectYears();
+    if (initialRecord) focusRequestedRecord();
+  }).catch(error => console.warn('Unable to restore map URL state.', error));
+
+  const syncSoon = () => {
+    recordFocusActive = false;
+    suppressNextPopupSync = false;
+    queueMicrotask(syncUrl);
+  };
+  document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', syncSoon));
+  searchField?.addEventListener('input', syncSoon);
+  yearFromField?.addEventListener('change', syncSoon);
+  yearToField?.addEventListener('change', syncSoon);
+  yearResetButton?.addEventListener('click', syncSoon);
+  document.getElementById('adventureList')?.addEventListener('click', event => {
+    if (event.target.closest('.adventure-item')) syncSoon();
+  });
+  api.leaflet.on('click', syncSoon);
+  api.leaflet.on('popupopen', () => {
+    if (suppressNextPopupSync) {
+      suppressNextPopupSync = false;
+      return;
+    }
+    queueMicrotask(syncUrl);
+  });
+
+  window.addEventListener('popstate', () => location.reload());
 })();
