@@ -220,30 +220,6 @@
       "routeStatus": "matched-no-public-route",
       "matchSource": "Strava exact Memorial Day date/10K distance/Boulder location + official 2025 BOLDERBoulder archive",
       "matchConfidence": "high"
-    },
-    {
-      "id": "bolderboulder-2026",
-      "kind": "race",
-      "discipline": "road",
-      "name": "BOLDERBoulder",
-      "year": 2026,
-      "date": "2026-05-25",
-      "distance": "10K",
-      "distanceKm": 10.01,
-      "distanceMi": 6.22,
-      "location": "Boulder, Colorado",
-      "region": "Colorado",
-      "lat": 40.0093,
-      "lon": -105.2669,
-      "coordinatePrecision": "event-area",
-      "stravaActivityId": "18652792832",
-      "stravaActivityName": "Nike Run Club: Monday Afternoon Run",
-      "elapsedSeconds": 4689,
-      "movingSeconds": 3645,
-      "elevationGainM": 94.0,
-      "routeStatus": "matched-no-public-route",
-      "matchSource": "Strava exact Memorial Day date/10K distance/Boulder location + official 2026 BOLDERBoulder archive",
-      "matchConfidence": "high"
     }
   ]
 }
