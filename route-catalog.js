@@ -8,7 +8,10 @@ window.AdventureRoutes = (() => {
     return r.json();
   };
   const config = () => configPromise ||= fetchJson('data/route-catalog.json');
-  const relationships = () => relationshipsPromise ||= fetchJson('data/relationships.json').catch(() => ({ relationships: [] }));
+  const relationships = () => relationshipsPromise ||= (window.AdventureCatalog?.loadRelationships
+    ? window.AdventureCatalog.loadRelationships().then(items => ({ relationships: items }))
+    : fetchJson('data/relationships.json')
+  ).catch(() => ({ relationships: [] }));
   const keyFor = feature => feature.id || feature.properties?.featureId || feature.properties?.id || null;
   const inferProvenance = feature => {
     const p = feature.properties || {};
