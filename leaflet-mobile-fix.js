@@ -97,7 +97,7 @@
   }
 
   function endpointIcon(kind, color) {
-    const label = kind === 'loop' ? '↻' : kind === 'start' ? 'S' : 'F';
+    const label = kind === 'loop' ? '' : kind === 'start' ? 'S' : 'F';
     const className = `route-endpoint ${kind === 'finish' ? 'is-finish' : ''}${kind === 'loop' ? ' is-loop' : ''}`;
     return L.divIcon({
       className:'route-endpoint-wrap',
