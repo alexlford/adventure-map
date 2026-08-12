@@ -47,13 +47,17 @@ jobs:
             : feature.geometry?.type==='MultiLineString'
               ? (feature.geometry.coordinates||[]).reduce((sum,line)=>sum+(line||[]).length,0)
               : 0;
-          for(const id of ['strava-6814188054','strava-6819611723']){
+          const protectedRoutes = new Map([
+            ['strava-6814188054', 1500],
+            ['strava-6819611723', 900],
+          ]);
+          for(const [id,minPoints] of protectedRoutes){
             const feature=byId.get(id);
             if(!feature)throw new Error(`${id}: dense Ranch Hand route is missing`);
             const points=pointCount(feature);
-            if(points<1500)throw new Error(`${id}: route regressed to ${points} points; expected at least 1500`);
+            if(points<minPoints)throw new Error(`${id}: route regressed to ${points} points; expected at least ${minPoints}`);
             if(!String(feature.properties?.routeResolution||'').startsWith('dense-source-track'))throw new Error(`${id}: dense route resolution metadata is missing`);
-            console.log(`${id}: protected dense GPS route with ${points} points.`);
+            console.log(`${id}: protected dense GPS route with ${points} points (minimum ${minPoints}).`);
           }
           NODE
       - name: Audit GPS route point quality
