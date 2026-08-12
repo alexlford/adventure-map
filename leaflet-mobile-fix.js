@@ -29,6 +29,23 @@
   };
   window.AdventureMapTheme = { colors, routeColor };
 
+  // Leaflet's invalidateSize({pan:false}) keeps the old top-left pixel origin,
+  // which moves the geographic center whenever responsive layout changes the
+  // map dimensions. Keep the current geographic center instead, without an
+  // animation. This protects the master map's intentional default view and
+  // also makes all map resize recovery deterministic.
+  if (window.L?.Map?.prototype?.invalidateSize && !L.Map.prototype.invalidateSize.__adventureCenterSafe) {
+    const originalInvalidateSize = L.Map.prototype.invalidateSize;
+    const centerSafeInvalidateSize = function(options) {
+      if (options && typeof options === 'object' && options.pan === false) {
+        return originalInvalidateSize.call(this,{...options,pan:true,animate:false});
+      }
+      return originalInvalidateSize.call(this,options);
+    };
+    centerSafeInvalidateSize.__adventureCenterSafe = true;
+    L.Map.prototype.invalidateSize = centerSafeInvalidateSize;
+  }
+
   function textFromPopup(content) {
     if (typeof content !== 'string') return '';
     const holder = document.createElement('div');
