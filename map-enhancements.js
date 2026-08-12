@@ -22,18 +22,6 @@
     if(legend&&!legend.querySelector('.map-mixed-key'))legend.insertAdjacentHTML('beforeend','<span class="map-mixed-key"><i class="legend-dot" style="background:#59636d"></i> Mixed cluster</span>');
   }
 
-  const originalRender=typeof render==='function'?render:null;
-  if(originalRender){
-    render=function(...args){
-      const pinned=state.pinnedFocusId;
-      const result=originalRender(...args);
-      if(pinned&&filteredAdventures().some(a=>a.id===pinned))state.focusId=pinned;
-      else if(pinned)state.pinnedFocusId=null;
-      requestAnimationFrame(()=>applyFocusStyles());
-      return result;
-    };
-  }
-
   if(typeof map!=='undefined'){
     let markerZoom=map.getZoom();
     map.on('zoomend',()=>{
