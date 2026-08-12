@@ -55,6 +55,18 @@
       "matchSource": "Strava export + user confirmation",
       "matchConfidence": "confirmed"
     },
+    "chicago-marathon-virtual-2020": {
+      "lat": 39.273109,
+      "lon": -76.603236,
+      "location": "Baltimore, Maryland",
+      "coordinatePrecision": "gps-start",
+      "routeFeatureIds": ["strava-4312782134"],
+      "routeStatus": "gps",
+      "privacyNote": null,
+      "needsInput": false,
+      "matchSource": "Strava export + user authorization to publish GPS route",
+      "matchConfidence": "confirmed"
+    },
     "colfax-marathon-2025": {
       "officialDistance": "Marathon",
       "officialDistanceKm": 42.195,

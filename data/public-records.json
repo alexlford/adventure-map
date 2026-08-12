@@ -1411,10 +1411,10 @@
       "distance": "26.2 mi",
       "location": "Baltimore, Maryland",
       "region": "Unknown",
-      "lat": 39.2904,
-      "lon": -76.6122,
-      "coordinatePrecision": "city-privacy",
-      "routeStatus": "withheld-privacy",
+      "lat": 39.273109,
+      "lon": -76.603236,
+      "coordinatePrecision": "gps-start",
+      "routeStatus": "gps",
       "needsInput": false,
       "_catalogSource": "data/adventures.json",
       "date": "2020-10-07",
@@ -1427,10 +1427,12 @@
       "elapsedSeconds": 20555,
       "movingSeconds": 19526,
       "elevationGainM": 188.5,
-      "routeFeatureIds": [],
-      "matchSource": "Strava export",
-      "matchConfidence": "high",
-      "privacyNote": "GPS track matched but intentionally not published; public layer uses city-level location only.",
+      "routeFeatureIds": [
+        "strava-4312782134"
+      ],
+      "matchSource": "Strava export + user authorization to publish GPS route",
+      "matchConfidence": "confirmed",
+      "privacyNote": null,
       "slug": "2020-10-07-chicago-marathon-virtual",
       "recordClass": "race",
       "sport": "running",
@@ -1445,18 +1447,18 @@
       "locationInfo": {
         "label": "Baltimore, Maryland",
         "region": "Unknown",
-        "lat": 39.2904,
-        "lon": -76.6122,
-        "precision": "city-privacy"
+        "lat": 39.273109,
+        "lon": -76.603236,
+        "precision": "gps-start"
       },
       "evidence": {
-        "source": "Strava export",
-        "matchSource": "Strava export",
+        "source": "Strava export + user authorization to publish GPS route",
+        "matchSource": "Strava export + user authorization to publish GPS route",
         "resultSource": null,
-        "confidence": "high"
+        "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "withheld-privacy",
+        "status": "gps",
         "provenance": null
       }
     },
