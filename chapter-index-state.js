@@ -15,6 +15,7 @@ window.AdventureChapterIndexState = (() => {
     const targets = headings.filter(heading => heading?.id && links.has(heading.id));
     if (!targets.length) return;
 
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
     let activeId = '';
     let frame = 0;
     const setActive = id => {
@@ -27,7 +28,7 @@ window.AdventureChapterIndexState = (() => {
         else link.removeAttribute('aria-current');
       });
       const active = links.get(id);
-      active?.scrollIntoView?.({block:'nearest',inline:'nearest',behavior:'smooth'});
+      active?.scrollIntoView?.({block:'nearest',inline:'nearest',behavior:reducedMotion?'auto':'smooth'});
     };
 
     const update = () => {
