@@ -18,6 +18,11 @@ window.AdventureChapterIndexState = (() => {
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
     let activeId = '';
     let frame = 0;
+    const syncStickyOffset = () => {
+      const header = document.querySelector('.site-header');
+      const height = Math.ceil(header?.getBoundingClientRect().height || 0);
+      nav.style.setProperty('--chapter-index-top',`${height + 8}px`);
+    };
     const revealHorizontally = active => {
       if (!active || nav.scrollWidth <= nav.clientWidth) return;
       const pad = 18;
@@ -56,6 +61,10 @@ window.AdventureChapterIndexState = (() => {
       if (frame) return;
       frame = requestAnimationFrame(update);
     };
+    const onResize = () => {
+      syncStickyOffset();
+      schedule();
+    };
     const onHashChange = () => {
       const id = decodeURIComponent(location.hash.replace(/^#/,''));
       if (links.has(id)) setActive(id);
@@ -69,9 +78,10 @@ window.AdventureChapterIndexState = (() => {
       if (links.has(id)) setActive(id);
     });
     window.addEventListener('scroll',schedule,{passive:true});
-    window.addEventListener('resize',schedule,{passive:true});
+    window.addEventListener('resize',onResize,{passive:true});
     window.addEventListener('hashchange',onHashChange);
 
+    syncStickyOffset();
     const initialHash = decodeURIComponent(location.hash.replace(/^#/,''));
     if (links.has(initialHash)) setActive(initialHash);
     else update();
@@ -79,7 +89,7 @@ window.AdventureChapterIndexState = (() => {
     cleanup = () => {
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener('scroll',schedule);
-      window.removeEventListener('resize',schedule);
+      window.removeEventListener('resize',onResize);
       window.removeEventListener('hashchange',onHashChange);
       cleanup = () => {};
     };
