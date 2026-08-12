@@ -2,6 +2,8 @@ import { test, expect } from '@playwright/test';
 
 const recordKey = 'chicago-marathon-2021';
 const recordSlug = '2021-10-10-chicago-marathon';
+const summitKey = 'mount-democrat';
+const summitSlug = '2023-08-13-mount-democrat';
 
 test('Clean record pages carry record context into the map action', async ({ page }) => {
   await page.goto(`/record/${recordSlug}/`, { waitUntil: 'domcontentloaded' });
@@ -32,21 +34,22 @@ test('Master map record deep link survives enrichment in its matching layer', as
   await expect(popup).toBeVisible();
   await expect(popup).toHaveCount(1);
   await expect(popup).toContainText('Chicago Marathon');
-  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordKey);
+  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordSlug);
   await page.waitForTimeout(650);
   await expect(popup).toHaveCount(1);
   await expect(popup).toContainText('Chicago Marathon');
+  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordSlug);
 });
 
 test('Route-only summit deep links stay visible in the Summits layer', async ({ page }) => {
-  await page.goto('/map.html?record=mount-democrat', { waitUntil: 'domcontentloaded' });
+  await page.goto(`/map.html?record=${summitKey}`, { waitUntil: 'domcontentloaded' });
 
-  const item = page.locator('.adventure-item[data-id="mount-democrat"]');
+  const item = page.locator(`.adventure-item[data-id="${summitKey}"]`);
   await expect(item).toBeVisible();
   await expect(item).toHaveAttribute('aria-pressed','true');
   await expect(page.locator('[data-filter="summits"]')).toHaveClass(/is-active/);
   await expect.poll(() => new URL(page.url()).searchParams.get('layer')).toBe('summits');
-  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe('mount-democrat');
+  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(summitSlug);
 });
 
 test('A conflicting explicit layer recovers to the record natural layer', async ({ page }) => {
@@ -57,7 +60,7 @@ test('A conflicting explicit layer recovers to the record natural layer', async 
   await expect(item).toHaveAttribute('aria-pressed','true');
   await expect(page.locator('[data-filter="road-races"]')).toHaveClass(/is-active/);
   await expect.poll(() => new URL(page.url()).searchParams.get('layer')).toBe('road-races');
-  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordKey);
+  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordSlug);
 });
 
 test('Selecting a record on the map creates a shareable focused URL', async ({ page }) => {
@@ -75,6 +78,7 @@ test('Selecting a record on the map creates a shareable focused URL', async ({ p
 test('Changing map state releases a record deep link cleanly', async ({ page }) => {
   await page.goto(`/map.html?record=${recordKey}`, { waitUntil: 'domcontentloaded' });
   await expect(page.locator(`.adventure-item[data-id="${recordKey}"]`)).toHaveAttribute('aria-pressed','true');
+  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordSlug);
 
   await page.locator('[data-filter="summits"]').click();
   await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBeNull();
