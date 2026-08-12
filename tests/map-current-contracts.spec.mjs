@@ -90,6 +90,38 @@ test('Map focus and pinning are owned by the core instead of enhancement monkey-
   expect(ownership.afterBlur.pinnedFocusId).toBe(ownership.record);
   expect(ownership.cleared.focusId).toBeNull();
   expect(ownership.cleared.pinnedFocusId).toBeNull();
+  await page.waitForTimeout(1000);
+  const settled = await page.evaluate(() => window.AdventureMap.state());
+  expect(settled.focusId).toBeNull();
+  expect(settled.pinnedFocusId).toBeNull();
+  expect(errors).toEqual([]);
+});
+
+test('Map focus styling and route endpoints are owned by core', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+
+  const ownership = await page.evaluate(async () => {
+    const [coreSource, enhancementSource] = await Promise.all([
+      fetch('/app.js').then(response => response.text()),
+      fetch('/map-enhancements.js').then(response => response.text()),
+    ]);
+    const api = window.AdventureMap;
+    const record = api.records().find(item => api.visibleRoutes([item]).some(feature => ['LineString','MultiLineString','GeometryCollection'].includes(feature.geometry?.type)));
+    if (!record) return { coreSource, enhancementSource, record: null };
+    api.focus(record.id);
+    return { coreSource, enhancementSource, record: record.id };
+  });
+
+  expect(ownership.record, 'catalog should contain a record with line route geometry').toBeTruthy();
+  expect(ownership.coreSource).toContain('focusEndpointLayer');
+  expect(ownership.coreSource).toContain('function renderFocusEndpoints()');
+  expect(ownership.enhancementSource).not.toMatch(/applyFocusStyles\s*=/);
+  expect(ownership.enhancementSource).not.toContain('focusEndpointLayer');
+  await expect.poll(() => page.locator('.route-endpoint-wrap').count()).toBeGreaterThan(0);
+  await page.evaluate(() => window.AdventureMap.clearFocus());
+  await expect(page.locator('.route-endpoint-wrap')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 
