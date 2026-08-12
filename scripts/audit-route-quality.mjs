@@ -36,6 +36,7 @@ function isPersonalGps(feature) {
   const p = feature.properties || {};
   if (p.provenance === 'personal-gps') return true;
   if (p.stravaActivityId != null) return true;
+  if (Array.isArray(p.stravaActivityIds) && p.stravaActivityIds.length) return true;
   if (String(id).startsWith('strava-') || String(id).startsWith('activity-')) return true;
   const source = `${p.source || ''} ${p.sourceLabel || ''}`.toLowerCase();
   return source.includes('strava') || source.includes('personal gps');
@@ -44,6 +45,7 @@ function sourceActivityIds(feature) {
   const p = feature.properties || {};
   const ids = new Set();
   if (p.stravaActivityId != null) ids.add(String(p.stravaActivityId));
+  for (const activityId of p.stravaActivityIds || []) ids.add(String(activityId));
   const id = String(featureId(feature) || '');
   if (/^strava-\d+$/.test(id)) ids.add(id.slice(7));
   for (const adventureId of p.adventureIds || []) {
