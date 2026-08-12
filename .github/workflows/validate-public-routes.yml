@@ -36,3 +36,5 @@ jobs:
           if(repairs.some(repair=>!Number.isInteger(repair.trimEnd)||repair.trimEnd<1||repair.trimEnd>8))throw new Error('compiled route recovery metadata is invalid');
           console.log(`Compiled route contract passed with ${payload.features.length} features and ${repairs.length} explicit recoveries.`);
           NODE
+      - name: Audit GPS route point quality
+        run: node scripts/audit-route-quality.mjs
