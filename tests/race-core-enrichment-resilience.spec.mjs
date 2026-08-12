@@ -12,12 +12,17 @@ test('Race timeline renders before optional relationship enrichment finishes', a
   });
 
   await page.goto('/races/', { waitUntil: 'domcontentloaded' });
+
+  // Core race content and the built-in Colorado Triathlon series card should render
+  // immediately; relationships.json is optional enrichment and must not block them.
   await expect(page.locator('#timeline .timeline-item').first()).toBeVisible({ timeout: 5000 });
   await expect(page.locator('#raceTotal')).not.toHaveText('—');
-  await expect(page.locator('#seriesGrid')).toContainText('Loading series & challenges');
+  await expect(page.locator('#seriesGrid')).toContainText('Colorado Triathlon');
   expect(releaseRelationships).toBeTruthy();
 
   releaseRelationships();
+
+  // A failed optional relationship request must leave the core archive intact.
   await expect(page.locator('#seriesGrid')).toContainText('Colorado Triathlon');
   await expect(page.locator('#timeline .timeline-item').first()).toBeVisible();
 });
