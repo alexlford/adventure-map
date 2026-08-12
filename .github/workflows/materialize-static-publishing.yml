@@ -2,7 +2,24 @@ name: Materialize Adventures static publication
 
 on:
   push:
-    branches: [agent/static-publishing-v1]
+    branches-ignore: [main]
+    paths:
+      - '.github/workflows/materialize-static-publishing.yml'
+      - 'data/**'
+      - 'detail.html'
+      - 'index.html'
+      - 'activities.html'
+      - 'map.html'
+      - 'timeline.html'
+      - 'adventures.html'
+      - 'races.html'
+      - 'summits.html'
+      - 'skiing.html'
+      - 'nordic.html'
+      - 'mountain-biking.html'
+      - 'scripts/build-public-records.mjs'
+      - 'scripts/build-static-site.mjs'
+      - 'scripts/build-public-index.mjs'
 
 permissions:
   contents: write
@@ -15,7 +32,7 @@ jobs:
       - name: Check out publication branch
         uses: actions/checkout@v4
         with:
-          ref: agent/static-publishing-v1
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -35,4 +52,4 @@ jobs:
             exit 0
           fi
           git commit -m "Materialize static Adventures publication"
-          git push origin HEAD:agent/static-publishing-v1
+          git push origin HEAD:${{ github.ref_name }}
