@@ -76,36 +76,6 @@
       .addTo(focusEndpointLayer);
   }
 
-  const originalFocusAdventure=typeof focusAdventure==='function'?focusAdventure:null;
-  if(originalFocusAdventure){
-    focusAdventure=function(a){
-      state.pinnedFocusId=a.id;
-      const routeGroups=state.routeLayers.get(a.id)||[];
-      if(!routeGroups.length&&mapped(a)){
-        state.focusId=a.id;
-        applyFocusStyles();
-        const openFocused=()=>{state.focusId=a.id;applyFocusStyles();state.markers.get(a.id)?.openPopup?.()};
-        map.once('moveend',openFocused);
-        map.flyTo([a.lat,a.lon],Math.max(map.getZoom(),a.kind==='summit'?9:8),{duration:.8});
-        setTimeout(openFocused,900);
-        return;
-      }
-      originalFocusAdventure(a);
-      state.focusId=a.id;
-      applyFocusStyles();
-    };
-  }
-  if(typeof setRouteEmphasis==='function'){
-    setRouteEmphasis=function(id,on){
-      if(on)state.focusId=id;
-      else{
-        if(!pinnedIsVisible())state.pinnedFocusId=null;
-        state.focusId=state.pinnedFocusId||null;
-      }
-      applyFocusStyles();
-    };
-  }
-
   if (typeof applyFocusStyles === 'function') {
     applyFocusStyles = function() {
       if(state.pinnedFocusId&&!pinnedIsVisible())state.pinnedFocusId=null;
