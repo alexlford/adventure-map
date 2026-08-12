@@ -110,6 +110,9 @@ const summary = {
 console.log(JSON.stringify(summary, null, 2));
 console.log('\nGPS_ROUTE_QUALITY');
 for (const row of rows) console.log(JSON.stringify(row));
+const manifest = rows.map(row => ({ id: row.id, adventureIds: row.adventureIds, sourceActivityIds: row.sourceActivityIds }));
+console.log('\nROUTE_SOURCE_MANIFEST_B64');
+console.log(Buffer.from(JSON.stringify(manifest), 'utf8').toString('base64'));
 if (low.length) {
   console.log(`\n${low.length} GPS route(s) are below the high-resolution zoom target.`);
   if (failOnLowQuality) process.exitCode = 1;
