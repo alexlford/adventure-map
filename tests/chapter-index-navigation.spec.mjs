@@ -22,15 +22,23 @@ test('Race chapter index picks up the asynchronously rendered Majors feature', a
   await expect(index.getByRole('link',{name:'A marathon journey around the world.'})).toBeVisible();
 });
 
-test('Chapter index follows the section being read', async ({ page }) => {
+test('Chapter index follows the section being read without moving the page vertically', async ({ page }) => {
   await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
   const index = page.locator('.chapter-index');
   const links = index.locator('a');
   await expect(links.nth(1)).toBeVisible();
   const href = await links.nth(1).getAttribute('href');
-  await page.locator(href).scrollIntoViewIfNeeded();
+  await page.locator(href).evaluate(element => {
+    const top = window.scrollY + element.getBoundingClientRect().top - 180;
+    window.scrollTo(0,Math.max(0,top));
+  });
+  await page.waitForTimeout(100);
+  const before = await page.evaluate(() => window.scrollY);
   await expect.poll(async () => await links.nth(1).getAttribute('aria-current')).toBe('location');
   await expect(links.nth(1)).toHaveClass(/is-current/);
+  await page.waitForTimeout(150);
+  const after = await page.evaluate(() => window.scrollY);
+  expect(Math.abs(after-before)).toBeLessThan(4);
 });
 
 test('Chapter index stays compact and horizontally navigable on phone widths', async ({ page }) => {
