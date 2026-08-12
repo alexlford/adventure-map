@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import { SITE_ORIGIN, siteRoutes, browserRewriteRoutes, sitemapRoutes } from './lib/site-routes.mjs';
+
 const shared=fs.readFileSync('shared.js','utf8');
 const fallback=fs.readFileSync('404.html','utf8');
 const mapApp=fs.readFileSync('app.js','utf8');
@@ -7,13 +9,14 @@ const chapterMap=fs.readFileSync('chapter-map.js','utf8');
 const detail=fs.readFileSync('detail.html','utf8');
 const recordRenderer=fs.readFileSync('record-renderer.js','utf8');
 const sitemap=fs.readFileSync('sitemap.xml','utf8');
-const publicPages=['index.html','map.html','activities.html','timeline.html','races.html','summits.html','skiing.html','nordic.html','mountain-biking.html','adventures.html','detail.html','404.html'];
-const cleanRoutes={home:'/',map:'/map',explore:'/explore',timeline:'/timeline',races:'/races',summits:'/summits',skiing:'/skiing',nordic:'/nordic',mtb:'/mtb',stories:'/stories'};
+const publicPages=[...new Set([...siteRoutes.map(route=>route.source),'detail.html','404.html'])];
 const errors=[];
 if(!shared.includes("productionHost='adventures.alexlford.com'"))errors.push('shared.js production host is not adventures.alexlford.com');
 if(!shared.includes('`/record/${encodeURIComponent(record.slug || record.id)}/`'))errors.push('shared.js does not emit clean production record routes');
 if(!shared.includes('const PUBLIC_PATHS='))errors.push('shared.js does not define clean production page routes');
-for(const route of Object.values(cleanRoutes))if(!shared.includes(`'${route}'`)&&!shared.includes(`:${JSON.stringify(route)}`))errors.push(`shared.js missing clean public route ${route}`);
+for(const route of browserRewriteRoutes){
+  if(!shared.includes(`'${route.source}':'${route.path}'`))errors.push(`shared.js missing registered public rewrite ${route.source} → ${route.path}`);
+}
 if(!shared.includes("['skiing.html','Alpine Skiing','skiing']")||!shared.includes("['nordic.html','Nordic Skiing','nordic']"))errors.push('shared activity navigation must distinguish Alpine Skiing from Nordic Skiing');
 if(!shared.includes("assetHref('ux-polish.css')"))errors.push('shared shell must load the cross-chapter UX polish stylesheet');
 if(/location\.(replace|assign)|detail\.html\?record=|clean\.match\(\/\^record/.test(fallback))errors.push('404.html must be a normal not-found page, not a clean-route resolver');
@@ -38,10 +41,13 @@ if(!recordRenderer.includes('await renderRecordMap(record)'))errors.push('record
 if(!recordRenderer.includes("history.replaceState(null, '', A.recordHref(record))"))errors.push('record renderer does not restore the clean record URL after data and map loading');
 if(!recordRenderer.includes('A.refreshMeta(description)'))errors.push('record renderer does not refresh canonical/share metadata');
 if(/https:\/\/adventures\.alexlford\.com\/[a-z-]+\.html/.test(sitemap))errors.push('sitemap still publishes .html URLs');
-for(const route of Object.values(cleanRoutes).filter(x=>x!=='/'))if(!sitemap.includes(`https://adventures.alexlford.com${route}`))errors.push(`sitemap missing clean route ${route}`);
+for(const route of sitemapRoutes){
+  const url=route.path==='/'?`${SITE_ORIGIN}/`:`${SITE_ORIGIN}${route.path}`;
+  if(!sitemap.includes(url))errors.push(`sitemap missing registered public route ${route.path}`);
+}
 for(const file of publicPages){
   const text=fs.readFileSync(file,'utf8');
   if(/\bAlmanac\b/.test(text))errors.push(`${file} exposes retired Almanac branding; use Adventures, Stories, Explore, records, or archive as appropriate`);
 }
 if(errors.length){console.error(errors.join('\n'));process.exit(1)}
-console.log('Direct clean routing, activity identity, single-pass record rendering, and Adventures branding validation passed.');
+console.log(`Direct clean routing validation passed for ${siteRoutes.length} registered public routes.`);
