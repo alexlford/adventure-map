@@ -47,7 +47,7 @@ body[data-page="summits"] .detail-map .leaflet-interactive{stroke:#357662!import
 body[data-page="races"] .detail-map .leaflet-interactive{stroke:#b76b26!important}
 body[data-page="skiing"] .detail-map .leaflet-interactive{stroke:#2f8ca6!important}
 body[data-page="nordic"] .detail-map .leaflet-interactive{stroke:#2f6f8f!important}
-body[data-page="mountain-biking"] .detail-map .leaflet-interactive{stroke:#315f9e!important}
+body[data-page="mountain-biking"] .detail-map .leaflet-interactive{stroke:#2f7d4a!important}
 body[data-page="adventures"] .detail-map .leaflet-interactive{stroke:#715a8d!important}
 .detail-map path.leaflet-interactive{filter:drop-shadow(0 1px 0 rgba(255,255,255,.88))}
 body[data-page] .detail-map path.detail-location-point{stroke:#fff!important;stroke-width:2.5px!important;fill:var(--accent)!important;filter:drop-shadow(0 3px 6px rgba(23,32,42,.24))}
@@ -57,7 +57,7 @@ body[data-page] .detail-map path.detail-location-point{stroke:#fff!important;str
 .route-endpoint-wrap{border:0!important;background:transparent!important}
 .route-endpoint{display:grid;place-items:center;width:24px;height:24px;border:2px solid #fff;border-radius:50%;background:var(--route-color,#17202a);box-shadow:0 4px 13px rgba(23,32,42,.25);color:#fff;font-size:8px;font-weight:900;letter-spacing:.02em;line-height:1}
 .route-endpoint.is-finish{background:var(--paper);color:var(--route-color,#17202a);border-color:var(--route-color,#17202a);box-shadow:0 0 0 2px rgba(255,255,255,.92),0 4px 13px rgba(23,32,42,.2)}
-.route-endpoint.is-loop{width:26px;height:26px;background:var(--route-color,#17202a);font-size:12px}
+.route-endpoint.is-loop{width:18px;height:18px;border:3px solid #fff;background:var(--route-color,#17202a);box-shadow:0 0 0 1px color-mix(in srgb,var(--route-color,#17202a) 66%,transparent),0 4px 11px rgba(23,32,42,.24);color:transparent;font-size:0}
 .leaflet-tooltip.route-endpoint-label{padding:4px 7px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 4px 12px rgba(23,32,42,.12);color:var(--ink);font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
 .leaflet-tooltip.route-endpoint-label:before{display:none}
 
@@ -75,6 +75,7 @@ body[data-page] .detail-map path.detail-location-point{stroke:#fff!important;str
   .leaflet-control-attribution{max-width:70%;white-space:normal;text-align:right;line-height:1.2}
   .detail-map{border-radius:16px}
   .route-endpoint{width:22px;height:22px}
+  .route-endpoint.is-loop{width:17px;height:17px}
   .leaflet-tooltip.route-endpoint-label,.leaflet-tooltip.detail-location-label{display:none}
   .leaflet-tooltip.map-point-label{display:none}
 }
