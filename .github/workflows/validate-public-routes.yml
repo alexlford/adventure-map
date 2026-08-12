@@ -36,3 +36,12 @@ jobs:
           if(repairs.some(repair=>!Number.isInteger(repair.trimEnd)||repair.trimEnd<1||repair.trimEnd>8))throw new Error('compiled route recovery metadata is invalid');
           console.log(`Compiled route contract passed with ${payload.features.length} features and ${repairs.length} explicit recoveries.`);
           NODE
+      - name: Audit Strava route coverage
+        run: node scripts/audit-strava-route-coverage.mjs --compiled tmp/public-routes.geojson --json tmp/strava-route-audit.json
+      - name: Upload route audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: strava-route-audit
+          path: tmp/strava-route-audit.json
+          if-no-files-found: warn
