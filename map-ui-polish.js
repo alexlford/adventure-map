@@ -61,12 +61,14 @@
       const pushMetric = value => {
         if (value && !metrics.includes(value) && value !== headline) metrics.push(value);
       };
+      if (a.kind === 'race' && a.officialDistance) pushMetric(String(a.officialDistance));
+      if (a.kind === 'race' && a.officialPlace) pushMetric(`Place ${a.officialPlace}`);
+      if (a.kind === 'race' && a.bib) pushMetric(`Bib ${a.bib}`);
       if (Number.isFinite(a.distanceMi)) pushMetric(`${a.distanceMi} mi`);
+      if (a.kind === 'race' && a.officialPace) pushMetric(`${a.officialPace} pace`);
       const showGain = a.mapCategory !== 'downhill-mtb' && a.mtbMode !== 'downhill';
       if (showGain && Number.isFinite(a.elevationGainM) && a.elevationGainM > 0) pushMetric(`${Math.round(a.elevationGainM)} m gain`);
       if (Number.isFinite(a.elapsedSeconds) && a.elapsedSeconds > 0 && typeof formatDuration === 'function') pushMetric(`${formatDuration(a.elapsedSeconds)} elapsed`);
-      if (a.kind === 'race' && a.officialPace) pushMetric(`${a.officialPace} pace`);
-      if (a.kind === 'race' && a.bib) pushMetric(`Bib ${a.bib}`);
 
       const headlineHtml = headline ? `<p class="popup-headline"><strong>${escapeHtml(headline)}</strong><small>${escapeHtml(headlineLabel)}</small></p>` : '';
       const metricHtml = metrics.length ? `<div class="popup-metrics">${metrics.slice(0,4).map(value => `<span class="popup-metric">${escapeHtml(value)}</span>`).join('')}</div>` : '';
