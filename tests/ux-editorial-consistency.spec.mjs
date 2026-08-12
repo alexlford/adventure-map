@@ -43,3 +43,13 @@ test('Map uses explicit ski labels and no retired notable script', async ({ page
   await expect(page.locator('#resultCount')).toContainText('shown');
   expect(errors).toEqual([]);
 });
+
+test('Composite challenge members are not promoted as standalone Adventures stories', async ({ page }) => {
+  const errors=runtimeErrors(page);
+  await page.goto('/adventures/',{waitUntil:'domcontentloaded'});
+  await expect(page.locator('#storyIndex')).toContainText('Colorado Triathlon');
+  await expect(page.locator('#storyIndex')).not.toContainText('Colorado Triathlon · Ski Leg');
+  const storyLinks=await page.locator('#storyIndex .story-index-row').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('href')||''));
+  expect(storyLinks.some(href=>href.includes('colorado-triathlon-ski-leg'))).toBeFalsy();
+  expect(errors).toEqual([]);
+});
