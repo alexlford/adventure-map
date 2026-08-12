@@ -6,16 +6,14 @@ import { siteRoutes, generatedRoutes } from './lib/site-routes.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const problems = [];
 const checked = new Set();
-let externalIntegrityChecked = 0;
+let localLeafletReferences = 0;
 
 const cleanRoutes = new Map(siteRoutes.map(route => [route.path, route.source]));
 const generatedPublicationDirs = new Set(['record',...generatedRoutes.map(route=>route.dir)]);
 const ignoredSchemes = /^(?:https?:|mailto:|tel:|data:|javascript:|blob:|webcal:)/i;
 const assetLike = /\.(?:html?|m?js|css|json|geojson|png|jpe?g|gif|webp|svg|ico|xml|txt|webmanifest|pdf)$/i;
-const leafletSri = new Map([
-  ['https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', 'sha256-p4NxAoJBhIINfQ3ynxNVZzKQZjMZyVhFQ8UP8tcxKcQ='],
-  ['https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo='],
-]);
+const remoteLeaflet = /https?:\/\/(?:unpkg\.com|cdn\.jsdelivr\.net|cdnjs\.cloudflare\.com)\/[^"'\s>]*leaflet/i;
+const localLeaflet = /(?:^|\/)vendor\/leaflet\/(?:leaflet\.css|leaflet\.js)$/i;
 
 async function exists(rel) {
   try { await fs.access(path.join(root, rel)); return true; }
@@ -26,20 +24,9 @@ function stripRef(raw) {
   return String(raw || '').trim().replace(/^['"]|['"]$/g, '').split('#')[0].split('?')[0];
 }
 
-function validateExternalIntegrity(text, source) {
-  for (const match of text.matchAll(/<(?:link|script)\b[^>]*>/gi)) {
-    const tag = match[0];
-    for (const [url, integrity] of leafletSri) {
-      if (!tag.includes(url)) continue;
-      externalIntegrityChecked += 1;
-      const escaped = integrity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      if (!new RegExp(`\\bintegrity\\s*=\\s*["']${escaped}["']`, 'i').test(tag)) {
-        problems.push(`${source}: Leaflet CDN asset is missing the pinned SRI hash: ${url}`);
-      }
-      if (!/\bcrossorigin\s*=\s*(?:["']["']|["']anonymous["'])/i.test(tag)) {
-        problems.push(`${source}: Leaflet CDN asset is missing crossorigin metadata: ${url}`);
-      }
-    }
+function validateLeafletRuntime(text, source) {
+  if (remoteLeaflet.test(text)) {
+    problems.push(`${source}: remote Leaflet runtime dependency is not allowed; use vendor/leaflet assets from the locked npm package.`);
   }
 }
 
@@ -48,6 +35,8 @@ async function verify(raw, source, kind) {
   if (!value || value === '.' || value.startsWith('#') || ignoredSchemes.test(value) || value.startsWith('//')) return;
   if (value.includes('${') || value.includes('{{') || value.includes('`')) return;
   if (value.startsWith('/record/')) return;
+
+  if (localLeaflet.test(value)) localLeafletReferences += 1;
 
   let target = value;
   const cleanKey = value.replace(/\/$/, '') || '/';
@@ -96,7 +85,7 @@ for (const full of files) {
   const text = await fs.readFile(full, 'utf8');
 
   if (ext === '.html') {
-    validateExternalIntegrity(text, rel);
+    validateLeafletRuntime(text, rel);
     for (const match of text.matchAll(/\b(?:href|src)\s*=\s*["']([^"']+)["']/gi)) await verify(match[1], rel, 'HTML dependency');
   }
   if (ext === '.css') {
@@ -109,7 +98,7 @@ for (const full of files) {
 }
 
 console.log(`Source dependency references checked: ${checked.size}`);
-console.log(`External integrity references checked: ${externalIntegrityChecked}`);
+console.log(`Local Leaflet runtime references checked: ${localLeafletReferences}`);
 if (problems.length) {
   problems.forEach(problem => console.error(`ERROR ${problem}`));
   process.exitCode = 1;
