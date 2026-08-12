@@ -28,6 +28,8 @@ jobs:
         run: npm ci
       - name: Build publication artifacts
         run: npm run build:publish
+      - name: Validate compiled catalog record layer
+        run: npm run validate:catalog-layer
       - name: Validate public record schema
         run: npm run validate:schema
       - name: Test public record schema contract
@@ -71,7 +73,7 @@ jobs:
         run: npm run test:update-pipeline
       - name: Verify publication artifacts are committed
         run: |
-          CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/public-records.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
+          CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/catalog-layers/records.json data/public-records.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
           if [ -n "$CHANGES" ]; then
             echo "$CHANGES"
             echo "Generated publication artifacts are not current. Run npm run build:publish and commit the results."

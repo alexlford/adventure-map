@@ -5,6 +5,7 @@
   "scripts": {
     "validate:data": "node scripts/validate-data.mjs",
     "validate:schema": "node scripts/validate-record-schema.mjs",
+    "validate:catalog-layer": "node scripts/validate-catalog-record-layer.mjs",
     "validate:duplicates": "node scripts/validate-duplicates.mjs",
     "validate:slugs": "node scripts/validate-record-slugs.mjs",
     "validate:routing": "node scripts/validate-routing.mjs",
@@ -15,7 +16,8 @@
     "validate:static": "node scripts/validate-static-publishing.mjs",
     "build:vendor": "node scripts/vendor-leaflet.mjs",
     "build:shared": "node scripts/build-shared.mjs",
-    "build:public-records": "node scripts/build-public-records.mjs",
+    "build:catalog-layer": "node scripts/build-catalog-record-layer.mjs",
+    "build:public-records": "npm run build:catalog-layer && node scripts/build-public-records.mjs",
     "build:static-site": "node scripts/build-static-site.mjs",
     "build:public-index": "node scripts/build-public-index.mjs",
     "build:publish": "npm run build:vendor && npm run build:shared && npm run build:public-records && npm run build:static-site && npm run build:public-index",
