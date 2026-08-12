@@ -12,7 +12,9 @@ const geometrySources = [
   'strava-route-backfill-04.json',
   'strava-route-backfill-05.json',
   'strava-route-backfill-06.json',
-  'ski-the-sky-runs.json'
+  'ski-the-sky-runs.json',
+  'strava-route-full-resolution-ranch-hand-skate-2022.json',
+  'strava-route-full-resolution-ranch-hand-classic-2022.json'
 ];
 
 async function installRouteRuntime(page) {
