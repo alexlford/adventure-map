@@ -30,7 +30,7 @@ test('Map restores a record deep link without DOM observers or function monkey-p
 
   const state = await page.evaluate(() => window.AdventureMap.state());
   expect(state.filter).toBe('adventures');
-  expect(page.url()).toContain('record=decalibron-2023');
+  expect(new URL(page.url()).searchParams.get('record')).toBe('2023-08-13-decalibron');
 
   const source = await page.evaluate(() => fetch('/map-url-state.js').then(response => response.text()));
   expect(source).toContain('window.AdventureMap');
