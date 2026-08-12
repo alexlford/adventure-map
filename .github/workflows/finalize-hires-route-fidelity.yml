@@ -1,0 +1,41 @@
+name: Finalize high-resolution route fidelity audit
+
+on:
+  push:
+    branches: [hires-gps-routes-20260811]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out route branch
+        uses: actions/checkout@v6
+        with:
+          ref: hires-gps-routes-20260811
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Install final route fidelity audit
+        run: cp scripts/audit-hires-route-fidelity.mjs scripts/audit-route-quality.mjs
+      - name: Validate archive and compiled route precedence
+        run: |
+          node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
+          node scripts/audit-route-quality.mjs --enforce
+      - name: Remove temporary finalization files
+        run: |
+          rm scripts/audit-hires-route-fidelity.mjs
+          rm .github/workflows/finalize-hires-route-fidelity.yml
+      - name: Commit final fidelity guard
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A scripts/audit-route-quality.mjs scripts/audit-hires-route-fidelity.mjs .github/workflows/finalize-hires-route-fidelity.yml
+          git commit -m "Enforce source-fidelity GPS route quality"
+          git push origin HEAD:hires-gps-routes-20260811
