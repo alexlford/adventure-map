@@ -8,6 +8,9 @@ const mapPage=fs.readFileSync('map.html','utf8');
 const chapterMap=fs.readFileSync('chapter-map.js','utf8');
 const detail=fs.readFileSync('detail.html','utf8');
 const recordRenderer=fs.readFileSync('record-renderer.js','utf8');
+const worldMajors=fs.readFileSync('world-majors.js','utf8');
+const worldMajorsPage=fs.readFileSync('world-majors/index.html','utf8');
+const racesPage=fs.readFileSync('races.html','utf8');
 const sitemap=fs.readFileSync('sitemap.xml','utf8');
 const publicPages=[...new Set([...siteRoutes.map(route=>route.source),'detail.html','404.html'])];
 const errors=[];
@@ -35,6 +38,13 @@ for(const legacy of ['detail-phase4.js','story-detail.js','world-major-detail.js
   if(detail.includes(`src="${legacy}"`))errors.push(`detail page still loads legacy patch script ${legacy}`);
   if(shared.includes(`src='${legacy}'`)||shared.includes(`src="${legacy}"`))errors.push(`shared.js still injects legacy patch script ${legacy}`);
 }
+if(fs.existsSync('world-majors-stamp-fix.js'))errors.push('retired World Majors patch script must not ship');
+for(const [name,text] of [['races.html',racesPage],['world-majors/index.html',worldMajorsPage]]){
+  if(text.includes('world-majors-stamp-fix.js'))errors.push(`${name} still loads the retired World Majors patch script`);
+}
+if(worldMajors.includes('MutationObserver'))errors.push('World Majors renderer must not depend on MutationObserver patching');
+if(worldMajors.includes('--passport-card-height'))errors.push('World Majors renderer must not depend on runtime-measured passport card heights');
+if(!worldMajors.includes('aria-label="Completed" title="Completed">Completed</div>'))errors.push('World Majors completed stamp is not rendered directly by the primary renderer');
 if(recordRenderer.includes('MutationObserver'))errors.push('record renderer must not depend on MutationObserver DOM patching');
 if(!recordRenderer.includes("A.pageHref('map.html')"))errors.push('record renderer map action is not production-safe');
 if(!recordRenderer.includes('await renderRecordMap(record)'))errors.push('record renderer must finish relative route loading before URL canonicalization');
