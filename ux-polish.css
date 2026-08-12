@@ -1,0 +1,13 @@
+/* Cross-chapter interaction and identity polish. */
+body[data-page="mountain-biking"]{--accent:#2f7d4a}
+.card:has(h3>a){position:relative}
+.card h3>a{text-decoration:none}
+.card h3>a::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.card:has(h3>a:hover),.card:has(h3>a:focus-visible){transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:0 14px 35px rgba(25,32,38,.08)}
+.card:has(h3>a:focus-visible){outline:3px solid color-mix(in srgb,var(--accent) 38%,transparent);outline-offset:3px}
+.card h3>a:focus-visible{outline:0}
+.chapter-sibling-link{margin-top:0}
+.chapter-sibling-link .section-title{margin-top:54px}
+.chapter-sibling-link .grid{grid-template-columns:minmax(0,1fr);max-width:560px}
+.chapter-sibling-link .card{min-height:170px}
+@media(max-width:560px){.chapter-sibling-link .section-title{margin-top:46px}}
