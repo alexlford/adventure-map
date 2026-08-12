@@ -14,9 +14,19 @@ window.AdventureSite = (() => {
     'index.html':'/','activities.html':'/explore','map.html':'/map','adventures.html':'/stories','timeline.html':'/timeline',
     'races.html':'/races','summits.html':'/summits','skiing.html':'/skiing','nordic.html':'/nordic','mountain-biking.html':'/mtb'
   };
+  const recordContextKey=()=>{
+    const query=new URLSearchParams(location.search);const explicit=query.get('record')||query.get('id');if(explicit)return explicit;
+    const clean=location.pathname.match(/\/record\/([^/]+)\/?$/);return clean?decodeURIComponent(clean[1]):'';
+  };
   const pageHref = (href) => {
-    if(!isProduction())return href;
-    const raw=String(href||'');const match=raw.match(/^([^?#]+)(\?[^#]*)?(#.*)?$/);if(!match)return raw;
+    let raw=String(href||'');
+    const recordKey=recordContextKey();
+    if(recordKey&&/^(?:\.\/|\/)?map\.html(?:[?#]|$)/.test(raw)&&!/[?&]record=/.test(raw)){
+      const hashAt=raw.indexOf('#'),hash=hashAt>=0?raw.slice(hashAt):'',beforeHash=hashAt>=0?raw.slice(0,hashAt):raw;
+      raw=`${beforeHash}${beforeHash.includes('?')?'&':'?'}record=${encodeURIComponent(recordKey)}${hash}`;
+    }
+    if(!isProduction())return raw;
+    const match=raw.match(/^([^?#]+)(\?[^#]*)?(#.*)?$/);if(!match)return raw;
     const file=match[1].replace(/^\.\//,'').replace(/^\//,'');const clean=PUBLIC_PATHS[file];
     return clean?`${clean}${match[2]||''}${match[3]||''}`:raw;
   };
