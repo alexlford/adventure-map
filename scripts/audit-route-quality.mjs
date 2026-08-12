@@ -3,6 +3,7 @@ import fs from 'node:fs';
 const readJson = path => JSON.parse(fs.readFileSync(path, 'utf8'));
 const args = new Set(process.argv.slice(2));
 const enforce = args.has('--enforce');
+const idsOutArg = process.argv.find(arg => arg.startsWith('--ids-out='));
 const routes = readJson('tmp/public-routes.geojson');
 const recordsPayload = readJson('data/public-records.json');
 const records = recordsPayload.records || recordsPayload;
@@ -126,6 +127,12 @@ const summary = {
 console.log(JSON.stringify(summary, null, 2));
 console.log('\nGPS_ROUTE_QUALITY');
 for (const row of rows) console.log(JSON.stringify(row));
+if (idsOutArg) {
+  const output = idsOutArg.slice('--ids-out='.length);
+  const ids = [...new Set(rows.flatMap(row => row.sourceActivityIds).filter(Boolean).map(String))].sort((a, b) => Number(a) - Number(b));
+  fs.writeFileSync(output, `${ids.join('\n')}\n`);
+  console.log(`\nWrote ${ids.length} published Strava activity IDs to ${output}.`);
+}
 if (unacceptable.length || metadataMismatch.length) {
   console.log(`\nRoute quality failed: ${unacceptable.length} unacceptable route(s), ${metadataMismatch.length} metadata mismatch(es).`);
   if (enforce) process.exitCode = 1;
