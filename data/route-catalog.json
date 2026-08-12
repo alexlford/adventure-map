@@ -38,7 +38,8 @@
     "data/strava-route-rdp3-15.json",
     "data/strava-route-rdp3-16.json",
     "data/strava-route-rdp3-17.json",
-    "data/strava-route-rdp3-18.json"
+    "data/strava-route-rdp3-18.json",
+    "data/strava-route-full-resolution-twin-cities-2015.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -83,6 +84,11 @@
       {
         "id": "strava-14377032125",
         "minPoints": 3800,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-641964287",
+        "minPoints": 1900,
         "resolutionPrefix": "full-source-track"
       }
     ],
