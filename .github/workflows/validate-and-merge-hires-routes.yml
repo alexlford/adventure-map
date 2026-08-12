@@ -1,0 +1,57 @@
+name: Validate and merge high-resolution routes
+
+on:
+  push:
+    branches: [hires-gps-routes-20260811]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  validate-and-merge:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out route branch
+        uses: actions/checkout@v6
+        with:
+          ref: hires-gps-routes-20260811
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Assemble archive if staging remains
+        run: node scripts/assemble-hires-routes.mjs
+      - name: Build publication artifacts
+        run: npm run build:publish
+      - name: Compile route collection
+        run: node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
+      - name: Enforce GPS source fidelity
+        run: node scripts/audit-route-quality.mjs --enforce
+      - name: Audit Strava route coverage
+        run: node scripts/audit-strava-route-coverage.mjs
+      - name: Validate route references
+        run: npm run validate:route-references
+      - name: Validate duplicate records
+        run: npm run validate:duplicates
+      - name: Validate canonical data
+        run: npm run validate:data
+      - name: Validate static publication
+        run: npm run validate:static
+      - name: Remove temporary workflow and materialize any generated changes
+        run: |
+          rm .github/workflows/validate-and-merge-hires-routes.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data/strava-routes-hires.json.gz.b64 data/strava-routes-hires3.parts data/strava-routes-hires.parts data/public-records.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb .github/workflows/validate-and-merge-hires-routes.yml
+          if ! git diff --cached --quiet; then
+            git commit -m "Finalize high-resolution route publication"
+            git push origin HEAD:hires-gps-routes-20260811
+          fi
+      - name: Enable merge when repository checks are satisfied
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr merge 61 --repo alexlford/adventure-map --squash --auto
