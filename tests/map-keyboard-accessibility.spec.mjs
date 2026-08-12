@@ -14,7 +14,7 @@ test('Master map exposes keyboard-operable geography and selected archive state'
   await archiveItem.click();
   await expect(archiveItem).toHaveAttribute('aria-pressed','true');
 
-  const mapControl = page.locator('#map .leaflet-interactive[role="button"]').first();
+  const mapControl = page.locator('#map .leaflet-interactive[role="button"]:visible').first();
   await expect(mapControl).toBeVisible();
   await expect(mapControl).toHaveAttribute('tabindex','0');
   await expect(mapControl).toHaveAttribute('aria-keyshortcuts','Enter Space');
@@ -25,7 +25,7 @@ test('Master map exposes keyboard-operable geography and selected archive state'
 
 test('Chapter map markers can open their records by keyboard', async ({ page }) => {
   await page.goto('/races.html?view=trail', { waitUntil: 'domcontentloaded' });
-  const marker = page.locator('#raceMap .leaflet-interactive[role="button"]').first();
+  const marker = page.locator('#raceMap .leaflet-interactive[role="button"]:visible').first();
   await expect(marker).toBeVisible();
   await expect(marker).toHaveAttribute('tabindex','0');
   await expect(marker).toHaveAttribute('aria-haspopup','dialog');
