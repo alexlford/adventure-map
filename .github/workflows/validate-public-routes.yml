@@ -36,5 +36,25 @@ jobs:
           if(repairs.some(repair=>!Number.isInteger(repair.trimEnd)||repair.trimEnd<1||repair.trimEnd>8))throw new Error('compiled route recovery metadata is invalid');
           console.log(`Compiled route contract passed with ${payload.features.length} features and ${repairs.length} explicit recoveries.`);
           NODE
+      - name: Protect dense Ranch Hand GPS routes
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const payload=JSON.parse(fs.readFileSync('tmp/public-routes.geojson','utf8'));
+          const byId=new Map(payload.features.map(feature=>[feature.id||feature.properties?.featureId||feature.properties?.id,feature]));
+          const pointCount=feature=>feature.geometry?.type==='LineString'
+            ? (feature.geometry.coordinates||[]).length
+            : feature.geometry?.type==='MultiLineString'
+              ? (feature.geometry.coordinates||[]).reduce((sum,line)=>sum+(line||[]).length,0)
+              : 0;
+          for(const id of ['strava-6814188054','strava-6819611723']){
+            const feature=byId.get(id);
+            if(!feature)throw new Error(`${id}: dense Ranch Hand route is missing`);
+            const points=pointCount(feature);
+            if(points<1500)throw new Error(`${id}: route regressed to ${points} points; expected at least 1500`);
+            if(!String(feature.properties?.routeResolution||'').startsWith('dense-source-track'))throw new Error(`${id}: dense route resolution metadata is missing`);
+            console.log(`${id}: protected dense GPS route with ${points} points.`);
+          }
+          NODE
       - name: Audit GPS route point quality
         run: node scripts/audit-route-quality.mjs
