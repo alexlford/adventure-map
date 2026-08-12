@@ -9,6 +9,15 @@
     initialParams.get('q') || initialParams.get('from') || initialParams.get('through')
   );
 
+  const layerLabels = {
+    nordic: 'Nordic skiing',
+    skiing: 'Alpine skiing'
+  };
+  Object.entries(layerLabels).forEach(([key,label]) => {
+    const button = document.querySelector(`[data-filter="${key}"]`);
+    if (button) button.textContent = label;
+  });
+
   function updateRefineSummary() {
     if (!refineSummary || typeof state !== 'object') return;
     const parts = [];

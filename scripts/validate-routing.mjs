@@ -14,10 +14,13 @@ if(!shared.includes("productionHost='adventures.alexlford.com'"))errors.push('sh
 if(!shared.includes('`/record/${encodeURIComponent(record.slug || record.id)}/`'))errors.push('shared.js does not emit clean production record routes');
 if(!shared.includes('const PUBLIC_PATHS='))errors.push('shared.js does not define clean production page routes');
 for(const route of Object.values(cleanRoutes))if(!shared.includes(`'${route}'`)&&!shared.includes(`:${JSON.stringify(route)}`))errors.push(`shared.js missing clean public route ${route}`);
+if(!shared.includes("['skiing.html','Alpine Skiing','skiing']")||!shared.includes("['nordic.html','Nordic Skiing','nordic']"))errors.push('shared activity navigation must distinguish Alpine Skiing from Nordic Skiing');
+if(!shared.includes("assetHref('ux-polish.css')"))errors.push('shared shell must load the cross-chapter UX polish stylesheet');
 if(/location\.(replace|assign)|detail\.html\?record=|clean\.match\(\/\^record/.test(fallback))errors.push('404.html must be a normal not-found page, not a clean-route resolver');
 if(!fallback.includes('That page is not in the archive'))errors.push('404.html missing normal not-found message');
 if(!mapApp.includes("location.hostname==='adventures.alexlford.com'"))errors.push('map app does not emit clean production record links');
 if(!mapPage.includes('href="index.html"')||!mapPage.includes("'index.html':'/'"))errors.push('map page must keep relative staging links and rewrite them only on production');
+if(mapPage.includes('notable.js')||fs.existsSync('notable.js'))errors.push('retired notable.js compatibility script must not ship');
 if(!chapterMap.includes('const A = window.AdventureSite')||!chapterMap.includes('const esc = A.esc'))errors.push('chapter map must use AdventureSite shared helpers');
 if(!chapterMap.includes("A.pageHref('map.html')")||!chapterMap.includes('A.recordHref(item)'))errors.push('chapter map must use shared page and record URL helpers');
 if(chapterMap.includes("location.hostname === 'adventures.alexlford.com'")||chapterMap.includes('const production ='))errors.push('chapter map must not duplicate production-host routing logic');
@@ -41,4 +44,4 @@ for(const file of publicPages){
   if(/\bAlmanac\b/.test(text))errors.push(`${file} exposes retired Almanac branding; use Adventures, Stories, Explore, records, or archive as appropriate`);
 }
 if(errors.length){console.error(errors.join('\n'));process.exit(1)}
-console.log('Direct clean routing, single-pass record rendering, and Adventures branding validation passed.');
+console.log('Direct clean routing, activity identity, single-pass record rendering, and Adventures branding validation passed.');
