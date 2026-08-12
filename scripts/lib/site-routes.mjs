@@ -1,9 +1,12 @@
-import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import vm from 'node:vm';
 
-const require=createRequire(import.meta.url);
-const registry=require('../../site-routes.js');
+const source=fs.readFileSync(new URL('../../site-routes.js',import.meta.url),'utf8');
+const sandbox={};
+vm.runInNewContext(source,sandbox,{filename:'site-routes.js'});
+const registry=sandbox.AdventureSiteRoutes;
 if(!registry||registry.schemaVersion!==1||!Array.isArray(registry.routes)||!registry.routes.length){
-  throw new Error('site-routes.js must export a schemaVersion 1 route registry.');
+  throw new Error('site-routes.js must expose a schemaVersion 1 AdventureSiteRoutes registry.');
 }
 
 export const SITE_ORIGIN=registry.origin;
