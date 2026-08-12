@@ -3,6 +3,8 @@
 
 This deliberately preserves the recorded track geometry. It does not invent
 intermediate points and it does not run Douglas-Peucker/RDP simplification.
+Large GPS discontinuities are emitted as separate line segments so a paused or
+interrupted recording cannot create a fake straight line across the map.
 
 By default it refreshes:
   * day-level MTB/Nordic routes from data/activity-days.json
@@ -23,6 +25,7 @@ import csv
 import gzip
 import io
 import json
+import math
 import re
 import zipfile
 import xml.etree.ElementTree as ET
@@ -33,6 +36,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 ACTIVITY_PREFIX = "data/activity-route-full-resolution-"
 CANONICAL_PREFIX = "data/strava-route-full-resolution-gpx-"
+EARTH_RADIUS_M = 6_371_008.8
 
 
 def read_json(path: Path) -> Any:
@@ -61,6 +65,41 @@ def encode_polyline(points: Iterable[tuple[float, float]]) -> str:
         last_lat = lat_i
         last_lon = lon_i
     return "".join(out)
+
+
+def haversine_m(a: tuple[float, float], b: tuple[float, float]) -> float:
+    lat1, lon1 = map(math.radians, a)
+    lat2, lon2 = map(math.radians, b)
+    d_lat = lat2 - lat1
+    d_lon = lon2 - lon1
+    h = math.sin(d_lat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(d_lon / 2) ** 2
+    return EARTH_RADIUS_M * 2 * math.atan2(math.sqrt(h), math.sqrt(1 - h))
+
+
+def split_discontinuities(
+    points: list[tuple[float, float]],
+    max_gap_m: float,
+) -> list[list[tuple[float, float]]]:
+    """Split a source track at implausibly large point-to-point jumps.
+
+    No intermediate geometry is synthesized and no ordinary source point is
+    simplified away. Only isolated one-point fragments are omitted because a
+    GeoJSON line cannot be rendered from a single coordinate.
+    """
+    if len(points) < 2:
+        return []
+    chunks: list[list[tuple[float, float]]] = []
+    current = [points[0]]
+    for previous, point in zip(points, points[1:]):
+        if haversine_m(previous, point) > max_gap_m:
+            if len(current) >= 2:
+                chunks.append(current)
+            current = [point]
+        else:
+            current.append(point)
+    if len(current) >= 2:
+        chunks.append(current)
+    return chunks
 
 
 def parse_gpx(data: bytes) -> list[list[tuple[float, float]]]:
@@ -139,16 +178,23 @@ def encoded_route(
     adventure_ids: list[str],
     category: str | None,
     mtb_mode: str | None,
+    max_gap_m: float,
 ) -> dict[str, Any]:
     lines: list[str] = []
-    point_counts: list[int] = []
+    source_point_counts: list[int] = []
+    retained_point_counts: list[int] = []
     source_files: list[str] = []
     for activity_id in activity_ids:
         segments, source_file = export.activity_segments(activity_id)
         source_files.append(source_file)
         for segment in segments:
-            lines.append(encode_polyline(segment))
-            point_counts.append(len(segment))
+            source_point_counts.append(len(segment))
+            for chunk in split_discontinuities(segment, max_gap_m):
+                lines.append(encode_polyline(chunk))
+                retained_point_counts.append(len(chunk))
+    if not lines:
+        raise ValueError(f"{route_id}: no renderable GPS line remains after gap splitting")
+    sampling = f"full-source-track-gap-split-{max_gap_m:g}m"
     return {
         "id": route_id,
         "adventureIds": adventure_ids,
@@ -156,13 +202,15 @@ def encoded_route(
         "mtbMode": mtb_mode,
         "stravaActivityIds": [str(value) for value in activity_ids],
         "sourceFiles": source_files,
-        "sourcePointCount": sum(point_counts),
-        "sourcePointCounts": point_counts,
+        "sourcePointCount": sum(source_point_counts),
+        "sourcePointCounts": source_point_counts,
+        "retainedPointCount": sum(retained_point_counts),
+        "sampling": sampling,
         "lines": lines,
     }
 
 
-def activity_day_routes(export: Export) -> list[dict[str, Any]]:
+def activity_day_routes(export: Export, max_gap_m: float) -> list[dict[str, Any]]:
     payload = read_json(DATA / "activity-days.json")
     routes: list[dict[str, Any]] = []
     for record in payload.get("adventures", []):
@@ -180,11 +228,12 @@ def activity_day_routes(export: Export) -> list[dict[str, Any]]:
             [record["id"]],
             category,
             record.get("mtbMode"),
+            max_gap_m,
         ))
     return routes
 
 
-def canonical_gpx_routes(export: Export, catalog: dict[str, Any]) -> list[dict[str, Any]]:
+def canonical_gpx_routes(export: Export, catalog: dict[str, Any], max_gap_m: float) -> list[dict[str, Any]]:
     features: dict[str, dict[str, Any]] = {}
     for rel in catalog.get("routeFiles", []):
         collection = read_json(ROOT / rel)
@@ -207,6 +256,7 @@ def canonical_gpx_routes(export: Export, catalog: dict[str, Any]) -> list[dict[s
                 [str(value) for value in adventure_ids],
                 props.get("category"),
                 props.get("mtbMode"),
+                max_gap_m,
             )
     return list(features.values())
 
@@ -215,7 +265,7 @@ def shard_payload(routes: list[dict[str, Any]], shard_size: int) -> list[list[di
     return [routes[index:index + shard_size] for index in range(0, len(routes), shard_size)]
 
 
-def write_shards(prefix: str, routes: list[dict[str, Any]], shard_size: int) -> list[str]:
+def write_shards(prefix: str, routes: list[dict[str, Any]], shard_size: int, sampling: str) -> list[str]:
     old = list(ROOT.glob(f"{prefix}*.json"))
     for path in old:
         path.unlink()
@@ -228,7 +278,7 @@ def write_shards(prefix: str, routes: list[dict[str, Any]], shard_size: int) -> 
         payload = {
             "encoding": "google-polyline5",
             "source": "Strava account export",
-            "sampling": "full-source-track",
+            "sampling": sampling,
             "routes": shard,
         }
         path.write_text(json.dumps(payload, separators=(",", ":")) + "\n", encoding="utf-8")
@@ -250,21 +300,39 @@ def main() -> None:
     parser.add_argument("source", help="Strava export ZIP or extracted export directory")
     parser.add_argument("--activity-shard-size", type=int, default=6)
     parser.add_argument("--canonical-shard-size", type=int, default=5)
+    parser.add_argument(
+        "--max-gap-m",
+        type=float,
+        default=180.0,
+        help="Start a new line when consecutive source GPS points are farther apart than this (default: 180 m).",
+    )
     args = parser.parse_args()
+    if args.max_gap_m <= 0:
+        raise SystemExit("--max-gap-m must be positive")
 
     export = Export(Path(args.source).expanduser())
     catalog = read_json(DATA / "route-catalog.json")
-    activity_routes = activity_day_routes(export)
-    canonical_routes = canonical_gpx_routes(export, catalog)
+    activity_routes = activity_day_routes(export, args.max_gap_m)
+    canonical_routes = canonical_gpx_routes(export, catalog, args.max_gap_m)
+    sampling = f"full-source-track-gap-split-{args.max_gap_m:g}m"
 
-    activity_paths = write_shards(ACTIVITY_PREFIX, activity_routes, args.activity_shard_size)
-    canonical_paths = write_shards(CANONICAL_PREFIX, canonical_routes, args.canonical_shard_size)
+    activity_paths = write_shards(ACTIVITY_PREFIX, activity_routes, args.activity_shard_size, sampling)
+    canonical_paths = write_shards(CANONICAL_PREFIX, canonical_routes, args.canonical_shard_size, sampling)
     refresh_catalog(catalog, activity_paths + canonical_paths)
 
-    activity_points = sum(route["sourcePointCount"] for route in activity_routes)
-    canonical_points = sum(route["sourcePointCount"] for route in canonical_routes)
-    print(f"Materialized {len(activity_routes)} activity-day routes with {activity_points:,} source GPS points.")
-    print(f"Materialized {len(canonical_routes)} canonical GPX routes with {canonical_points:,} source GPS points.")
+    activity_source_points = sum(route["sourcePointCount"] for route in activity_routes)
+    activity_retained_points = sum(route["retainedPointCount"] for route in activity_routes)
+    canonical_source_points = sum(route["sourcePointCount"] for route in canonical_routes)
+    canonical_retained_points = sum(route["retainedPointCount"] for route in canonical_routes)
+    print(
+        f"Materialized {len(activity_routes)} activity-day routes with "
+        f"{activity_retained_points:,}/{activity_source_points:,} source GPS points retained."
+    )
+    print(
+        f"Materialized {len(canonical_routes)} canonical GPX routes with "
+        f"{canonical_retained_points:,}/{canonical_source_points:,} source GPS points retained."
+    )
+    print(f"Split route geometry at source gaps greater than {args.max_gap_m:g} m.")
     print(f"Updated route catalog with {len(activity_paths) + len(canonical_paths)} full-resolution shards.")
 
 
