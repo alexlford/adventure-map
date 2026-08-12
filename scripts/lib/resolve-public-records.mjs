@@ -71,38 +71,10 @@ export const normalizeRecord = record => {
   };
 };
 
-const recordQuality = record => {
-  let score = 0;
-  if (record.resultSource) score += 8;
-  if (record.officialDistance || Number.isFinite(Number(record.officialDistanceKm)) || Number.isFinite(Number(record.officialDistanceMi))) score += 6;
-  if (record.matchConfidence === 'verified') score += 4;
-  else if (record.matchConfidence === 'confirmed') score += 3;
-  if (record.officialTime) score += 2;
-  if (record.date) score += 1;
-  return score;
-};
-
-const dedupeSharedActivities = records => {
-  const byActivity = new Map();
-  for (const record of records.values()) {
-    const activityId = record.stravaActivityId != null ? String(record.stravaActivityId) : null;
-    if (!activityId) continue;
-    const current = byActivity.get(activityId);
-    if (!current || recordQuality(record) > recordQuality(current)) byActivity.set(activityId, record);
-  }
-  if (!byActivity.size) return records;
-  const deduped = new Map();
-  for (const [id, record] of records) {
-    const activityId = record.stravaActivityId != null ? String(record.stravaActivityId) : null;
-    if (!activityId || byActivity.get(activityId) === record) deduped.set(id, record);
-  }
-  return deduped;
-};
-
 export async function resolvePublicRecords() {
   const manifest = await readJson('data/catalog.json');
   const sourcePayloads = await Promise.all((manifest.sources || []).map(async source => ({ source, payload: await readJson(source.path) })));
-  let records = new Map();
+  const records = new Map();
   for (const { source, payload } of sourcePayloads) {
     for (const item of payload.adventures || []) {
       if (!item.id) throw new Error(`${source.path}: record missing id`);
@@ -118,7 +90,10 @@ export async function resolvePublicRecords() {
     if (!records.has(id)) throw new Error(`Catalog override references unknown id: ${id}`);
     records.set(id, { ...records.get(id), ...override });
   }
-  records = dedupeSharedActivities(records);
+
+  // A single GPS activity can legitimately represent several public records, such as
+  // multiple summits reached on one hike. Identity decisions belong in the canonical
+  // catalog (layered IDs, tombstones, and explicit overrides), never in the publisher.
   const publicRecords = [...records.values()].map(normalizeRecord);
   const ids = new Set();
   const slugs = new Set();
