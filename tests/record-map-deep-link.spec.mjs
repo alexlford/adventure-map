@@ -22,6 +22,18 @@ test('Master map record deep link focuses the matching archive entry', async ({ 
   await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordKey);
 });
 
+test('Selecting a record on the map creates a shareable focused URL', async ({ page }) => {
+  await page.goto('/map.html?q=Chicago%20Marathon', { waitUntil: 'domcontentloaded' });
+  const item = page.locator(`.adventure-item[data-id="${recordKey}"]`);
+  await expect(item).toBeVisible();
+  await expect(item).toHaveAttribute('aria-pressed','false');
+
+  await item.click();
+  await expect(item).toHaveAttribute('aria-pressed','true');
+  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordSlug);
+  await expect.poll(() => new URL(page.url()).searchParams.get('q')).toBe('Chicago Marathon');
+});
+
 test('Changing map state releases a record deep link cleanly', async ({ page }) => {
   await page.goto(`/map.html?record=${recordKey}`, { waitUntil: 'domcontentloaded' });
   await expect(page.locator(`.adventure-item[data-id="${recordKey}"]`)).toHaveAttribute('aria-pressed','true');
