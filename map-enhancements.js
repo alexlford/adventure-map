@@ -26,6 +26,15 @@
     const ROUTE_DETAIL_ZOOM=7;
     let markerZoom=map.getZoom();
 
+    function routeCategoryForFeature(feature){
+      const linked=(feature.properties?.adventureIds||[]).map(id=>state.adventures.find(a=>a.id===id)).filter(Boolean);
+      if(state.filter==='summits'&&linked.some(a=>publicLayerFor(a)==='summits'))return'summits';
+      if(state.filter!=='all'&&linked.some(a=>publicLayerFor(a)===state.filter))return state.filter;
+      const focused=state.focusId?linked.find(a=>a.id===state.focusId):null;
+      if(focused)return publicLayerFor(focused);
+      return publicLayerFor(linked[0]||{kind:'adventure'});
+    }
+
     function applyRouteZoomPresentation(){
       applyFocusStyles();
       const zoom=map.getZoom();
@@ -35,12 +44,12 @@
 
       state.routeFeatureLayers.forEach(group=>group.eachLayer(layer=>{
         const feature=layer.feature||{};
-        const linked=(feature.properties?.adventureIds||[]).map(id=>state.adventures.find(a=>a.id===id)).filter(Boolean);
-        const category=publicLayerFor(linked[0]||{kind:'adventure'});
+        const category=routeCategoryForFeature(feature);
         const style=baseRouteStyle(feature,category);
         const active=Boolean(state.focusId&&routeContainsId(layer,state.focusId));
         if(state.focusId&&!active)return;
-        layer.setStyle?.({...style,weight:active?Math.max(style.weight+3,7):Math.max(style.weight,5.5),opacity:active?1:.96});
+        const minimumWeight=category==='summits'?6:5.5;
+        layer.setStyle?.({...style,weight:active?Math.max(style.weight+3,7):Math.max(style.weight,minimumWeight),opacity:active?1:.96});
         layer.bringToFront?.();
       }));
 
@@ -64,6 +73,8 @@
       if(nextZoom!==markerZoom){markerZoom=nextZoom;renderMarkers(filteredAdventures())}
       applyRouteZoomPresentation();
     });
+
+    document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>requestAnimationFrame(applyRouteZoomPresentation)));
     setTimeout(()=>applyRouteZoomPresentation(),0);
   }
 
