@@ -28,6 +28,10 @@ jobs:
         run: npm ci
       - name: Build publication artifacts
         run: npm run build:publish
+      - name: Validate public record schema
+        run: npm run validate:schema
+      - name: Test public record schema contract
+        run: npm run test:record-schema
       - name: Validate canonical catalog
         run: npm run validate:data
       - name: Validate duplicate races
