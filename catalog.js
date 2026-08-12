@@ -1,6 +1,10 @@
 window.AdventureCatalog = (() => {
   let cache = null;
+  let loadPromise = null;
   let relationshipCache = null;
+  let relationshipPromise = null;
+  let manifestPromise = null;
+
   const fetchJson = async (path) => {
     const response = await fetch(path, { cache: 'no-cache' });
     if (!response.ok) throw new Error(`Failed to load ${path} (${response.status})`);
@@ -93,10 +97,19 @@ window.AdventureCatalog = (() => {
     return { errors, warnings, valid: errors.length === 0 };
   }
 
-  async function loadManifest() { return fetchJson('data/catalog.json'); }
-  async function load({ fresh = false } = {}) {
-    if (cache && !fresh) return cache;
-    const manifest = await loadManifest();
+  function loadManifest({ fresh = false } = {}) {
+    if (!fresh && manifestPromise) return manifestPromise;
+    const pending = fetchJson('data/catalog.json');
+    if (fresh) return pending;
+    manifestPromise = pending.catch(error => {
+      manifestPromise = null;
+      throw error;
+    });
+    return manifestPromise;
+  }
+
+  async function loadFromSources({ fresh = false } = {}) {
+    const manifest = await loadManifest({ fresh });
     const [sourcePayloads, matches] = await Promise.all([
       Promise.all(manifest.sources.map(source => fetchJson(source.path).then(payload => ({ source, payload })))),
       fetchJson(manifest.matchLayer)
@@ -109,24 +122,61 @@ window.AdventureCatalog = (() => {
       if (!records.has(id)) throw new Error(`Catalog override references unknown id: ${id}`);
       records.set(id, { ...records.get(id), ...override });
     }
-    // Do not collapse records solely because they share one GPS activity. A single hike
-    // can legitimately produce several summit records; duplicate identity is resolved
-    // explicitly in the canonical catalog through layered IDs and tombstones.
-    const adventures = [...records.values()].map(normalizeRecord);
+    return [...records.values()].map(normalizeRecord);
+  }
+
+  async function loadCompiled() {
+    const payload = await fetchJson('data/public-records.json');
+    if (!payload || payload.schemaVersion !== 1 || !Array.isArray(payload.records)) throw new Error('Compiled public-records artifact has an invalid schema.');
+    if (Number.isFinite(payload.recordCount) && payload.recordCount !== payload.records.length) throw new Error('Compiled public-records record count does not match its payload.');
+    return payload.records;
+  }
+
+  async function resolveLoad({ fresh = false } = {}) {
+    let adventures;
+    try {
+      adventures = await loadCompiled();
+    } catch (compiledError) {
+      console.warn('Compiled Adventure catalog unavailable; falling back to source layers.', compiledError);
+      adventures = await loadFromSources({ fresh });
+    }
     const report = validate(adventures);
     if (!report.valid) throw new Error(`Catalog validation failed: ${report.errors.join('; ')}`);
     if (report.warnings.length) console.warn('Adventure catalog warnings:', report.warnings);
     cache = adventures;
     return adventures;
   }
-  async function loadRelationships({ fresh = false } = {}) {
-    if (relationshipCache && !fresh) return relationshipCache;
-    const manifest = await loadManifest();
+
+  function load({ fresh = false } = {}) {
+    if (cache && !fresh) return Promise.resolve(cache);
+    if (loadPromise && !fresh) return loadPromise;
+    const pending = resolveLoad({ fresh });
+    if (fresh) return pending;
+    loadPromise = pending.finally(() => { loadPromise = null; });
+    return loadPromise;
+  }
+
+  async function resolveRelationships({ fresh = false } = {}) {
+    const manifest = await loadManifest({ fresh });
     if (!manifest.relationshipLayer) return [];
     const payload = await fetchJson(manifest.relationshipLayer);
     relationshipCache = payload.relationships || [];
     return relationshipCache;
   }
-  async function relationshipsFor(recordId) { const relationships = await loadRelationships(); return relationships.filter(rel => (rel.memberIds || []).includes(recordId) || rel.adventureId === recordId); }
+
+  function loadRelationships({ fresh = false } = {}) {
+    if (relationshipCache && !fresh) return Promise.resolve(relationshipCache);
+    if (relationshipPromise && !fresh) return relationshipPromise;
+    const pending = resolveRelationships({ fresh });
+    if (fresh) return pending;
+    relationshipPromise = pending.finally(() => { relationshipPromise = null; });
+    return relationshipPromise;
+  }
+
+  async function relationshipsFor(recordId) {
+    const relationships = await loadRelationships();
+    return relationships.filter(rel => (rel.memberIds || []).includes(recordId) || rel.adventureId === recordId);
+  }
+
   return { load, validate, normalizeRecord, loadRelationships, relationshipsFor, recordSlug };
 })();
