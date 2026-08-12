@@ -93,9 +93,25 @@ window.AdventureCatalog = (() => {
     return { errors, warnings, valid: errors.length === 0 };
   }
 
+  const validateLoaded = adventures => {
+    const report = validate(adventures);
+    if (!report.valid) throw new Error(`Catalog validation failed: ${report.errors.join('; ')}`);
+    if (report.warnings.length) console.warn('Adventure catalog warnings:', report.warnings);
+    return adventures;
+  };
+
   async function loadManifest() { return fetchJson('data/catalog.json'); }
-  async function load({ fresh = false } = {}) {
-    if (cache && !fresh) return cache;
+
+  async function loadCompiledSnapshot() {
+    const payload = await fetchJson('data/public-records.json');
+    if (!payload || !Array.isArray(payload.records)) throw new Error('Compiled public catalog is missing records.');
+    if (payload.recordCount != null && Number(payload.recordCount) !== payload.records.length) {
+      throw new Error(`Compiled public catalog count mismatch: expected ${payload.recordCount}, found ${payload.records.length}`);
+    }
+    return validateLoaded(payload.records.map(normalizeRecord));
+  }
+
+  async function loadFromSources() {
     const manifest = await loadManifest();
     const [sourcePayloads, matches] = await Promise.all([
       Promise.all(manifest.sources.map(source => fetchJson(source.path).then(payload => ({ source, payload })))),
@@ -112,13 +128,25 @@ window.AdventureCatalog = (() => {
     // Do not collapse records solely because they share one GPS activity. A single hike
     // can legitimately produce several summit records; duplicate identity is resolved
     // explicitly in the canonical catalog through layered IDs and tombstones.
-    const adventures = [...records.values()].map(normalizeRecord);
-    const report = validate(adventures);
-    if (!report.valid) throw new Error(`Catalog validation failed: ${report.errors.join('; ')}`);
-    if (report.warnings.length) console.warn('Adventure catalog warnings:', report.warnings);
+    return validateLoaded([...records.values()].map(normalizeRecord));
+  }
+
+  async function load({ fresh = false, source = false } = {}) {
+    if (cache && !fresh && !source) return cache;
+    let adventures;
+    if (source) adventures = await loadFromSources();
+    else {
+      try {
+        adventures = await loadCompiledSnapshot();
+      } catch (error) {
+        console.warn('Adventure catalog: compiled snapshot unavailable; falling back to provenance sources.', error);
+        adventures = await loadFromSources();
+      }
+    }
     cache = adventures;
     return adventures;
   }
+
   async function loadRelationships({ fresh = false } = {}) {
     if (relationshipCache && !fresh) return relationshipCache;
     const manifest = await loadManifest();
