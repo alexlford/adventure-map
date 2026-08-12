@@ -8,12 +8,19 @@ window.AdventureSite = (() => {
   const outingType = (a) => a.discipline === 'nordic' ? 'Nordic outing' : a.discipline === 'mountain-bike' ? (a.mtbMode === 'downhill' ? 'Downhill MTB' : a.mtbMode === 'mixed' ? 'MTB + Downhill MTB' : 'MTB') : 'Outing';
   const adventureType = (a) => a.discipline === 'ski-objective' ? 'Alpine ski objective' : a.discipline === 'mountain-loop' ? 'Mountain loop' : a.discipline === 'trek' ? 'Trek / traverse' : a.discipline === 'challenge' ? 'Challenge' : a.kind === 'summit' ? 'Summit' : 'Adventure';
   const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'event' ? eventType(a) : a.kind === 'outing' ? outingType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
-  const productionHost='adventures.alexlford.com';
+  const routeRegistry=window.AdventureSiteRoutes;
+  if(!routeRegistry||routeRegistry.schemaVersion!==1||!Array.isArray(routeRegistry.routes))throw new Error('Canonical site route registry is unavailable.');
+  const siteRoutes=routeRegistry.routes;
+  const productionHost=new URL(routeRegistry.origin).hostname;
   const isProduction=()=>location.hostname===productionHost;
-  const PUBLIC_PATHS={
-    'index.html':'/','activities.html':'/explore','map.html':'/map','adventures.html':'/stories','timeline.html':'/timeline',
-    'races.html':'/races','summits.html':'/summits','skiing.html':'/skiing','nordic.html':'/nordic','mountain-biking.html':'/mtb'
-  };
+  const PUBLIC_PATHS=Object.fromEntries(siteRoutes.filter(route=>route.browserRewrite).map(route=>[route.source,route.path]));
+  const navEntry=route=>[route.source,route.navLabel||route.label,route.activeKey||route.key];
+  const PRIMARY=siteRoutes.filter(route=>route.navGroup==='primary').map(navEntry);
+  const AUX=siteRoutes.filter(route=>route.navGroup==='aux').map(navEntry);
+  const ACTIVITIES=siteRoutes.filter(route=>route.navGroup==='activity').map(navEntry);
+  const activityKeys=new Set(ACTIVITIES.map(x=>x[2]));
+  const allNav=[...PRIMARY,...AUX,...ACTIVITIES];
+  const activeForRoute=route=>route?.parentActiveKey||route?.activeKey||route?.key||null;
   const recordContextKey=()=>{
     const query=new URLSearchParams(location.search);const explicit=query.get('record')||query.get('id');if(explicit)return explicit;
     const clean=location.pathname.match(/\/record\/([^/]+)\/?$/);return clean?decodeURIComponent(clean[1]):'';
@@ -31,11 +38,6 @@ window.AdventureSite = (() => {
     return clean?`${clean}${match[2]||''}${match[3]||''}`:raw;
   };
   const recordHref = (record) => isProduction()?`/record/${encodeURIComponent(record.slug || record.id)}/`:`detail.html?record=${encodeURIComponent(record.slug || record.id)}`;
-  const PRIMARY=[['index.html','Home','home'],['activities.html','Explore','explore'],['map.html','Map','map'],['adventures.html','Stories','stories']];
-  const AUX=[['timeline.html','Timeline','timeline']];
-  const ACTIVITIES=[['races.html','Races','races'],['summits.html','Summits','summits'],['skiing.html','Alpine Skiing','skiing'],['nordic.html','Nordic Skiing','nordic'],['mountain-biking.html','MTB','mountain-biking']];
-  const activityKeys=new Set(ACTIVITIES.map(x=>x[2]));
-  const allNav=[...PRIMARY,...AUX,...ACTIVITIES];
   const assetHref=(name)=>{const script=[...document.scripts].find(node=>/shared\.js(?:[?#]|$)/.test(node.src));return script?new URL(name,script.src).href:name;};
   function ensurePolishStyles(){if(document.querySelector('link[data-ux-polish]'))return;const style=document.createElement('link');style.rel='stylesheet';style.href=assetHref('ux-polish.css');style.dataset.uxPolish='true';document.head.appendChild(style);}
   function normalizePublicUrl(){
@@ -50,9 +52,12 @@ window.AdventureSite = (() => {
   function inferActive(){
     const path=location.pathname.replace(/\/+$/,'')||'/';
     if(isProduction()){
-      const file=Object.keys(PUBLIC_PATHS).find(k=>(PUBLIC_PATHS[k].replace(/\/+$/,'')||'/')===path);
-      const hit=file&&allNav.find(x=>x[0]===file);if(hit)return hit[2];
+      const route=siteRoutes.find(item=>(item.path.replace(/\/+$/,'')||'/')===path);
+      if(route)return activeForRoute(route);
     }
+    const localPath=location.pathname.replace(/^\/+/, '');
+    const route=siteRoutes.find(item=>localPath.endsWith(item.source));
+    if(route)return activeForRoute(route);
     const p=location.pathname.split('/').pop()||'index.html';const hit=allNav.find(x=>x[0]===p);return hit?.[2]||null;
   }
   let catalogPromise;
