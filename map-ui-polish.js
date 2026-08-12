@@ -18,10 +18,9 @@
     if (button) button.textContent = label;
   });
 
-  // Archive rows should have one consistent visual weight. An unmapped record is
-  // still a first-class archive record; only its map interactivity differs.
+  // Mapping availability must never make an archive record look secondary.
   const archiveStyle = document.createElement('style');
-  archiveStyle.textContent = '.adventure-item.is-unmapped{opacity:1}';
+  archiveStyle.textContent = '.adventure-item.is-unmapped{opacity:1!important}';
   document.head.appendChild(archiveStyle);
 
   const archiveDateKey = record => {
@@ -43,27 +42,34 @@
     return String(a?.name || '').localeCompare(String(b?.name || ''));
   };
 
-  const archiveList = document.getElementById('adventureList');
-  let archiveObserver = null;
-  const orderArchiveList = () => {
-    if (!archiveList || typeof state !== 'object' || !Array.isArray(state.adventures)) return;
-    const nodes = [...archiveList.querySelectorAll('.adventure-item')];
-    if (nodes.length < 2) return;
-    const recordsById = new Map(state.adventures.map(record => [String(record.id),record]));
-    const ordered = nodes.slice().sort((left,right) => compareArchiveRecords(
-      recordsById.get(String(left.dataset.id)),
-      recordsById.get(String(right.dataset.id))
-    ));
-    if (nodes.every((node,index) => node === ordered[index])) return;
-    archiveObserver?.disconnect();
-    ordered.forEach(node => archiveList.appendChild(node));
-    archiveObserver?.observe(archiveList,{childList:true});
-  };
-
-  if (archiveList && 'MutationObserver' in window) {
-    archiveObserver = new MutationObserver(() => queueMicrotask(orderArchiveList));
-    archiveObserver.observe(archiveList,{childList:true});
-    queueMicrotask(orderArchiveList);
+  // Replace the year-grouped archive renderer with strict reverse chronology.
+  // Exact dates lead; year-only records follow dated records in that year; fully
+  // undated aggregate records remain at the end.
+  if (typeof renderList === 'function') {
+    renderList = function(items) {
+      resultCount.textContent = `${items.length} shown`;
+      adventureList.innerHTML = '';
+      if (!items.length) {
+        renderArchiveState('empty','No matching records','Try another layer, year range, or search.');
+        return;
+      }
+      items.slice().sort(compareArchiveRecords).forEach(a => {
+        const category = publicLayerFor(a);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.id = a.id;
+        button.className = `adventure-item${mapped(a) || state.routeLayers.has(a.id) ? '' : ' is-unmapped'}`;
+        button.innerHTML = `<span class="item-dot" style="background:${CATEGORY[category]?.color || CATEGORY.adventures.color}"></span><span><span class="item-title">${escapeHtml(a.name)}</span><span class="item-meta">${escapeHtml(itemMeta(a))}</span></span><span class="item-value">${escapeHtml(itemValue(a))}</span>`;
+        if (mapped(a) || state.routeLayers.has(a.id)) {
+          button.addEventListener('click',() => focusAdventure(a));
+          button.addEventListener('mouseenter',() => setRouteEmphasis(a.id,true));
+          button.addEventListener('mouseleave',() => setRouteEmphasis(a.id,false));
+          button.addEventListener('focus',() => setRouteEmphasis(a.id,true));
+          button.addEventListener('blur',() => setRouteEmphasis(a.id,false));
+        }
+        adventureList.appendChild(button);
+      });
+    };
   }
 
   function updateRefineSummary() {
