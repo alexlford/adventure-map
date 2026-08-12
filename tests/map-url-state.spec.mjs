@@ -18,7 +18,7 @@ test('Map interactions publish shareable URL state and restore it on reload', as
   await expect.poll(() => new URL(page.url()).searchParams.get('q')).toBe('mount');
   if (years.length > 2) {
     await expect.poll(() => new URL(page.url()).searchParams.get('from')).toBe(years.at(-2));
-    await expect.poll(() => new URL(page.url()).searchParams.get('to')).toBe(years.at(-1));
+    await expect.poll(() => new URL(page.url()).searchParams.get('through')).toBe(years.at(-1));
   }
 
   const stateUrl = page.url();
