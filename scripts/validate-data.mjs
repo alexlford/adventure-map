@@ -13,10 +13,17 @@ const warnings = [];
 const layeredMerges = [];
 const absentTombstones = [];
 
-for (const source of manifest.sources) {
+const sourcePaths = new Set();
+for (const source of manifest.sources || []) {
+  if (!source?.path || typeof source.path !== 'string') { problems.push('catalog source missing path'); continue; }
+  if (sourcePaths.has(source.path)) problems.push(`catalog sources contains duplicate path ${source.path}`);
+  sourcePaths.add(source.path);
   const payload = await readJson(source.path);
+  const localIds = new Set();
   for (const item of payload.adventures || []) {
     if (!item.id) { problems.push(`${source.path}: record missing id`); continue; }
+    if (localIds.has(item.id)) problems.push(`${source.path}: duplicate record id ${item.id} within one source`);
+    localIds.add(item.id);
     if (records.has(item.id)) layeredMerges.push(`${item.id}: ${sourceById.get(item.id)} → ${source.path}`);
     records.set(item.id, { ...(records.get(item.id) || {}), ...item });
     sourceById.set(item.id, source.path);
@@ -27,7 +34,10 @@ for (const [id, match] of Object.entries(matchPayload.matches || {})) {
   if (!records.has(id)) warnings.push(`${manifest.matchLayer}: match references unknown id ${id}`);
   else records.set(id, { ...records.get(id), ...match });
 }
+const seenTombstones = new Set();
 for (const id of manifest.removeIds || []) {
+  if (seenTombstones.has(id)) problems.push(`catalog removeIds contains duplicate id ${id}`);
+  seenTombstones.add(id);
   if (!records.has(id)) absentTombstones.push(id);
   records.delete(id);
 }
@@ -90,7 +100,9 @@ if (manifest.relationshipLayer) {
     seenRelationships.add(rel.id);
     if (!rel.name) problems.push(`${rel.id}: relationship missing name`);
     if (!Array.isArray(rel.memberIds) || !rel.memberIds.length) problems.push(`${rel.id}: relationship has no memberIds`);
-    for (const id of rel.memberIds || []) if (!records.has(id)) problems.push(`${rel.id}: member references unknown/non-public record ${id}`);
+    const memberIds = rel.memberIds || [];
+    if (new Set(memberIds).size !== memberIds.length) problems.push(`${rel.id}: relationship contains duplicate memberIds`);
+    for (const id of memberIds) if (!records.has(id)) problems.push(`${rel.id}: member references unknown/non-public record ${id}`);
     if (rel.adventureId && !records.has(rel.adventureId)) problems.push(`${rel.id}: adventureId references unknown/non-public record ${rel.adventureId}`);
     if (rel.adventureId && records.get(rel.adventureId)?.kind !== 'adventure') warnings.push(`${rel.id}: adventureId ${rel.adventureId} is not kind=adventure`);
   }
@@ -99,7 +111,10 @@ if (manifest.relationshipLayer) {
 const routeCatalog = await readJson('data/route-catalog.json');
 const allowedProvenance = new Set(Object.keys(routeCatalog.provenanceTypes || {}));
 const seenRouteIds = new Set();
+const seenRouteFiles = new Set();
 for (const routeFile of routeCatalog.routeFiles || []) {
+  if (seenRouteFiles.has(routeFile)) problems.push(`route-catalog contains duplicate route file ${routeFile}`);
+  seenRouteFiles.add(routeFile);
   const payload = await readJson(routeFile);
   for (const feature of payload.features || []) {
     const routeId = feature.id || feature.properties?.featureId || feature.properties?.id;
@@ -110,7 +125,9 @@ for (const routeFile of routeCatalog.routeFiles || []) {
     const props = { ...(feature.properties || {}), ...(override || {}) };
     const inferred = props.provenance || props.provenanceType || (props.stravaActivityId || `${props.source || ''}`.toLowerCase().includes('strava') || `${routeId || ''}`.startsWith('strava-') ? 'personal-gps' : `${props.source || ''} ${props.routeType || ''}`.toLowerCase().match(/historical|official|published/) ? 'historical-course' : 'personal-gps');
     if (!allowedProvenance.has(inferred)) problems.push(`${routeId || routeFile}: invalid route provenance ${inferred}`);
-    for (const id of props.adventureIds || []) if (!records.has(id)) warnings.push(`${routeFile}: route ${routeId || 'unnamed'} references non-public/unknown id ${id}`);
+    const adventureIds = props.adventureIds || [];
+    if (new Set(adventureIds).size !== adventureIds.length) problems.push(`${routeId || routeFile}: route contains duplicate adventureIds`);
+    for (const id of adventureIds) if (!records.has(id)) warnings.push(`${routeFile}: route ${routeId || 'unnamed'} references non-public/unknown id ${id}`);
   }
 }
 for (const [routeId, override] of Object.entries(routeCatalog.featureOverrides || {})) {
@@ -140,6 +157,7 @@ for (const [category, policy] of Object.entries(updatePolicy.activityPolicies ||
 }
 
 console.log(`Catalog records: ${records.size}`);
+console.log(`Catalog sources: ${sourcePaths.size}`);
 console.log(`Strava ingest watermark: ${ingestState.lastSeenActivityLocalDateTime} (${ingestState.activityCount} activities reviewed)`);
 console.log(`Layered record merges: ${layeredMerges.length}`);
 console.log(`Catalog tombstones: ${(manifest.removeIds || []).length}${absentTombstones.length ? ` (${absentTombstones.length} not present in current source layers)` : ''}`);
