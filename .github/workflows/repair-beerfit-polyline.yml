@@ -1,0 +1,39 @@
+name: Repair BeerFit route payload
+
+on:
+  push:
+    branches: [fix/strava-route-coverage]
+    paths:
+      - '.github/workflows/repair-beerfit-polyline.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: fix/strava-route-coverage
+          fetch-depth: 0
+      - name: Repair one dropped polyline character
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('data/strava-route-backfill-02.json')
+          text = path.read_text()
+          old = 'AyAg@mEe'
+          new = 'AyAgAk@mEe'
+          if text.count(old) != 1:
+              raise SystemExit(f'Expected exactly one repair target, found {text.count(old)}')
+          path.write_text(text.replace(old, new))
+          PY
+          rm .github/workflows/repair-beerfit-polyline.yml
+      - name: Commit repaired payload
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/strava-route-backfill-02.json .github/workflows/repair-beerfit-polyline.yml
+          git commit -m "Repair BeerFit Strava polyline"
+          git push origin HEAD:fix/strava-route-coverage
