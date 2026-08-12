@@ -1,19 +1,10 @@
 import fs from 'node:fs/promises';
+import { resolvePublicRecords } from './lib/resolve-public-records.mjs';
 
 const readJson=async p=>JSON.parse(await fs.readFile(p,'utf8'));
-const catalog=await readJson('data/catalog.json');
 const passport=await readJson('data/world-majors.json');
-const records=new Map();
+const records=new Map((await resolvePublicRecords()).map(record=>[record.id,record]));
 const errors=[];
-
-for(const source of catalog.sources||[]){
-  const payload=await readJson(source.path);
-  for(const record of payload.adventures||[])if(record.id)records.set(record.id,{...(records.get(record.id)||{}),...record});
-}
-const matches=await readJson(catalog.matchLayer);
-for(const [id,match] of Object.entries(matches.matches||{}))if(records.has(id))records.set(id,{...records.get(id),...match});
-for(const id of catalog.removeIds||[])records.delete(id);
-for(const [id,override] of Object.entries(catalog.overrides||{}))if(records.has(id))records.set(id,{...records.get(id),...override});
 
 const majors=passport.majors||[],candidates=passport.candidates||[];
 const ids=new Set();

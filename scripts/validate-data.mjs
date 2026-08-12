@@ -7,28 +7,23 @@ const readJson = async rel => JSON.parse(await fs.readFile(path.join(root, rel),
 const manifest = await readJson('data/catalog.json');
 const schema = await readJson('data/event-schema.json');
 const records = new Map();
-const sourceById = new Map();
 const problems = [];
 const warnings = [];
-const layeredMerges = [];
 const absentTombstones = [];
 
-const sourcePaths = new Set();
-for (const source of manifest.sources || []) {
-  if (!source?.path || typeof source.path !== 'string') { problems.push('catalog source missing path'); continue; }
-  if (sourcePaths.has(source.path)) problems.push(`catalog sources contains duplicate path ${source.path}`);
-  sourcePaths.add(source.path);
-  const payload = await readJson(source.path);
-  const localIds = new Set();
-  for (const item of payload.adventures || []) {
-    if (!item.id) { problems.push(`${source.path}: record missing id`); continue; }
-    if (localIds.has(item.id)) problems.push(`${source.path}: duplicate record id ${item.id} within one source`);
-    localIds.add(item.id);
-    if (records.has(item.id)) layeredMerges.push(`${item.id}: ${sourceById.get(item.id)} → ${source.path}`);
-    records.set(item.id, { ...(records.get(item.id) || {}), ...item });
-    sourceById.set(item.id, source.path);
-  }
+if (!manifest.compiledRecordLayer) problems.push('catalog: missing compiledRecordLayer');
+const compiledLayer = manifest.compiledRecordLayer ? await readJson(manifest.compiledRecordLayer) : { adventures: [], audit: {} };
+if (compiledLayer.schemaVersion !== 1) problems.push(`${manifest.compiledRecordLayer || 'compiled catalog layer'}: expected schemaVersion 1`);
+if (!Array.isArray(compiledLayer.adventures)) problems.push(`${manifest.compiledRecordLayer || 'compiled catalog layer'}: expected adventures array`);
+if (Number.isFinite(compiledLayer.recordCount) && compiledLayer.recordCount !== (compiledLayer.adventures || []).length) problems.push(`${manifest.compiledRecordLayer}: recordCount does not match adventures length`);
+const sourcePaths = new Set(compiledLayer.audit?.sourcePaths || []);
+const layeredMerges = [...(compiledLayer.audit?.layeredMerges || [])];
+for (const item of compiledLayer.adventures || []) {
+  if (!item.id) { problems.push(`${manifest.compiledRecordLayer}: record missing id`); continue; }
+  if (records.has(item.id)) problems.push(`${manifest.compiledRecordLayer}: duplicate record id ${item.id}`);
+  records.set(item.id, { ...item });
 }
+
 const matchPayload = await readJson(manifest.matchLayer);
 for (const [id, match] of Object.entries(matchPayload.matches || {})) {
   if (!records.has(id)) warnings.push(`${manifest.matchLayer}: match references unknown id ${id}`);
@@ -157,7 +152,7 @@ for (const [category, policy] of Object.entries(updatePolicy.activityPolicies ||
 }
 
 console.log(`Catalog records: ${records.size}`);
-console.log(`Catalog sources: ${sourcePaths.size}`);
+console.log(`Catalog evidence sources: ${sourcePaths.size}`);
 console.log(`Strava ingest watermark: ${ingestState.lastSeenActivityLocalDateTime} (${ingestState.activityCount} activities reviewed)`);
 console.log(`Layered record merges: ${layeredMerges.length}`);
 console.log(`Catalog tombstones: ${(manifest.removeIds || []).length}${absentTombstones.length ? ` (${absentTombstones.length} not present in current source layers)` : ''}`);
