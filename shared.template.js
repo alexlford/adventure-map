@@ -1,0 +1,196 @@
+window.AdventureSite = (() => {
+  const fmt = new Intl.NumberFormat('en-US');
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+  const formatDate = (value) => { if (!value) return ''; const [y,m,d] = value.split('-').map(Number); return new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric'}).format(new Date(y,m-1,d)); };
+  const formatDuration = (seconds) => { if (!Number.isFinite(seconds)) return ''; const h=Math.floor(seconds/3600),m=Math.floor((seconds%3600)/60),s=Math.floor(seconds%60); return h?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${m}:${String(s).padStart(2,'0')}`; };
+  const raceType = (a) => a.discipline === 'marathon' ? 'Marathon' : a.discipline === 'trail' ? 'Trail race' : a.discipline === 'nordic' ? 'Nordic ski race' : a.discipline === 'relay' ? 'Relay' : a.discipline === 'mountain-bike' ? 'Mountain bike race' : a.kind === 'race' ? (a.distance || 'Road race') : adventureType(a);
+  const eventType = (a) => a.discipline === 'nordic' ? 'Nordic ski event' : a.discipline === 'ski' ? 'Alpine ski event' : a.discipline === 'mountain-bike' ? 'Mountain bike event' : 'Event';
+  const outingType = (a) => a.discipline === 'nordic' ? 'Nordic outing' : a.discipline === 'mountain-bike' ? (a.mtbMode === 'downhill' ? 'Downhill MTB' : a.mtbMode === 'mixed' ? 'MTB + Downhill MTB' : 'MTB') : 'Outing';
+  const adventureType = (a) => a.discipline === 'ski-objective' ? 'Alpine ski objective' : a.discipline === 'mountain-loop' ? 'Mountain loop' : a.discipline === 'trek' ? 'Trek / traverse' : a.discipline === 'challenge' ? 'Challenge' : a.kind === 'summit' ? 'Summit' : 'Adventure';
+  const recordType = (a) => a.kind === 'race' ? raceType(a) : a.kind === 'event' ? eventType(a) : a.kind === 'outing' ? outingType(a) : a.kind === 'summit' ? 'Summit' : adventureType(a);
+  const routeRegistry=window.AdventureSiteRoutes;
+  if(!routeRegistry||routeRegistry.schemaVersion!==1||!Array.isArray(routeRegistry.routes))throw new Error('Canonical site route registry is unavailable.');
+  const siteRoutes=routeRegistry.routes;
+  const productionHost=new URL(routeRegistry.origin).hostname;
+  const isProduction=()=>location.hostname===productionHost;
+  const PUBLIC_PATHS=Object.fromEntries(siteRoutes.filter(route=>route.browserRewrite).map(route=>[route.source,route.path]));
+  const navEntry=route=>[route.source,route.navLabel||route.label,route.activeKey||route.key];
+  const PRIMARY=siteRoutes.filter(route=>route.navGroup==='primary').map(navEntry);
+  const AUX=siteRoutes.filter(route=>route.navGroup==='aux').map(navEntry);
+  const ACTIVITIES=siteRoutes.filter(route=>route.navGroup==='activity').map(navEntry);
+  const activityKeys=new Set(ACTIVITIES.map(x=>x[2]));
+  const allNav=[...PRIMARY,...AUX,...ACTIVITIES];
+  const activeForRoute=route=>route?.parentActiveKey||route?.activeKey||route?.key||null;
+  const recordContextKey=()=>{
+    const query=new URLSearchParams(location.search);const explicit=query.get('record')||query.get('id');if(explicit)return explicit;
+    const clean=location.pathname.match(/\/record\/([^/]+)\/?$/);return clean?decodeURIComponent(clean[1]):'';
+  };
+  const pageHref = (href) => {
+    let raw=String(href||'');
+    const recordKey=recordContextKey();
+    if(recordKey&&/^(?:\.\/|\/)?map\.html(?:[?#]|$)/.test(raw)&&!/[?&]record=/.test(raw)){
+      const hashAt=raw.indexOf('#'),hash=hashAt>=0?raw.slice(hashAt):'',beforeHash=hashAt>=0?raw.slice(0,hashAt):raw;
+      raw=`${beforeHash}${beforeHash.includes('?')?'&':'?'}record=${encodeURIComponent(recordKey)}${hash}`;
+    }
+    if(!isProduction())return raw;
+    const match=raw.match(/^([^?#]+)(\?[^#]*)?(#.*)?$/);if(!match)return raw;
+    const file=match[1].replace(/^\.\//,'').replace(/^\//,'');const clean=PUBLIC_PATHS[file];
+    return clean?`${clean}${match[2]||''}${match[3]||''}`:raw;
+  };
+  const recordHref = (record) => isProduction()?`/record/${encodeURIComponent(record.slug || record.id)}/`:`detail.html?record=${encodeURIComponent(record.slug || record.id)}`;
+  const assetHref=(name)=>{const script=[...document.scripts].find(node=>/shared\.js(?:[?#]|$)/.test(node.src));return script?new URL(name,script.src).href:name;};
+  function ensurePolishStyles(){if(document.querySelector('link[data-ux-polish]'))return;const style=document.createElement('link');style.rel='stylesheet';style.href=assetHref('ux-polish.css');style.dataset.uxPolish='true';document.head.appendChild(style);}
+  function normalizePublicUrl(){
+    if(!isProduction())return;
+    const file=location.pathname.split('/').pop();const clean=PUBLIC_PATHS[file];
+    if(clean&&location.pathname!==clean)history.replaceState(null,'',`${clean}${location.search}${location.hash}`);
+  }
+  function rewritePublicLinks(){
+    if(!isProduction())return;
+    document.querySelectorAll('a[href]').forEach(a=>{const raw=a.getAttribute('href');const clean=pageHref(raw);if(clean!==raw)a.setAttribute('href',clean)});
+  }
+  function inferActive(){
+    const path=location.pathname.replace(/\/+$/,'')||'/';
+    if(isProduction()){
+      const route=siteRoutes.find(item=>(item.path.replace(/\/+$/,'')||'/')===path);
+      if(route)return activeForRoute(route);
+    }
+    const localPath=location.pathname.replace(/^\/+/, '');
+    const route=siteRoutes.find(item=>localPath.endsWith(item.source));
+    if(route)return activeForRoute(route);
+    const p=location.pathname.split('/').pop()||'index.html';const hit=allNav.find(x=>x[0]===p);return hit?.[2]||null;
+  }
+  let catalogPromise;
+  const ensureCatalog = () => {
+    if (window.AdventureCatalog) return Promise.resolve(window.AdventureCatalog);
+    if (!catalogPromise) catalogPromise = new Promise((resolve,reject) => {
+      const script=document.createElement('script'); script.src='catalog.js'; script.onload=()=>resolve(window.AdventureCatalog); script.onerror=()=>reject(new Error('Adventure catalog loader is unavailable.')); document.head.appendChild(script);
+    });
+    return catalogPromise;
+  };
+  const load = () => ensureCatalog().then(catalog => catalog.load());
+  const loadRelationships = () => ensureCatalog().then(catalog => catalog.loadRelationships());
+  const relationshipsFor = (id) => ensureCatalog().then(catalog => catalog.relationshipsFor(id));
+  function primaryKey(active){return active==='activities'||active==='timeline'||activityKeys.has(active)?'explore':active==='adventures'?'stories':active;}
+  function applyPageIdentity(active=inferActive()){
+    const primary=primaryKey(active)||'home';
+    document.body.dataset.page=active||'detail';
+    document.body.dataset.primary=primary;
+    document.body.classList.toggle('is-activity-chapter',activityKeys.has(active));
+  }
+  function ensureMeta(descriptionOverride=''){
+    const description=descriptionOverride||document.querySelector('meta[name="description"]')?.content||document.querySelector('.hero p')?.textContent?.trim()||'Alex Ford Adventures: races, mountains, alpine skiing, Nordic skiing, biking and the stories behind them.';
+    const detail=/detail\.html$/.test(location.pathname);
+    const canonicalUrl=`${location.origin}${location.pathname}${detail?location.search:''}`;
+    const set=(selector,attrs)=>{let node=document.head.querySelector(selector);if(!node){node=document.createElement(attrs.tag||'meta');document.head.appendChild(node)}Object.entries(attrs).forEach(([k,v])=>{if(k!=='tag')node.setAttribute(k,v)})};
+    set('meta[name="description"]',{name:'description',content:description});
+    set('link[rel="canonical"]',{tag:'link',rel:'canonical',href:canonicalUrl});
+    set('meta[name="theme-color"]',{name:'theme-color',content:'#f7f4ee'});
+    set('meta[property="og:site_name"]',{property:'og:site_name',content:'Alex Ford Adventures'});
+    set('meta[property="og:title"]',{property:'og:title',content:document.title});
+    set('meta[property="og:description"]',{property:'og:description',content:description});
+    set('meta[property="og:type"]',{property:'og:type',content:'website'});
+    set('meta[property="og:url"]',{property:'og:url',content:canonicalUrl});
+    set('meta[name="twitter:card"]',{name:'twitter:card',content:'summary'});
+    set('meta[name="twitter:title"]',{name:'twitter:title',content:document.title});
+    set('meta[name="twitter:description"]',{name:'twitter:description',content:description});
+  }
+  function ensureAccessibility(){
+    const main=document.querySelector('main');if(main&&!main.id)main.id='main-content';
+    if(main&&!document.querySelector('.skip-link')){const a=document.createElement('a');a.className='skip-link';a.href='#main-content';a.textContent='Skip to content';document.body.insertAdjacentElement('afterbegin',a)}
+  }
+  function ensureBranding(){const footer=document.querySelector('.footer span:first-child');if(footer)footer.textContent='Alex Ford Adventures';}
+  function ensureSiblingChapter(active){
+    if(active!=='nordic')return;
+    const page=document.querySelector('.page');if(!page||page.querySelector('.chapter-sibling-link'))return;
+    const mapSection=page.querySelector('.chapter-map-section');const metrics=page.querySelector(':scope > .metrics');const anchor=mapSection||metrics||page.querySelector(':scope > .hero');if(!anchor)return;
+    const wrap=document.createElement('section');wrap.className='chapter-sibling-link';wrap.setAttribute('aria-label','Related activity chapter');
+    wrap.innerHTML=`<div class="section-title"><h2>Alpine skiing</h2><p>Resort days, runs, vertical, named trips, and downhill ski objectives live in a separate chapter.</p></div><div class="grid"><a class="card" href="${pageHref('skiing.html')}"><p class="card-kicker">Separate chapter</p><h3>Alpine Skiing</h3><p class="card-meta">The resort and downhill side of the ski archive.</p><div class="card-value">Open Alpine Skiing →</div></a></div>`;
+    anchor.insertAdjacentElement('afterend',wrap);
+  }
+  function applyEditorialIdentity(active){
+    const hero=document.querySelector('.page > .hero');
+    if(active==='activities'){
+      document.querySelectorAll('.explore-chapter-grid .card').forEach(card=>{const heading=card.querySelector('h3');const value=card.querySelector('.card-value');if(heading?.textContent.trim()==='Skiing'){heading.textContent='Alpine Skiing';if(value)value.textContent='Explore Alpine Skiing →'}else if(heading?.textContent.trim()==='Nordic'){heading.textContent='Nordic Skiing';if(value)value.textContent='Explore Nordic Skiing →'}});
+    } else if(active==='skiing'){
+      document.title='Alpine Skiing | Alex Ford Adventures';
+      const eyebrow=hero?.querySelector('.eyebrow');if(eyebrow)eyebrow.textContent='Adventures · Alpine Skiing';
+      const intro=hero?.querySelector('p:last-child');if(intro)intro.textContent='Alpine skiing lives here: a season-by-season record of resort days, runs, vertical, named trips and memorable objectives. Cross-country skiing stays in the Nordic Skiing chapter.';
+      const dayLabel=document.querySelector('#days')?.nextElementSibling;if(dayLabel)dayLabel.textContent='recorded alpine days';
+      const nordicHeading=[...document.querySelectorAll('.section-title h2')].find(h=>h.textContent.trim().toLowerCase()==='nordic skiing');
+      const card=nordicHeading?.parentElement?.nextElementSibling?.querySelector('.card');if(card){const h3=card.querySelector('h3');const value=card.querySelector('.card-value');if(h3)h3.textContent='Nordic Skiing';if(value)value.textContent='Open Nordic Skiing →';}
+    } else if(active==='nordic'){
+      const eyebrow=hero?.querySelector('.eyebrow');if(eyebrow)eyebrow.textContent='Adventures · Nordic Skiing';
+      const intro=hero?.querySelector('p:last-child');if(intro)intro.textContent='Cross-country skiing lives here: trail systems, recreational outings, races, named events, and standout days or weekends. Alpine resort skiing stays in the Alpine Skiing chapter.';
+      ensureSiblingChapter(active);
+    }
+  }
+  function ensureNav(active=inferActive()){
+    applyPageIdentity(active);ensureBranding();rewritePublicLinks();
+    const nav=document.querySelector('.nav'); if(!nav)return;
+    const top=primaryKey(active);
+    nav.setAttribute('aria-label','Primary navigation');
+    nav.innerHTML=PRIMARY.map(([href,text,key])=>`<a data-nav="${key}" href="${pageHref(href)}"${top===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('');
+    document.querySelector('.activity-subnav-wrap')?.remove();
+    if(active==='timeline'||activityKeys.has(active)){
+      const header=document.querySelector('.site-header');if(!header)return;
+      const wrap=document.createElement('div');wrap.className='activity-subnav-wrap';
+      wrap.innerHTML=`<nav class="activity-subnav" aria-label="Explore Adventures"><span class="activity-subnav-label">Explore</span>${ACTIVITIES.map(([href,text,key])=>`<a href="${pageHref(href)}"${active===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('')}<a href="${pageHref('timeline.html')}"${active==='timeline'?' class="is-active" aria-current="page"':''}>Timeline</a></nav>`;
+      header.insertAdjacentElement('afterend',wrap);
+    }
+    requestAnimationFrame(()=>document.querySelector('.nav .is-active,.activity-subnav .is-active')?.scrollIntoView({block:'nearest',inline:'center'}));
+  }
+  function chapterAnchor(text,index,used){
+    const base=String(text||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||`section-${index+1}`;
+    let id=`chapter-${base}`,n=2;
+    while(used.has(id)||document.getElementById(id))id=`chapter-${base}-${n++}`;
+    used.add(id);return id;
+  }
+  let chapterIndexStatePromise;
+  const ensureChapterIndexState=()=>{
+    if(window.AdventureChapterIndexState)return Promise.resolve(window.AdventureChapterIndexState);
+    if(!chapterIndexStatePromise)chapterIndexStatePromise=new Promise((resolve,reject)=>{
+      let script=document.querySelector('script[data-chapter-index-state]');
+      if(!script){script=document.createElement('script');script.src=assetHref('chapter-index-state.js');script.dataset.chapterIndexState='true';document.head.appendChild(script)}
+      script.addEventListener('load',()=>resolve(window.AdventureChapterIndexState),{once:true});
+      script.addEventListener('error',()=>reject(new Error('Chapter index state helper is unavailable.')),{once:true});
+    });
+    return chapterIndexStatePromise;
+  };
+  const mountChapterIndexState=(nav,candidates)=>ensureChapterIndexState().then(helper=>{if(nav.isConnected)helper?.mount(nav,candidates)}).catch(error=>console.warn('Chapter index state:',error));
+  function ensureChapterIndex(active){
+    const existing=document.querySelector('.chapter-index');
+    if(!activityKeys.has(active)){existing?.remove();return}
+    const page=document.querySelector('.page');if(!page)return;
+    if(!document.querySelector('link[data-chapter-index]')){const style=document.createElement('link');style.rel='stylesheet';style.href=assetHref('chapter-index.css');style.dataset.chapterIndex='true';document.head.appendChild(style)}
+    const candidates=[...page.querySelectorAll('section h2,.section-title h2')].filter((heading,index,array)=>heading.textContent?.trim()&&!heading.closest('.metrics')&&array.indexOf(heading)===index).slice(0,7);
+    if(candidates.length<2){existing?.remove();return}
+    const used=new Set();
+    candidates.forEach((heading,index)=>{if(!heading.id)heading.id=chapterAnchor(heading.textContent,index,used);else used.add(heading.id);heading.dataset.chapterAnchor='true'});
+    const signature=candidates.map(heading=>heading.id).join('|');
+    if(existing?.dataset.signature===signature){mountChapterIndexState(existing,candidates);return}
+    existing?.remove();
+    const links=candidates.map(heading=>`<a href="#${esc(heading.id)}">${esc(heading.textContent.trim())}</a>`);
+    const nav=document.createElement('nav');nav.className='chapter-index';nav.dataset.signature=signature;nav.setAttribute('aria-label','On this page');nav.innerHTML=`<span class="chapter-index-label">On this page</span>${links.join('')}`;
+    const metrics=page.querySelector(':scope > .metrics');const hero=page.querySelector(':scope > .hero');
+    if(metrics)metrics.insertAdjacentElement('afterend',nav);else if(hero)hero.insertAdjacentElement('afterend',nav);else page.insertAdjacentElement('afterbegin',nav);
+    mountChapterIndexState(nav,candidates);
+  }
+  let chapterIndexTimers=[];
+  function scheduleChapterIndexRefresh(active){
+    chapterIndexTimers.forEach(clearTimeout);chapterIndexTimers=[];
+    if(!activityKeys.has(active))return;
+    chapterIndexTimers=[260,900,2200].map(delay=>setTimeout(()=>ensureChapterIndex(active),delay));
+  }
+  function ensureFlow(active){
+    document.querySelector('.chapter-flow-nav')?.remove();
+    if(!activityKeys.has(active))return;
+    const page=document.querySelector('.page');if(!page)return;
+    const idx=ACTIVITIES.findIndex(x=>x[2]===active);const next=ACTIVITIES[idx+1];
+    const nav=document.createElement('nav');nav.className='chronology-nav chapter-flow-nav';nav.setAttribute('aria-label','Continue exploring activity chapters');
+    nav.innerHTML=`<a class="chronology-link" href="${pageHref('activities.html')}"><small>Explore</small><strong>← All activity chapters</strong></a>${next?`<a class="chronology-link next" href="${pageHref(next[0])}"><small>Next chapter</small><strong>${next[1]} →</strong></a>`:`<a class="chronology-link next" href="${pageHref('adventures.html')}"><small>Continue exploring</small><strong>Stories →</strong></a>`}`;
+    page.appendChild(nav);
+  }
+  function shell(active){ensurePolishStyles();ensureNav(active);applyEditorialIdentity(active);ensureMeta();ensureChapterIndex(active);ensureFlow(active);rewritePublicLinks();scheduleChapterIndexRefresh(active)}
+  ensurePolishStyles();normalizePublicUrl();applyPageIdentity();ensureMeta();ensureAccessibility();ensureBranding();rewritePublicLinks();ensureNav(); return {load,loadRelationships,relationshipsFor,esc,formatDate,formatDuration,fmt,raceType,eventType,outingType,adventureType,recordType,recordHref,pageHref,shell,refreshMeta:ensureMeta,isProduction};
+})();
