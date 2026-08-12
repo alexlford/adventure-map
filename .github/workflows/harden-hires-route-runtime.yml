@@ -1,0 +1,43 @@
+name: Harden high-resolution route runtime fallback
+
+on:
+  push:
+    branches: [hires-gps-routes-20260811]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  harden:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out route branch
+        uses: actions/checkout@v6
+        with:
+          ref: hires-gps-routes-20260811
+          fetch-depth: 0
+      - name: Add graceful legacy fallback
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('route-catalog.js')
+          text = path.read_text()
+          old = '''    const [preferredPayloads, routePayloads, polylinePayloads, relationshipPayload] = await Promise.all([\n      Promise.all(preferredPolylineFiles.map(polylineCollection)),\n      Promise.all(routeFiles.map(fetchJson)),\n      Promise.all(polylineFiles.map(polylineCollection)),\n      relationships()\n    ]);'''
+          new = '''    const preferredPayloads = [];\n    for (const preferredPath of preferredPolylineFiles) {\n      try {\n        preferredPayloads.push(await polylineCollection(preferredPath));\n      } catch (error) {\n        console.warn(`High-resolution route archive unavailable (${preferredPath}); using legacy route geometry as a fallback.`, error);\n      }\n    }\n    const [routePayloads, polylinePayloads, relationshipPayload] = await Promise.all([\n      Promise.all(routeFiles.map(fetchJson)),\n      Promise.all(polylineFiles.map(polylineCollection)),\n      relationships()\n    ]);'''
+          if old not in text:
+              raise SystemExit('Expected resolveAll block not found; refusing an unsafe patch.')
+          path.write_text(text.replace(old, new))
+          PY
+      - name: Check JavaScript syntax
+        run: node --check route-catalog.js
+      - name: Remove temporary workflow
+        run: rm .github/workflows/harden-hires-route-runtime.yml
+      - name: Commit fallback hardening
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A route-catalog.js .github/workflows/harden-hires-route-runtime.yml
+          git commit -m "Fall back cleanly if high-resolution routes cannot load"
+          git push origin HEAD:hires-gps-routes-20260811
