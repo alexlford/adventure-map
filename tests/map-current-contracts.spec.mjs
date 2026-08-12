@@ -40,6 +40,19 @@ test('Map presents recovered official race context', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test('Map keeps every MTB map category on the shared forest green', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+  const colors = await page.evaluate(() => ({
+    mtb: window.CATEGORY?.mtb?.color,
+    supplementalMtb: window.CATEGORY?.['mountain-bike']?.color,
+  }));
+  expect(colors.mtb).toBe('#2f7d4a');
+  expect(colors.supplementalMtb).toBe('#2f7d4a');
+  expect(errors).toEqual([]);
+});
+
 test('Map exposes ski resorts as a usable skiing layer', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
