@@ -41,8 +41,8 @@ jobs:
         run: npm run validate:static
       - name: Install browser smoke-test tooling
         run: npm install --no-save @playwright/test@1.62.0
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
       - name: Run browser smoke tests
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/adventures-http.log 2>&1 &
@@ -55,6 +55,7 @@ jobs:
             sleep 0.5
           done
           npx playwright test --project=chromium
+          npx playwright test tests/mobile-layout.spec.mjs tests/world-majors-layout.spec.mjs --project=webkit-mobile
       - name: Validate maintenance scripts
         run: python3 -m py_compile scripts/scan_strava_export.py scripts/advance_strava_state.py scripts/test_update_pipeline.py
       - name: Test maintenance pipeline
