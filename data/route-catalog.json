@@ -2,9 +2,7 @@
   "schemaVersion": 1,
   "updatedOn": "2026-08-11",
   "description": "Canonical route metadata for the Personal Adventure Almanac. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and high-resolution GPS precedence.",
-  "preferredPolylineFiles": [
-    "data/strava-routes-hires.json.gz.b64"
-  ],
+  "preferredPolylineFiles": [],
   "routeFiles": [
     "data/routes.geojson",
     "data/mined-routes.geojson",
