@@ -6,8 +6,21 @@
     .passport-earned-stamp span,.passport-earned-stamp small{display:none!important}
   `;
   if(!document.getElementById(style.id))document.head.appendChild(style);
-  const apply=()=>document.querySelectorAll('.passport-earned-stamp').forEach(stamp=>{stamp.textContent='Completed';stamp.setAttribute('aria-label','Completed Major')});
-  apply();
-  const observer=new MutationObserver(apply);
+
+  const apply=()=>{
+    const stamps=[...document.querySelectorAll('.passport-earned-stamp')];
+    if(!stamps.length)return false;
+    stamps.forEach(stamp=>{
+      if(stamp.textContent.trim()!=='Completed')stamp.textContent='Completed';
+      if(stamp.getAttribute('aria-label')!=='Completed Major')stamp.setAttribute('aria-label','Completed Major');
+    });
+    return true;
+  };
+
+  if(apply())return;
+  const observer=new MutationObserver(()=>{
+    if(!apply())return;
+    observer.disconnect();
+  });
   observer.observe(document.documentElement,{childList:true,subtree:true});
 })();
