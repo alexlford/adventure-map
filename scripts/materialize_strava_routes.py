@@ -80,12 +80,6 @@ def split_discontinuities(
     points: list[tuple[float, float]],
     max_gap_m: float,
 ) -> list[list[tuple[float, float]]]:
-    """Split a source track at implausibly large point-to-point jumps.
-
-    No intermediate geometry is synthesized and no ordinary source point is
-    simplified away. Only isolated one-point fragments are omitted because a
-    GeoJSON line cannot be rendered from a single coordinate.
-    """
     if len(points) < 2:
         return []
     chunks: list[list[tuple[float, float]]] = []
@@ -221,15 +215,18 @@ def activity_day_routes(export: Export, max_gap_m: float) -> list[dict[str, Any]
             continue
         discipline = record.get("discipline")
         category = "mtb" if discipline == "mountain-bike" else discipline
-        routes.append(encoded_route(
-            export,
-            f"activity-{record['id']}",
-            ids,
-            [record["id"]],
-            category,
-            record.get("mtbMode"),
-            max_gap_m,
-        ))
+        try:
+            routes.append(encoded_route(
+                export,
+                f"activity-{record['id']}",
+                ids,
+                [record["id"]],
+                category,
+                record.get("mtbMode"),
+                max_gap_m,
+            ))
+        except ValueError as error:
+            print(f"SKIP {record['id']}: {error}")
     return routes
 
 
