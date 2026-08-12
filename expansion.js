@@ -2,30 +2,6 @@ CATEGORY.road = { label: 'Road race', color: '#d97706' };
 CATEGORY.trail = { label: 'Trail race', color: '#b45309' };
 CATEGORY['mountain-bike'] = { label: 'Mountain bike race', color: '#2f7d4a' };
 
-function updateRouteCount() {
-  const routeCount = document.getElementById('routeCount');
-  if (!routeCount || !state.routes) return;
-  routeCount.textContent = new Set(state.routes.features.flatMap(feature => feature.properties?.adventureIds || [])).size;
-}
-
-function mergeSupplementalRoutes(payloads, attempt = 0) {
-  if (state.routes) {
-    const existing = new Set(state.routes.features.map(feature => feature.id || feature.properties?.featureId || feature.properties?.id));
-    payloads.flatMap(payload => payload.features || []).forEach(feature => {
-      const id = feature.id || feature.properties?.featureId || feature.properties?.id;
-      if (!existing.has(id)) {
-        state.routes.features.push(feature);
-        existing.add(id);
-      }
-    });
-    updateRouteCount();
-    map.closePopup?.();
-    renderPreservingFocus();
-    return;
-  }
-  if (attempt < 40) setTimeout(() => mergeSupplementalRoutes(payloads, attempt + 1), 100);
-}
-
 function decodePolyline(encoded) {
   let index=0, lat=0, lon=0, coordinates=[];
   while(index<encoded.length){
@@ -57,12 +33,15 @@ function activityRoutesToGeoJson(payload){
 
 window.addEventListener('load', async () => {
   try {
+    const api=window.AdventureMap;
+    if(!api?.appendRoutes)throw new Error('AdventureMap supplemental route API is unavailable');
     const urls=['data/mined-routes.geojson','data/historical-routes-v2.geojson','data/event-routes.geojson'];
     const [responses,activityResponse]=await Promise.all([Promise.all(urls.map(url=>fetch(url))),fetch('data/activity-route-polylines.json')]);
     responses.forEach((response,i)=>{if(!response.ok)throw new Error(`Unable to load supplemental routes ${urls[i]} (${response.status})`)});
     if(!activityResponse.ok)throw new Error(`Unable to load day-level activity routes (${activityResponse.status})`);
     const payloads=await Promise.all(responses.map(response=>response.json().then(x=>AdventureRoutes.normalizeCollection(x))));
     payloads.push(await AdventureRoutes.normalizeCollection(activityRoutesToGeoJson(await activityResponse.json())));
-    mergeSupplementalRoutes(payloads);
+    await api.ready();
+    api.appendRoutes(payloads);
   } catch (error) { console.error(error); }
 });
