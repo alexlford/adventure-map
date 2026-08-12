@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "validate:data": "node scripts/validate-data.mjs",
+    "validate:duplicates": "node scripts/validate-duplicates.mjs",
     "validate:slugs": "node scripts/validate-record-slugs.mjs",
     "validate:routing": "node scripts/validate-routing.mjs",
     "validate:dependencies": "node scripts/validate-static-dependencies.mjs",

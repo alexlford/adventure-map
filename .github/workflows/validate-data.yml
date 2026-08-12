@@ -23,6 +23,8 @@ jobs:
         run: npm run build:publish
       - name: Validate canonical catalog
         run: npm run validate:data
+      - name: Validate duplicate races
+        run: npm run validate:duplicates
       - name: Validate stable record slugs
         run: npm run validate:slugs
       - name: Validate Story context and pending media
