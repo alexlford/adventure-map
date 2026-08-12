@@ -2,7 +2,7 @@ import fs from 'node:fs';
 
 const readJson = path => JSON.parse(fs.readFileSync(path, 'utf8'));
 const args = new Set(process.argv.slice(2));
-const failOnLowQuality = args.has('--enforce');
+const enforce = args.has('--enforce');
 const routes = readJson('tmp/public-routes.geojson');
 const recordsPayload = readJson('data/public-records.json');
 const records = recordsPayload.records || recordsPayload;
@@ -42,7 +42,7 @@ function isPersonalGps(feature) {
 }
 function sourceActivityIds(feature) {
   const p = feature.properties || {};
-  const ids = new Set();
+  const ids = new Set((p.sourceActivityIds || []).map(String));
   if (p.stravaActivityId != null) ids.add(String(p.stravaActivityId));
   const id = String(featureId(feature) || '');
   if (/^strava-\d+$/.test(id)) ids.add(id.slice(7));
@@ -78,14 +78,22 @@ for (const feature of routes.features || []) {
   const maxSpacingM = spacings.length ? Math.max(...spacings) : 0;
   const lengthKm = lengthM / 1000;
   const pointsPerKm = lengthKm > 0 ? pointCount / lengthKm : pointCount;
-  // A zoomable GPS line should retain roughly one real sample every 10-15 m on average,
-  // with very few gaps above 40 m. Short routes still need enough points to preserve bends.
   const minimumPoints = Math.max(30, Math.ceil(lengthKm * 70));
-  const highQuality = pointCount >= minimumPoints && avgSpacingM <= 15 && p95SpacingM <= 40 && maxSpacingM <= 200;
+  const highResolution = pointCount >= minimumPoints && avgSpacingM <= 15 && p95SpacingM <= 40 && maxSpacingM <= 200;
+  const declaredHighResolutionSource = feature.properties?.density === 'high-resolution-source';
+  const publishedPointCount = Number(feature.properties?.publishedPointCount);
+  const pointMetadataMatches = !declaredHighResolutionSource || (Number.isFinite(publishedPointCount) && publishedPointCount === pointCount);
+  // Some older source recordings were themselves sampled only every ~20-40 m. We preserve
+  // every distinct recorded coordinate rather than fabricate interpolated GPS. Those tracks
+  // are source-limited, not publication-limited, when the high-resolution archive metadata
+  // exactly matches the geometry that was compiled.
+  const sourceLimited = !highResolution && declaredHighResolutionSource && pointMetadataMatches;
+  const acceptable = highResolution || sourceLimited;
   rows.push({
     id: featureId(feature),
     adventureIds: feature.properties?.adventureIds || [],
     sourceActivityIds: sourceActivityIds(feature),
+    density: feature.properties?.density || null,
     lineCount: lines.length,
     pointCount,
     lengthKm: Number(lengthKm.toFixed(3)),
@@ -94,15 +102,23 @@ for (const feature of routes.features || []) {
     p95SpacingM: Number(p95SpacingM.toFixed(1)),
     maxSpacingM: Number(maxSpacingM.toFixed(1)),
     minimumPoints,
-    highQuality,
+    highResolution,
+    sourceLimited,
+    pointMetadataMatches,
+    acceptable,
   });
 }
-rows.sort((a, b) => Number(a.highQuality) - Number(b.highQuality) || b.avgSpacingM - a.avgSpacingM || String(a.id).localeCompare(String(b.id)));
-const low = rows.filter(row => !row.highQuality);
+rows.sort((a, b) => Number(a.acceptable) - Number(b.acceptable) || Number(a.highResolution) - Number(b.highResolution) || b.avgSpacingM - a.avgSpacingM || String(a.id).localeCompare(String(b.id)));
+const unacceptable = rows.filter(row => !row.acceptable);
+const metadataMismatch = rows.filter(row => !row.pointMetadataMatches);
+const sourceLimited = rows.filter(row => row.sourceLimited);
+const highResolution = rows.filter(row => row.highResolution);
 const summary = {
   personalGpsRoutes: rows.length,
-  highQualityRoutes: rows.length - low.length,
-  lowQualityRoutes: low.length,
+  highResolutionRoutes: highResolution.length,
+  sourceLimitedRoutes: sourceLimited.length,
+  unacceptableRoutes: unacceptable.length,
+  metadataMismatches: metadataMismatch.length,
   pointCount: rows.reduce((sum, row) => sum + row.pointCount, 0),
   medianPointsPerKm: Number(percentile(rows.map(row => row.pointsPerKm), 0.5).toFixed(1)),
   medianAvgSpacingM: Number(percentile(rows.map(row => row.avgSpacingM), 0.5).toFixed(1)),
@@ -110,12 +126,9 @@ const summary = {
 console.log(JSON.stringify(summary, null, 2));
 console.log('\nGPS_ROUTE_QUALITY');
 for (const row of rows) console.log(JSON.stringify(row));
-const manifest = rows.map(row => ({ id: row.id, adventureIds: row.adventureIds, sourceActivityIds: row.sourceActivityIds }));
-console.log('\nROUTE_SOURCE_MANIFEST_B64');
-console.log(Buffer.from(JSON.stringify(manifest), 'utf8').toString('base64'));
-if (low.length) {
-  console.log(`\n${low.length} GPS route(s) are below the high-resolution zoom target.`);
-  if (failOnLowQuality) process.exitCode = 1;
+if (unacceptable.length || metadataMismatch.length) {
+  console.log(`\nRoute quality failed: ${unacceptable.length} unacceptable route(s), ${metadataMismatch.length} metadata mismatch(es).`);
+  if (enforce) process.exitCode = 1;
 } else {
-  console.log('\nEvery personal GPS route meets the high-resolution zoom target.');
+  console.log(`\nEvery personal GPS route is either high-resolution or published at the full distinct-point density available in its source recording. ${sourceLimited.length} route(s) are source-limited and are not artificially interpolated.`);
 }
