@@ -11,7 +11,7 @@ test('Clean record pages carry record context into the map action', async ({ pag
   await expect(mapAction).toHaveAttribute('href',`map.html?record=${recordSlug}`);
 });
 
-test('Master map record deep link focuses the matching archive entry', async ({ page }) => {
+test('Master map record deep link focuses the matching archive entry once', async ({ page }) => {
   await page.goto(`/map.html?record=${recordKey}`, { waitUntil: 'domcontentloaded' });
 
   const item = page.locator(`.adventure-item[data-id="${recordKey}"]`);
@@ -24,6 +24,19 @@ test('Master map record deep link focuses the matching archive entry', async ({ 
   await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordKey);
   await page.waitForTimeout(650);
   await expect(popup).toHaveCount(1);
+  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordKey);
+});
+
+test('Selecting a record on the map creates a shareable focused URL', async ({ page }) => {
+  await page.goto('/map.html?q=Chicago%20Marathon', { waitUntil: 'domcontentloaded' });
+  const item = page.locator(`.adventure-item[data-id="${recordKey}"]`);
+  await expect(item).toBeVisible();
+  await expect(item).toHaveAttribute('aria-pressed','false');
+
+  await item.click();
+  await expect(item).toHaveAttribute('aria-pressed','true');
+  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordSlug);
+  await expect.poll(() => new URL(page.url()).searchParams.get('q')).toBe('Chicago Marathon');
 });
 
 test('Changing map state releases a record deep link cleanly', async ({ page }) => {

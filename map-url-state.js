@@ -48,6 +48,7 @@
   }
 
   let recordFocusActive = Boolean(initialRecord);
+  let suppressInitialPopupSync = Boolean(initialRecord);
   let recordObserver = null;
   let recordTimer = null;
 
@@ -104,12 +105,20 @@
     },{once:true});
   }
 
+  const focusedRecord = () => {
+    const id = state.pinnedFocusId || null;
+    if (!id || !Array.isArray(state.adventures)) return null;
+    return state.adventures.find(record => record.id === id) || null;
+  };
+
   function syncUrl() {
     const params = new URLSearchParams();
     if (state.filter && state.filter !== 'all') params.set('layer',state.filter);
     if (state.yearFrom) params.set('from',String(state.yearFrom));
     if (state.yearTo) params.set('through',String(state.yearTo));
     if (state.search?.trim()) params.set('q',state.search.trim());
+    const focused = focusedRecord();
+    if (focused) params.set('record',focused.slug || focused.id);
     const query = params.toString();
     const cleanPath = location.hostname === 'adventures.alexlford.com' ? '/map' : location.pathname;
     history.replaceState(null,'',`${cleanPath}${query?`?${query}`:''}${location.hash}`);
@@ -117,6 +126,7 @@
 
   const syncSoon = () => {
     stopRecordFocus();
+    suppressInitialPopupSync = false;
     queueMicrotask(syncUrl);
   };
   document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click',syncSoon));
@@ -127,7 +137,16 @@
   document.getElementById('adventureList')?.addEventListener('click',event => {
     if (event.target.closest('.adventure-item')) syncSoon();
   });
-  if (typeof map !== 'undefined') map.on('click',syncSoon);
+  if (typeof map !== 'undefined') {
+    map.on('click',syncSoon);
+    map.on('popupopen',() => queueMicrotask(() => {
+      if (suppressInitialPopupSync) {
+        suppressInitialPopupSync = false;
+        return;
+      }
+      syncUrl();
+    }));
+  }
 
   window.addEventListener('popstate',() => location.reload());
 })();
