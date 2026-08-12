@@ -23,10 +23,8 @@
     "privacy-withheld": "Personal geometry exists but is intentionally not published for privacy."
   },
   "featureOverrides": {
-    "strava-6814188054": {"adventureIds":["smr-stampede-50k-2022","smr-stampede-ranch-hand-skate-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Saturday 25K freestyle/skate leg of the 2022 Snow Mountain Ranch Ranch Hand challenge."},
-    "strava-6819611723": {"adventureIds":["smr-stampede-50k-2022","smr-stampede-ranch-hand-classic-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Sunday 25K classic leg completing the 2022 Snow Mountain Ranch Ranch Hand challenge."},
-    "strava-10317055162": {"adventureIds":["colderbolder-2023","colorado-triathlon-2023"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"COLDERBolder 5K, leg 1 of the 2023 Colorado Triathlon."},
-    "activity-mtb-day-2023-12-02": {"adventureIds":["mtb-day-2023-12-02","colorado-triathlon-2023"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Mountain-bike leg of the 2023 Colorado Triathlon."},
+    "strava-6814188054": {"adventureIds":["smr-stampede-ranch-hand-skate-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Saturday 25K freestyle/skate leg of the 2022 Snow Mountain Ranch Ranch Hand challenge."},
+    "strava-6819611723": {"adventureIds":["smr-stampede-ranch-hand-classic-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Sunday 25K classic leg completing the 2022 Snow Mountain Ranch Ranch Hand challenge."},
     "strava-10926255561": {"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Personal GPS recording from the 2024 Frisco BrewSki."},
     "river-to-river-relay-historical-course": {"provenance":"historical-course","sourceLabel":"Official River to River course description + public historical GPS reference","note":"Shared historical full relay course for the 2006, 2008, and 2010 entries; not a personal GPS recording."}
   },
