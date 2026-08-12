@@ -11,12 +11,21 @@ test('Clean record pages carry record context into the map action', async ({ pag
   await expect(mapAction).toHaveAttribute('href',`map.html?record=${recordSlug}`);
 });
 
-test('Master map record deep link focuses the matching archive entry once', async ({ page }) => {
+test('Master map record deep link survives asynchronous map enrichment', async ({ page }) => {
   await page.goto(`/map.html?record=${recordKey}`, { waitUntil: 'domcontentloaded' });
 
   const item = page.locator(`.adventure-item[data-id="${recordKey}"]`);
   const popup = page.locator('#map .leaflet-popup');
   await expect(item).toBeVisible();
+  await expect(item).toHaveAttribute('aria-pressed','true');
+
+  const baseRouteFeatures = await page.evaluate(async () => {
+    const base = await fetch('data/routes.geojson').then(response => response.json());
+    return base.features?.length || 0;
+  });
+  await expect(page.locator('#skiCount')).not.toHaveText('—');
+  await expect.poll(async () => Number(await page.locator('#routeCount').textContent() || 0)).toBeGreaterThan(baseRouteFeatures);
+
   await expect(item).toHaveAttribute('aria-pressed','true');
   await expect(popup).toBeVisible();
   await expect(popup).toHaveCount(1);
@@ -24,7 +33,7 @@ test('Master map record deep link focuses the matching archive entry once', asyn
   await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordKey);
   await page.waitForTimeout(650);
   await expect(popup).toHaveCount(1);
-  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordKey);
+  await expect(popup).toContainText('Chicago Marathon');
 });
 
 test('Selecting a record on the map creates a shareable focused URL', async ({ page }) => {
