@@ -47,8 +47,11 @@ test('Chapter index stays sticky and horizontally navigable on phone widths', as
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/races.html', { waitUntil:'domcontentloaded' });
   const index = page.locator('.chapter-index');
-  await expect(index).toBeVisible();
-  await expect.poll(async () => index.evaluate(node => getComputedStyle(node).overflowX)).toBe('auto');
+  await expect(index.getByRole('link',{name:'A marathon journey around the world.'})).toBeVisible();
+  await expect.poll(async () => index.evaluate(node => {
+    const style=getComputedStyle(node);
+    return `${style.overflowX}|${style.position}`;
+  })).toBe('auto|sticky');
   const metrics = await index.evaluate(node => ({
     overflowX:getComputedStyle(node).overflowX,
     position:getComputedStyle(node).position,
