@@ -19,6 +19,7 @@ function mergeSupplementalRoutes(payloads, attempt = 0) {
       }
     });
     updateRouteCount();
+    map.closePopup?.();
     renderPreservingFocus();
     return;
   }
