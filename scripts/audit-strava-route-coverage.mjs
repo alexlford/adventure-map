@@ -1,6 +1,12 @@
 import fs from 'node:fs';
+import zlib from 'node:zlib';
 
 const readJson = path => JSON.parse(fs.readFileSync(path, 'utf8'));
+const readPolylineJson = path => {
+  const text = fs.readFileSync(path, 'utf8');
+  if (path.endsWith('.gz.b64')) return JSON.parse(zlib.gunzipSync(Buffer.from(text.trim(), 'base64')).toString('utf8'));
+  return JSON.parse(text);
+};
 const recordsPayload = readJson('data/public-records.json');
 const routeCatalog = readJson('data/route-catalog.json');
 const relationshipPayload = readJson('data/relationships.json');
@@ -37,15 +43,20 @@ for (const routeFile of routeCatalog.routeFiles || []) {
   }
 }
 
-for (const polylineFile of routeCatalog.polylineFiles?.length ? routeCatalog.polylineFiles : ['data/activity-route-polylines.json']) {
-  const payload = readJson(polylineFile);
+const polylineFiles = [
+  ...(routeCatalog.preferredPolylineFiles || []),
+  ...(routeCatalog.polylineFiles?.length ? routeCatalog.polylineFiles : ['data/activity-route-polylines.json']),
+];
+for (const polylineFile of polylineFiles) {
+  const payload = readPolylineJson(polylineFile);
   for (const route of payload.routes || []) {
     const id = route.id || null;
     const override = id ? routeCatalog.featureOverrides?.[id] : null;
     const properties = { ...route, ...(override || {}) };
     if (id) personalFeatureIds.add(String(id));
     if (properties.stravaActivityId != null) routeActivityIds.add(String(properties.stravaActivityId));
-    if (id && String(id).startsWith('strava-')) routeActivityIds.add(String(id).slice(7));
+    for (const activityId of properties.sourceActivityIds || properties.activityIds || []) routeActivityIds.add(String(activityId));
+    if (id && /^strava-\d+$/.test(String(id))) routeActivityIds.add(String(id).slice(7));
     addAdventureIds(properties.adventureIds);
   }
 }
@@ -160,5 +171,5 @@ if (actionableMissing.length) {
   for (const item of actionableMissing) console.log(JSON.stringify(item));
   process.exitCode = 1;
 } else {
-  console.log('\nEvery public record that should expose Strava/personal GPS geometry has route coverage; only explicit privacy and pre-Strava historical records are exceptions.');
+  console.log('\nEvery public record that should expose Strava/personal GPS geometry has route coverage; only pre-Strava historical records are exceptions.');
 }
