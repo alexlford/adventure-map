@@ -29,6 +29,10 @@ on:
       - 'scripts/audit-strava-route-coverage.mjs'
       - 'scripts/lib/**'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.actor }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
