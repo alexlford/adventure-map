@@ -12,6 +12,34 @@ function collectRuntimeErrors(page) {
   return errors;
 }
 
+test('Map exposes a stable AdventureMap runtime API', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+
+  const contract = await page.evaluate(() => {
+    const api = window.AdventureMap;
+    return {
+      version: api?.version,
+      frozen: Object.isFrozen(api),
+      recordCount: api?.state?.().recordCount,
+      visibleCount: api?.filteredRecords?.().length,
+      routeCount: api?.visibleRoutes?.().length,
+      methods: ['state','records','filteredRecords','visibleRoutes','layerFor','popupHtml','focus','emphasize','clearFocus','fit','refresh','setViewState'].every(name => typeof api?.[name] === 'function'),
+      sameLeaflet: api?.leaflet === window.adventureMap,
+    };
+  });
+
+  expect(contract.version).toBe(1);
+  expect(contract.frozen).toBeTruthy();
+  expect(contract.recordCount).toBeGreaterThan(0);
+  expect(contract.visibleCount).toBeGreaterThan(0);
+  expect(contract.routeCount).toBeGreaterThan(0);
+  expect(contract.methods).toBeTruthy();
+  expect(contract.sameLeaflet).toBeTruthy();
+  expect(errors).toEqual([]);
+});
+
 test('Map public route keeps the Colorado-centered zoom 2 default after data loads', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/map/', { waitUntil: 'domcontentloaded' });
@@ -19,7 +47,7 @@ test('Map public route keeps the Colorado-centered zoom 2 default after data loa
   await expect(page.locator('#skiCount')).not.toHaveText('—');
 
   const view = await page.evaluate(() => {
-    const map = window.adventureMap;
+    const map = window.AdventureMap?.leaflet;
     const center = map?.getCenter?.();
     return {
       zoom: map?.getZoom?.(),
@@ -34,14 +62,13 @@ test('Map public route keeps the Colorado-centered zoom 2 default after data loa
   expect(errors).toEqual([]);
 });
 
-test('Map presents recovered official race context', async ({ page }) => {
+test('Map presents recovered official race context through AdventureMap', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#resultCount')).toContainText('shown');
 
-  const result = await page.evaluate(async () => {
-    const all = await window.AdventureCatalog.load();
-    const race = all.find(record => record.kind === 'race' && record.officialTime && (record.officialDistance || record.officialDistanceMi));
+  const result = await page.evaluate(() => {
+    const race = window.AdventureMap.records().find(record => record.kind === 'race' && record.officialTime && (record.officialDistance || record.officialDistanceMi));
     if (!race) return null;
     return {
       id: race.id,
@@ -49,7 +76,7 @@ test('Map presents recovered official race context', async ({ page }) => {
       officialTime: race.officialTime,
       officialDistance: race.officialDistance || `${race.officialDistanceMi} mi`,
       officialPlace: race.officialPlace || null,
-      html: window.popupCard?.(race) || '',
+      html: window.AdventureMap.popupHtml(race),
     };
   });
 
