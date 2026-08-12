@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test('race timeline consistently shows distance rather than finish time', async ({ page }) => {
+test('race timeline consistently renders distance without analytics DOM patching', async ({ page }) => {
+  await page.route('**/race-stats.js', route => route.fulfill({ status: 503, contentType: 'text/javascript', body: '' }));
   await page.goto('/races/', { waitUntil: 'domcontentloaded' });
   const items = page.locator('#timeline .timeline-item');
   await expect(items.first()).toBeVisible();
@@ -16,4 +17,5 @@ test('race timeline consistently shows distance rather than finish time', async 
 
   const colder = items.filter({ hasText: 'COLDERBolder 5K' }).first();
   await expect(colder.locator(':scope > div:last-child > strong')).toHaveText('5K');
+  await expect(colder.locator(':scope > div:first-child > span')).toContainText('Road race');
 });
