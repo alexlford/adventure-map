@@ -92,6 +92,27 @@
       render();
       return true;
     },
+    appendRoutes(collections = []) {
+      if (!state.routes) return null;
+      const payloads = Array.isArray(collections) ? collections : [collections];
+      const existing = new Set(state.routes.features.map(feature => feature.id || feature.properties?.featureId || feature.properties?.id));
+      let added = 0;
+      for (const feature of payloads.flatMap(payload => payload?.features || [])) {
+        const id = feature.id || feature.properties?.featureId || feature.properties?.id;
+        if (id && existing.has(id)) continue;
+        state.routes.features.push(feature);
+        if (id) existing.add(id);
+        added += 1;
+      }
+      const routeCount = document.getElementById('routeCount');
+      if (routeCount) routeCount.textContent = new Set(state.routes.features.flatMap(feature => feature.properties?.adventureIds || [])).size;
+      map.closePopup?.();
+      if (added > 0) {
+        if (typeof renderPreservingFocus === 'function') renderPreservingFocus();
+        else if (typeof render === 'function') render();
+      }
+      return Object.freeze({ added, total: state.routes.features.length });
+    },
     setViewState(next = {}, { renderNow = true, fit = false } = {}) {
       if (Object.hasOwn(next, 'filter')) state.filter = next.filter || 'all';
       if (Object.hasOwn(next, 'search')) state.search = String(next.search || '');
@@ -121,6 +142,7 @@
     clearFocus: core.clearFocus,
     fit: core.fit,
     refresh: core.refresh,
+    appendRoutes: core.appendRoutes,
     setViewState: core.setViewState
   };
 
