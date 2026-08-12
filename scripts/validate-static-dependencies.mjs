@@ -1,24 +1,14 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { siteRoutes, generatedRoutes } from './lib/site-routes.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const problems = [];
 const checked = new Set();
 
-const cleanRoutes = new Map([
-  ['/', 'index.html'],
-  ['/explore', 'activities.html'],
-  ['/map', 'map.html'],
-  ['/stories', 'adventures.html'],
-  ['/timeline', 'timeline.html'],
-  ['/races', 'races.html'],
-  ['/summits', 'summits.html'],
-  ['/skiing', 'skiing.html'],
-  ['/nordic', 'nordic.html'],
-  ['/mtb', 'mountain-biking.html']
-]);
-const generatedPublicationDirs = new Set(['record','map','explore','timeline','stories','races','summits','skiing','nordic','mtb']);
+const cleanRoutes = new Map(siteRoutes.map(route => [route.path, route.source]));
+const generatedPublicationDirs = new Set(['record',...generatedRoutes.map(route=>route.dir)]);
 const ignoredSchemes = /^(?:https?:|mailto:|tel:|data:|javascript:|blob:|webcal:)/i;
 const assetLike = /\.(?:html?|m?js|css|json|geojson|png|jpe?g|gif|webp|svg|ico|xml|txt|webmanifest|pdf)$/i;
 
@@ -66,8 +56,8 @@ async function walk(dir = root) {
   for (const entry of entries) {
     const atRoot = dir === root;
     if (['.git','.github','node_modules','scripts','tests','test-results','playwright-report'].includes(entry.name)) continue;
-    // Clean-path documents are generated from the root source pages and have their own
-    // deterministic validator. Scanning the source layer here avoids duplicate signals.
+    // Generated clean-path documents have their own deterministic validator. Keep
+    // source-owned direct routes such as /world-majors in this dependency scan.
     if (atRoot && generatedPublicationDirs.has(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) files.push(...await walk(full));

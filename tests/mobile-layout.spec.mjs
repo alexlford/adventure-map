@@ -11,6 +11,7 @@ const pages = [
   '/skiing.html',
   '/nordic.html',
   '/mountain-biking.html',
+  '/world-majors/',
 ];
 
 const recordPages = [
