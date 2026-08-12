@@ -14,8 +14,8 @@ if(!shared.includes("productionHost='adventures.alexlford.com'"))errors.push('sh
 if(!shared.includes('`/record/${encodeURIComponent(record.slug || record.id)}/`'))errors.push('shared.js does not emit clean production record routes');
 if(!shared.includes('const PUBLIC_PATHS='))errors.push('shared.js does not define clean production page routes');
 for(const route of Object.values(cleanRoutes))if(!shared.includes(`'${route}'`)&&!shared.includes(`:${JSON.stringify(route)}`))errors.push(`shared.js missing clean public route ${route}`);
-if(!fallback.includes("clean.match(/^record\\/([^/]+)$/)"))errors.push('404.html does not recognize /record/<slug>/ routes');
-for(const [route,file] of Object.entries({home:'index.html',map:'map.html',explore:'activities.html',timeline:'timeline.html',races:'races.html',summits:'summits.html',skiing:'skiing.html',nordic:'nordic.html',mtb:'mountain-biking.html',stories:'adventures.html'}))if(!fallback.includes(`${route}:'${file}'`))errors.push(`404.html missing route mapping for ${route}`);
+if(/location\.(replace|assign)|detail\.html\?record=|clean\.match\(\/\^record/.test(fallback))errors.push('404.html must be a normal not-found page, not a clean-route resolver');
+if(!fallback.includes('That page is not in the archive'))errors.push('404.html missing normal not-found message');
 if(!mapApp.includes("location.hostname==='adventures.alexlford.com'"))errors.push('map app does not emit clean production record links');
 if(!mapPage.includes('href="index.html"')||!mapPage.includes("'index.html':'/'"))errors.push('map page must keep relative staging links and rewrite them only on production');
 if(!chapterMap.includes('const A = window.AdventureSite')||!chapterMap.includes('const esc = A.esc'))errors.push('chapter map must use AdventureSite shared helpers');
@@ -41,4 +41,4 @@ for(const file of publicPages){
   if(/\bAlmanac\b/.test(text))errors.push(`${file} exposes retired Almanac branding; use Adventures, Stories, Explore, records, or archive as appropriate`);
 }
 if(errors.length){console.error(errors.join('\n'));process.exit(1)}
-console.log('Clean routing, single-pass record rendering, and Adventures branding validation passed.');
+console.log('Direct clean routing, single-pass record rendering, and Adventures branding validation passed.');
