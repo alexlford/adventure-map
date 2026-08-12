@@ -3,56 +3,92 @@
   const cityName=x=>x.name.replace(' Marathon','').replace('TCS New York City','New York City');
   const statusLabel=x=>x.status==='completed'?'Completed':x.status==='registered'?'Registered':x.membership==='joins-2027'?'Joining the Majors in 2027':'Future target';
   const markerColor=x=>x.status==='completed'?'#27654e':x.status==='registered'?'#b47f2d':x.membership==='joins-2027'?'#2f6f8f':'#87928d';
-  function ensurePassportCardFix(){
-    if(document.getElementById('majorsPassportCardFix'))return;
+
+  function ensureMajorsFixStyles(){
+    if(document.getElementById('majorsResponsiveFix'))return;
     const style=document.createElement('style');
-    style.id='majorsPassportCardFix';
+    style.id='majorsResponsiveFix';
     style.textContent=`
       .majors-passport-grid{align-items:start}
-      .major-passport{min-height:0!important;padding:18px 58px 18px 18px!important;display:block!important}
-      .major-passport:not(.completed){padding-right:18px!important}
+      .major-passport{display:block!important;min-height:0!important;padding:18px 18px 18px 60px!important}
       .major-passport .card-kicker{margin:0 0 5px!important}
-      .major-passport h3{margin:0!important}
+      .major-passport h3{margin:0!important;line-height:1.06}
       .major-passport .card-meta{margin:7px 0 0!important;line-height:1.38}
-      .passport-number{top:13px!important;right:14px!important;font-size:1.45rem!important}
-      .passport-earned-stamp{top:15px!important;right:14px!important;width:46px!important;height:46px!important;font-size:.42rem!important;letter-spacing:.055em!important}
-      .passport-earned-stamp:after{bottom:5px!important;font-size:.33rem!important}
+      .passport-number{left:16px!important;right:auto!important;top:16px!important;font-size:1.35rem!important;color:rgba(33,58,49,.24)!important}
       .passport-grow{margin-top:14px!important;padding-right:0!important;gap:5px!important}
       .passport-grow span{padding:4px 7px!important}
       .passport-state{display:none!important}
+      .major-passport.completed{padding-right:66px!important}
+      .passport-earned-stamp{position:absolute!important;right:13px!important;top:13px!important;width:46px!important;height:46px!important;border:2px solid rgba(39,101,78,.6)!important;border-radius:50%!important;box-shadow:inset 0 0 0 3px rgba(39,101,78,.08)!important;color:#27654e!important;background:rgba(255,255,255,.9)!important;transform:rotate(-7deg)!important;display:grid!important;grid-template-rows:1fr auto!important;place-items:center!important;padding:7px 3px 6px!important;line-height:1!important;letter-spacing:0!important}
+      .passport-earned-stamp span{display:block;font-size:1.18rem;font-weight:900;line-height:.9}
+      .passport-earned-stamp small{display:block;font-size:.31rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;line-height:1}
+      .passport-earned-stamp:after{content:none!important}
+
+      .majors-world{height:clamp(300px,34vw,390px)!important;aspect-ratio:auto!important;background:#e7ede9!important;background-image:none!important;border:1px solid rgba(33,58,49,.12)}
+      .majors-world.leaflet-container{font-family:inherit}
+      .majors-world .leaflet-tile-pane{filter:saturate(.58) contrast(.94) brightness(1.05)}
+      .majors-world .leaflet-control-attribution{padding:2px 5px;background:rgba(247,244,238,.8);font-size:8px;color:#66736d}
+      .majors-leaflet-label.leaflet-tooltip{padding:4px 7px;border:1px solid rgba(33,58,49,.13);border-radius:999px;background:rgba(255,255,255,.95);box-shadow:0 4px 14px rgba(23,32,42,.12);color:#33443d;font-size:.58rem;font-weight:850;line-height:1;white-space:nowrap}
+      .majors-leaflet-label.leaflet-tooltip:before{display:none}
+      .majors-leaflet-label.completed{border-color:rgba(39,101,78,.34);color:#27654e}
+      .majors-leaflet-label.registered{border-color:rgba(180,127,45,.42);color:#80591d}
+      .majors-leaflet-label.candidate{border-style:dashed;color:#66736d}
+      .majors-map-index{display:grid;place-items:center;width:22px;height:22px;border:2px solid #fff;border-radius:50%;background:#87928d;color:#fff;box-shadow:0 2px 7px rgba(23,32,42,.24);font-size:.5rem;font-weight:900;line-height:1}
+      .majors-map-index.completed{background:#27654e}
+      .majors-map-index.registered{background:#b47f2d}
+      .majors-map-index.candidate{background:#fff;color:#66736d;border-color:#66736d;border-style:dashed}
+      .majors-mobile-map-list{display:none!important}
+
       @media(max-width:650px){
-        .major-passport{padding:15px 58px 15px 54px!important}
-        .major-passport:not(.completed){padding-right:15px!important}
-        .passport-number{left:15px!important;right:auto!important;top:15px!important;font-size:1.15rem!important}
-        .passport-earned-stamp{top:12px!important;right:12px!important;width:42px!important;height:42px!important}
+        .major-passport{padding:15px 15px 15px 54px!important}
+        .major-passport.completed{padding-right:62px!important}
+        .passport-number{left:15px!important;top:15px!important;font-size:1.12rem!important}
+        .passport-earned-stamp{right:11px!important;top:11px!important;width:44px!important;height:44px!important}
         .passport-grow{margin-top:10px!important}
+        .majors-world{height:245px!important;margin-top:12px!important;border-radius:15px!important}
+        .majors-world .leaflet-control-attribution{font-size:7px}
+        .majors-mobile-map-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;margin-top:10px!important}
+        .majors-mobile-map-item{display:grid!important;grid-template-columns:24px minmax(0,1fr)!important;gap:7px!important;align-items:center!important;padding:7px 8px!important;border:1px solid rgba(33,58,49,.08)!important;border-radius:11px!important;background:rgba(255,255,255,.68)!important}
+        .major-mobile-index{display:grid!important;place-items:center!important;width:23px!important;height:23px!important;font-size:.5rem!important}
+        .majors-mobile-map-item strong{display:block;font-size:.67rem;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .majors-mobile-map-item small{display:block;margin-top:2px;font-size:.53rem;line-height:1.15;color:var(--muted,#66736d)}
       }
+      @media(max-width:370px){.majors-mobile-map-list{grid-template-columns:1fr!important}}
     `;
     document.head.appendChild(style);
   }
+
   function mountWorldMap(majors,candidates){
     const element=document.getElementById('majorsWorldMap');
     if(!element)return;
     if(!window.L){element.innerHTML='<div class="empty">World map unavailable.</div>';return;}
-    const map=L.map(element,{zoomControl:false,attributionControl:true,dragging:false,touchZoom:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,worldCopyJump:false,zoomSnap:.25,minZoom:1,maxZoom:3});
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:3,attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
-    const bounds=L.latLngBounds([]);
+    const compact=window.matchMedia?.('(max-width:650px)')?.matches||false;
+    const map=L.map(element,{zoomControl:false,attributionControl:true,dragging:false,touchZoom:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,worldCopyJump:false,zoomSnap:.25,minZoom:0,maxZoom:3,maxBounds:[[-75,-180],[82,180]],maxBoundsViscosity:1});
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{minZoom:0,maxZoom:3,noWrap:true,bounds:[[-85,-180],[85,180]],attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
     const directions={chicago:'left','new-york':'left',boston:'right',london:'left',berlin:'right',tokyo:'left',sydney:'left','cape-town':'right',shanghai:'right'};
     const points=[...majors.map((x,i)=>({x,index:String(i+1).padStart(2,'0'),kind:'major'})),...candidates.map(x=>({x,index:'C',kind:'candidate'}))];
     points.forEach(({x,index,kind})=>{
       const lat=Number(x.lat),lon=Number(x.lon);if(!Number.isFinite(lat)||!Number.isFinite(lon))return;
       const candidate=kind==='candidate';
-      const marker=L.circleMarker([lat,lon],{radius:candidate?5.5:6.5,color:candidate?'#66736d':'#fff',weight:candidate?2:2.5,fillColor:candidate?'#fff':markerColor(x),fillOpacity:1,opacity:1,dashArray:candidate?'3 2':null,interactive:false}).addTo(map);
-      marker.bindTooltip(`${index} ${cityName(x)}`,{permanent:true,direction:directions[x.id]||'top',offset:[0,-5],opacity:1,className:`majors-leaflet-label ${candidate?'candidate':x.status||'future'}`});
-      bounds.extend([lat,lon]);
+      if(compact){
+        L.marker([lat,lon],{interactive:false,icon:L.divIcon({className:'',html:`<span class="majors-map-index ${candidate?'candidate':A.esc(x.status||'future')}">${A.esc(index)}</span>`,iconSize:[22,22],iconAnchor:[11,11]})}).addTo(map);
+      }else{
+        const marker=L.circleMarker([lat,lon],{radius:candidate?5.5:6.5,color:candidate?'#66736d':'#fff',weight:candidate?2:2.5,fillColor:candidate?'#fff':markerColor(x),fillOpacity:1,opacity:1,dashArray:candidate?'3 2':null,interactive:false}).addTo(map);
+        marker.bindTooltip(`${index} ${cityName(x)}`,{permanent:true,direction:directions[x.id]||'top',offset:[0,-5],opacity:1,className:`majors-leaflet-label ${candidate?'candidate':x.status||'future'}`});
+      }
     });
-    const fit=()=>{map.invalidateSize({pan:false});if(bounds.isValid())map.fitBounds(bounds,{padding:[34,34],maxZoom:2,animate:false})};
+    const fit=()=>{
+      map.invalidateSize({pan:false});
+      const padding=compact?[8,8]:[18,18];
+      map.fitBounds([[-48,-168],[68,168]],{padding,maxZoom:compact?1:1.75,animate:false});
+    };
     requestAnimationFrame(()=>requestAnimationFrame(fit));
     setTimeout(fit,220);
     if(typeof ResizeObserver!=='undefined'){const observer=new ResizeObserver(()=>requestAnimationFrame(fit));observer.observe(element);element.__majorsMapResizeObserver=observer;}
     element.__majorsLeafletMap=map;
   }
-  ensurePassportCardFix();
+
+  ensureMajorsFixStyles();
   Promise.all([
     fetch('data/world-majors.json').then(r=>{if(!r.ok)throw new Error('Unable to load World Majors journey');return r.json()}),
     A.load()
@@ -67,7 +103,7 @@
     const asset=(label,available)=>`<span class="${available?'available':'planned'}">${available?'✓':'+'} ${A.esc(label)}</span>`;
     const passportCards=majors.map((x,i)=>{
       const record=recordFor(x);
-      const earned=x.status==='completed'?'<div class="passport-earned-stamp" aria-label="Completed Major">Completed</div>':'';
+      const earned=x.status==='completed'?'<div class="passport-earned-stamp" aria-label="Completed Major"><span>✓</span><small>Major</small></div>':'';
       let grow='';
       if(x.status==='completed'){
         const resultAvailable=Boolean(record&&(record.officialTime||record.elapsedSeconds||record.resultUrl)),courseAvailable=Boolean(record&&(record.routeStatus==='gps'||(record.routeFeatureIds||[]).length)),photosAvailable=hasPhotos(record)||Boolean(x.photoUrl||(x.photos||[]).length),storyAvailable=Boolean(record?.story||record?.storyBody||x.storyUrl||x.storyRecordId);
