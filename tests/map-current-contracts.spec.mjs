@@ -12,6 +12,27 @@ function collectRuntimeErrors(page) {
   return errors;
 }
 
+test('Map public route keeps the Colorado-centered zoom 2 default after data loads', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+
+  const view = await page.evaluate(() => {
+    const map = window.adventureMap;
+    const center = map?.getCenter?.();
+    return {
+      zoom: map?.getZoom?.(),
+      lat: center?.lat,
+      lng: center?.lng,
+    };
+  });
+
+  expect(view.zoom).toBe(2);
+  expect(view.lat).toBeCloseTo(39, 1);
+  expect(view.lng).toBeCloseTo(-105.5, 1);
+  expect(errors).toEqual([]);
+});
+
 test('Map presents recovered official race context', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
