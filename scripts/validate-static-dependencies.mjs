@@ -6,11 +6,14 @@ import { siteRoutes, generatedRoutes } from './lib/site-routes.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const problems = [];
 const checked = new Set();
+let localLeafletReferences = 0;
 
 const cleanRoutes = new Map(siteRoutes.map(route => [route.path, route.source]));
 const generatedPublicationDirs = new Set(['record',...generatedRoutes.map(route=>route.dir)]);
 const ignoredSchemes = /^(?:https?:|mailto:|tel:|data:|javascript:|blob:|webcal:)/i;
 const assetLike = /\.(?:html?|m?js|css|json|geojson|png|jpe?g|gif|webp|svg|ico|xml|txt|webmanifest|pdf)$/i;
+const remoteLeaflet = /https?:\/\/(?:unpkg\.com|cdn\.jsdelivr\.net|cdnjs\.cloudflare\.com)\/[^"'\s>]*leaflet/i;
+const localLeaflet = /(?:^|\/)vendor\/leaflet\/(?:leaflet\.css|leaflet\.js)$/i;
 
 async function exists(rel) {
   try { await fs.access(path.join(root, rel)); return true; }
@@ -21,11 +24,19 @@ function stripRef(raw) {
   return String(raw || '').trim().replace(/^['"]|['"]$/g, '').split('#')[0].split('?')[0];
 }
 
+function validateLeafletRuntime(text, source) {
+  if (remoteLeaflet.test(text)) {
+    problems.push(`${source}: remote Leaflet runtime dependency is not allowed; use vendor/leaflet assets from the locked npm package.`);
+  }
+}
+
 async function verify(raw, source, kind) {
   const value = stripRef(raw);
   if (!value || value === '.' || value.startsWith('#') || ignoredSchemes.test(value) || value.startsWith('//')) return;
   if (value.includes('${') || value.includes('{{') || value.includes('`')) return;
   if (value.startsWith('/record/')) return;
+
+  if (localLeaflet.test(value)) localLeafletReferences += 1;
 
   let target = value;
   const cleanKey = value.replace(/\/$/, '') || '/';
@@ -74,6 +85,7 @@ for (const full of files) {
   const text = await fs.readFile(full, 'utf8');
 
   if (ext === '.html') {
+    validateLeafletRuntime(text, rel);
     for (const match of text.matchAll(/\b(?:href|src)\s*=\s*["']([^"']+)["']/gi)) await verify(match[1], rel, 'HTML dependency');
   }
   if (ext === '.css') {
@@ -85,7 +97,12 @@ for (const full of files) {
   }
 }
 
+if (localLeafletReferences === 0) {
+  problems.push('No local Leaflet runtime references were found; public map surfaces must load vendor/leaflet assets.');
+}
+
 console.log(`Source dependency references checked: ${checked.size}`);
+console.log(`Local Leaflet runtime references checked: ${localLeafletReferences}`);
 if (problems.length) {
   problems.forEach(problem => console.error(`ERROR ${problem}`));
   process.exitCode = 1;
