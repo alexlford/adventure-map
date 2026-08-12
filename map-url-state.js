@@ -57,12 +57,41 @@
     return state.adventures.find(record => record.id === initialRecord || record.slug === initialRecord) || null;
   }
 
+  function inferredLayerFor(record) {
+    if (!record || typeof publicLayerFor !== 'function') return null;
+    const layer = publicLayerFor(record);
+    return validLayers.has(layer) ? layer : null;
+  }
+
+  function reflectInferredLayer(record) {
+    if (validLayers.has(initialLayer) || state.filter !== 'all') return false;
+    const layer = inferredLayerFor(record);
+    if (!layer) return false;
+    state.filter = layer;
+    reflectLayer();
+    if (typeof render === 'function') render();
+    return true;
+  }
+
+  function syncInitialRecordUrl(record) {
+    if (!record || validLayers.has(initialLayer)) return;
+    const layer = inferredLayerFor(record);
+    if (!layer) return;
+    const params = new URLSearchParams(location.search);
+    params.set('layer',layer);
+    params.set('record',initialRecord);
+    const cleanPath = location.hostname === 'adventures.alexlford.com' ? '/map' : location.pathname;
+    history.replaceState(null,'',`${cleanPath}?${params.toString()}${location.hash}`);
+  }
+
   function focusRequestedRecord() {
     const record = requestedRecord();
     if (!record || typeof focusAdventure !== 'function') return false;
 
+    reflectInferredLayer(record);
+
     if (typeof filteredAdventures === 'function' && !filteredAdventures().some(item => item.id === record.id)) {
-      state.filter = 'all';
+      state.filter = inferredLayerFor(record) || 'all';
       state.search = '';
       state.yearFrom = null;
       state.yearTo = null;
@@ -76,6 +105,7 @@
     focusAdventure(record);
     const item = document.querySelector(`.adventure-item[data-id="${CSS.escape(record.id)}"]`);
     item?.scrollIntoView?.({block:'nearest',inline:'nearest'});
+    syncInitialRecordUrl(record);
     stopRecordFocus();
     return true;
   }
