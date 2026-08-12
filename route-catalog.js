@@ -1,6 +1,7 @@
 window.AdventureRoutes = (() => {
   let configPromise;
   let relationshipsPromise;
+  let recordsPromise;
   let allPromise;
   const fetchText = async path => {
     const r = await fetch(path, { cache: 'no-cache' });
@@ -20,6 +21,7 @@ window.AdventureRoutes = (() => {
   };
   const config = () => configPromise ||= fetchJson('data/route-catalog.json');
   const relationships = () => relationshipsPromise ||= fetchJson('data/relationships.json').catch(() => ({ relationships: [] }));
+  const records = () => recordsPromise ||= fetchJson('data/public-records.json').catch(() => ({ records: [] }));
   const keyFor = feature => feature.id || feature.properties?.featureId || feature.properties?.id || null;
   const inferProvenance = feature => {
     const p = feature.properties || {};
@@ -27,6 +29,20 @@ window.AdventureRoutes = (() => {
     if (source.includes('historical') || source.includes('official') || source.includes('published')) return 'historical-course';
     if (p.stravaActivityId || source.includes('strava') || feature.id?.startsWith('strava-')) return 'personal-gps';
     return 'personal-gps';
+  };
+  const isPersonalGps = feature => {
+    const p = feature.properties || {};
+    const id = String(keyFor(feature) || '');
+    if (p.provenance === 'historical-course' || p.provenance === 'location-only' || p.provenance === 'privacy-withheld') return false;
+    return p.provenance === 'personal-gps' || p.stravaActivityId != null || id.startsWith('strava-') || id.startsWith('activity-') || `${p.source || ''} ${p.sourceLabel || ''}`.toLowerCase().includes('strava');
+  };
+  const sourceActivityIds = feature => {
+    const p = feature.properties || {};
+    const ids = new Set((p.sourceActivityIds || []).filter(Boolean).map(String));
+    if (p.stravaActivityId != null) ids.add(String(p.stravaActivityId));
+    const match = String(keyFor(feature) || '').match(/^strava-(\d+)$/);
+    if (match) ids.add(match[1]);
+    return [...ids];
   };
   async function normalizeFeature(feature) {
     const cfg = await config();
@@ -38,6 +54,31 @@ window.AdventureRoutes = (() => {
   }
   async function normalizeCollection(collection) {
     return { ...collection, features: await Promise.all((collection.features || []).map(normalizeFeature)) };
+  }
+  function attachRecordOwnership(collections, payload) {
+    const rows = payload?.records || payload || [];
+    const ownersByActivity = new Map();
+    for (const record of rows) {
+      if (!record?.id) continue;
+      const ids = [
+        ...(record.stravaActivityIds || []),
+        ...(record.stravaActivityId != null ? [record.stravaActivityId] : [])
+      ].filter(Boolean).map(String);
+      for (const activityId of ids) {
+        if (!ownersByActivity.has(activityId)) ownersByActivity.set(activityId, new Set());
+        ownersByActivity.get(activityId).add(String(record.id));
+      }
+    }
+    return collections.map(collection => ({
+      ...collection,
+      features: (collection.features || []).map(feature => {
+        const owners = new Set((feature.properties?.adventureIds || []).map(String));
+        for (const activityId of sourceActivityIds(feature)) {
+          for (const owner of ownersByActivity.get(activityId) || []) owners.add(owner);
+        }
+        return { ...feature, properties: { ...(feature.properties || {}), adventureIds: [...owners] } };
+      })
+    }));
   }
   function expandRelationshipOwnership(collections, payload) {
     const rels = (payload?.relationships || []).filter(rel => rel.adventureId && Array.isArray(rel.memberIds) && rel.memberIds.length);
@@ -63,7 +104,22 @@ window.AdventureRoutes = (() => {
     return collections.map(collection => ({
       ...collection,
       features: (collection.features || []).filter(feature => !superseded.has(keyFor(feature)))
-    }));
+    })).filter(collection => (collection.features || []).length);
+  }
+  function suppressLegacyPersonalGps(collections) {
+    const preferred = collections.flatMap(collection => collection.features || []).filter(feature => feature.properties?.preferredGeometry);
+    if (!preferred.length) return collections;
+    const preferredOwners = new Set(preferred.flatMap(feature => feature.properties?.adventureIds || []).map(String));
+    const preferredActivityIds = new Set(preferred.flatMap(sourceActivityIds));
+    return collections.map(collection => ({
+      ...collection,
+      features: (collection.features || []).filter(feature => {
+        if (feature.properties?.preferredGeometry) return true;
+        if (!isPersonalGps(feature)) return true;
+        if (sourceActivityIds(feature).some(id => preferredActivityIds.has(id))) return false;
+        return !(feature.properties?.adventureIds || []).some(id => preferredOwners.has(String(id)));
+      })
+    })).filter(collection => (collection.features || []).length);
   }
   function dedupeCollections(collections) {
     const seen = new Set();
@@ -114,7 +170,7 @@ window.AdventureRoutes = (() => {
     if (coordinates.length < 2) throw new Error('Encoded route contains fewer than two coordinates');
     return coordinates;
   }
-  async function polylineCollection(path) {
+  async function polylineCollection(path, { preferred = false } = {}) {
     const payload = await fetchPolylinePayload(path);
     const features = (payload.routes || []).map(route => {
       if (!route.id || !Array.isArray(route.lines) || !route.lines.length) throw new Error(`${path}: invalid encoded route`);
@@ -138,7 +194,8 @@ window.AdventureRoutes = (() => {
           segmentType: route.segmentType || null,
           segmentCount: route.segmentCount || null,
           note: route.note || null,
-          supersedesFeatureId: route.supersedesFeatureId || null
+          supersedesFeatureId: route.supersedesFeatureId || null,
+          preferredGeometry: preferred || route.preferredGeometry === true
         },
         geometry: lines.length === 1
           ? { type: 'LineString', coordinates: lines[0] }
@@ -152,16 +209,18 @@ window.AdventureRoutes = (() => {
     const preferredPolylineFiles = cfg.preferredPolylineFiles || [];
     const routeFiles = cfg.routeFiles || [];
     const polylineFiles = cfg.polylineFiles?.length ? cfg.polylineFiles : ['data/activity-route-polylines.json'];
-    const [preferredPayloads, routePayloads, polylinePayloads, relationshipPayload] = await Promise.all([
-      Promise.all(preferredPolylineFiles.map(polylineCollection)),
+    const [preferredPayloads, routePayloads, polylinePayloads, relationshipPayload, recordPayload] = await Promise.all([
+      Promise.all(preferredPolylineFiles.map(path => polylineCollection(path, { preferred: true }))),
       Promise.all(routeFiles.map(fetchJson)),
-      Promise.all(polylineFiles.map(polylineCollection)),
-      relationships()
+      Promise.all(polylineFiles.map(path => polylineCollection(path)),
+      relationships(),
+      records()
     ]);
     const normalizedRoutes = await Promise.all(routePayloads.map(normalizeCollection));
     const ordered = dedupeCollections([...preferredPayloads, ...normalizedRoutes, ...polylinePayloads]);
-    const preferredCollections = suppressSupersededFeatures(ordered);
-    return expandRelationshipOwnership(preferredCollections, relationshipPayload);
+    const owned = attachRecordOwnership(ordered, recordPayload);
+    const related = expandRelationshipOwnership(owned, relationshipPayload);
+    return suppressSupersededFeatures(suppressLegacyPersonalGps(related));
   }
   function loadAll({ fresh = false } = {}) {
     if (fresh) return resolveAll();
