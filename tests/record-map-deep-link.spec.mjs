@@ -11,20 +11,30 @@ test('Clean record pages carry record context into the map action', async ({ pag
   await expect(mapAction).toHaveAttribute('href',`map.html?record=${recordSlug}`);
 });
 
-test('Master map record deep link focuses the matching archive entry once', async ({ page }) => {
+test('Master map record deep link focuses the record in its matching layer once', async ({ page }) => {
   await page.goto(`/map.html?record=${recordKey}`, { waitUntil: 'domcontentloaded' });
 
   const item = page.locator(`.adventure-item[data-id="${recordKey}"]`);
   const popup = page.locator('#map .leaflet-popup');
   await expect(item).toBeVisible();
   await expect(item).toHaveAttribute('aria-pressed','true');
+  await expect(page.locator('[data-filter="road-races"]')).toHaveClass(/is-active/);
   await expect(popup).toBeVisible();
   await expect(popup).toHaveCount(1);
   await expect(popup).toContainText('Chicago Marathon');
   await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordKey);
+  await expect.poll(() => new URL(page.url()).searchParams.get('layer')).toBe('road-races');
   await page.waitForTimeout(650);
   await expect(popup).toHaveCount(1);
   await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe(recordKey);
+});
+
+test('Summit record deep links infer the Summits layer', async ({ page }) => {
+  await page.goto('/map.html?record=mount-democrat', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.adventure-item[data-id="mount-democrat"]')).toHaveAttribute('aria-pressed','true');
+  await expect(page.locator('[data-filter="summits"]')).toHaveClass(/is-active/);
+  await expect.poll(() => new URL(page.url()).searchParams.get('layer')).toBe('summits');
+  await expect.poll(() => new URL(page.url()).searchParams.get('record')).toBe('mount-democrat');
 });
 
 test('Selecting a record on the map creates a shareable focused URL', async ({ page }) => {
