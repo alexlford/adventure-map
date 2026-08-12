@@ -1,6 +1,6 @@
 CATEGORY.road = { label: 'Road race', color: '#d97706' };
 CATEGORY.trail = { label: 'Trail race', color: '#b45309' };
-CATEGORY['mountain-bike'] = { label: 'Mountain bike race', color: '#2563eb' };
+CATEGORY['mountain-bike'] = { label: 'Mountain bike race', color: '#2f7d4a' };
 
 function updateRouteCount() {
   const routeCount = document.getElementById('routeCount');
@@ -19,7 +19,7 @@ function mergeSupplementalRoutes(payloads, attempt = 0) {
       }
     });
     updateRouteCount();
-    render();
+    renderPreservingFocus();
     return;
   }
   if (attempt < 40) setTimeout(() => mergeSupplementalRoutes(payloads, attempt + 1), 100);

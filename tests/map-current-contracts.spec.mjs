@@ -40,6 +40,21 @@ test('Map presents recovered official race context', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test('Map keeps MTB geography on the shared forest green', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+  await page.locator('[data-filter="mtb"]').click();
+  await expect(page.locator('[data-filter="mtb"]')).toHaveClass(/is-active/);
+  const dot = page.locator('#adventureList .item-dot').first();
+  await expect(dot).toBeVisible();
+  await expect.poll(() => dot.evaluate(node => getComputedStyle(node).backgroundColor)).toBe('rgb(47, 125, 74)');
+  const expansionSource = await page.evaluate(() => fetch('expansion.js').then(response => response.text()));
+  expect(expansionSource).toContain("CATEGORY['mountain-bike'] = { label: 'Mountain bike race', color: '#2f7d4a' }");
+  expect(expansionSource).not.toContain("CATEGORY['mountain-bike'] = { label: 'Mountain bike race', color: '#2563eb' }");
+  expect(errors).toEqual([]);
+});
+
 test('Map exposes ski resorts as a usable skiing layer', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/map.html', { waitUntil: 'domcontentloaded' });

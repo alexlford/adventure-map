@@ -13,7 +13,7 @@
 .filter-row{gap:6px;margin-bottom:9px}
 .filter-button{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;font-size:.72rem;font-weight:750}
 .filter-button:before{content:"";width:7px;height:7px;flex:0 0 auto;border-radius:50%;background:#59636d;box-shadow:0 0 0 1px rgba(23,32,42,.06)}
-.filter-button[data-filter="mtb"]:before{background:#315f9e}
+.filter-button[data-filter="mtb"]:before{background:#2f7d4a}
 .filter-button[data-filter="nordic"]:before{background:#2f6f8f}
 .filter-button[data-filter="road-races"]:before{background:#b76b26}
 .filter-button[data-filter="trail-races"]:before{background:#8b5a31}

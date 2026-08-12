@@ -10,7 +10,7 @@
   }
 
   const colors = Object.freeze({
-    mtb:'#315f9e',
+    mtb:'#2f7d4a',
     nordic:'#2f6f8f',
     'road-races':'#b76b26',
     'trail-races':'#8b5a31',
