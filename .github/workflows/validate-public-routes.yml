@@ -1,0 +1,38 @@
+name: Validate compiled Adventures routes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  compile-routes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compile public routes
+        run: node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
+      - name: Validate compiled route contract
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const payload=JSON.parse(fs.readFileSync('tmp/public-routes.geojson','utf8'));
+          if(payload.type!=='FeatureCollection')throw new Error('compiled routes are not a FeatureCollection');
+          if(payload.metadata?.featureCount!==payload.features?.length)throw new Error('compiled route feature count is inconsistent');
+          if(!payload.features?.length)throw new Error('compiled route collection is empty');
+          const ids=payload.features.map(feature=>feature.id||feature.properties?.featureId||feature.properties?.id).filter(Boolean);
+          if(new Set(ids).size!==ids.length)throw new Error('compiled route collection contains duplicate feature ids');
+          const repairs=payload.metadata?.repairs||[];
+          if(repairs.length!==2)throw new Error(`expected the two known incomplete-tail recoveries, found ${repairs.length}`);
+          if(repairs.some(repair=>!Number.isInteger(repair.trimEnd)||repair.trimEnd<1||repair.trimEnd>8))throw new Error('compiled route recovery metadata is invalid');
+          console.log(`Compiled route contract passed with ${payload.features.length} features and ${repairs.length} explicit recoveries.`);
+          NODE
