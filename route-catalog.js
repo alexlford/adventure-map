@@ -119,17 +119,27 @@ window.AdventureRoutes = (() => {
     });
     return normalizeCollection({ type: 'FeatureCollection', features });
   }
+  async function loadAvailable(paths, loader, label) {
+    const settled = await Promise.allSettled(paths.map(path => loader(path)));
+    const available = [];
+    settled.forEach((result, index) => {
+      if (result.status === 'fulfilled') available.push(result.value);
+      else console.warn(`${label} unavailable: ${paths[index]}`, result.reason);
+    });
+    return available;
+  }
   async function resolveAll() {
     const cfg = await config();
     const routeFiles = cfg.routeFiles || [];
     const polylineFiles = cfg.polylineFiles?.length ? cfg.polylineFiles : ['data/activity-route-polylines.json'];
-    const [routePayloads, polylinePayloads, relationshipPayload] = await Promise.all([
-      Promise.all(routeFiles.map(fetchJson)),
-      Promise.all(polylineFiles.map(polylineCollection)),
+    const [normalizedRoutes, polylinePayloads, relationshipPayload] = await Promise.all([
+      loadAvailable(routeFiles, async path => normalizeCollection(await fetchJson(path)), 'Route source'),
+      loadAvailable(polylineFiles, polylineCollection, 'Polyline route source'),
       relationships()
     ]);
-    const normalizedRoutes = await Promise.all(routePayloads.map(normalizeCollection));
-    const preferredCollections = suppressSupersededFeatures([...normalizedRoutes, ...polylinePayloads]);
+    const collections = [...normalizedRoutes, ...polylinePayloads];
+    if (!collections.length && (routeFiles.length || polylineFiles.length)) throw new Error('Unable to load public route geometry.');
+    const preferredCollections = suppressSupersededFeatures(collections);
     return expandRelationshipOwnership(preferredCollections, relationshipPayload);
   }
   function loadAll({ fresh = false } = {}) {
