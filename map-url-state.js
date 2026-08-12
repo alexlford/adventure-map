@@ -47,8 +47,12 @@
     };
   }
 
+  let recordFocusActive = Boolean(initialRecord);
+  let recordObserver = null;
+  let recordTimer = null;
+
   function requestedRecord() {
-    if (!initialRecord || !Array.isArray(state.adventures) || !state.adventures.length) return null;
+    if (!recordFocusActive || !initialRecord || !Array.isArray(state.adventures) || !state.adventures.length) return null;
     return state.adventures.find(record => record.id === initialRecord || record.slug === initialRecord) || null;
   }
 
@@ -74,20 +78,28 @@
     return true;
   }
 
+  function scheduleRecordFocus() {
+    if (!recordFocusActive) return;
+    clearTimeout(recordTimer);
+    recordTimer = setTimeout(focusRequestedRecord,60);
+  }
+
+  function stopRecordFocus() {
+    if (!recordFocusActive) return;
+    recordFocusActive = false;
+    clearTimeout(recordTimer);
+    recordObserver?.disconnect();
+  }
+
   if (initialRecord) {
-    let timer = null;
-    const scheduleFocus = () => {
-      clearTimeout(timer);
-      timer = setTimeout(focusRequestedRecord,60);
-    };
     const list = document.getElementById('adventureList');
-    const observer = list ? new MutationObserver(scheduleFocus) : null;
-    observer?.observe(list,{childList:true});
-    scheduleFocus();
+    recordObserver = list ? new MutationObserver(scheduleRecordFocus) : null;
+    recordObserver?.observe(list,{childList:true});
+    scheduleRecordFocus();
     window.addEventListener('load',() => {
-      scheduleFocus();
-      setTimeout(scheduleFocus,500);
-      setTimeout(() => observer?.disconnect(),10000);
+      scheduleRecordFocus();
+      setTimeout(scheduleRecordFocus,500);
+      setTimeout(() => recordObserver?.disconnect(),10000);
     },{once:true});
   }
 
@@ -102,12 +114,19 @@
     history.replaceState(null,'',`${cleanPath}${query?`?${query}`:''}${location.hash}`);
   }
 
-  const syncSoon = () => queueMicrotask(syncUrl);
+  const syncSoon = () => {
+    stopRecordFocus();
+    queueMicrotask(syncUrl);
+  };
   document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click',syncSoon));
   if (typeof searchInput !== 'undefined' && searchInput) searchInput.addEventListener('input',syncSoon);
   if (typeof yearFrom !== 'undefined' && yearFrom) yearFrom.addEventListener('change',syncSoon);
   if (typeof yearTo !== 'undefined' && yearTo) yearTo.addEventListener('change',syncSoon);
   if (typeof yearReset !== 'undefined' && yearReset) yearReset.addEventListener('click',syncSoon);
+  document.getElementById('adventureList')?.addEventListener('click',event => {
+    if (event.target.closest('.adventure-item')) syncSoon();
+  });
+  if (typeof map !== 'undefined') map.on('click',syncSoon);
 
   window.addEventListener('popstate',() => location.reload());
 })();
