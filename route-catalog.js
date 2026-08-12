@@ -43,13 +43,20 @@ window.AdventureRoutes = (() => {
     let lon = 0;
     const coordinates = [];
     while (state.index < encoded.length) {
-      lat += decodeComponent(encoded, state, 'latitude');
-      lon += decodeComponent(encoded, state, 'longitude');
-      const point = [lon / 1e5, lat / 1e5];
-      if (!Number.isFinite(point[0]) || !Number.isFinite(point[1]) || point[0] < -180 || point[0] > 180 || point[1] < -90 || point[1] > 90) {
-        throw new Error('Encoded route contains an out-of-range coordinate');
+      const coordinateStart = state.index;
+      try {
+        lat += decodeComponent(encoded, state, 'latitude');
+        lon += decodeComponent(encoded, state, 'longitude');
+        const point = [lon / 1e5, lat / 1e5];
+        if (!Number.isFinite(point[0]) || !Number.isFinite(point[1]) || point[0] < -180 || point[0] > 180 || point[1] < -90 || point[1] > 90) {
+          throw new Error('Encoded route contains an out-of-range coordinate');
+        }
+        coordinates.push(point);
+      } catch (error) {
+        const trimEnd = encoded.length - coordinateStart;
+        if (!coordinates.length || trimEnd < 1 || trimEnd > 8 || state.index !== encoded.length) throw error;
+        break;
       }
-      coordinates.push(point);
     }
     if (coordinates.length < 2) throw new Error('Encoded route contains fewer than two coordinates');
     return coordinates;
