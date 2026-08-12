@@ -108,7 +108,9 @@
     leaflet: core.leaflet,
     ready: core.ready,
     state: core.snapshot,
-    record: core.resolveRecord,
+    record(recordOrId) {
+      return core.resolveRecord(recordOrId);
+    },
     records: core.records,
     filteredRecords: core.filteredRecords,
     visibleRoutes: core.visibleRoutes,
