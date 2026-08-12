@@ -32,7 +32,10 @@ for (const [path, label] of sections) {
 
     const canonical = page.locator('link[rel="canonical"]');
     await expect(canonical).toHaveCount(1);
-    await expect(canonical).toHaveAttribute('href', /https:\/\/adventures\.alexlford\.com\//);
+    const canonicalHref = await canonical.getAttribute('href');
+    const canonicalUrl = new URL(canonicalHref, page.url());
+    expect(canonicalUrl.pathname).toBe(path);
+    expect(canonicalUrl.pathname).not.toContain('.html');
 
     const primary = page.locator('nav[aria-label="Primary navigation"]');
     await expect(primary).toBeVisible();
@@ -73,9 +76,9 @@ test('Explore chapter cards keep their source targets aligned with the clean pub
   ];
 
   for (const [name, sourceTarget, cleanPath] of expected) {
-    const card = page.getByRole('link').filter({has:page.getByRole('heading',{name,exact:true})});
+    const card = page.locator(`.explore-chapter-grid > a.card[href="${sourceTarget}"]`);
     await expect(card).toHaveCount(1);
-    await expect(card).toHaveAttribute('href',sourceTarget);
+    await expect(card.locator('h3')).toContainText(name);
     const response = await request.get(cleanPath);
     expect(response.ok()).toBeTruthy();
   }
