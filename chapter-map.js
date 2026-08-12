@@ -1,16 +1,12 @@
 (() => {
   'use strict';
 
-  const esc = value => String(value ?? '')
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'",'&#039;');
+  const A = window.AdventureSite;
+  if (!A) return;
+  const esc = A.esc;
   const isMapped = item => Number.isFinite(item?.lat) && Number.isFinite(item?.lon);
-  const production = () => location.hostname === 'adventures.alexlford.com';
   const fullMapHref = options => {
-    const base = production() ? '/map' : 'map.html';
+    const base = A.pageHref('map.html');
     const pageLayer = {
       summits:'summits',
       skiing:'skiing',
@@ -21,11 +17,9 @@
     return layer ? `${base}?layer=${encodeURIComponent(layer)}` : base;
   };
   const recordHref = item => {
-    if (item?.href) return item.href;
+    if (item?.href) return A.pageHref(item.href);
     if (!item?.id) return null;
-    return production()
-      ? `/record/${encodeURIComponent(item.slug || item.id)}/`
-      : `detail.html?record=${encodeURIComponent(item.slug || item.id)}`;
+    return A.recordHref(item);
   };
   const coordinateKey = item => `${item.lat.toFixed(4)},${item.lon.toFixed(4)}`;
 
