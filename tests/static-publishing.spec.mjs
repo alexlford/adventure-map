@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { siteRoutes } from '../scripts/lib/site-routes.mjs';
 
-const cleanSections=['map','explore','timeline','stories','races','summits','skiing','nordic','mtb'];
+const cleanSections=siteRoutes.filter(route=>route.path!=='/');
 
 for(const route of cleanSections){
-  test(`/${route} is a real static document`,async({page})=>{
-    const response=await page.goto(`/${route}`,{waitUntil:'domcontentloaded'});
+  test(`${route.path} is a real static document`,async({page})=>{
+    const response=await page.goto(route.path,{waitUntil:'domcontentloaded'});
     expect(response?.status()).toBeLessThan(400);
     await expect(page.locator('main')).toBeVisible();
     await expect(page.locator('body')).not.toContainText('Resolving this route');
