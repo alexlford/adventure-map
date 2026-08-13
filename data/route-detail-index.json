@@ -301,21 +301,21 @@
       "quality": "backfill"
     },
     "mount-bross": {
-      "file": "data/routes.geojson",
+      "file": "data/strava-route-decalibron-2023.json",
       "featureId": "strava-9642214422",
-      "format": "geojson",
+      "format": "polyline",
       "quality": "catalog-detail"
     },
     "mount-cameron": {
-      "file": "data/routes.geojson",
+      "file": "data/strava-route-decalibron-2023.json",
       "featureId": "strava-9642214422",
-      "format": "geojson",
+      "format": "polyline",
       "quality": "catalog-detail"
     },
     "mount-democrat": {
-      "file": "data/routes.geojson",
+      "file": "data/strava-route-decalibron-2023.json",
       "featureId": "strava-9642214422",
-      "format": "geojson",
+      "format": "polyline",
       "quality": "catalog-detail"
     },
     "mount-evans": {
@@ -343,9 +343,9 @@
       "quality": "rdp-3m"
     },
     "mount-lincoln": {
-      "file": "data/routes.geojson",
+      "file": "data/strava-route-decalibron-2023.json",
       "featureId": "strava-9642214422",
-      "format": "geojson",
+      "format": "polyline",
       "quality": "catalog-detail"
     },
     "mount-sherman": {
