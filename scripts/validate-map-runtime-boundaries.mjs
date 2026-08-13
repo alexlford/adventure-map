@@ -20,6 +20,26 @@ const contracts = [
     forbidden: []
   },
   {
+    path: 'map-route-detail.js',
+    required: [
+      'const runtime = window.AdventureMapRuntime',
+      'AdventureRoutes.detailIndex()',
+      'AdventureRoutes.loadDetailForAdventure',
+      "internal.registerPresentationHook('afterFocusStyles'",
+      'MAX_DETAIL_FEATURES = 8'
+    ],
+    forbidden: [
+      /\bstate\./,
+      /CATEGORY/,
+      /window\.adventureMap/,
+      /renderPreservingFocus\(/,
+      /filteredAdventures\(/,
+      /renderRoutes\(/,
+      /renderMarkers\(/,
+      /renderList\(/
+    ]
+  },
+  {
     path: 'official-results-ui.js',
     required: [
       'const runtime = window.AdventureMapRuntime',
