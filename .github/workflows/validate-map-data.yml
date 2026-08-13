@@ -25,3 +25,5 @@ jobs:
           node-version: '22'
       - name: Validate Map routes and entities
         run: node scripts/validate-map-data.mjs
+      - name: Validate addressable route detail index
+        run: node scripts/build-route-detail-index.mjs
