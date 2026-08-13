@@ -58,8 +58,8 @@
       return true;
     },
     recordsByIds(ids = []) {
-      const wanted = new Set(Array.isArray(ids) ? ids : []);
-      return state.adventures.filter(record => wanted.has(record.id));
+      if (!Array.isArray(ids)) return [];
+      return ids.map(id => state.adventures.find(record => record.id === id)).filter(Boolean);
     },
     routeFeatureLayers() {
       return Array.from(state.routeFeatureLayers.values());
