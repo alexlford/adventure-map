@@ -61,10 +61,10 @@
       "quality": "full-source"
     },
     "bolderboulder-2023": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-full-resolution-bolderboulder-2023.json",
       "featureId": "strava-9163211220",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "bolderboulder-2024": {
       "file": "data/strava-route-full-resolution-bolderboulder-2024.json",
