@@ -6,9 +6,16 @@ const INDEX_PATH = resolve(ROOT, 'data/route-detail-index.json');
 
 const readJson = async path => JSON.parse(await readFile(resolve(ROOT, path), 'utf8'));
 
+function geometryPointCount(feature) {
+  const geometry = feature?.geometry;
+  if (geometry?.type === 'LineString') return (geometry.coordinates || []).length;
+  if (geometry?.type === 'MultiLineString') return (geometry.coordinates || []).reduce((sum, line) => sum + (line || []).length, 0);
+  return 0;
+}
+
 function detailScore(path, route, payload) {
   const file = path.toLowerCase();
-  const density = String(route.density || payload.sampling || '').toLowerCase();
+  const density = String(route.density || route.routeResolution || payload.sampling || '').toLowerCase();
   if (file.includes('full-resolution') || density.includes('full-source') || density.includes('dense-source')) return 500;
   if (file.includes('rdp3') || density.includes('rdp-3m')) return 400;
   if (file.includes('story-route')) return 350;
@@ -26,14 +33,15 @@ function qualityFor(score) {
   return 'catalog-detail';
 }
 
-function candidateFor(path, route, payload) {
+function candidateFor(path, route, payload, format, publishedPointCount = 0) {
   const score = detailScore(path, route, payload);
   return {
     file: path,
-    featureId: route.id,
+    featureId: route.id || route.featureId,
+    format,
     score,
     quality: qualityFor(score),
-    publishedPointCount: Number.isFinite(route.publishedPointCount) ? route.publishedPointCount : 0,
+    publishedPointCount: Number.isFinite(route.publishedPointCount) ? route.publishedPointCount : publishedPointCount,
     sourcePointCount: Number.isFinite(route.sourcePointCount) ? route.sourcePointCount : 0,
   };
 }
@@ -46,11 +54,7 @@ function compareCandidates(a, b) {
 }
 
 function publicCandidate(candidate) {
-  return {
-    file: candidate.file,
-    featureId: candidate.featureId,
-    quality: candidate.quality,
-  };
+  return { file: candidate.file, featureId: candidate.featureId, format: candidate.format, quality: candidate.quality };
 }
 
 function publicRecordIds(payload) {
@@ -60,25 +64,36 @@ function publicRecordIds(payload) {
   return ids;
 }
 
+function consider(records, publicIds, route, candidate) {
+  const owners = route.adventureIds || [];
+  if (!candidate.featureId || !Array.isArray(owners) || !owners.length) return;
+  for (const rawAdventureId of owners) {
+    const adventureId = String(rawAdventureId);
+    if (!publicIds.has(adventureId)) continue;
+    const prior = records.get(adventureId);
+    if (!prior || compareCandidates(candidate, prior) < 0) records.set(adventureId, candidate);
+  }
+}
+
 export async function buildRouteDetailIndex() {
-  const [catalog, publicRecords] = await Promise.all([
-    readJson('data/route-catalog.json'),
-    readJson('data/public-records.json'),
-  ]);
+  const [catalog, publicRecords] = await Promise.all([readJson('data/route-catalog.json'), readJson('data/public-records.json')]);
   const publicIds = publicRecordIds(publicRecords);
   const records = new Map();
+
+  for (const path of catalog.routeFiles || []) {
+    const payload = await readJson(path);
+    for (const feature of payload.features || []) {
+      const props = feature.properties || {};
+      const route = { ...props, id: feature.id || props.featureId || props.id, adventureIds: props.adventureIds || [] };
+      consider(records, publicIds, route, candidateFor(path, route, payload.metadata || {}, 'geojson', geometryPointCount(feature)));
+    }
+  }
 
   for (const path of catalog.polylineFiles || []) {
     const payload = await readJson(path);
     for (const route of payload.routes || []) {
       if (!route?.id || !Array.isArray(route.adventureIds) || !route.adventureIds.length) continue;
-      const candidate = candidateFor(path, route, payload);
-      for (const rawAdventureId of route.adventureIds) {
-        const adventureId = String(rawAdventureId);
-        if (!publicIds.has(adventureId)) continue;
-        const prior = records.get(adventureId);
-        if (!prior || compareCandidates(candidate, prior) < 0) records.set(adventureId, candidate);
-      }
+      consider(records, publicIds, route, candidateFor(path, route, payload, 'polyline'));
     }
   }
 
@@ -87,13 +102,9 @@ export async function buildRouteDetailIndex() {
   const selectedFeatures = new Set(Object.values(recordObject).map(item => item.featureId));
 
   return {
-    schemaVersion: 1,
-    generatedFrom: 'data/route-catalog.json',
-    publicRecordSource: 'data/public-records.json',
-    routeCatalogUpdatedOn: catalog.updatedOn || null,
-    recordCount: Object.keys(recordObject).length,
-    featureCount: selectedFeatures.size,
-    records: recordObject,
+    schemaVersion: 1, generatedFrom: 'data/route-catalog.json', publicRecordSource: 'data/public-records.json',
+    routeCatalogUpdatedOn: catalog.updatedOn || null, recordCount: Object.keys(recordObject).length,
+    featureCount: selectedFeatures.size, records: recordObject,
   };
 }
 
