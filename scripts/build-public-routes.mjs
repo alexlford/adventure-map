@@ -47,6 +47,22 @@ function geometryPointCount(feature) {
   return 0;
 }
 
+function mergeDenserGpsFeature(existing, candidate) {
+  const existingProps = existing.properties || {};
+  const candidateProps = candidate.properties || {};
+  const adventureIds = [...new Set([...(existingProps.adventureIds || []), ...(candidateProps.adventureIds || [])])];
+  return {
+    ...candidate,
+    properties: {
+      ...existingProps,
+      ...candidateProps,
+      adventureIds,
+      category: candidateProps.category ?? existingProps.category,
+      mtbMode: candidateProps.mtbMode ?? existingProps.mtbMode ?? null,
+    },
+  };
+}
+
 function addFeature(feature, sourceFile = null) {
   const normalized = normalizeFeature(feature);
   const id = featureId(normalized);
@@ -70,8 +86,10 @@ function addFeature(feature, sourceFile = null) {
   // The repository contains legacy coarse route approximations plus later GPS
   // backfills for some of the same Strava feature IDs. Prefer the denser
   // personal-GPS geometry instead of whichever file happened to be read first.
+  // Preserve record/category linkage from the older feature when a source-complete
+  // geometry shard intentionally supplies only route identity and source activity.
   if (bothPersonalGps && candidatePoints > existingPoints) {
-    features[existingIndex] = normalized;
+    features[existingIndex] = mergeDenserGpsFeature(existing, normalized);
     duplicateSelections.push({
       id,
       replacedPointCount: existingPoints,
