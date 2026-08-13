@@ -27,7 +27,7 @@
     "build:static-site": "node scripts/build-static-site.mjs",
     "build:public-index": "node scripts/build-public-index.mjs",
     "build:route-detail-index": "node scripts/build-route-detail-index.mjs --write",
-    "build:publish": "npm run build:vendor && npm run build:shared && npm run build:public-records && npm run build:static-site && npm run build:public-index",
+    "build:publish": "npm run build:vendor && npm run build:shared && npm run build:public-records && npm run build:static-site && npm run build:public-index && npm run build:route-detail-index",
     "scan:strava": "python3 scripts/scan_strava_export.py",
     "advance:strava": "python3 scripts/advance_strava_state.py",
     "test:record-schema": "node scripts/test-record-schema.mjs",
