@@ -14,7 +14,7 @@ function collectRuntimeErrors(page) {
   return errors;
 }
 
-test('high-detail GPS stays lazy at overview zoom and loads a bounded visible set on drill-in', async ({ page }) => {
+test('high-detail GPS stays lazy at overview zoom and loads every addressable route in a dense viewport', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   const requests = [];
   page.on('request', request => {
@@ -36,50 +36,62 @@ test('high-detail GPS stays lazy at overview zoom and loads a bounded visible se
 
   expect(initial.zoom).toBe(2);
   expect(initial.detailZoom).toBe(7);
-  expect(initial.maxVisibleDetails).toBe(8);
+  expect(initial.maxVisibleDetails).toBeUndefined();
   expect(initial.hasDetail).toBeFalsy();
   expect(initial.detailCount).toBeNull();
   expect(requests).not.toContain('/data/route-detail-index.json');
   expect(requests.filter(path => detailFilePattern.test(path))).toEqual([]);
 
-  const target = await page.evaluate(async () => {
+  const expected = await page.evaluate(async () => {
     const index = await fetch('/data/route-detail-index.json').then(response => response.json());
-    const api = window.AdventureMap;
-    const qualityRank = { 'full-source': 0, 'rdp-3m': 1, 'story-detail': 2, backfill: 3, 'catalog-detail': 4, 'activity-overview': 5 };
-    const eligible = api.records()
-      .filter(record => index.records?.[record.id] && api.visibleRoutes([record]).length > 0)
-      .sort((a, b) => (qualityRank[index.records[a.id].quality] ?? 99) - (qualityRank[index.records[b.id].quality] ?? 99));
-    const record = eligible[0];
-    return record ? { id: record.id, entry: index.records[record.id] } : null;
+    const map = window.AdventureMap.leaflet;
+    await new Promise(resolve => {
+      map.once('moveend', resolve);
+      map.setView([39.76, -105.08], 8);
+    });
+
+    const bounds = map.getBounds();
+    const ids = [];
+    const seen = new Set();
+    window.AdventureMapRuntime.internal.routeFeatureLayers().forEach(group => group.eachLayer(layer => {
+      const feature = layer.feature;
+      if (!feature) return;
+      const layerBounds = layer.getBounds?.();
+      if (layerBounds?.isValid?.() && !bounds.intersects(layerBounds)) return;
+      for (const id of feature.properties?.adventureIds || []) {
+        if (seen.has(id)) continue;
+        seen.add(id);
+        ids.push(id);
+      }
+    }));
+
+    const keys = new Set();
+    const entries = [];
+    for (const id of ids) {
+      const entry = index.records?.[id];
+      if (!entry) continue;
+      const key = `${entry.file}::${entry.featureId}`;
+      if (keys.has(key)) continue;
+      keys.add(key);
+      entries.push(entry);
+    }
+    return { count: keys.size, entries };
   });
 
-  expect(target, 'at least one currently mapped record should have an addressable detail source').toBeTruthy();
-  expect(target.entry.quality).not.toBe('activity-overview');
-
-  const detailRequestsBefore = requests.filter(path => detailFilePattern.test(path)).length;
-  await page.evaluate(id => {
-    const api = window.AdventureMap;
-    api.focus(id);
-    if (api.leaflet.getZoom() < 8) api.leaflet.setZoom(8);
-  }, target.id);
-
-  await expect.poll(() => page.evaluate(() => Number(document.getElementById('map')?.dataset.routeDetailCount || 0))).toBeGreaterThan(0);
-
-  const expectedPath = `/${target.entry.file.replace(/^\//, '')}`;
-  await expect.poll(() => requests.includes(expectedPath)).toBeTruthy();
+  expect(expected.count, 'Denver/Boulder drill-in viewport should exercise more than the former eight-route ceiling').toBeGreaterThan(8);
+  await expect.poll(() => page.evaluate(() => Number(document.getElementById('map')?.dataset.routeDetailCount || 0))).toBe(expected.count);
 
   const after = await page.evaluate(() => ({
     count: Number(document.getElementById('map')?.dataset.routeDetailCount || 0),
-    quality: document.getElementById('map')?.dataset.routeDetailQuality || '',
     active: document.getElementById('map')?.classList.contains('has-lazy-route-detail'),
   }));
   expect(after.active).toBeTruthy();
-  expect(after.count).toBeGreaterThan(0);
-  expect(after.count).toBeLessThanOrEqual(8);
-  expect(after.quality).toContain(target.entry.quality);
+  expect(after.count).toBe(expected.count);
+  expect(after.count).toBeGreaterThan(8);
 
-  const newDetailRequests = requests.slice(detailRequestsBefore).filter(path => detailFilePattern.test(path));
-  expect(new Set(newDetailRequests).size).toBeLessThanOrEqual(8);
+  const expectedPaths = new Set(expected.entries.map(entry => `/${entry.file.replace(/^\//, '')}`));
+  const requestedDetailPaths = new Set(requests.filter(path => detailFilePattern.test(path)));
+  for (const path of expectedPaths) expect(requestedDetailPaths.has(path), `expected detail request for ${path}`).toBeTruthy();
 
   await page.evaluate(() => window.AdventureMap.leaflet.setZoom(5));
   await expect.poll(() => page.evaluate(() => document.getElementById('map')?.classList.contains('has-lazy-route-detail'))).toBeFalsy();
