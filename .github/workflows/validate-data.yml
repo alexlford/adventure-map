@@ -28,8 +28,10 @@ jobs:
         run: npm ci
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
-      - name: Run repository quality gate
-        run: npm run check
+      - name: Run build, static validation, and maintenance checks
+        run: npm run check:fast
+      - name: Run browser regression suite
+        run: npm run test:browser
       - name: Verify publication artifacts are committed
         run: |
           CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/catalog-layers/records.json data/public-records.json data/route-detail-index.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
