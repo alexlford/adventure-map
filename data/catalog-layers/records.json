@@ -1603,10 +1603,8 @@
         "6467311248"
       ],
       "routeFeatureIds": [
-        "strava-6463469567",
-        "strava-6463469610",
-        "strava-6467845602",
-        "strava-6467311248"
+        "activity-nordic-day-2022-01-02",
+        "activity-nordic-day-2022-01-03"
       ],
       "routeStatus": "multi-activity-gps",
       "matchSource": "Strava GPS export + GPS location reconstruction",
@@ -1759,9 +1757,9 @@
         "14727087051"
       ],
       "routeFeatureIds": [
-        "strava-14709266737",
-        "strava-14717702325",
-        "strava-14727087051"
+        "activity-mtb-day-2025-06-05",
+        "activity-mtb-day-2025-06-06",
+        "activity-mtb-day-2025-06-07"
       ],
       "routeStatus": "multi-activity-gps",
       "matchSource": "Strava export + MTB archive",
