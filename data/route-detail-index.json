@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
-  "routeCatalogUpdatedOn": "2026-08-12",
+  "routeCatalogUpdatedOn": "2026-08-13",
   "recordCount": 112,
   "featureCount": 104,
   "records": {
@@ -36,9 +36,9 @@
       "quality": "backfill"
     },
     "bolderboulder-2022": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-full-resolution-bolderboulder-2022.json",
       "featureId": "strava-7226710306",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "bolderboulder-2023": {
       "file": "data/strava-route-backfill-02.json",
@@ -46,9 +46,9 @@
       "quality": "backfill"
     },
     "bolderboulder-2024": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-full-resolution-bolderboulder-2024.json",
       "featureId": "strava-11509394019",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "bolderboulder-2025": {
       "file": "data/strava-route-backfill-03.json",
