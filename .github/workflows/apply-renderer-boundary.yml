@@ -1,0 +1,34 @@
+name: Apply renderer boundary migration
+
+on:
+  push:
+    branches:
+      - agent/renderer-boundary-2
+    paths:
+      - scripts/apply-record-presentation-boundary.mjs
+      - .github/workflows/apply-renderer-boundary.yml
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out migration branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - name: Apply deterministic presentation-boundary edit
+        run: node scripts/apply-record-presentation-boundary.mjs
+      - name: Remove one-shot migration files
+        run: rm scripts/apply-record-presentation-boundary.mjs .github/workflows/apply-renderer-boundary.yml
+      - name: Commit renderer migration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "Use record presentation boundary in renderer"
+          git push origin HEAD:${GITHUB_REF_NAME}
