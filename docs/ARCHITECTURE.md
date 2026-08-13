@@ -32,6 +32,8 @@ Source geometry and display geometry are different concerns.
 
 This allows the map to use lighter geometry at broad zoom levels while retaining detailed GPS geometry when users zoom in.
 
+Supplemental browser-loaded routes must be normalized first and merged through the map runtime boundary. Extension scripts must not mutate the route collection or trigger core rendering directly.
+
 ## Generated artifacts
 
 Generated files must be reproducible from source inputs and build scripts. They should never become the only place where meaningful record information exists.
@@ -40,9 +42,20 @@ Generated files must be reproducible from source inputs and build scripts. They 
 
 ## Runtime boundaries
 
-`window.AdventureMap` is the supported public map facade. New consumers should use that API instead of reaching directly into map globals.
+`window.AdventureMap` is the supported, versioned public map facade. External or reusable consumers should use that API instead of reaching into map internals.
 
-Internal map behavior should progressively move toward explicit modules for:
+`window.AdventureMapRuntime` is a frozen **internal bridge for first-party map extensions**. It is not a public compatibility contract. It exists so legacy extension files can be consolidated incrementally without exposing mutable core state through the public facade.
+
+First-party map extensions must not reach directly into ambient core bindings such as `state`, `CATEGORY`, `window.adventureMap`, `renderMarkers`, `renderPreservingFocus`, or similar implementation details. If an extension genuinely needs a core capability, add the smallest explicit operation to the internal runtime bridge and protect it with a regression test.
+
+Current runtime migration covers:
+
+- route-detail presentation and responsive map sizing
+- keyboard accessibility
+- coarse-pointer/touch interaction mode
+- supplemental GPS route ingestion and merge behavior
+
+Internal map behavior should continue moving toward explicit modules for:
 
 - core state and rendering
 - layers and route geometry
@@ -50,8 +63,9 @@ Internal map behavior should progressively move toward explicit modules for:
 - accessibility and keyboard behavior
 - responsive and touch behavior
 - URL state
+- presentation hooks for archive rows and popup content
 
-Existing public API behavior is protected by regression tests while internals are consolidated.
+Existing public API behavior is protected by regression tests while internals are consolidated. Runtime-boundary tests also prevent migrated first-party extensions from silently reintroducing direct global access.
 
 ## Styling boundaries
 
