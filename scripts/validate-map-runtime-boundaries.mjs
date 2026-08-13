@@ -24,7 +24,7 @@ const contracts = [
       /CATEGORY\[/,
       /publicLayerFor\(/,
       /filteredAdventures\(\)/,
-      /renderMarkers\(/,
+      /(^|[^\w.])renderMarkers\(/m,
       /window\.adventureMap/
     ]
   },
