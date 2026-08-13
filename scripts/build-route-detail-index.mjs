@@ -53,8 +53,19 @@ function publicCandidate(candidate) {
   };
 }
 
+function publicRecordIds(payload) {
+  const records = Array.isArray(payload) ? payload : payload?.records || [];
+  const ids = new Set(records.map(record => String(record?.id || '')).filter(Boolean));
+  if (!ids.size) throw new Error('Public record catalog is empty or invalid');
+  return ids;
+}
+
 export async function buildRouteDetailIndex() {
-  const catalog = await readJson('data/route-catalog.json');
+  const [catalog, publicRecords] = await Promise.all([
+    readJson('data/route-catalog.json'),
+    readJson('data/public-records.json'),
+  ]);
+  const publicIds = publicRecordIds(publicRecords);
   const records = new Map();
 
   for (const path of catalog.polylineFiles || []) {
@@ -62,7 +73,9 @@ export async function buildRouteDetailIndex() {
     for (const route of payload.routes || []) {
       if (!route?.id || !Array.isArray(route.adventureIds) || !route.adventureIds.length) continue;
       const candidate = candidateFor(path, route, payload);
-      for (const adventureId of route.adventureIds) {
+      for (const rawAdventureId of route.adventureIds) {
+        const adventureId = String(rawAdventureId);
+        if (!publicIds.has(adventureId)) continue;
         const prior = records.get(adventureId);
         if (!prior || compareCandidates(candidate, prior) < 0) records.set(adventureId, candidate);
       }
@@ -76,6 +89,7 @@ export async function buildRouteDetailIndex() {
   return {
     schemaVersion: 1,
     generatedFrom: 'data/route-catalog.json',
+    publicRecordSource: 'data/public-records.json',
     routeCatalogUpdatedOn: catalog.updatedOn || null,
     recordCount: Object.keys(recordObject).length,
     featureCount: selectedFeatures.size,
