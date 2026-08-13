@@ -25,5 +25,17 @@ jobs:
           node-version: '22'
       - name: Validate Map routes and entities
         run: node scripts/validate-map-data.mjs
-      - name: Validate addressable route detail index
-        run: node scripts/build-route-detail-index.mjs
+      - name: Generate addressable route detail index
+        run: node scripts/build-route-detail-index.mjs --write
+      - name: Upload generated route detail index
+        uses: actions/upload-artifact@v4
+        with:
+          name: route-detail-index
+          path: data/route-detail-index.json
+          if-no-files-found: error
+      - name: Verify committed route detail index is current
+        run: |
+          if ! git diff --exit-code -- data/route-detail-index.json; then
+            echo "Route detail index is stale. Run npm run build:route-detail-index and commit data/route-detail-index.json."
+            exit 1
+          fi
