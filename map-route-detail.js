@@ -124,7 +124,7 @@
         const detail = await AdventureRoutes.loadDetailForAdventure(target.id);
         if (version !== requestVersion || !detail?.collection?.features?.length) return;
         const feature = detail.collection.features[0];
-        const adventureIds = feature.properties?.adventureIds || [target.id];
+        const adventureIds = [...new Set([target.id, ...(feature.properties?.adventureIds || [])])];
         const layer = L.geoJSON(detail.collection, {
           interactive: false,
           style: {
@@ -139,7 +139,7 @@
         rendered.set(target.key, {
           layer,
           feature,
-          adventureIds: adventureIds.slice(),
+          adventureIds,
           quality: detail.entry.quality
         });
       } catch (error) {
