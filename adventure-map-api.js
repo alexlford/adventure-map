@@ -49,7 +49,33 @@
     return readyPromise;
   };
 
+  const presentationHooks = {
+    popupCard: [],
+    itemMeta: [],
+    itemValue: []
+  };
+
+  const applyPresentationHooks = (kind, record, baseValue) => {
+    return presentationHooks[kind].reduce((value, hook) => {
+      const next = hook(record, value);
+      return next === undefined ? value : next;
+    }, baseValue);
+  };
+
+  const basePopupCard = typeof popupCard === 'function' ? popupCard : null;
+  const baseItemMeta = typeof itemMeta === 'function' ? itemMeta : null;
+  const baseItemValue = typeof itemValue === 'function' ? itemValue : null;
+  if (basePopupCard) popupCard = record => applyPresentationHooks('popupCard', record, basePopupCard(record));
+  if (baseItemMeta) itemMeta = record => applyPresentationHooks('itemMeta', record, baseItemMeta(record));
+  if (baseItemValue) itemValue = record => applyPresentationHooks('itemValue', record, baseItemValue(record));
+
   const runtimeInternal = Object.freeze({
+    registerPresentationHook(kind, hook) {
+      const hooks = presentationHooks[kind];
+      if (!hooks || typeof hook !== 'function') return false;
+      hooks.push(hook);
+      return hooks.length;
+    },
     setCategoryColors(colors = {}) {
       if (!colors || typeof colors !== 'object' || typeof CATEGORY !== 'object') return false;
       Object.entries(colors).forEach(([key, color]) => {
@@ -64,6 +90,36 @@
         CATEGORY[key] = { ...(CATEGORY[key] || {}), ...definition };
       });
       return true;
+    },
+    categoryColor(recordOrCategory) {
+      const category = typeof recordOrCategory === 'string'
+        ? recordOrCategory
+        : (typeof publicLayerFor === 'function' ? publicLayerFor(recordOrCategory) : 'adventures');
+      return CATEGORY?.[category]?.color || CATEGORY?.adventures?.color || '#59636d';
+    },
+    recordYear(record) {
+      return typeof recordYear === 'function' ? recordYear(record) : null;
+    },
+    isMapped(record) {
+      return typeof mapped === 'function' ? mapped(record) : false;
+    },
+    formatNumber(value) {
+      return typeof formatNumber === 'function' ? formatNumber(value) : String(value ?? '');
+    },
+    formatDate(value) {
+      return typeof formatDate === 'function' ? formatDate(value) : String(value ?? '');
+    },
+    formatDuration(value) {
+      return typeof formatDuration === 'function' ? formatDuration(value) : '';
+    },
+    escapeHtml(value) {
+      return typeof escapeHtml === 'function' ? escapeHtml(value) : String(value ?? '');
+    },
+    recordHref(record) {
+      return typeof recordHref === 'function' ? recordHref(record) : '#';
+    },
+    subtypeFor(record) {
+      return typeof subtypeFor === 'function' ? subtypeFor(record) : 'Adventure';
     },
     recordsByIds(ids = []) {
       if (!Array.isArray(ids)) return [];
@@ -82,6 +138,22 @@
     },
     hasRoute(id) {
       return state.routeLayers.has(id);
+    },
+    mergeRecords(nextRecords = [], { preserveFocus = true } = {}) {
+      if (!Array.isArray(nextRecords)) return false;
+      const existing = new Set(state.adventures.map(record => record.id));
+      let added = 0;
+      nextRecords.forEach(record => {
+        if (!record?.id || existing.has(record.id)) return;
+        state.adventures.push(record);
+        existing.add(record.id);
+        added += 1;
+      });
+      if (!added) return 0;
+      map.closePopup?.();
+      if (preserveFocus && typeof renderPreservingFocus === 'function') renderPreservingFocus();
+      else if (typeof render === 'function') render();
+      return added;
     },
     mergeRouteCollections(collections = []) {
       if (!state.routes || !Array.isArray(collections)) return false;
