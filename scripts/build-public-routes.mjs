@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { brotliDecompressSync } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -46,6 +47,22 @@ function geometryPointCount(feature) {
   return 0;
 }
 
+function mergeDenserGpsFeature(existing, candidate) {
+  const existingProps = existing.properties || {};
+  const candidateProps = candidate.properties || {};
+  const adventureIds = [...new Set([...(existingProps.adventureIds || []), ...(candidateProps.adventureIds || [])])];
+  return {
+    ...candidate,
+    properties: {
+      ...existingProps,
+      ...candidateProps,
+      adventureIds,
+      category: candidateProps.category ?? existingProps.category,
+      mtbMode: candidateProps.mtbMode ?? existingProps.mtbMode ?? null,
+    },
+  };
+}
+
 function addFeature(feature, sourceFile = null) {
   const normalized = normalizeFeature(feature);
   const id = featureId(normalized);
@@ -69,8 +86,10 @@ function addFeature(feature, sourceFile = null) {
   // The repository contains legacy coarse route approximations plus later GPS
   // backfills for some of the same Strava feature IDs. Prefer the denser
   // personal-GPS geometry instead of whichever file happened to be read first.
+  // Preserve record/category linkage from the older feature when a source-complete
+  // geometry shard intentionally supplies only route identity and source activity.
   if (bothPersonalGps && candidatePoints > existingPoints) {
-    features[existingIndex] = normalized;
+    features[existingIndex] = mergeDenserGpsFeature(existing, normalized);
     duplicateSelections.push({
       id,
       replacedPointCount: existingPoints,
@@ -135,8 +154,14 @@ for (const polylineFile of polylineFiles) {
   const payload = JSON.parse(text);
   for (const route of payload.routes || []) {
     if (!route.id) throw new Error(`${polylineFile}: encoded route missing id`);
-    if (!Array.isArray(route.lines) || !route.lines.length) throw new Error(`${route.id}: encoded route has no lines`);
-    const lines = route.lines.map((line, lineIndex) => decodePolyline(line, { routeId: route.id, lineIndex }));
+    let encodedLines = Array.isArray(route.lines) && route.lines.length
+      ? route.lines
+      : (route.linesBase64 || []).map(value => Buffer.from(value, 'base64').toString('utf8'));
+    if (!encodedLines.length && Array.isArray(route.linesBrotliBase64)) {
+      encodedLines = route.linesBrotliBase64.map(value => brotliDecompressSync(Buffer.from(value, 'base64')).toString('utf8'));
+    }
+    if (!encodedLines.length) throw new Error(`${route.id}: encoded route has no lines`);
+    const lines = encodedLines.map((line, lineIndex) => decodePolyline(line, { routeId: route.id, lineIndex }));
     const sourceActivityIds = Array.isArray(route.stravaActivityIds)
       ? route.stravaActivityIds.map(String)
       : route.stravaActivityId != null ? [String(route.stravaActivityId)] : [];
