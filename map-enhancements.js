@@ -25,7 +25,8 @@
     });
     const legend = document.querySelector('.legend');
     if (legend && !legend.querySelector('.map-mixed-key')) {
-      legend.insertAdjacentHTML('beforeend', '<span class="map-mixed-key"><i class="legend-dot" style="background:#59636d"></i> Mixed cluster</span>');
+      const mixed = theme.colors.mixed || theme.colors.adventures;
+      legend.insertAdjacentHTML('beforeend', `<span class="map-mixed-key"><i class="legend-dot" style="background:${mixed}"></i> Mixed cluster</span>`);
     }
   }
 
