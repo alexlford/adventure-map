@@ -135,8 +135,11 @@ for (const polylineFile of polylineFiles) {
   const payload = JSON.parse(text);
   for (const route of payload.routes || []) {
     if (!route.id) throw new Error(`${polylineFile}: encoded route missing id`);
-    if (!Array.isArray(route.lines) || !route.lines.length) throw new Error(`${route.id}: encoded route has no lines`);
-    const lines = route.lines.map((line, lineIndex) => decodePolyline(line, { routeId: route.id, lineIndex }));
+    const encodedLines = Array.isArray(route.lines) && route.lines.length
+      ? route.lines
+      : (route.linesBase64 || []).map(value => Buffer.from(value, 'base64').toString('utf8'));
+    if (!encodedLines.length) throw new Error(`${route.id}: encoded route has no lines`);
+    const lines = encodedLines.map((line, lineIndex) => decodePolyline(line, { routeId: route.id, lineIndex }));
     const sourceActivityIds = Array.isArray(route.stravaActivityIds)
       ? route.stravaActivityIds.map(String)
       : route.stravaActivityId != null ? [String(route.stravaActivityId)] : [];
