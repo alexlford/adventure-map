@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-12",
+  "updatedOn": "2026-08-13",
   "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
@@ -26,6 +26,8 @@
     "data/strava-route-full-resolution-ranch-hand-classic-2022.json",
     "data/strava-route-decalibron-2023.json",
     "data/strava-route-full-resolution-flying-pig-2025.json",
+    "data/strava-route-full-resolution-bolderboulder-2022.json",
+    "data/strava-route-full-resolution-bolderboulder-2024.json",
     "data/strava-route-rdp3-01.json",
     "data/strava-route-rdp3-02.json",
     "data/strava-route-rdp3-03.json",
@@ -124,6 +126,16 @@
       {
         "id": "activity-nordic-day-2022-01-03",
         "minPoints": 6700,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-7226710306",
+        "minPoints": 860,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-11509394019",
+        "minPoints": 880,
         "resolutionPrefix": "full-source-track"
       }
     ],
