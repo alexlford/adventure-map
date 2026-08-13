@@ -34,11 +34,19 @@ This allows the map to use lighter geometry at broad zoom levels while retaining
 
 Supplemental browser-loaded routes must be normalized first and merged through the map runtime boundary. Extension scripts must not mutate the route collection or trigger core rendering directly.
 
+### Progressive route detail
+
+The master map intentionally keeps its initial route payload lightweight. `scripts/build-route-detail-index.mjs` derives `data/route-detail-index.json` from the committed route catalog and selects the best available detailed source for each addressable Adventure record. The index is generated publication output and must not be hand-maintained.
+
+`AdventureRoutes.loadDetailForAdventure(recordId)` resolves the selected source lazily. `map-route-detail.js` uses that API only at map zoom 7 or greater, prioritizes the focused record, considers detailed routes intersecting the current viewport, deduplicates shared route features, and renders no more than eight detailed overlays at once. Detailed overlays live in their own Leaflet layer and never mutate the canonical overview route collection.
+
+Dropping below the detail threshold clears those overlays. Browser regression coverage verifies that the default Colorado-wide map does not request the detail index or detailed route shards, and that drill-in loads only a bounded indexed set.
+
 ## Generated artifacts
 
 Generated files must be reproducible from source inputs and build scripts. They should never become the only place where meaningful record information exists.
 
-`npm run build:publish` materializes public artifacts. CI verifies that committed generated artifacts are current.
+`npm run build:publish` materializes public artifacts, including the addressable route-detail index. CI verifies that committed generated artifacts are current. The branch materializer is also resilient to concurrent branch updates: if the branch advances while publication artifacts are being generated, it rebuilds from the newest remote head before retrying its generated-artifact commit.
 
 ## Runtime boundaries
 
@@ -54,20 +62,16 @@ Current runtime migration covers:
 - keyboard accessibility
 - coarse-pointer/touch interaction mode
 - supplemental GPS route ingestion and merge behavior
-
-Internal map behavior should continue moving toward explicit modules for:
-
-- core state and rendering
-- layers and route geometry
-- interactions and focus
-- accessibility and keyboard behavior
-- responsive and touch behavior
-- URL state
-- presentation hooks for archive rows and popup content
+- ski-resort record injection
+- ordered popup, item-value, and item-meta presentation hooks
+- post-render archive chronology and focus decoration
+- progressive high-detail GPS overlays
 
 Existing public API behavior is protected by regression tests while internals are consolidated. Runtime-boundary tests also prevent migrated first-party extensions from silently reintroducing direct global access.
 
 ## Styling boundaries
+
+`adventure-theme.css` is the canonical semantic activity palette. Map CSS, chapter CSS, Leaflet rendering, and first-party JavaScript consume those tokens instead of owning separate activity-color tables.
 
 New visual work should prefer shared design tokens and component-level styles over another global patch stylesheet. Activity colors, spacing, typography, map treatments, and reusable card treatments should have one authoritative definition whenever practical.
 
@@ -79,7 +83,7 @@ Avoid adding new files whose primary role is a generic `fix`, `polish`, or overr
 
 Use `npm run check:fast` during iteration when browser coverage is not needed yet. The full gate includes publication builds, validators, maintenance-pipeline tests, and browser tests.
 
-GitHub Actions executes the same repository gate so local and CI expectations do not diverge.
+CI reports publication build, static/data validation, maintenance-pipeline testing, and browser regression testing as separate named steps so failures identify the correct architectural layer quickly.
 
 ## Growth policy
 
