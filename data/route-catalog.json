@@ -91,31 +91,6 @@
         "id": "strava-641964287",
         "minPoints": 1900,
         "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "activity-mtb-day-2025-06-05",
-        "minPoints": 1000,
-        "resolutionPrefix": "every-4th-source-point"
-      },
-      {
-        "id": "activity-mtb-day-2025-06-06",
-        "minPoints": 1500,
-        "resolutionPrefix": "every-4th-source-point"
-      },
-      {
-        "id": "activity-mtb-day-2025-06-07",
-        "minPoints": 1550,
-        "resolutionPrefix": "every-4th-source-point"
-      },
-      {
-        "id": "activity-nordic-day-2022-01-02",
-        "minPoints": 1900,
-        "resolutionPrefix": "every-4th-source-point"
-      },
-      {
-        "id": "activity-nordic-day-2022-01-03",
-        "minPoints": 1650,
-        "resolutionPrefix": "every-4th-source-point"
       }
     ],
     "sourceRdpArchive": {
