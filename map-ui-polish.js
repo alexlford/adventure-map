@@ -1,6 +1,10 @@
 (() => {
   'use strict';
 
+  const runtime = window.AdventureMapRuntime;
+  const internal = runtime?.internal;
+  if (!runtime || !internal) return;
+
   const refine = document.getElementById('refineControls');
   const refineSummary = refine?.querySelector('[data-refine-summary]');
   const mobile = window.matchMedia('(max-width:820px)');
@@ -27,7 +31,7 @@
     if (!record) return '0000-00-00';
     const date = String(record.date || '').trim();
     if (/^\d{4}-\d{2}-\d{2}$/.test(date)) return date;
-    const year = typeof recordYear === 'function' ? recordYear(record) : Number(record.year);
+    const year = internal.recordYear(record) ?? Number(record.year);
     return Number.isFinite(year) && year > 1900 ? `${String(year).padStart(4,'0')}-00-00` : '0000-00-00';
   };
 
@@ -42,41 +46,26 @@
     return String(a?.name || '').localeCompare(String(b?.name || ''));
   };
 
-  // Replace the year-grouped archive renderer with strict reverse chronology.
-  // Exact dates lead; year-only records follow dated records in that year; fully
-  // undated aggregate records remain at the end.
-  if (typeof renderList === 'function') {
-    renderList = function(items) {
-      resultCount.textContent = `${items.length} shown`;
-      adventureList.innerHTML = '';
-      if (!items.length) {
-        renderArchiveState('empty','No matching records','Try another layer, year range, or search.');
-        return;
-      }
-      items.slice().sort(compareArchiveRecords).forEach(a => {
-        const category = publicLayerFor(a);
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.dataset.id = a.id;
-        button.className = `adventure-item${mapped(a) || state.routeLayers.has(a.id) ? '' : ' is-unmapped'}`;
-        button.innerHTML = `<span class="item-dot" style="background:${CATEGORY[category]?.color || CATEGORY.adventures.color}"></span><span><span class="item-title">${escapeHtml(a.name)}</span><span class="item-meta">${escapeHtml(itemMeta(a))}</span></span><span class="item-value">${escapeHtml(itemValue(a))}</span>`;
-        if (mapped(a) || state.routeLayers.has(a.id)) {
-          button.addEventListener('click',() => focusAdventure(a));
-          button.addEventListener('mouseenter',() => setRouteEmphasis(a.id,true));
-          button.addEventListener('mouseleave',() => setRouteEmphasis(a.id,false));
-          button.addEventListener('focus',() => setRouteEmphasis(a.id,true));
-          button.addEventListener('blur',() => setRouteEmphasis(a.id,false));
-        }
-        adventureList.appendChild(button);
-      });
-    };
-  }
+  // Preserve core row construction and event wiring, then reorder completed rows
+  // into strict reverse chronology. Exact dates lead; year-only records follow
+  // dated records in that year; fully undated aggregate records remain at the end.
+  internal.registerPresentationHook('afterRenderList', items => {
+    const list = document.getElementById('adventureList');
+    if (!list || !items.length) return;
+    const order = new Map(
+      items.slice().sort(compareArchiveRecords).map((record,index) => [record.id,index])
+    );
+    Array.from(list.querySelectorAll('.adventure-item'))
+      .sort((a,b) => (order.get(a.dataset.id) ?? Number.MAX_SAFE_INTEGER) - (order.get(b.dataset.id) ?? Number.MAX_SAFE_INTEGER))
+      .forEach(node => list.appendChild(node));
+  });
 
   function updateRefineSummary() {
-    if (!refineSummary || typeof state !== 'object') return;
+    if (!refineSummary) return;
+    const current = runtime.snapshot();
     const parts = [];
-    if (state.yearFrom || state.yearTo) parts.push(`${state.yearFrom || 'First'}–${state.yearTo || 'Latest'}`);
-    if (state.search?.trim()) parts.push(`“${state.search.trim().slice(0,24)}${state.search.trim().length > 24 ? '…' : ''}”`);
+    if (current.yearFrom || current.yearTo) parts.push(`${current.yearFrom || 'First'}–${current.yearTo || 'Latest'}`);
+    if (current.search?.trim()) parts.push(`“${current.search.trim().slice(0,24)}${current.search.trim().length > 24 ? '…' : ''}”`);
     refineSummary.textContent = parts.length ? parts.join(' · ') : 'Years + search';
   }
 
@@ -92,63 +81,56 @@
     refine?.addEventListener(eventName,() => queueMicrotask(updateRefineSummary));
   });
 
-  if (typeof popupCard === 'function') {
-    popupCard = function(a) {
-      const category = typeof publicLayerFor === 'function' ? publicLayerFor(a) : 'adventures';
-      const accent = typeof CATEGORY === 'object' ? (CATEGORY[category]?.color || '#59636d') : '#59636d';
-      const dateLabel = a.date && typeof formatDate === 'function' ? formatDate(a.date) : (typeof recordYear === 'function' ? recordYear(a) : a.year);
-      const kicker = [typeof subtypeFor === 'function' ? subtypeFor(a) : '',dateLabel].filter(Boolean).join(' · ');
-      const alias = a.currentName ? `<p class="popup-alias">Now known as ${escapeHtml(a.currentName)}</p>` : '';
-      const location = a.location ? `<p class="popup-location">${escapeHtml(a.location)}</p>` : '';
+  internal.registerPresentationHook('popupCard', record => {
+    const category = runtime.layerFor(record) || 'adventures';
+    const accent = internal.categoryColor(category);
+    const dateLabel = record.date ? internal.formatDate(record.date) : (internal.recordYear(record) ?? record.year);
+    const kicker = [internal.subtypeFor(record),dateLabel].filter(Boolean).join(' · ');
+    const alias = record.currentName ? `<p class="popup-alias">Now known as ${internal.escapeHtml(record.currentName)}</p>` : '';
+    const locationLabel = record.location ? `<p class="popup-location">${internal.escapeHtml(record.location)}</p>` : '';
 
-      let headline = '';
-      let headlineLabel = '';
-      if (a.kind === 'summit' && Number.isFinite(a.elevationFt)) {
-        headline = `${formatNumber(a.elevationFt)} ft`;
-        headlineLabel = 'elevation';
-      } else if (a.kind === 'race' && a.officialTime) {
-        headline = String(a.officialTime);
-        headlineLabel = 'official time';
-      } else if (a.officialDistance) {
-        headline = String(a.officialDistance);
-        headlineLabel = 'official distance';
-      } else if (a.distance) {
-        headline = String(a.distance);
-        headlineLabel = 'distance';
-      } else if (Number.isFinite(a.distanceMi)) {
-        headline = `${a.distanceMi} mi`;
-        headlineLabel = 'recorded';
-      }
+    let headline = '';
+    let headlineLabel = '';
+    if (record.kind === 'summit' && Number.isFinite(record.elevationFt)) {
+      headline = `${internal.formatNumber(record.elevationFt)} ft`;
+      headlineLabel = 'elevation';
+    } else if (record.kind === 'race' && record.officialTime) {
+      headline = String(record.officialTime);
+      headlineLabel = 'official time';
+    } else if (record.officialDistance) {
+      headline = String(record.officialDistance);
+      headlineLabel = 'official distance';
+    } else if (record.distance) {
+      headline = String(record.distance);
+      headlineLabel = 'distance';
+    } else if (Number.isFinite(record.distanceMi)) {
+      headline = `${record.distanceMi} mi`;
+      headlineLabel = 'recorded';
+    }
 
-      const metrics = [];
-      const pushMetric = value => {
-        if (value && !metrics.includes(value) && value !== headline) metrics.push(value);
-      };
-      if (a.kind === 'race' && a.officialDistance) pushMetric(String(a.officialDistance));
-      if (a.kind === 'race' && a.officialPlace) pushMetric(`Place ${a.officialPlace}`);
-      if (a.kind === 'race' && a.bib) pushMetric(`Bib ${a.bib}`);
-      if (Number.isFinite(a.distanceMi)) pushMetric(`${a.distanceMi} mi`);
-      if (a.kind === 'race' && a.officialPace) pushMetric(`${a.officialPace} pace`);
-      const showGain = a.mapCategory !== 'downhill-mtb' && a.mtbMode !== 'downhill';
-      if (showGain && Number.isFinite(a.elevationGainM) && a.elevationGainM > 0) pushMetric(`${Math.round(a.elevationGainM)} m gain`);
-      if (Number.isFinite(a.elapsedSeconds) && a.elapsedSeconds > 0 && typeof formatDuration === 'function') pushMetric(`${formatDuration(a.elapsedSeconds)} elapsed`);
-
-      const headlineHtml = headline ? `<p class="popup-headline"><strong>${escapeHtml(headline)}</strong><small>${escapeHtml(headlineLabel)}</small></p>` : '';
-      const metricHtml = metrics.length ? `<div class="popup-metrics">${metrics.slice(0,4).map(value => `<span class="popup-metric">${escapeHtml(value)}</span>`).join('')}</div>` : '';
-      return `<article class="popup-card popup-card-refined" style="--popup-accent:${escapeHtml(accent)}"><p class="popup-kicker">${escapeHtml(kicker)}</p><h3 class="popup-title">${escapeHtml(a.name)}</h3>${alias}${location}${headlineHtml}${metricHtml}<p class="popup-detail"><a href="${recordHref(a)}">Open record →</a></p></article>`;
+    const metrics = [];
+    const pushMetric = value => {
+      if (value && !metrics.includes(value) && value !== headline) metrics.push(value);
     };
-  }
+    if (record.kind === 'race' && record.officialDistance) pushMetric(String(record.officialDistance));
+    if (record.kind === 'race' && record.officialPlace) pushMetric(`Place ${record.officialPlace}`);
+    if (record.kind === 'race' && record.bib) pushMetric(`Bib ${record.bib}`);
+    if (Number.isFinite(record.distanceMi)) pushMetric(`${record.distanceMi} mi`);
+    if (record.kind === 'race' && record.officialPace) pushMetric(`${record.officialPace} pace`);
+    const showGain = record.mapCategory !== 'downhill-mtb' && record.mtbMode !== 'downhill';
+    if (showGain && Number.isFinite(record.elevationGainM) && record.elevationGainM > 0) pushMetric(`${Math.round(record.elevationGainM)} m gain`);
+    if (Number.isFinite(record.elapsedSeconds) && record.elapsedSeconds > 0) pushMetric(`${internal.formatDuration(record.elapsedSeconds)} elapsed`);
 
-  if (typeof applyFocusStyles === 'function') {
-    const priorApplyFocusStyles = applyFocusStyles;
-    applyFocusStyles = function(...args) {
-      const result = priorApplyFocusStyles(...args);
-      document.querySelectorAll('.adventure-item').forEach(item => {
-        item.classList.toggle('is-focused',Boolean(state.focusId) && item.dataset.id === state.focusId);
-      });
-      return result;
-    };
-  }
+    const headlineHtml = headline ? `<p class="popup-headline"><strong>${internal.escapeHtml(headline)}</strong><small>${internal.escapeHtml(headlineLabel)}</small></p>` : '';
+    const metricHtml = metrics.length ? `<div class="popup-metrics">${metrics.slice(0,4).map(value => `<span class="popup-metric">${internal.escapeHtml(value)}</span>`).join('')}</div>` : '';
+    return `<article class="popup-card popup-card-refined" style="--popup-accent:${internal.escapeHtml(accent)}"><p class="popup-kicker">${internal.escapeHtml(kicker)}</p><h3 class="popup-title">${internal.escapeHtml(record.name)}</h3>${alias}${locationLabel}${headlineHtml}${metricHtml}<p class="popup-detail"><a href="${internal.recordHref(record)}">Open record →</a></p></article>`;
+  });
+
+  internal.registerPresentationHook('afterFocusStyles', current => {
+    document.querySelectorAll('.adventure-item').forEach(item => {
+      item.classList.toggle('is-focused',Boolean(current.focusId) && item.dataset.id === current.focusId);
+    });
+  });
 
   const results = document.querySelector('.results-section');
   if (results) {

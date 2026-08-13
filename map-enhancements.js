@@ -1,82 +1,98 @@
 (() => {
+  'use strict';
+
+  const runtime = window.AdventureMapRuntime;
+  const internal = runtime?.internal;
+  const map = runtime?.leaflet;
+  if (!runtime || !internal || !map) return;
+
   const theme = window.AdventureMapTheme;
-  if (theme?.colors && typeof CATEGORY === 'object') {
-    Object.entries(theme.colors).forEach(([key,color]) => {
-      if (CATEGORY[key]) CATEGORY[key].color = color;
-    });
-    const legendMap={
-      'MTB':theme.colors.mtb,
-      'Nordic':theme.colors.nordic,
-      'Road race':theme.colors['road-races'],
-      'Trail race':theme.colors['trail-races'],
-      'Skiing':theme.colors.skiing,
-      'Summit':theme.colors.summits,
-      'Adventure':theme.colors.adventures
+  if (theme?.colors) {
+    internal.setCategoryColors(theme.colors);
+    const legendMap = {
+      'MTB': theme.colors.mtb,
+      'Nordic': theme.colors.nordic,
+      'Road race': theme.colors['road-races'],
+      'Trail race': theme.colors['trail-races'],
+      'Skiing': theme.colors.skiing,
+      'Summit': theme.colors.summits,
+      'Adventure': theme.colors.adventures
     };
-    document.querySelectorAll('.legend span').forEach(item=>{
-      const dot=item.querySelector('.legend-dot');
-      const label=item.textContent.trim();
-      if(dot&&legendMap[label])dot.style.background=legendMap[label];
+    document.querySelectorAll('.legend span').forEach(item => {
+      const dot = item.querySelector('.legend-dot');
+      const label = item.textContent.trim();
+      if (dot && legendMap[label]) dot.style.background = legendMap[label];
     });
-    const legend=document.querySelector('.legend');
-    if(legend&&!legend.querySelector('.map-mixed-key'))legend.insertAdjacentHTML('beforeend','<span class="map-mixed-key"><i class="legend-dot" style="background:#59636d"></i> Mixed cluster</span>');
+    const legend = document.querySelector('.legend');
+    if (legend && !legend.querySelector('.map-mixed-key')) {
+      const mixed = theme.colors.mixed || theme.colors.adventures;
+      legend.insertAdjacentHTML('beforeend', `<span class="map-mixed-key"><i class="legend-dot" style="background:${mixed}"></i> Mixed cluster</span>`);
+    }
   }
 
-  if(typeof map!=='undefined'){
-    const ROUTE_DETAIL_ZOOM=7;
-    let markerZoom=map.getZoom();
+  const ROUTE_DETAIL_ZOOM = 7;
+  let markerZoom = map.getZoom();
 
-    function routeCategoryForFeature(feature){
-      const linked=(feature.properties?.adventureIds||[]).map(id=>state.adventures.find(a=>a.id===id)).filter(Boolean);
-      if(state.filter==='summits'&&linked.some(a=>publicLayerFor(a)==='summits'))return'summits';
-      if(state.filter!=='all'&&linked.some(a=>publicLayerFor(a)===state.filter))return state.filter;
-      const focused=state.focusId?linked.find(a=>a.id===state.focusId):null;
-      if(focused)return publicLayerFor(focused);
-      return publicLayerFor(linked[0]||{kind:'adventure'});
-    }
-
-    function applyRouteZoomPresentation(){
-      applyFocusStyles();
-      const zoom=map.getZoom();
-      const detailMode=zoom>=ROUTE_DETAIL_ZOOM;
-      map.getContainer()?.classList.toggle('is-gps-route-detail',detailMode);
-      if(!detailMode||typeof state!=='object')return;
-
-      state.routeFeatureLayers.forEach(group=>group.eachLayer(layer=>{
-        const feature=layer.feature||{};
-        const category=routeCategoryForFeature(feature);
-        const style=baseRouteStyle(feature,category);
-        const active=Boolean(state.focusId&&routeContainsId(layer,state.focusId));
-        if(state.focusId&&!active)return;
-        const minimumWeight=category==='summits'?6:5.5;
-        layer.setStyle?.({...style,weight:active?Math.max(style.weight+3,7):Math.max(style.weight,minimumWeight),opacity:active?1:.96});
-        layer.bringToFront?.();
-      }));
-
-      const groupedMarkers=new Map();
-      state.markers.forEach((marker,id)=>{
-        if(!groupedMarkers.has(marker))groupedMarkers.set(marker,[]);
-        groupedMarkers.get(marker).push(id);
-      });
-      groupedMarkers.forEach((ids,marker)=>{
-        const hasGpsRoute=ids.some(id=>state.routeLayers.has(id));
-        if(!hasGpsRoute)return;
-        const active=Boolean(state.focusId&&ids.includes(state.focusId));
-        if(state.focusId&&!active)return;
-        const baseRadius=marker.__adventureBaseRadius||6;
-        marker.setStyle?.({radius:active?baseRadius+3:Math.min(baseRadius,4.5),fillOpacity:active?.98:.58,opacity:active?1:.72});
-      });
-    }
-
-    map.on('zoomend',()=>{
-      const nextZoom=map.getZoom();
-      if(nextZoom!==markerZoom){markerZoom=nextZoom;renderMarkers(filteredAdventures())}
-      applyRouteZoomPresentation();
-    });
-
-    document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>requestAnimationFrame(applyRouteZoomPresentation)));
-    setTimeout(()=>applyRouteZoomPresentation(),0);
+  function routeCategoryForFeature(feature) {
+    const current = runtime.snapshot();
+    const linked = internal.recordsByIds(feature.properties?.adventureIds || []);
+    if (current.filter === 'summits' && linked.some(record => runtime.layerFor(record) === 'summits')) return 'summits';
+    if (current.filter !== 'all' && linked.some(record => runtime.layerFor(record) === current.filter)) return current.filter;
+    const focused = current.focusId ? linked.find(record => record.id === current.focusId) : null;
+    if (focused) return runtime.layerFor(focused);
+    return runtime.layerFor(linked[0] || { kind: 'adventure' });
   }
+
+  function applyRouteZoomPresentation() {
+    internal.applyFocusStyles();
+    const current = runtime.snapshot();
+    const zoom = map.getZoom();
+    const detailMode = zoom >= ROUTE_DETAIL_ZOOM;
+    map.getContainer()?.classList.toggle('is-gps-route-detail', detailMode);
+    if (!detailMode) return;
+
+    internal.routeFeatureLayers().forEach(group => group.eachLayer(layer => {
+      const feature = layer.feature || {};
+      const category = routeCategoryForFeature(feature);
+      const style = internal.baseRouteStyle(feature, category);
+      const active = Boolean(current.focusId && internal.routeContainsId(layer, current.focusId));
+      if (current.focusId && !active) return;
+      const minimumWeight = category === 'summits' ? 6 : 5.5;
+      layer.setStyle?.({
+        ...style,
+        weight: active ? Math.max(style.weight + 3, 7) : Math.max(style.weight, minimumWeight),
+        opacity: active ? 1 : .96
+      });
+      layer.bringToFront?.();
+    }));
+
+    internal.markerGroups().forEach(({ ids, marker }) => {
+      const hasGpsRoute = ids.some(id => internal.hasRoute(id));
+      if (!hasGpsRoute) return;
+      const active = Boolean(current.focusId && ids.includes(current.focusId));
+      if (current.focusId && !active) return;
+      const baseRadius = marker.__adventureBaseRadius || 6;
+      marker.setStyle?.({
+        radius: active ? baseRadius + 3 : Math.min(baseRadius, 4.5),
+        fillOpacity: active ? .98 : .58,
+        opacity: active ? 1 : .72
+      });
+    });
+  }
+
+  map.on('zoomend', () => {
+    const nextZoom = map.getZoom();
+    if (nextZoom !== markerZoom) {
+      markerZoom = nextZoom;
+      internal.rerenderMarkers();
+    }
+    applyRouteZoomPresentation();
+  });
+
+  document.querySelectorAll('[data-filter]').forEach(button => {
+    button.addEventListener('click', () => requestAnimationFrame(applyRouteZoomPresentation));
+  });
+  setTimeout(applyRouteZoomPresentation, 0);
 
   const shell = document.querySelector('.app-shell');
   const sidebar = document.querySelector('.sidebar');
@@ -86,8 +102,7 @@
   const mobileQuery = window.matchMedia('(max-width: 820px)');
 
   function invalidate() {
-    const m = window.adventureMap;
-    if (m && typeof m.invalidateSize === 'function') m.invalidateSize({pan:false});
+    map.invalidateSize?.({ pan: false });
   }
 
   function placeMapForViewport() {
@@ -106,9 +121,16 @@
   }
 
   placeMapForViewport();
-  window.addEventListener('load', () => { placeMapForViewport(); setTimeout(refreshMapSize, 120); setTimeout(refreshMapSize, 500); });
-  window.addEventListener('resize', refreshMapSize, {passive:true});
-  window.addEventListener('orientationchange', () => setTimeout(() => { placeMapForViewport(); refreshMapSize(); }, 180));
+  window.addEventListener('load', () => {
+    placeMapForViewport();
+    setTimeout(refreshMapSize, 120);
+    setTimeout(refreshMapSize, 500);
+  });
+  window.addEventListener('resize', refreshMapSize, { passive: true });
+  window.addEventListener('orientationchange', () => setTimeout(() => {
+    placeMapForViewport();
+    refreshMapSize();
+  }, 180));
   mobileQuery.addEventListener?.('change', placeMapForViewport);
-  window.visualViewport?.addEventListener('resize', refreshMapSize, {passive:true});
+  window.visualViewport?.addEventListener('resize', refreshMapSize, { passive: true });
 })();

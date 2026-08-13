@@ -49,7 +49,164 @@
     return readyPromise;
   };
 
-  const core = Object.freeze({
+  const presentationHooks = {
+    popupCard: [],
+    itemMeta: [],
+    itemValue: [],
+    afterRenderList: [],
+    afterFocusStyles: []
+  };
+
+  const applyPresentationHooks = (kind, record, baseValue) => {
+    return presentationHooks[kind].reduce((value, hook) => {
+      const next = hook(record, value);
+      return next === undefined ? value : next;
+    }, baseValue);
+  };
+
+  const runPresentationHooks = (kind, ...args) => {
+    presentationHooks[kind].forEach(hook => hook(...args));
+  };
+
+  const basePopupCard = typeof popupCard === 'function' ? popupCard : null;
+  const baseItemMeta = typeof itemMeta === 'function' ? itemMeta : null;
+  const baseItemValue = typeof itemValue === 'function' ? itemValue : null;
+  const baseRenderList = typeof renderList === 'function' ? renderList : null;
+  const baseApplyFocusStyles = typeof applyFocusStyles === 'function' ? applyFocusStyles : null;
+  if (basePopupCard) popupCard = record => applyPresentationHooks('popupCard', record, basePopupCard(record));
+  if (baseItemMeta) itemMeta = record => applyPresentationHooks('itemMeta', record, baseItemMeta(record));
+  if (baseItemValue) itemValue = record => applyPresentationHooks('itemValue', record, baseItemValue(record));
+  if (baseRenderList) renderList = items => {
+    const result = baseRenderList(items);
+    runPresentationHooks('afterRenderList', Array.isArray(items) ? items.slice() : []);
+    return result;
+  };
+  if (baseApplyFocusStyles) applyFocusStyles = (...args) => {
+    const result = baseApplyFocusStyles(...args);
+    runPresentationHooks('afterFocusStyles', snapshot());
+    return result;
+  };
+
+  const runtimeInternal = Object.freeze({
+    registerPresentationHook(kind, hook) {
+      const hooks = presentationHooks[kind];
+      if (!hooks || typeof hook !== 'function') return false;
+      hooks.push(hook);
+      return hooks.length;
+    },
+    setCategoryColors(colors = {}) {
+      if (!colors || typeof colors !== 'object' || typeof CATEGORY !== 'object') return false;
+      Object.entries(colors).forEach(([key, color]) => {
+        if (CATEGORY[key] && typeof color === 'string' && color) CATEGORY[key].color = color;
+      });
+      return true;
+    },
+    setCategoryDefinitions(definitions = {}) {
+      if (!definitions || typeof definitions !== 'object' || typeof CATEGORY !== 'object') return false;
+      Object.entries(definitions).forEach(([key, definition]) => {
+        if (!definition || typeof definition !== 'object') return;
+        CATEGORY[key] = { ...(CATEGORY[key] || {}), ...definition };
+      });
+      return true;
+    },
+    categoryColor(recordOrCategory) {
+      const category = typeof recordOrCategory === 'string'
+        ? recordOrCategory
+        : (typeof publicLayerFor === 'function' ? publicLayerFor(recordOrCategory) : 'adventures');
+      return CATEGORY?.[category]?.color || CATEGORY?.adventures?.color || '#59636d';
+    },
+    recordYear(record) {
+      return typeof recordYear === 'function' ? recordYear(record) : null;
+    },
+    isMapped(record) {
+      return typeof mapped === 'function' ? mapped(record) : false;
+    },
+    formatNumber(value) {
+      return typeof formatNumber === 'function' ? formatNumber(value) : String(value ?? '');
+    },
+    formatDate(value) {
+      return typeof formatDate === 'function' ? formatDate(value) : String(value ?? '');
+    },
+    formatDuration(value) {
+      return typeof formatDuration === 'function' ? formatDuration(value) : '';
+    },
+    escapeHtml(value) {
+      return typeof escapeHtml === 'function' ? escapeHtml(value) : String(value ?? '');
+    },
+    recordHref(record) {
+      return typeof recordHref === 'function' ? recordHref(record) : '#';
+    },
+    subtypeFor(record) {
+      return typeof subtypeFor === 'function' ? subtypeFor(record) : 'Adventure';
+    },
+    recordsByIds(ids = []) {
+      if (!Array.isArray(ids)) return [];
+      return ids.map(id => state.adventures.find(record => record.id === id)).filter(Boolean);
+    },
+    routeFeatureLayers() {
+      return Array.from(state.routeFeatureLayers.values());
+    },
+    markerGroups() {
+      const grouped = new Map();
+      state.markers.forEach((marker, id) => {
+        if (!grouped.has(marker)) grouped.set(marker, []);
+        grouped.get(marker).push(id);
+      });
+      return Array.from(grouped, ([marker, ids]) => Object.freeze({ marker, ids: Object.freeze(ids.slice()) }));
+    },
+    hasRoute(id) {
+      return state.routeLayers.has(id);
+    },
+    mergeRecords(nextRecords = [], { preserveFocus = true } = {}) {
+      if (!Array.isArray(nextRecords)) return false;
+      const existing = new Set(state.adventures.map(record => record.id));
+      let added = 0;
+      nextRecords.forEach(record => {
+        if (!record?.id || existing.has(record.id)) return;
+        state.adventures.push(record);
+        existing.add(record.id);
+        added += 1;
+      });
+      if (!added) return 0;
+      map.closePopup?.();
+      if (preserveFocus && typeof renderPreservingFocus === 'function') renderPreservingFocus();
+      else if (typeof render === 'function') render();
+      return added;
+    },
+    mergeRouteCollections(collections = []) {
+      if (!state.routes || !Array.isArray(collections)) return false;
+      const existing = new Set(state.routes.features.map(feature => feature.id || feature.properties?.featureId || feature.properties?.id));
+      let added = 0;
+      collections.flatMap(collection => collection?.features || []).forEach(feature => {
+        const id = feature.id || feature.properties?.featureId || feature.properties?.id;
+        if (existing.has(id)) return;
+        state.routes.features.push(feature);
+        existing.add(id);
+        added += 1;
+      });
+      const routeCount = document.getElementById('routeCount');
+      if (routeCount) routeCount.textContent = new Set(state.routes.features.flatMap(feature => feature.properties?.adventureIds || [])).size;
+      map.closePopup?.();
+      if (typeof renderPreservingFocus === 'function') renderPreservingFocus();
+      return added;
+    },
+    baseRouteStyle(feature, category) {
+      return typeof baseRouteStyle === 'function' ? baseRouteStyle(feature, category) : {};
+    },
+    routeContainsId(layer, id) {
+      return typeof routeContainsId === 'function' ? routeContainsId(layer, id) : false;
+    },
+    applyFocusStyles() {
+      if (typeof applyFocusStyles === 'function') applyFocusStyles();
+    },
+    rerenderMarkers() {
+      if (typeof renderMarkers !== 'function') return false;
+      renderMarkers(filteredRecords());
+      return true;
+    }
+  });
+
+  const runtime = Object.freeze({
     leaflet: map,
     ready,
     snapshot,
@@ -100,7 +257,28 @@
       if (renderNow && typeof render === 'function') render();
       if (fit && typeof fitVisible === 'function') fitVisible(filteredRecords());
       return snapshot();
-    }
+    },
+    internal: runtimeInternal
+  });
+
+  window.AdventureMapRuntime = runtime;
+
+  const core = Object.freeze({
+    leaflet: runtime.leaflet,
+    ready: runtime.ready,
+    snapshot: runtime.snapshot,
+    resolveRecord: runtime.resolveRecord,
+    records: runtime.records,
+    filteredRecords: runtime.filteredRecords,
+    visibleRoutes: runtime.visibleRoutes,
+    layerFor: runtime.layerFor,
+    popupHtml: runtime.popupHtml,
+    focus: runtime.focus,
+    emphasize: runtime.emphasize,
+    clearFocus: runtime.clearFocus,
+    fit: runtime.fit,
+    refresh: runtime.refresh,
+    setViewState: runtime.setViewState
   });
 
   const api = {

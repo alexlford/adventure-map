@@ -9,15 +9,9 @@
     document.head.appendChild(style);
   }
 
-  const colors = Object.freeze({
-    mtb:'#2f7d4a',
-    nordic:'#2f6f8f',
-    'road-races':'#b76b26',
-    'trail-races':'#8b5a31',
-    skiing:'#2f8ca6',
-    summits:'#357662',
-    adventures:'#715a8d'
-  });
+  const tokenColor = key => getComputedStyle(document.documentElement).getPropertyValue(`--activity-${key}`).trim();
+  const colorKeys = ['mtb','nordic','road-races','trail-races','skiing','summits','adventures','mixed'];
+  const colors = Object.freeze(Object.fromEntries(colorKeys.map(key => [key, tokenColor(key) || '#59636d'])));
   const routeColor = record => {
     if (record?.kind === 'summit') return colors.summits;
     if (record?.mapCategory === 'ski' || record?.discipline === 'ski' || record?.discipline === 'ski-objective') return colors.skiing;

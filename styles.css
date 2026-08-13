@@ -1,14 +1,16 @@
+@import url('adventure-theme.css');
+
 :root {
   --ink: #17202a;
   --muted: #66717c;
   --paper: #f7f4ee;
   --panel: #ffffff;
   --line: #ddd7cd;
-  --summit: #16836d;
-  --ski: #16a6c9;
+  --summit: var(--activity-summits);
+  --ski: var(--activity-skiing);
   --marathon: #e45d32;
   --relay: #7d4bb3;
-  --nordic: #1779a8;
+  --nordic: var(--activity-nordic);
   --focus: #0b5fff;
   --shadow: 0 16px 50px rgba(28, 35, 42, 0.12);
 }

@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const map = window.adventureMap;
+  const map = window.AdventureMapRuntime?.leaflet;
   const panel = document.querySelector('.map-panel');
   if (!map || !panel) return;
 
@@ -28,7 +28,7 @@
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'map-touch-toggle';
-  button.setAttribute('aria-controls','map');
+  button.setAttribute('aria-controls', 'map');
   panel.appendChild(button);
 
   let active = false;
@@ -37,12 +37,12 @@
 
   function setActive(next) {
     active = Boolean(next && media.matches);
-    panel.classList.toggle('is-touch-active',active);
-    panel.classList.toggle('is-touch-passive',media.matches && !active);
+    panel.classList.toggle('is-touch-active', active);
+    panel.classList.toggle('is-touch-passive', media.matches && !active);
     button.hidden = !media.matches;
     button.textContent = active ? 'Done' : 'Explore map';
-    button.setAttribute('aria-pressed',String(active));
-    button.setAttribute('aria-label',active ? 'Finish interacting with map and return to page scrolling' : 'Enable map panning and zooming');
+    button.setAttribute('aria-pressed', String(active));
+    button.setAttribute('aria-label', active ? 'Finish interacting with map and return to page scrolling' : 'Enable map panning and zooming');
 
     if (media.matches && !active) {
       disable(map.dragging);
@@ -59,16 +59,16 @@
       enable(map.keyboard);
       disable(map.scrollWheelZoom);
     }
-    requestAnimationFrame(() => map.invalidateSize({pan:false}));
+    requestAnimationFrame(() => map.invalidateSize({ pan: false }));
   }
 
-  button.addEventListener('click',event => {
+  button.addEventListener('click', event => {
     event.preventDefault();
     event.stopPropagation();
     setActive(!active);
   });
 
-  media.addEventListener?.('change',() => setActive(false));
-  window.addEventListener('orientationchange',() => setTimeout(() => setActive(false),180),{passive:true});
+  media.addEventListener?.('change', () => setActive(false));
+  window.addEventListener('orientationchange', () => setTimeout(() => setActive(false), 180), { passive: true });
   setActive(false);
 })();

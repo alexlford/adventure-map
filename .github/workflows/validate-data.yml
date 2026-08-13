@@ -28,54 +28,17 @@ jobs:
         run: npm ci
       - name: Build publication artifacts
         run: npm run build:publish
-      - name: Validate evidence source manifest
-        run: npm run validate:evidence-sources
-      - name: Validate compiled catalog record layer
-        run: npm run validate:catalog-layer
-      - name: Validate public record schema
-        run: npm run validate:schema
-      - name: Test public record schema contract
-        run: npm run test:record-schema
-      - name: Validate canonical catalog
-        run: npm run validate:data
-      - name: Validate duplicate races
-        run: npm run validate:duplicates
-      - name: Validate stable record slugs
-        run: npm run validate:slugs
-      - name: Validate Story context and pending media
-        run: npm run validate:stories
-      - name: Validate World Marathon Majors passport
-        run: npm run validate:majors
-      - name: Validate production routing and branding
-        run: npm run validate:routing
-      - name: Validate route record references
-        run: npm run validate:route-references
-      - name: Validate source dependencies
-        run: npm run validate:dependencies
-      - name: Validate static publishing contract
-        run: npm run validate:static
-      - name: Install Chromium and WebKit
-        run: npx playwright install --with-deps chromium webkit
-      - name: Run browser smoke tests
-        run: |
-          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/adventures-http.log 2>&1 &
-          SERVER_PID=$!
-          trap 'kill $SERVER_PID' EXIT
-          for attempt in {1..20}; do
-            if curl -fsS http://127.0.0.1:4173/index.html > /dev/null; then
-              break
-            fi
-            sleep 0.5
-          done
-          npx playwright test --project=chromium
-          npx playwright test tests/mobile-layout.spec.mjs tests/world-majors-layout.spec.mjs --project=webkit-mobile
-      - name: Validate maintenance scripts
-        run: python3 -m py_compile scripts/scan_strava_export.py scripts/advance_strava_state.py scripts/test_update_pipeline.py
+      - name: Run static and data validation
+        run: npm run validate:all
       - name: Test maintenance pipeline
         run: npm run test:update-pipeline
+      - name: Install Chromium and WebKit
+        run: npx playwright install --with-deps chromium webkit
+      - name: Run browser regression suite
+        run: npm run test:browser
       - name: Verify publication artifacts are committed
         run: |
-          CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/catalog-layers/records.json data/public-records.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
+          CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/catalog-layers/records.json data/public-records.json data/route-detail-index.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
           if [ -n "$CHANGES" ]; then
             echo "$CHANGES"
             echo "Generated publication artifacts are not current. Run npm run build:publish and commit the results."
