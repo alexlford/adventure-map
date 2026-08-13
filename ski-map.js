@@ -5,7 +5,7 @@
   const internal = runtime?.internal;
   if (!runtime || !internal) return;
 
-  const skiColor = window.AdventureMapTheme?.colors?.skiing || '#2f8ca6';
+  const skiColor = window.AdventureMapTheme?.colors?.skiing || window.AdventureMapTheme?.colors?.mixed;
   internal.setCategoryDefinitions({
     ski: { label: 'Ski resort', color: skiColor },
     skiing: { color: skiColor }
