@@ -206,9 +206,9 @@
       "quality": "rdp-3m"
     },
     "kokopelli-three-day-2025": {
-      "file": "data/story-route-kokopelli-2025-06-07.json",
+      "file": "data/strava-route-full-resolution-mtb-2025-06-07.json",
       "featureId": "activity-mtb-day-2025-06-07",
-      "quality": "story-detail"
+      "quality": "full-source"
     },
     "mauna-kea": {
       "file": "data/strava-route-rdp3-13.json",
@@ -306,19 +306,19 @@
       "quality": "rdp-3m"
     },
     "mtb-day-2025-06-05": {
-      "file": "data/strava-route-rdp3-02.json",
+      "file": "data/strava-route-full-resolution-mtb-2025-06-05.json",
       "featureId": "activity-mtb-day-2025-06-05",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "mtb-day-2025-06-06": {
-      "file": "data/strava-route-rdp3-02.json",
+      "file": "data/strava-route-full-resolution-mtb-2025-06-06.json",
       "featureId": "activity-mtb-day-2025-06-06",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "mtb-day-2025-06-07": {
-      "file": "data/strava-route-rdp3-03.json",
+      "file": "data/strava-route-full-resolution-mtb-2025-06-07.json",
       "featureId": "activity-mtb-day-2025-06-07",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "mtb-day-2025-07-11": {
       "file": "data/strava-route-rdp3-03.json",
@@ -351,14 +351,14 @@
       "quality": "rdp-3m"
     },
     "nordic-day-2022-01-02": {
-      "file": "data/strava-route-rdp3-04.json",
+      "file": "data/strava-route-full-resolution-nordic-2022-01-02.json",
       "featureId": "activity-nordic-day-2022-01-02",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "nordic-day-2022-01-03": {
-      "file": "data/strava-route-rdp3-04.json",
+      "file": "data/strava-route-full-resolution-nordic-2022-01-03.json",
       "featureId": "activity-nordic-day-2022-01-03",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "nordic-day-2022-01-22": {
       "file": "data/strava-route-rdp3-04.json",
@@ -536,9 +536,9 @@
       "quality": "backfill"
     },
     "tennessee-pass-nordic-weekend-2022": {
-      "file": "data/story-route-tennessee-pass-2022-01-02.json",
+      "file": "data/strava-route-full-resolution-nordic-2022-01-02.json",
       "featureId": "activity-nordic-day-2022-01-02",
-      "quality": "story-detail"
+      "quality": "full-source"
     },
     "that-dam-run-10k-2022": {
       "file": "data/strava-route-backfill-04.json",
