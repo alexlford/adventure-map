@@ -49,7 +49,49 @@
     return readyPromise;
   };
 
-  const core = Object.freeze({
+  const runtimeInternal = Object.freeze({
+    setCategoryColors(colors = {}) {
+      if (!colors || typeof colors !== 'object' || typeof CATEGORY !== 'object') return false;
+      Object.entries(colors).forEach(([key, color]) => {
+        if (CATEGORY[key] && typeof color === 'string' && color) CATEGORY[key].color = color;
+      });
+      return true;
+    },
+    recordsByIds(ids = []) {
+      const wanted = new Set(Array.isArray(ids) ? ids : []);
+      return state.adventures.filter(record => wanted.has(record.id));
+    },
+    routeFeatureLayers() {
+      return Array.from(state.routeFeatureLayers.values());
+    },
+    markerGroups() {
+      const grouped = new Map();
+      state.markers.forEach((marker, id) => {
+        if (!grouped.has(marker)) grouped.set(marker, []);
+        grouped.get(marker).push(id);
+      });
+      return Array.from(grouped, ([marker, ids]) => Object.freeze({ marker, ids: Object.freeze(ids.slice()) }));
+    },
+    hasRoute(id) {
+      return state.routeLayers.has(id);
+    },
+    baseRouteStyle(feature, category) {
+      return typeof baseRouteStyle === 'function' ? baseRouteStyle(feature, category) : {};
+    },
+    routeContainsId(layer, id) {
+      return typeof routeContainsId === 'function' ? routeContainsId(layer, id) : false;
+    },
+    applyFocusStyles() {
+      if (typeof applyFocusStyles === 'function') applyFocusStyles();
+    },
+    rerenderMarkers() {
+      if (typeof renderMarkers !== 'function') return false;
+      renderMarkers(filteredRecords());
+      return true;
+    }
+  });
+
+  const runtime = Object.freeze({
     leaflet: map,
     ready,
     snapshot,
@@ -100,7 +142,28 @@
       if (renderNow && typeof render === 'function') render();
       if (fit && typeof fitVisible === 'function') fitVisible(filteredRecords());
       return snapshot();
-    }
+    },
+    internal: runtimeInternal
+  });
+
+  window.AdventureMapRuntime = runtime;
+
+  const core = Object.freeze({
+    leaflet: runtime.leaflet,
+    ready: runtime.ready,
+    snapshot: runtime.snapshot,
+    resolveRecord: runtime.resolveRecord,
+    records: runtime.records,
+    filteredRecords: runtime.filteredRecords,
+    visibleRoutes: runtime.visibleRoutes,
+    layerFor: runtime.layerFor,
+    popupHtml: runtime.popupHtml,
+    focus: runtime.focus,
+    emphasize: runtime.emphasize,
+    clearFocus: runtime.clearFocus,
+    fit: runtime.fit,
+    refresh: runtime.refresh,
+    setViewState: runtime.setViewState
   });
 
   const api = {
