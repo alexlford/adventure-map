@@ -48,7 +48,7 @@ test('map extensions use the frozen runtime boundary instead of ambient core glo
   expect(result.enhancementSource).not.toContain('CATEGORY[');
   expect(result.enhancementSource).not.toContain('publicLayerFor(');
   expect(result.enhancementSource).not.toContain('filteredAdventures()');
-  expect(result.enhancementSource).not.toContain('renderMarkers(');
+  expect(result.enhancementSource).not.toMatch(/(^|[^\w.])renderMarkers\(/m);
 
   expect(result.keyboardSource).toContain('const runtime = window.AdventureMapRuntime');
   expect(result.keyboardSource).not.toContain('state.');
