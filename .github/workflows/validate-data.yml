@@ -28,8 +28,12 @@ jobs:
         run: npm ci
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
-      - name: Run build, static validation, and maintenance checks
-        run: npm run check:fast
+      - name: Build publication artifacts
+        run: npm run build:publish
+      - name: Run static and data validation
+        run: npm run validate:all
+      - name: Test maintenance pipeline
+        run: npm run test:update-pipeline
       - name: Run browser regression suite
         run: npm run test:browser
       - name: Verify publication artifacts are committed
