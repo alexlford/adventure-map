@@ -12,6 +12,9 @@ const broken = mapped.flatMap(record => {
   if (!entry) return [];
   const errors = [];
   if (!entry.featureId) errors.push(`${record.id}: detail index entry has no featureId`);
+  if (entry.featureId && !record.routeFeatureIds.includes(entry.featureId)) {
+    errors.push(`${record.id}: detail feature ${entry.featureId} is not one of the record routeFeatureIds`);
+  }
   if (!entry.file || !fs.existsSync(entry.file)) errors.push(`${record.id}: detail source file is missing: ${entry.file || '(none)'}`);
   return errors;
 });
@@ -23,4 +26,4 @@ for (const record of missing) {
 for (const error of broken) console.error(`ERROR ${error}`);
 
 if (missing.length || broken.length) process.exit(1);
-console.log('Every mapped public record is addressable by an existing route detail source.');
+console.log('Every mapped public record is addressable by an existing matching route detail source.');
