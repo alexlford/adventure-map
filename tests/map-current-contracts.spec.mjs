@@ -184,8 +184,10 @@ test('Map keeps MTB geography on the shared forest green', async ({ page }) => {
   await expect(dot).toBeVisible();
   await expect.poll(() => dot.evaluate(node => getComputedStyle(node).backgroundColor)).toBe('rgb(47, 125, 74)');
   const expansionSource = await page.evaluate(() => fetch('expansion.js').then(response => response.text()));
-  expect(expansionSource).toContain("CATEGORY['mountain-bike'] = { label: 'Mountain bike race', color: '#2f7d4a' }");
-  expect(expansionSource).not.toContain("CATEGORY['mountain-bike'] = { label: 'Mountain bike race', color: '#2563eb' }");
+  expect(expansionSource).toContain("'mountain-bike': { label: 'Mountain bike race', color: '#2f7d4a' }");
+  expect(expansionSource).toContain('internal.setCategoryDefinitions({');
+  expect(expansionSource).not.toContain("CATEGORY['mountain-bike']");
+  expect(expansionSource).not.toContain("color: '#2563eb'");
   expect(errors).toEqual([]);
 });
 
