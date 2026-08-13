@@ -10,6 +10,11 @@
   ],
   "polylineFiles": [
     "data/activity-route-polylines.json",
+    "data/strava-route-full-resolution-mtb-2025-06-05.json",
+    "data/strava-route-full-resolution-mtb-2025-06-06.json",
+    "data/strava-route-full-resolution-mtb-2025-06-07.json",
+    "data/strava-route-full-resolution-nordic-2022-01-02.json",
+    "data/strava-route-full-resolution-nordic-2022-01-03.json",
     "data/strava-route-backfill-01.json",
     "data/strava-route-backfill-02.json",
     "data/strava-route-backfill-03.json",
@@ -90,6 +95,31 @@
         "id": "strava-641964287",
         "minPoints": 1900,
         "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-mtb-day-2025-06-05",
+        "minPoints": 4300,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-mtb-day-2025-06-06",
+        "minPoints": 6100,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-mtb-day-2025-06-07",
+        "minPoints": 6300,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-nordic-day-2022-01-02",
+        "minPoints": 7700,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-nordic-day-2022-01-03",
+        "minPoints": 6700,
+        "resolutionPrefix": "full-source-track"
       }
     ],
     "sourceRdpArchive": {
@@ -102,13 +132,49 @@
     }
   },
   "featureOverrides": {
-    "strava-6814188054": {"adventureIds":["smr-stampede-ranch-hand-skate-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Saturday 25K freestyle/skate leg of the 2022 Snow Mountain Ranch Ranch Hand challenge."},
-    "strava-6819611723": {"adventureIds":["smr-stampede-ranch-hand-classic-2022"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Sunday 25K classic leg completing the 2022 Snow Mountain Ranch Ranch Hand challenge."},
-    "strava-10926255561": {"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Personal GPS recording from the 2024 Frisco BrewSki."},
-    "strava-9642214422": {"adventureIds":["decalibron-2023","mount-democrat","mount-cameron","mount-lincoln","mount-bross"],"provenance":"personal-gps","sourceLabel":"Strava GPS export","note":"Personal GPS recording of the August 13, 2023 DeCaLiBron loop; 1,039 recorded source points retained by deterministic every-20th-point sampling from the 20,755-point FIT track for detailed public rendering."},
-    "river-to-river-relay-historical-course": {"provenance":"historical-course","sourceLabel":"Official River to River course description + public historical GPS reference","note":"Shared historical full relay course for the 2006, 2008, and 2010 entries; not a personal GPS recording."}
+    "strava-6814188054": {
+      "adventureIds": [
+        "smr-stampede-ranch-hand-skate-2022"
+      ],
+      "provenance": "personal-gps",
+      "sourceLabel": "Strava GPS export",
+      "note": "Saturday 25K freestyle/skate leg of the 2022 Snow Mountain Ranch Ranch Hand challenge."
+    },
+    "strava-6819611723": {
+      "adventureIds": [
+        "smr-stampede-ranch-hand-classic-2022"
+      ],
+      "provenance": "personal-gps",
+      "sourceLabel": "Strava GPS export",
+      "note": "Sunday 25K classic leg completing the 2022 Snow Mountain Ranch Ranch Hand challenge."
+    },
+    "strava-10926255561": {
+      "provenance": "personal-gps",
+      "sourceLabel": "Strava GPS export",
+      "note": "Personal GPS recording from the 2024 Frisco BrewSki."
+    },
+    "strava-9642214422": {
+      "adventureIds": [
+        "decalibron-2023",
+        "mount-democrat",
+        "mount-cameron",
+        "mount-lincoln",
+        "mount-bross"
+      ],
+      "provenance": "personal-gps",
+      "sourceLabel": "Strava GPS export",
+      "note": "Personal GPS recording of the August 13, 2023 DeCaLiBron loop; 1,039 recorded source points retained by deterministic every-20th-point sampling from the 20,755-point FIT track for detailed public rendering."
+    },
+    "river-to-river-relay-historical-course": {
+      "provenance": "historical-course",
+      "sourceLabel": "Official River to River course description + public historical GPS reference",
+      "note": "Shared historical full relay course for the 2006, 2008, and 2010 entries; not a personal GPS recording."
+    }
   },
   "recordOverrides": {
-    "chicago-marathon-virtual-2020": {"provenance":"personal-gps","note":"Personal GPS route publication approved by Alex on 2026-08-11; this is a former residence area and no longer current."}
+    "chicago-marathon-virtual-2020": {
+      "provenance": "personal-gps",
+      "note": "Personal GPS route publication approved by Alex on 2026-08-11; this is a former residence area and no longer current."
+    }
   }
 }
