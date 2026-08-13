@@ -27,7 +27,7 @@
     "advance:strava": "python3 scripts/advance_strava_state.py",
     "test:record-schema": "node scripts/test-record-schema.mjs",
     "test:update-pipeline": "python3 scripts/test_update_pipeline.py",
-    "test:browser": "playwright test --project=chromium && playwright test tests/mobile-layout.spec.mjs tests/world-majors-layout.spec.mjs --project=webkit-mobile",
+    "test:browser": "node scripts/run-browser-tests.mjs",
     "check:fast": "npm run build:publish && npm run validate:all && npm run test:update-pipeline",
     "check": "npm run check:fast && npm run test:browser"
   },
