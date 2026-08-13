@@ -7,7 +7,11 @@ const contracts = [
     path: 'adventure-map-api.js',
     required: [
       'const presentationHooks = {',
+      'afterRenderList: []',
+      'afterFocusStyles: []',
       'registerPresentationHook(kind, hook)',
+      "runPresentationHooks('afterRenderList'",
+      "runPresentationHooks('afterFocusStyles'",
       'const runtimeInternal = Object.freeze({',
       'const runtime = Object.freeze({',
       'window.AdventureMapRuntime = runtime',
@@ -48,9 +52,19 @@ const contracts = [
     path: 'map-ui-polish.js',
     required: [
       'const runtime = window.AdventureMapRuntime',
-      "internal.registerPresentationHook('popupCard'"
+      "internal.registerPresentationHook('popupCard'",
+      "internal.registerPresentationHook('afterRenderList'",
+      "internal.registerPresentationHook('afterFocusStyles'"
     ],
     forbidden: [
+      /\bstate\./,
+      /CATEGORY/,
+      /publicLayerFor\(/,
+      /\bmapped\(/,
+      /renderList\s*=/,
+      /applyFocusStyles\s*=/,
+      /focusAdventure\(/,
+      /setRouteEmphasis\(/,
       /popupCard\s*=/,
       /window\.adventureMap/
     ]
