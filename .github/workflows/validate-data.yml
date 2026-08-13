@@ -32,7 +32,7 @@ jobs:
         run: npm run check
       - name: Verify publication artifacts are committed
         run: |
-          CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/catalog-layers/records.json data/public-records.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
+          CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/catalog-layers/records.json data/public-records.json data/route-detail-index.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
           if [ -n "$CHANGES" ]; then
             echo "$CHANGES"
             echo "Generated publication artifacts are not current. Run npm run build:publish and commit the results."
