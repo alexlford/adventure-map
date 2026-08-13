@@ -57,6 +57,14 @@
       });
       return true;
     },
+    setCategoryDefinitions(definitions = {}) {
+      if (!definitions || typeof definitions !== 'object' || typeof CATEGORY !== 'object') return false;
+      Object.entries(definitions).forEach(([key, definition]) => {
+        if (!definition || typeof definition !== 'object') return;
+        CATEGORY[key] = { ...(CATEGORY[key] || {}), ...definition };
+      });
+      return true;
+    },
     recordsByIds(ids = []) {
       if (!Array.isArray(ids)) return [];
       return ids.map(id => state.adventures.find(record => record.id === id)).filter(Boolean);
@@ -74,6 +82,23 @@
     },
     hasRoute(id) {
       return state.routeLayers.has(id);
+    },
+    mergeRouteCollections(collections = []) {
+      if (!state.routes || !Array.isArray(collections)) return false;
+      const existing = new Set(state.routes.features.map(feature => feature.id || feature.properties?.featureId || feature.properties?.id));
+      let added = 0;
+      collections.flatMap(collection => collection?.features || []).forEach(feature => {
+        const id = feature.id || feature.properties?.featureId || feature.properties?.id;
+        if (existing.has(id)) return;
+        state.routes.features.push(feature);
+        existing.add(id);
+        added += 1;
+      });
+      const routeCount = document.getElementById('routeCount');
+      if (routeCount) routeCount.textContent = new Set(state.routes.features.flatMap(feature => feature.properties?.adventureIds || [])).size;
+      map.closePopup?.();
+      if (typeof renderPreservingFocus === 'function') renderPreservingFocus();
+      return added;
     },
     baseRouteStyle(feature, category) {
       return typeof baseRouteStyle === 'function' ? baseRouteStyle(feature, category) : {};
