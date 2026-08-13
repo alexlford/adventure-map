@@ -17,6 +17,17 @@ window.AdventureRoutes = (() => {
     : fetchJson('data/relationships.json')
   ).catch(() => ({ relationships: [] }));
   const keyFor = feature => feature.id || feature.properties?.featureId || feature.properties?.id || null;
+  const geometryPointCount = feature => feature?.geometry?.type === 'LineString'
+    ? (feature.geometry.coordinates || []).length
+    : feature?.geometry?.type === 'MultiLineString'
+      ? (feature.geometry.coordinates || []).reduce((sum, line) => sum + (line?.length || 0), 0)
+      : 0;
+  const detailRank = feature => {
+    const resolution = String(feature?.properties?.routeResolution || feature?.properties?.density || '').toLowerCase();
+    if (resolution.includes('full-source') || resolution.includes('dense-source')) return 3;
+    if (resolution.includes('rdp-3m')) return 2;
+    return 1;
+  };
   const inferProvenance = feature => {
     const p = feature.properties || {};
     const source = `${p.source || ''} ${p.routeType || ''}`.toLowerCase();
@@ -66,7 +77,15 @@ window.AdventureRoutes = (() => {
     collections.forEach((collection, collectionIndex) => {
       (collection.features || []).forEach((feature, featureIndex) => {
         const id = keyFor(feature);
-        if (id) winners.set(id, { collectionIndex, featureIndex });
+        if (!id) return;
+        const prior = winners.get(id);
+        const candidateRank = detailRank(feature);
+        const candidatePoints = geometryPointCount(feature);
+        const priorRank = prior ? detailRank(prior.feature) : -1;
+        const priorPoints = prior ? geometryPointCount(prior.feature) : -1;
+        if (!prior || candidateRank > priorRank || (candidateRank === priorRank && candidatePoints >= priorPoints)) {
+          winners.set(id, { collectionIndex, featureIndex, feature });
+        }
       });
     });
     if (!winners.size) return collections;
@@ -191,21 +210,29 @@ window.AdventureRoutes = (() => {
     });
     return detailIndexPromise;
   }
-  function detailFile(path, { fresh = false } = {}) {
-    if (fresh) return polylineCollection(path);
-    if (!detailFilePromises.has(path)) {
-      detailFilePromises.set(path, polylineCollection(path).catch(error => {
-        detailFilePromises.delete(path);
+  function detailLoader(path, format = null) {
+    if (format === 'geojson' || String(path).toLowerCase().endsWith('.geojson')) {
+      return async target => normalizeCollection(await fetchJson(target));
+    }
+    return polylineCollection;
+  }
+  function detailFile(path, { fresh = false, format = null } = {}) {
+    const loader = detailLoader(path, format);
+    const cacheKey = `${format || "auto"}:${path}`;
+    if (fresh) return loader(path);
+    if (!detailFilePromises.has(cacheKey)) {
+      detailFilePromises.set(cacheKey, loader(path).catch(error => {
+        detailFilePromises.delete(cacheKey);
         throw error;
       }));
     }
-    return detailFilePromises.get(path);
+    return detailFilePromises.get(cacheKey);
   }
   async function resolveDetailForAdventure(adventureId, options = {}) {
     const index = await detailIndex(options);
     const entry = index.records?.[adventureId];
     if (!entry) return null;
-    const collection = await detailFile(entry.file, options);
+    const collection = await detailFile(entry.file, { ...options, format: entry.format || null });
     const features = (collection.features || []).filter(feature => keyFor(feature) === entry.featureId);
     if (!features.length) throw new Error(`Detail route ${entry.featureId} is missing from ${entry.file}`);
     return {
