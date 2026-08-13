@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceCount": 33,
-  "recordCount": 135,
+  "recordCount": 137,
   "layeredMergeCount": 38,
   "adventures": [
     {
@@ -1583,6 +1583,36 @@
       "_catalogSource": "data/notable-adventures.json"
     },
     {
+      "id": "tennessee-pass-nordic-weekend-2022",
+      "kind": "adventure",
+      "discipline": "nordic",
+      "name": "Tennessee Pass Cross-Country Ski Weekend",
+      "year": 2022,
+      "date": "2022-01-02",
+      "endDate": "2022-01-03",
+      "distance": "Two Nordic ski days · 15.00 miles",
+      "distanceKm": 24.14,
+      "distanceMi": 15,
+      "elevationGainM": 247.3,
+      "location": "Tennessee Pass Nordic Center, Leadville, Colorado",
+      "region": "Colorado",
+      "stravaActivityIds": [
+        "6463469567",
+        "6463469610",
+        "6467845602",
+        "6467311248"
+      ],
+      "routeFeatureIds": [
+        "activity-nordic-day-2022-01-02",
+        "activity-nordic-day-2022-01-03"
+      ],
+      "routeStatus": "multi-activity-gps",
+      "matchSource": "Strava GPS export + GPS location reconstruction",
+      "matchConfidence": "high",
+      "note": "A two-day cross-country ski weekend at Tennessee Pass Nordic Center outside Leadville. Back-to-back outings on January 2–3 totaled 15.00 miles and about 811 feet of climbing, turning the individual ski logs into one winter weekend story.",
+      "_catalogSource": "data/notable-adventures.json"
+    },
+    {
       "id": "ranch-hand-2022",
       "kind": "adventure",
       "discipline": "challenge",
@@ -1616,7 +1646,6 @@
       "lat": 39.3463,
       "lon": -106.119,
       "stravaActivityId": "9642214422",
-      "stravaActivityName": "Morning Hike",
       "elapsedSeconds": 20993,
       "movingSeconds": 16816,
       "elevationGainM": 1098.8,
@@ -1704,6 +1733,38 @@
       "matchSource": "Strava + user memory + Royal Gorge Groove historical schedule",
       "matchConfidence": "verified",
       "note": "Back-to-back race weekend at Royal Gorge: a Saturday trail run followed by a Sunday mountain-bike race on the Royal Gorge trail system.",
+      "_catalogSource": "data/notable-adventures.json"
+    },
+    {
+      "id": "kokopelli-three-day-2025",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Kokopelli Trails Long Weekend",
+      "year": 2025,
+      "date": "2025-06-05",
+      "endDate": "2025-06-07",
+      "distance": "Three MTB days · 27.51 miles",
+      "distanceKm": 44.27,
+      "distanceMi": 27.51,
+      "elevationGainM": 664.7,
+      "location": "Kokopelli Trails, Loma / Fruita, Colorado",
+      "region": "Colorado",
+      "lat": 39.178,
+      "lon": -108.826,
+      "stravaActivityIds": [
+        "14709266737",
+        "14717702325",
+        "14727087051"
+      ],
+      "routeFeatureIds": [
+        "activity-mtb-day-2025-06-05",
+        "activity-mtb-day-2025-06-06",
+        "activity-mtb-day-2025-06-07"
+      ],
+      "routeStatus": "multi-activity-gps",
+      "matchSource": "Strava export + MTB archive",
+      "matchConfidence": "confirmed",
+      "note": "A long weekend built around three consecutive pedal-powered mountain-bike days on the Kokopelli trail system near Loma and Fruita. Across June 5–7, the rides totaled 27.51 miles and about 2,181 feet of climbing, turning three individual activity logs into one memorable Western Colorado trip.",
       "_catalogSource": "data/notable-adventures.json"
     },
     {
@@ -3640,6 +3701,9 @@
     "illinois-half-i-challenge-2016": [
       "data/notable-adventures.json"
     ],
+    "tennessee-pass-nordic-weekend-2022": [
+      "data/notable-adventures.json"
+    ],
     "ranch-hand-2022": [
       "data/notable-adventures.json"
     ],
@@ -3653,6 +3717,9 @@
       "data/notable-adventures.json"
     ],
     "royal-gorge-groove-weekend-2024": [
+      "data/notable-adventures.json"
+    ],
+    "kokopelli-three-day-2025": [
       "data/notable-adventures.json"
     ],
     "ski-the-sky-loop-2026": [

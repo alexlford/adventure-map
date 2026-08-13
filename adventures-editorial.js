@@ -1,8 +1,8 @@
 (()=>{
   const A=window.AdventureSite;if(!A)return;
   const esc=A.esc;
-  const type=a=>a.discipline==='ski-objective'?'Ski objective':a.discipline==='mountain-loop'?'Mountain loop':a.discipline==='trek'?'Traverse / trek':'Challenge';
-  const group=a=>a.discipline==='ski-objective'?'ski':a.discipline==='mountain-loop'?'mountain':'challenge';
+  const type=a=>a.discipline==='ski-objective'?'Ski objective':a.discipline==='nordic'?'Nordic ski weekend':a.discipline==='mountain-loop'?'Mountain loop':a.discipline==='trek'?'Traverse / trek':'Challenge';
+  const group=a=>a.discipline==='ski-objective'||a.discipline==='nordic'?'ski':a.discipline==='mountain-loop'?'mountain':'challenge';
   const metric=a=>a.distanceMi?`${a.distanceMi} mi`:a.runs?`${a.runs} runs`:a.distance||type(a);
   const dateLine=a=>`${A.formatDate(a.date)}${a.endDate?` – ${A.formatDate(a.endDate)}`:''}`;
   const dek=a=>a.note||'A memorable chapter from Alex Ford Adventures.';
