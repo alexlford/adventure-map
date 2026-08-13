@@ -15,6 +15,7 @@
     "validate:majors": "node scripts/validate-world-majors.mjs",
     "validate:stories": "node scripts/validate-story-context.mjs",
     "validate:static": "node scripts/validate-static-publishing.mjs",
+    "validate:all": "npm run validate:evidence-sources && npm run validate:catalog-layer && npm run validate:schema && npm run test:record-schema && npm run validate:data && npm run validate:duplicates && npm run validate:slugs && npm run validate:stories && npm run validate:majors && npm run validate:routing && npm run validate:route-references && npm run validate:dependencies && npm run validate:static",
     "build:vendor": "node scripts/vendor-leaflet.mjs",
     "build:shared": "node scripts/build-shared.mjs",
     "build:catalog-layer": "node scripts/build-catalog-record-layer.mjs",
@@ -25,7 +26,10 @@
     "scan:strava": "python3 scripts/scan_strava_export.py",
     "advance:strava": "python3 scripts/advance_strava_state.py",
     "test:record-schema": "node scripts/test-record-schema.mjs",
-    "test:update-pipeline": "python3 scripts/test_update_pipeline.py"
+    "test:update-pipeline": "python3 scripts/test_update_pipeline.py",
+    "test:browser": "playwright test --project=chromium && playwright test tests/mobile-layout.spec.mjs tests/world-majors-layout.spec.mjs --project=webkit-mobile",
+    "check:fast": "npm run build:publish && npm run validate:all && npm run test:update-pipeline",
+    "check": "npm run check:fast && npm run test:browser"
   },
   "devDependencies": {
     "@playwright/test": "1.62.0",
