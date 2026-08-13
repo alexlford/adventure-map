@@ -1,0 +1,32 @@
+name: Validate FIT route parser
+
+on:
+  pull_request:
+    paths:
+      - scripts/fit_route.py
+      - scripts/test_fit_route.py
+      - .github/workflows/validate-fit-route.yml
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/fit_route.py
+      - scripts/test_fit_route.py
+      - .github/workflows/validate-fit-route.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-fit-route:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Compile FIT route parser
+        run: python3 -m py_compile scripts/fit_route.py scripts/test_fit_route.py
+      - name: Run FIT route parser regression
+        run: python3 scripts/test_fit_route.py
