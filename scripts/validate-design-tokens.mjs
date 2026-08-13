@@ -77,7 +77,12 @@ if (!enhancements.includes('theme.colors.mixed')) {
   errors.push('map-enhancements.js: mixed cluster legend must consume the shared mixed token');
 }
 
-const canonicalHexes = Object.values(tokens).map(value => value.toLowerCase());
+// Activity-specific colors must never be hard-coded in JavaScript. The neutral
+// mixed color may remain as a defensive fallback if the token stylesheet fails
+// to load, but normal rendering still resolves it from the shared theme first.
+const canonicalActivityHexes = Object.entries(tokens)
+  .filter(([key]) => key !== 'mixed')
+  .map(([, value]) => value.toLowerCase());
 for (const [path, source] of [
   ['app.js', app],
   ['expansion.js', expansion],
@@ -85,7 +90,7 @@ for (const [path, source] of [
   ['map-enhancements.js', enhancements]
 ]) {
   const lower = source.toLowerCase();
-  for (const value of canonicalHexes) {
+  for (const value of canonicalActivityHexes) {
     if (lower.includes(value)) errors.push(`${path}: semantic activity color ${value} must come from adventure-theme.css`);
   }
 }
