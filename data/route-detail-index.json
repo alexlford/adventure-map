@@ -1,9 +1,10 @@
 {
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
+  "publicRecordSource": "data/public-records.json",
   "routeCatalogUpdatedOn": "2026-08-13",
-  "recordCount": 112,
-  "featureCount": 104,
+  "recordCount": 111,
+  "featureCount": 103,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-backfill-03.json",
@@ -53,11 +54,6 @@
     "bolderboulder-2025": {
       "file": "data/strava-route-backfill-03.json",
       "featureId": "strava-14604711518",
-      "quality": "backfill"
-    },
-    "bolderboulder-2026": {
-      "file": "data/strava-route-backfill-03.json",
-      "featureId": "strava-18652792832",
       "quality": "backfill"
     },
     "boulderthon-2024": {
