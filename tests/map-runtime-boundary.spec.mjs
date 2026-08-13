@@ -18,10 +18,11 @@ test('map extensions use the frozen runtime boundary instead of ambient core glo
   await expect(page.locator('#resultCount')).toContainText('shown');
 
   const result = await page.evaluate(async () => {
-    const [enhancementSource, keyboardSource, touchSource] = await Promise.all([
+    const [enhancementSource, keyboardSource, touchSource, expansionSource] = await Promise.all([
       fetch('/map-enhancements.js').then(response => response.text()),
       fetch('/map-keyboard.js').then(response => response.text()),
       fetch('/map-touch-mode.js').then(response => response.text()),
+      fetch('/expansion.js').then(response => response.text()),
     ]);
     const runtime = window.AdventureMapRuntime;
     const api = window.AdventureMap;
@@ -30,6 +31,7 @@ test('map extensions use the frozen runtime boundary instead of ambient core glo
       enhancementSource,
       keyboardSource,
       touchSource,
+      expansionSource,
       runtimeFrozen: Object.isFrozen(runtime),
       internalFrozen: Object.isFrozen(runtime.internal),
       sameLeaflet: runtime.leaflet === api.leaflet,
@@ -55,6 +57,12 @@ test('map extensions use the frozen runtime boundary instead of ambient core glo
 
   expect(result.touchSource).toContain('window.AdventureMapRuntime?.leaflet');
   expect(result.touchSource).not.toContain('window.adventureMap');
+
+  expect(result.expansionSource).toContain('const runtime = window.AdventureMapRuntime');
+  expect(result.expansionSource).toContain('internal.mergeRouteCollections(payloads)');
+  expect(result.expansionSource).not.toContain('state.');
+  expect(result.expansionSource).not.toContain('CATEGORY.');
+  expect(result.expansionSource).not.toContain('renderPreservingFocus()');
 
   expect(result.runtimeFrozen).toBeTruthy();
   expect(result.internalFrozen).toBeTruthy();
