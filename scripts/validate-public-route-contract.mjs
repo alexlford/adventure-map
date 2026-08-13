@@ -49,8 +49,12 @@ for(const expectation of quality.denseRoutes||[]){
   if(expectation.resolutionPrefix&&!String(feature.properties?.routeResolution||'').startsWith(expectation.resolutionPrefix))errors.push(`${expectation.id}: route resolution ${feature.properties?.routeResolution||'(missing)'} does not start with ${expectation.resolutionPrefix}`);
 }
 
+const actionsEscape=value=>String(value).replaceAll('%','%25').replaceAll('\r','%0D').replaceAll('\n','%0A');
 if(errors.length){
-  errors.forEach(error=>console.error(`ERROR ${error}`));
+  errors.forEach(error=>{
+    console.error(`ERROR ${error}`);
+    if(process.env.GITHUB_ACTIONS==='true')console.error(`::error title=Compiled route contract::${actionsEscape(error)}`);
+  });
   process.exit(1);
 }
 console.log(`Compiled route contract passed with ${payload.features.length} features, ${actualRepairs.length} cataloged recoveries, and ${(quality.denseRoutes||[]).length} protected dense routes.`);
