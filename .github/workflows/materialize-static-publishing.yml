@@ -62,13 +62,39 @@ jobs:
       - name: Audit Strava route coverage
         run: node scripts/audit-strava-route-coverage.mjs
       - name: Commit generated publication artifacts
+        env:
+          BRANCH: ${{ github.ref_name }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package-lock.json shared.js data/catalog-layers/records.json data/public-records.json data/route-detail-index.json sitemap.xml robots.txt vendor/leaflet record map explore timeline stories races summits skiing nordic mtb
-          if git diff --cached --quiet; then
-            echo "Publication artifacts are already current."
-            exit 0
-          fi
-          git commit -m "Materialize static Adventures publication"
-          git push origin HEAD:${{ github.ref_name }}
+
+          for attempt in 1 2 3; do
+            git fetch origin "$BRANCH"
+            REMOTE_SHA="$(git rev-parse "origin/$BRANCH")"
+            HEAD_SHA="$(git rev-parse HEAD)"
+
+            if [ "$HEAD_SHA" != "$REMOTE_SHA" ]; then
+              echo "Publication branch advanced from $HEAD_SHA to $REMOTE_SHA; rebuilding from the latest head (attempt $attempt)."
+              git reset --hard "$REMOTE_SHA"
+              npm ci --ignore-scripts
+              npm run build:publish
+              npm run validate:static
+              node scripts/audit-strava-route-coverage.mjs
+            fi
+
+            git add package-lock.json shared.js data/catalog-layers/records.json data/public-records.json data/route-detail-index.json sitemap.xml robots.txt vendor/leaflet record map explore timeline stories races summits skiing nordic mtb
+            if git diff --cached --quiet; then
+              echo "Publication artifacts are already current."
+              exit 0
+            fi
+
+            git commit -m "Materialize static Adventures publication"
+            if git push origin "HEAD:$BRANCH"; then
+              exit 0
+            fi
+
+            echo "Publication push raced with another branch update; retrying from the latest remote head."
+          done
+
+          echo "Unable to materialize publication artifacts after 3 attempts."
+          exit 1
