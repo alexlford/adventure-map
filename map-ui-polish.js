@@ -46,35 +46,19 @@
     return String(a?.name || '').localeCompare(String(b?.name || ''));
   };
 
-  // Replace the year-grouped archive renderer with strict reverse chronology.
-  // Exact dates lead; year-only records follow dated records in that year; fully
-  // undated aggregate records remain at the end.
-  if (typeof renderList === 'function') {
-    renderList = function(items) {
-      resultCount.textContent = `${items.length} shown`;
-      adventureList.innerHTML = '';
-      if (!items.length) {
-        renderArchiveState('empty','No matching records','Try another layer, year range, or search.');
-        return;
-      }
-      items.slice().sort(compareArchiveRecords).forEach(a => {
-        const category = publicLayerFor(a);
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.dataset.id = a.id;
-        button.className = `adventure-item${mapped(a) || state.routeLayers.has(a.id) ? '' : ' is-unmapped'}`;
-        button.innerHTML = `<span class="item-dot" style="background:${CATEGORY[category]?.color || CATEGORY.adventures.color}"></span><span><span class="item-title">${escapeHtml(a.name)}</span><span class="item-meta">${escapeHtml(itemMeta(a))}</span></span><span class="item-value">${escapeHtml(itemValue(a))}</span>`;
-        if (mapped(a) || state.routeLayers.has(a.id)) {
-          button.addEventListener('click',() => focusAdventure(a));
-          button.addEventListener('mouseenter',() => setRouteEmphasis(a.id,true));
-          button.addEventListener('mouseleave',() => setRouteEmphasis(a.id,false));
-          button.addEventListener('focus',() => setRouteEmphasis(a.id,true));
-          button.addEventListener('blur',() => setRouteEmphasis(a.id,false));
-        }
-        adventureList.appendChild(button);
-      });
-    };
-  }
+  // Preserve core row construction and event wiring, then reorder completed rows
+  // into strict reverse chronology. Exact dates lead; year-only records follow
+  // dated records in that year; fully undated aggregate records remain at the end.
+  internal.registerPresentationHook('afterRenderList', items => {
+    const list = document.getElementById('adventureList');
+    if (!list || !items.length) return;
+    const order = new Map(
+      items.slice().sort(compareArchiveRecords).map((record,index) => [record.id,index])
+    );
+    Array.from(list.querySelectorAll('.adventure-item'))
+      .sort((a,b) => (order.get(a.dataset.id) ?? Number.MAX_SAFE_INTEGER) - (order.get(b.dataset.id) ?? Number.MAX_SAFE_INTEGER))
+      .forEach(node => list.appendChild(node));
+  });
 
   function updateRefineSummary() {
     if (!refineSummary) return;
@@ -142,17 +126,11 @@
     return `<article class="popup-card popup-card-refined" style="--popup-accent:${internal.escapeHtml(accent)}"><p class="popup-kicker">${internal.escapeHtml(kicker)}</p><h3 class="popup-title">${internal.escapeHtml(record.name)}</h3>${alias}${locationLabel}${headlineHtml}${metricHtml}<p class="popup-detail"><a href="${internal.recordHref(record)}">Open record →</a></p></article>`;
   });
 
-  if (typeof applyFocusStyles === 'function') {
-    const priorApplyFocusStyles = applyFocusStyles;
-    applyFocusStyles = function(...args) {
-      const result = priorApplyFocusStyles(...args);
-      const focusId = runtime.snapshot().focusId;
-      document.querySelectorAll('.adventure-item').forEach(item => {
-        item.classList.toggle('is-focused',Boolean(focusId) && item.dataset.id === focusId);
-      });
-      return result;
-    };
-  }
+  internal.registerPresentationHook('afterFocusStyles', current => {
+    document.querySelectorAll('.adventure-item').forEach(item => {
+      item.classList.toggle('is-focused',Boolean(current.focusId) && item.dataset.id === current.focusId);
+    });
+  });
 
   const results = document.querySelector('.results-section');
   if (results) {
