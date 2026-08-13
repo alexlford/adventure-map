@@ -11,7 +11,8 @@ if(!registry||registry.schemaVersion!==1||!Array.isArray(registry.routes)||!regi
 
 export const SITE_ORIGIN=registry.origin;
 export const siteRoutes=Object.freeze(registry.routes.map(route=>Object.freeze({...route})));
-export const generatedRoutes=siteRoutes.filter(route=>route.generated);
+export const generatedRoutes=siteRoutes.filter(route=>route.publication==='generated-clean');
+export const directRoutes=siteRoutes.filter(route=>route.publication==='root'||route.publication==='direct-clean');
 export const sitemapRoutes=siteRoutes.filter(route=>route.sitemap);
 export const browserRewriteRoutes=siteRoutes.filter(route=>route.browserRewrite);
 export const cleanRouteMap=new Map(siteRoutes.map(route=>[route.path,route.source]));
