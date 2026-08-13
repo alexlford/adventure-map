@@ -19,6 +19,8 @@ test('route detail loader supports GeoJSON catalog sources without downgrading G
     };
   });
 
+  // GeoJSON-only catalog records should become addressable, while an existing
+  // GPS-backed record must keep its stronger indexed source until upgraded.
   expect(result.geoFormat).toBe('geojson');
   expect(result.geoQuality).toBe('catalog-detail');
   expect(result.geoFeatureCount).toBe(1);
