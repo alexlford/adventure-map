@@ -3,12 +3,13 @@
 
   const runtime = window.AdventureMapRuntime;
   const internal = runtime?.internal;
+  const colors = window.AdventureMapTheme?.colors || {};
   if (!runtime || !internal) return;
 
   internal.setCategoryDefinitions({
-    road: { label: 'Road race', color: '#d97706' },
-    trail: { label: 'Trail race', color: '#b45309' },
-    'mountain-bike': { label: 'Mountain bike race', color: '#2f7d4a' }
+    road: { label: 'Road race', color: colors['road-races'] || colors.mixed },
+    trail: { label: 'Trail race', color: colors['trail-races'] || colors.mixed },
+    'mountain-bike': { label: 'Mountain bike race', color: colors.mtb || colors.mixed }
   });
 
   function decodePolyline(encoded) {
