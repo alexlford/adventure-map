@@ -6,12 +6,28 @@ const contracts = [
   {
     path: 'adventure-map-api.js',
     required: [
+      'const presentationHooks = {',
+      'registerPresentationHook(kind, hook)',
       'const runtimeInternal = Object.freeze({',
       'const runtime = Object.freeze({',
       'window.AdventureMapRuntime = runtime',
       'window.AdventureMap = Object.freeze(api)'
     ],
     forbidden: []
+  },
+  {
+    path: 'official-results-ui.js',
+    required: [
+      'const runtime = window.AdventureMapRuntime',
+      "internal.registerPresentationHook('popupCard'",
+      "internal.registerPresentationHook('itemValue'"
+    ],
+    forbidden: [
+      /popupCard\s*=/,
+      /itemValue\s*=/,
+      /publicLayerFor\(/,
+      /window\.adventureMap/
+    ]
   },
   {
     path: 'map-enhancements.js',
@@ -25,6 +41,17 @@ const contracts = [
       /publicLayerFor\(/,
       /filteredAdventures\(\)/,
       /(^|[^\w.])renderMarkers\(/m,
+      /window\.adventureMap/
+    ]
+  },
+  {
+    path: 'map-ui-polish.js',
+    required: [
+      'const runtime = window.AdventureMapRuntime',
+      "internal.registerPresentationHook('popupCard'"
+    ],
+    forbidden: [
+      /popupCard\s*=/,
       /window\.adventureMap/
     ]
   },
@@ -53,6 +80,26 @@ const contracts = [
       /\bstate\./,
       /CATEGORY\./,
       /renderPreservingFocus\(\)/,
+      /window\.adventureMap/
+    ]
+  },
+  {
+    path: 'ski-map.js',
+    required: [
+      'const runtime = window.AdventureMapRuntime',
+      "internal.registerPresentationHook('popupCard'",
+      "internal.registerPresentationHook('itemMeta'",
+      "internal.registerPresentationHook('itemValue'",
+      'internal.mergeRecords('
+    ],
+    forbidden: [
+      /\bstate\./,
+      /CATEGORY\./,
+      /window\.popupCard/,
+      /window\.itemMeta/,
+      /window\.itemValue/,
+      /renderPreservingFocus\(/,
+      /filteredAdventures\(/,
       /window\.adventureMap/
     ]
   }
