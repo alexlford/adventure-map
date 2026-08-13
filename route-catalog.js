@@ -2,6 +2,10 @@ window.AdventureRoutes = (() => {
   let configPromise;
   let relationshipsPromise;
   let allPromise;
+  let detailIndexPromise;
+  const detailFilePromises = new Map();
+  const detailRecordPromises = new Map();
+  const DETAIL_INDEX_PATH = 'data/route-detail-index.json';
   const fetchJson = async path => {
     const r = await fetch(path, { cache: 'no-cache' });
     if (!r.ok) throw new Error(`Failed to load ${path} (${r.status})`);
@@ -172,9 +176,70 @@ window.AdventureRoutes = (() => {
     });
     return allPromise;
   }
+  async function resolveDetailIndex() {
+    const index = await fetchJson(DETAIL_INDEX_PATH);
+    if (index?.schemaVersion !== 1 || !index.records || typeof index.records !== 'object') {
+      throw new Error('Invalid route detail index');
+    }
+    return index;
+  }
+  function detailIndex({ fresh = false } = {}) {
+    if (fresh) return resolveDetailIndex();
+    if (!detailIndexPromise) detailIndexPromise = resolveDetailIndex().catch(error => {
+      detailIndexPromise = null;
+      throw error;
+    });
+    return detailIndexPromise;
+  }
+  function detailFile(path, { fresh = false } = {}) {
+    if (fresh) return polylineCollection(path);
+    if (!detailFilePromises.has(path)) {
+      detailFilePromises.set(path, polylineCollection(path).catch(error => {
+        detailFilePromises.delete(path);
+        throw error;
+      }));
+    }
+    return detailFilePromises.get(path);
+  }
+  async function resolveDetailForAdventure(adventureId, options = {}) {
+    const index = await detailIndex(options);
+    const entry = index.records?.[adventureId];
+    if (!entry) return null;
+    const collection = await detailFile(entry.file, options);
+    const features = (collection.features || []).filter(feature => keyFor(feature) === entry.featureId);
+    if (!features.length) throw new Error(`Detail route ${entry.featureId} is missing from ${entry.file}`);
+    return {
+      entry: { ...entry },
+      collection: { type: 'FeatureCollection', features },
+    };
+  }
+  function loadDetailForAdventure(adventureId, { fresh = false } = {}) {
+    if (fresh) return resolveDetailForAdventure(adventureId, { fresh: true });
+    if (!detailRecordPromises.has(adventureId)) {
+      detailRecordPromises.set(adventureId, resolveDetailForAdventure(adventureId).catch(error => {
+        detailRecordPromises.delete(adventureId);
+        throw error;
+      }));
+    }
+    return detailRecordPromises.get(adventureId);
+  }
+  async function detailSourceForAdventure(adventureId) {
+    const index = await detailIndex();
+    return index.records?.[adventureId] ? { ...index.records[adventureId] } : null;
+  }
   async function recordProvenance(recordId) {
     const cfg = await config();
     return cfg.recordOverrides?.[recordId] || null;
   }
-  return { config, normalizeFeature, normalizeCollection, loadAll, recordProvenance, keyFor };
+  return {
+    config,
+    normalizeFeature,
+    normalizeCollection,
+    loadAll,
+    detailIndex,
+    detailSourceForAdventure,
+    loadDetailForAdventure,
+    recordProvenance,
+    keyFor
+  };
 })();
