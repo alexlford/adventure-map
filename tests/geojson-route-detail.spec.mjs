@@ -7,11 +7,12 @@ test('route detail loader supports GeoJSON catalog sources without downgrading G
   const result = await page.evaluate(async () => {
     const geo = await window.AdventureRoutes.loadDetailForAdventure('abes-amble-2014', { fresh: true });
     const pending = await window.AdventureRoutes.detailSourceForAdventure('bolderboulder-2023');
+    const feature = geo?.collection?.features?.[0];
     return {
       geoFormat: geo?.entry?.format,
       geoQuality: geo?.entry?.quality,
       geoFeatureCount: geo?.collection?.features?.length || 0,
-      geoFeatureId: geo?.collection?.features?.[0]?.id || geo?.collection?.features?.[0]?.properties?.featureId || null,
+      geoFeatureId: feature?.id || feature?.properties?.featureId || feature?.properties?.id || null,
       pendingFormat: pending?.format,
       pendingQuality: pending?.quality,
       pendingFeatureId: pending?.featureId,
