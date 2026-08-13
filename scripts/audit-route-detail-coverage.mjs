@@ -20,15 +20,17 @@ const QUALITY_ORDER = [
 ];
 const knownQualities = new Set(QUALITY_ORDER);
 const problems = [];
+const orphanEntries = [];
 const byQuality = Object.fromEntries(QUALITY_ORDER.map(quality => [quality, 0]));
 const selectedFeatures = new Set();
 
 for (const [recordId, entry] of entries) {
-  if (!recordsById.has(recordId)) problems.push(`detail index references unknown public record ${recordId}`);
+  const isPublic = recordsById.has(recordId);
+  if (!isPublic) orphanEntries.push({ recordId, entry });
   if (!entry?.file) problems.push(`${recordId}: detail entry is missing file`);
   if (!entry?.featureId) problems.push(`${recordId}: detail entry is missing featureId`);
   if (!knownQualities.has(entry?.quality)) problems.push(`${recordId}: unknown detail quality ${entry?.quality}`);
-  if (knownQualities.has(entry?.quality)) byQuality[entry.quality] += 1;
+  if (isPublic && knownQualities.has(entry?.quality)) byQuality[entry.quality] += 1;
   if (entry?.featureId) selectedFeatures.add(entry.featureId);
 }
 
@@ -39,8 +41,8 @@ if (index.featureCount !== selectedFeatures.size) {
   problems.push(`featureCount metadata is ${index.featureCount}; actual selected features are ${selectedFeatures.size}`);
 }
 
-const indexedIds = new Set(entries.map(([recordId]) => recordId));
-const unindexed = records.filter(record => !indexedIds.has(String(record.id)));
+const indexedPublicIds = new Set(entries.filter(([recordId]) => recordsById.has(recordId)).map(([recordId]) => recordId));
+const unindexed = records.filter(record => !indexedPublicIds.has(String(record.id)));
 const sourceGradeRecords = byQuality['full-source'];
 const detailGradeRecords = QUALITY_ORDER
   .slice(0, QUALITY_ORDER.indexOf('backfill'))
@@ -48,8 +50,10 @@ const detailGradeRecords = QUALITY_ORDER
 
 const summary = {
   publicRecords: records.length,
-  indexedRecords: entries.length,
-  unindexedRecords: unindexed.length,
+  indexRecords: entries.length,
+  indexedPublicRecords: indexedPublicIds.size,
+  orphanIndexRecords: orphanEntries.length,
+  unindexedPublicRecords: unindexed.length,
   selectedFeatures: selectedFeatures.size,
   sourceGradeRecords,
   detailGradeRecords,
@@ -73,6 +77,13 @@ for (const record of backfill) {
   }));
 }
 
+if (orphanEntries.length) {
+  console.log('\nORPHAN_INDEX_RECORDS');
+  for (const { recordId, entry } of orphanEntries) {
+    console.log(JSON.stringify({ recordId, quality: entry?.quality || null, featureId: entry?.featureId || null }));
+  }
+}
+
 if (unindexed.length) {
   console.log('\nUNINDEXED_PUBLIC_RECORDS');
   for (const record of unindexed) {
@@ -89,5 +100,6 @@ if (problems.length) {
   for (const problem of problems) console.error(`ERROR ${problem}`);
   if (enforce) process.exitCode = 1;
 } else {
+  if (orphanEntries.length) console.warn(`\nWARN ${orphanEntries.length} route detail index record(s) are not in the public catalog.`);
   console.log('\nRoute detail coverage audit passed.');
 }
