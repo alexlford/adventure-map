@@ -41,7 +41,9 @@ function candidateFor(path, route, payload, format, publishedPointCount = 0) {
     format,
     score,
     quality: qualityFor(score),
-    publishedPointCount: Number.isFinite(route.publishedPointCount) ? route.publishedPointCount : publishedPointCount,
+    publishedPointCount: Number.isFinite(route.publishedPointCount) ? route.publishedPointCount
+      : Number.isFinite(route.retainedPointCount) ? route.retainedPointCount
+      : publishedPointCount,
     sourcePointCount: Number.isFinite(route.sourcePointCount) ? route.sourcePointCount : 0,
   };
 }
