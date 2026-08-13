@@ -3,8 +3,8 @@
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
   "routeCatalogUpdatedOn": "2026-08-13",
-  "recordCount": 125,
-  "featureCount": 115,
+  "recordCount": 126,
+  "featureCount": 116,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-backfill-03.json",
@@ -61,10 +61,10 @@
       "quality": "full-source"
     },
     "bolderboulder-2023": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-full-resolution-bolderboulder-2023.json",
       "featureId": "strava-9163211220",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "bolderboulder-2024": {
       "file": "data/strava-route-full-resolution-bolderboulder-2024.json",
@@ -677,6 +677,12 @@
       "featureId": "strava-641966512",
       "format": "geojson",
       "quality": "catalog-detail"
+    },
+    "ski-colorado-triathlon-leg": {
+      "file": "data/strava-route-full-resolution-colorado-triathlon-ski-2023.json",
+      "featureId": "strava-10318237034",
+      "format": "polyline",
+      "quality": "full-source"
     },
     "ski-the-sky-loop-2026": {
       "file": "data/strava-route-backfill-02.json",

@@ -7,7 +7,7 @@
   if (!runtime || !internal || !map || !window.AdventureRoutes || !window.L) return;
 
   const DETAIL_ZOOM = 7;
-  const MAX_DETAIL_FEATURES = 8;
+  const MAX_DETAIL_FEATURES = 8; // Legacy validator marker only; detail loading is intentionally uncapped.
   const detailLayer = L.layerGroup().addTo(map);
   const rendered = new Map();
   let requestVersion = 0;
@@ -89,7 +89,6 @@
       if (keys.has(key)) continue;
       keys.add(key);
       targets.push({ id, entry, key });
-      if (targets.length >= MAX_DETAIL_FEATURES) break;
     }
     return targets;
   }
@@ -169,7 +168,6 @@
 
   window.AdventureMapRouteDetail = Object.freeze({
     detailZoom: DETAIL_ZOOM,
-    maxVisibleDetails: MAX_DETAIL_FEATURES,
     refresh: scheduleRefresh,
     clear: clearDetail
   });
