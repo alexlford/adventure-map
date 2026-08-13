@@ -6,7 +6,7 @@
   "compiledRecordLayer": "data/catalog-layers/records.json",
   "matchLayer": "data/strava-matches.json",
   "relationshipLayer": "data/relationships.json",
-  "removeIds": ["smr-stampede-50k-2022", "flying-pig-10k-2025", "skyline-chili-4-way-2025", "royal-gorge-groove-trail-2024"],
+  "removeIds": ["smr-stampede-50k-2022", "flying-pig-10k-2025", "skyline-chili-4-way-2025", "royal-gorge-groove-trail-2024", "bolderboulder-2026"],
   "overrides": {
     "north-star-mountain": {
       "date": "2020-09-12",
