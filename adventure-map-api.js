@@ -52,7 +52,9 @@
   const presentationHooks = {
     popupCard: [],
     itemMeta: [],
-    itemValue: []
+    itemValue: [],
+    afterRenderList: [],
+    afterFocusStyles: []
   };
 
   const applyPresentationHooks = (kind, record, baseValue) => {
@@ -62,12 +64,28 @@
     }, baseValue);
   };
 
+  const runPresentationHooks = (kind, ...args) => {
+    presentationHooks[kind].forEach(hook => hook(...args));
+  };
+
   const basePopupCard = typeof popupCard === 'function' ? popupCard : null;
   const baseItemMeta = typeof itemMeta === 'function' ? itemMeta : null;
   const baseItemValue = typeof itemValue === 'function' ? itemValue : null;
+  const baseRenderList = typeof renderList === 'function' ? renderList : null;
+  const baseApplyFocusStyles = typeof applyFocusStyles === 'function' ? applyFocusStyles : null;
   if (basePopupCard) popupCard = record => applyPresentationHooks('popupCard', record, basePopupCard(record));
   if (baseItemMeta) itemMeta = record => applyPresentationHooks('itemMeta', record, baseItemMeta(record));
   if (baseItemValue) itemValue = record => applyPresentationHooks('itemValue', record, baseItemValue(record));
+  if (baseRenderList) renderList = items => {
+    const result = baseRenderList(items);
+    runPresentationHooks('afterRenderList', Array.isArray(items) ? items.slice() : []);
+    return result;
+  };
+  if (baseApplyFocusStyles) applyFocusStyles = (...args) => {
+    const result = baseApplyFocusStyles(...args);
+    runPresentationHooks('afterFocusStyles', snapshot());
+    return result;
+  };
 
   const runtimeInternal = Object.freeze({
     registerPresentationHook(kind, hook) {
