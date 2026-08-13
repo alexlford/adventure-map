@@ -21,6 +21,7 @@
     "data/strava-route-full-resolution-ranch-hand-classic-2022.json",
     "data/strava-route-decalibron-2023.json",
     "data/strava-route-full-resolution-flying-pig-2025.json",
+    "data/strava-route-full-resolution-bolderboulder-2022.json",
     "data/strava-route-full-resolution-bolderboulder-2024.json",
     "data/strava-route-rdp3-01.json",
     "data/strava-route-rdp3-02.json",
@@ -95,6 +96,11 @@
       {
         "id": "strava-641964287",
         "minPoints": 1900,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-7226710306",
+        "minPoints": 860,
         "resolutionPrefix": "full-source-track"
       },
       {
