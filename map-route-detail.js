@@ -48,8 +48,8 @@
     delete container.dataset.routeDetailQuality;
   }
 
-  function clearDetail() {
-    requestVersion += 1;
+  function clearDetail({ invalidate = true } = {}) {
+    if (invalidate) requestVersion += 1;
     detailLayer.clearLayers();
     rendered.clear();
     syncDetailState();
@@ -103,54 +103,97 @@
     return targets;
   }
 
-  async function loadTargets(targets, version) {
+  function makeRenderedItem(target, detail) {
+    const feature = detail.collection.features[0];
+    const record = runtime.resolveRecord(target.id);
+    const adventureIds = [...new Set([target.id, ...(feature.properties?.adventureIds || [])])];
+    const layer = L.geoJSON(detail.collection, {
+      interactive: false,
+      style: {
+        ...internal.baseRouteStyle(feature, runtime.layerFor(record)),
+        color: internal.categoryColor(record || 'adventures'),
+        weight: 5.5,
+        opacity: .94,
+        dashArray: null,
+        className: 'map-route-detail-line'
+      }
+    });
+    return {
+      layer,
+      feature,
+      adventureIds,
+      quality: detail.entry.quality
+    };
+  }
+
+  async function detailForTarget(target) {
+    let lastError;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      try {
+        const detail = await AdventureRoutes.loadDetailForAdventure(target.id, attempt ? { fresh: true } : undefined);
+        if (detail?.collection?.features?.length) return detail;
+        lastError = new Error('Detailed route contains no renderable features');
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    console.warn(`Detailed route unavailable for ${target.id}:`, lastError);
+    return null;
+  }
+
+  async function stageTargets(targets, version) {
+    const missing = targets.filter(target => !rendered.has(target.key));
+    const staged = new Map();
     let nextIndex = 0;
+    let failed = false;
 
     async function worker() {
-      while (nextIndex < targets.length) {
-        const target = targets[nextIndex++];
-        if (rendered.has(target.key)) continue;
-        try {
-          const detail = await AdventureRoutes.loadDetailForAdventure(target.id);
-          if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
-          if (!detail?.collection?.features?.length || rendered.has(target.key)) continue;
-          const feature = detail.collection.features[0];
-          const adventureIds = [...new Set([target.id, ...(feature.properties?.adventureIds || [])])];
-          const layer = L.geoJSON(detail.collection, {
-            interactive: false,
-            style: {
-              ...internal.baseRouteStyle(feature, runtime.layerFor(runtime.resolveRecord(target.id))),
-              color: internal.categoryColor(runtime.resolveRecord(target.id) || 'adventures'),
-              weight: 5.5,
-              opacity: .94,
-              dashArray: null,
-              className: 'map-route-detail-line'
-            }
-          }).addTo(detailLayer);
-          rendered.set(target.key, {
-            layer,
-            feature,
-            adventureIds,
-            quality: detail.entry.quality
-          });
-          syncDetailState();
-        } catch (error) {
-          console.warn(`Detailed route unavailable for ${target.id}:`, error);
+      while (nextIndex < missing.length) {
+        if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
+        const target = missing[nextIndex++];
+        const detail = await detailForTarget(target);
+        if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
+        if (!detail) {
+          failed = true;
+          continue;
         }
+        staged.set(target.key, makeRenderedItem(target, detail));
       }
     }
 
-    const workerCount = Math.min(DETAIL_LOAD_CONCURRENCY, targets.length);
+    const workerCount = Math.min(DETAIL_LOAD_CONCURRENCY, missing.length);
     await Promise.all(Array.from({ length: workerCount }, () => worker()));
+    return {
+      staged,
+      complete: !failed && staged.size === missing.length
+    };
   }
 
-  async function refreshDetailPass() {
+  function commitDetails(targets, staged) {
+    const targetKeys = new Set(targets.map(target => target.key));
+
+    rendered.forEach((item, key) => {
+      if (targetKeys.has(key)) return;
+      detailLayer.removeLayer(item.layer);
+      rendered.delete(key);
+    });
+
+    staged.forEach((item, key) => {
+      if (rendered.has(key) || !targetKeys.has(key)) return;
+      item.layer.addTo(detailLayer);
+      rendered.set(key, item);
+    });
+
+    styleRendered();
+    syncDetailState();
+  }
+
+  async function refreshDetailPass(version) {
     if (map.getZoom() < DETAIL_ZOOM) {
-      clearDetail();
+      clearDetail({ invalidate: false });
       return;
     }
 
-    const version = requestVersion;
     let targets;
     try {
       targets = await targetDetails();
@@ -160,19 +203,10 @@
     }
     if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
 
-    const targetKeys = new Set(targets.map(target => target.key));
-    rendered.forEach((item, key) => {
-      if (targetKeys.has(key)) return;
-      detailLayer.removeLayer(item.layer);
-      rendered.delete(key);
-    });
-    syncDetailState();
+    const { staged, complete } = await stageTargets(targets, version);
+    if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM || !complete) return;
 
-    await loadTargets(targets, version);
-    if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
-
-    styleRendered();
-    syncDetailState();
+    commitDetails(targets, staged);
   }
 
   async function drainRefreshes() {
@@ -181,7 +215,8 @@
     try {
       while (refreshPending) {
         refreshPending = false;
-        await refreshDetailPass();
+        const version = requestVersion;
+        await refreshDetailPass(version);
       }
     } finally {
       refreshing = false;
@@ -190,7 +225,9 @@
   }
 
   function scheduleRefresh() {
+    requestVersion += 1;
     refreshPending = true;
+    if (map.getZoom() < DETAIL_ZOOM) clearDetail({ invalidate: false });
     if (scheduled || refreshing) return;
     scheduled = true;
     requestAnimationFrame(() => {
