@@ -26,7 +26,9 @@ const contracts = [
       'AdventureRoutes.detailIndex()',
       'AdventureRoutes.loadDetailForAdventure',
       "internal.registerPresentationHook('afterFocusStyles'",
-      'MAX_DETAIL_FEATURES = 8'
+      'const DETAIL_LOAD_CONCURRENCY = 6',
+      'async function drainRefreshes()',
+      'refreshPending = true'
     ],
     forbidden: [
       /\bstate\./,

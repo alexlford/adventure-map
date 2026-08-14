@@ -14,9 +14,17 @@ function collectRuntimeErrors(page) {
   return errors;
 }
 
-test('high-detail GPS stays lazy at overview zoom and loads every addressable route in a dense viewport', async ({ page }) => {
+test('high-detail GPS stays lazy at overview zoom and reconciles every addressable route across overlapping refreshes', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   const requests = [];
+
+  await page.route('**/data/*', async route => {
+    let pathname = '';
+    try { pathname = new URL(route.request().url()).pathname; } catch {}
+    if (detailFilePattern.test(pathname)) await new Promise(resolve => setTimeout(resolve, 60));
+    await route.continue();
+  });
+
   page.on('request', request => {
     try { requests.push(new URL(request.url()).pathname); } catch {}
   });
@@ -75,7 +83,20 @@ test('high-detail GPS stays lazy at overview zoom and loads every addressable ro
   });
 
   expect(expected.count, 'Denver/Boulder drill-in viewport should exercise more than the former eight-route ceiling').toBeGreaterThan(8);
-  await expect.poll(() => page.evaluate(() => Number(document.getElementById('map')?.dataset.routeDetailCount || 0))).toBe(expected.count);
+
+  // Deliberately overlap refresh requests while detail shards are still delayed/in flight.
+  // The loader must serialize/reconcile these requests and converge on the complete current viewport.
+  await page.evaluate(async () => {
+    for (let index = 0; index < 5; index += 1) {
+      window.AdventureMapRouteDetail.refresh();
+      await new Promise(resolve => setTimeout(resolve, 25));
+    }
+  });
+
+  await expect.poll(
+    () => page.evaluate(() => Number(document.getElementById('map')?.dataset.routeDetailCount || 0)),
+    { timeout: 15000 }
+  ).toBe(expected.count);
 
   const after = await page.evaluate(() => ({
     count: Number(document.getElementById('map')?.dataset.routeDetailCount || 0),
