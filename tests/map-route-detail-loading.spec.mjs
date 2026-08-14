@@ -94,3 +94,60 @@ test('high-detail GPS stays lazy at overview zoom and loads every addressable ro
   await expect.poll(() => page.evaluate(() => document.getElementById('map')?.dataset.routeDetailCount || null)).toBeNull();
   expect(errors).toEqual([]);
 });
+
+test('route detail refresh commits atomically and discards a stale in-flight generation', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+  await expect.poll(() => page.evaluate(() => window.AdventureMap?.state?.().recordCount || 0)).toBeGreaterThan(0);
+
+  await page.evaluate(async () => {
+    const map = window.AdventureMap.leaflet;
+    await new Promise(resolve => {
+      map.once('moveend', resolve);
+      map.setView([39.76, -105.08], 8);
+    });
+  });
+  await expect.poll(() => page.evaluate(() => Number(document.getElementById('map')?.dataset.routeDetailCount || 0))).toBeGreaterThan(8);
+
+  await page.evaluate(() => {
+    const routes = window.AdventureRoutes;
+    const original = routes.loadDetailForAdventure;
+    let release;
+    const gate = new Promise(resolve => { release = resolve; });
+    let delayed = false;
+
+    window.__routeDetailRace = { started: false, release, original };
+    routes.loadDetailForAdventure = async function (...args) {
+      if (!delayed) {
+        delayed = true;
+        window.__routeDetailRace.started = true;
+        await gate;
+      }
+      return original.apply(this, args);
+    };
+
+    window.AdventureMapRouteDetail.clear();
+    window.AdventureMapRouteDetail.refresh();
+  });
+
+  await page.waitForFunction(() => window.__routeDetailRace?.started === true);
+  await page.waitForTimeout(200);
+  expect(await page.locator('.map-route-detail-line').count(), 'staged routes must not leak into Leaflet before the generation commits').toBe(0);
+  await expect.poll(() => page.evaluate(() => document.getElementById('map')?.dataset.routeDetailCount || null)).toBeNull();
+
+  await page.evaluate(() => {
+    window.AdventureMap.leaflet.setZoom(5);
+    window.__routeDetailRace.release();
+  });
+  await expect.poll(() => page.evaluate(() => document.getElementById('map')?.classList.contains('has-lazy-route-detail'))).toBeFalsy();
+  await expect.poll(() => page.evaluate(() => document.getElementById('map')?.dataset.routeDetailCount || null)).toBeNull();
+  await page.waitForTimeout(250);
+  expect(await page.locator('.map-route-detail-line').count(), 'stale route loads must not repopulate the map after zooming out').toBe(0);
+
+  await page.evaluate(() => {
+    window.AdventureRoutes.loadDetailForAdventure = window.__routeDetailRace.original;
+    delete window.__routeDetailRace;
+  });
+  expect(errors).toEqual([]);
+});
