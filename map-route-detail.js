@@ -8,10 +8,13 @@
 
   const DETAIL_ZOOM = 7;
   const MAX_DETAIL_FEATURES = 8; // Legacy validator marker only; detail loading is intentionally uncapped.
+  const DETAIL_LOAD_CONCURRENCY = 6;
   const detailLayer = L.layerGroup().addTo(map);
   const rendered = new Map();
   let requestVersion = 0;
   let scheduled = false;
+  let refreshing = false;
+  let refreshPending = false;
 
   const keyForEntry = entry => `${entry.file}::${entry.featureId}`;
 
@@ -33,16 +36,24 @@
     return ids;
   }
 
+  function syncDetailState() {
+    const container = map.getContainer?.();
+    container?.classList.toggle('has-lazy-route-detail', rendered.size > 0);
+    if (!container) return;
+    if (rendered.size) {
+      container.dataset.routeDetailCount = String(rendered.size);
+      container.dataset.routeDetailQuality = [...new Set([...rendered.values()].map(item => item.quality))].join(',');
+      return;
+    }
+    delete container.dataset.routeDetailCount;
+    delete container.dataset.routeDetailQuality;
+  }
+
   function clearDetail() {
     requestVersion += 1;
     detailLayer.clearLayers();
     rendered.clear();
-    const container = map.getContainer?.();
-    container?.classList.remove('has-lazy-route-detail');
-    if (container) {
-      delete container.dataset.routeDetailCount;
-      delete container.dataset.routeDetailQuality;
-    }
+    syncDetailState();
   }
 
   function styleRendered() {
@@ -93,14 +104,54 @@
     return targets;
   }
 
-  async function refreshDetail() {
-    scheduled = false;
+  async function loadTargets(targets, version) {
+    let nextIndex = 0;
+
+    async function worker() {
+      while (nextIndex < targets.length) {
+        const target = targets[nextIndex++];
+        if (rendered.has(target.key)) continue;
+        try {
+          const detail = await AdventureRoutes.loadDetailForAdventure(target.id);
+          if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
+          if (!detail?.collection?.features?.length || rendered.has(target.key)) continue;
+          const feature = detail.collection.features[0];
+          const adventureIds = [...new Set([target.id, ...(feature.properties?.adventureIds || [])])];
+          const layer = L.geoJSON(detail.collection, {
+            interactive: false,
+            style: {
+              ...internal.baseRouteStyle(feature, runtime.layerFor(runtime.resolveRecord(target.id))),
+              color: internal.categoryColor(runtime.resolveRecord(target.id) || 'adventures'),
+              weight: 5.5,
+              opacity: .94,
+              dashArray: null,
+              className: 'map-route-detail-line'
+            }
+          }).addTo(detailLayer);
+          rendered.set(target.key, {
+            layer,
+            feature,
+            adventureIds,
+            quality: detail.entry.quality
+          });
+          syncDetailState();
+        } catch (error) {
+          console.warn(`Detailed route unavailable for ${target.id}:`, error);
+        }
+      }
+    }
+
+    const workerCount = Math.min(DETAIL_LOAD_CONCURRENCY, targets.length);
+    await Promise.all(Array.from({ length: workerCount }, () => worker()));
+  }
+
+  async function refreshDetailPass() {
     if (map.getZoom() < DETAIL_ZOOM) {
       clearDetail();
       return;
     }
 
-    const version = ++requestVersion;
+    const version = requestVersion;
     let targets;
     try {
       targets = await targetDetails();
@@ -108,7 +159,7 @@
       console.warn('Detailed route index unavailable:', error);
       return;
     }
-    if (version !== requestVersion) return;
+    if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
 
     const targetKeys = new Set(targets.map(target => target.key));
     rendered.forEach((item, key) => {
@@ -116,50 +167,37 @@
       detailLayer.removeLayer(item.layer);
       rendered.delete(key);
     });
+    syncDetailState();
 
-    await Promise.all(targets.map(async target => {
-      if (rendered.has(target.key)) return;
-      try {
-        const detail = await AdventureRoutes.loadDetailForAdventure(target.id);
-        if (version !== requestVersion || !detail?.collection?.features?.length) return;
-        const feature = detail.collection.features[0];
-        const adventureIds = [...new Set([target.id, ...(feature.properties?.adventureIds || [])])];
-        const layer = L.geoJSON(detail.collection, {
-          interactive: false,
-          style: {
-            ...internal.baseRouteStyle(feature, runtime.layerFor(runtime.resolveRecord(target.id))),
-            color: internal.categoryColor(runtime.resolveRecord(target.id) || 'adventures'),
-            weight: 5.5,
-            opacity: .94,
-            dashArray: null,
-            className: 'map-route-detail-line'
-          }
-        }).addTo(detailLayer);
-        rendered.set(target.key, {
-          layer,
-          feature,
-          adventureIds,
-          quality: detail.entry.quality
-        });
-      } catch (error) {
-        console.warn(`Detailed route unavailable for ${target.id}:`, error);
-      }
-    }));
+    await loadTargets(targets, version);
+    if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
 
-    if (version !== requestVersion) return;
     styleRendered();
-    const container = map.getContainer?.();
-    container?.classList.toggle('has-lazy-route-detail', rendered.size > 0);
-    if (container && rendered.size) {
-      container.dataset.routeDetailCount = String(rendered.size);
-      container.dataset.routeDetailQuality = [...new Set([...rendered.values()].map(item => item.quality))].join(',');
+    syncDetailState();
+  }
+
+  async function drainRefreshes() {
+    if (refreshing) return;
+    refreshing = true;
+    try {
+      while (refreshPending) {
+        refreshPending = false;
+        await refreshDetailPass();
+      }
+    } finally {
+      refreshing = false;
+      if (refreshPending) scheduleRefresh();
     }
   }
 
   function scheduleRefresh() {
-    if (scheduled) return;
+    refreshPending = true;
+    if (scheduled || refreshing) return;
     scheduled = true;
-    requestAnimationFrame(() => void refreshDetail());
+    requestAnimationFrame(() => {
+      scheduled = false;
+      void drainRefreshes();
+    });
   }
 
   internal.registerPresentationHook('afterFocusStyles', scheduleRefresh);
