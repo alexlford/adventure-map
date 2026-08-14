@@ -8,6 +8,7 @@
 
   const DETAIL_ZOOM = 7;
   const MAX_DETAIL_FEATURES = 8; // Legacy validator marker only; detail loading is intentionally uncapped.
+  const DETAIL_LOAD_CONCURRENCY = 6;
   const detailLayer = L.layerGroup().addTo(map);
   const rendered = new Map();
   let requestVersion = 0;
@@ -109,6 +110,82 @@
     return targets;
   }
 
+  function makeRenderedItem(target, detail) {
+    const feature = detail.collection.features[0];
+    const adventureIds = [...new Set([target.id, ...(feature.properties?.adventureIds || [])])];
+    const record = runtime.resolveRecord(target.id);
+    const layer = L.geoJSON(detail.collection, {
+      interactive: false,
+      style: {
+        ...internal.baseRouteStyle(feature, runtime.layerFor(record)),
+        color: internal.categoryColor(record || 'adventures'),
+        weight: 5.5,
+        opacity: .94,
+        dashArray: null,
+        className: 'map-route-detail-line'
+      }
+    });
+    return {
+      layer,
+      feature,
+      adventureIds,
+      quality: detail.entry.quality
+    };
+  }
+
+  async function loadTarget(target) {
+    try {
+      const detail = await AdventureRoutes.loadDetailForAdventure(target.id);
+      if (!detail?.collection?.features?.length) return null;
+      return makeRenderedItem(target, detail);
+    } catch (firstError) {
+      try {
+        const detail = await AdventureRoutes.loadDetailForAdventure(target.id, { fresh: true });
+        if (!detail?.collection?.features?.length) return null;
+        return makeRenderedItem(target, detail);
+      } catch (error) {
+        console.warn(`Detailed route unavailable for ${target.id}:`, error, firstError);
+        return null;
+      }
+    }
+  }
+
+  async function loadMissingTargets(targets) {
+    const missing = targets.filter(target => !rendered.has(target.key));
+    const staged = new Map();
+    let nextIndex = 0;
+
+    async function worker() {
+      while (nextIndex < missing.length) {
+        const target = missing[nextIndex++];
+        const item = await loadTarget(target);
+        if (item) staged.set(target.key, item);
+      }
+    }
+
+    const workerCount = Math.min(DETAIL_LOAD_CONCURRENCY, missing.length);
+    await Promise.all(Array.from({ length: workerCount }, () => worker()));
+    return staged;
+  }
+
+  function commitDetails(targets, staged) {
+    const targetKeys = new Set(targets.map(target => target.key));
+
+    rendered.forEach((item, key) => {
+      if (targetKeys.has(key)) return;
+      detailLayer.removeLayer(item.layer);
+      rendered.delete(key);
+    });
+
+    staged.forEach((item, key) => {
+      if (rendered.has(key) || !targetKeys.has(key)) return;
+      item.layer.addTo(detailLayer);
+      rendered.set(key, item);
+    });
+
+    updateDetailStatus();
+  }
+
   async function reconcileDetail(version) {
     if (map.getZoom() < DETAIL_ZOOM) {
       clearDetail({ invalidate: false });
@@ -124,44 +201,10 @@
     }
     if (version !== requestVersion) return;
 
-    const targetKeys = new Set(targets.map(target => target.key));
-    rendered.forEach((item, key) => {
-      if (targetKeys.has(key)) return;
-      detailLayer.removeLayer(item.layer);
-      rendered.delete(key);
-    });
-
-    await Promise.all(targets.map(async target => {
-      if (rendered.has(target.key)) return;
-      try {
-        const detail = await AdventureRoutes.loadDetailForAdventure(target.id);
-        if (version !== requestVersion || !detail?.collection?.features?.length) return;
-        const feature = detail.collection.features[0];
-        const adventureIds = [...new Set([target.id, ...(feature.properties?.adventureIds || [])])];
-        const layer = L.geoJSON(detail.collection, {
-          interactive: false,
-          style: {
-            ...internal.baseRouteStyle(feature, runtime.layerFor(runtime.resolveRecord(target.id))),
-            color: internal.categoryColor(runtime.resolveRecord(target.id) || 'adventures'),
-            weight: 5.5,
-            opacity: .94,
-            dashArray: null,
-            className: 'map-route-detail-line'
-          }
-        }).addTo(detailLayer);
-        rendered.set(target.key, {
-          layer,
-          feature,
-          adventureIds,
-          quality: detail.entry.quality
-        });
-      } catch (error) {
-        console.warn(`Detailed route unavailable for ${target.id}:`, error);
-      }
-    }));
-
+    const staged = await loadMissingTargets(targets);
     if (version !== requestVersion) return;
-    updateDetailStatus();
+
+    commitDetails(targets, staged);
   }
 
   async function drainRefreshes() {
@@ -186,6 +229,7 @@
   function scheduleRefresh() {
     requestVersion += 1;
     refreshQueued = true;
+    if (map.getZoom() < DETAIL_ZOOM) clearDetail({ invalidate: false });
     if (scheduled || refreshInFlight) return;
     scheduled = true;
     requestAnimationFrame(() => void drainRefreshes());
