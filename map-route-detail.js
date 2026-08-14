@@ -12,6 +12,8 @@
   const rendered = new Map();
   let requestVersion = 0;
   let scheduled = false;
+  let refreshInFlight = false;
+  let refreshQueued = false;
 
   const keyForEntry = entry => `${entry.file}::${entry.featureId}`;
 
@@ -33,8 +35,8 @@
     return ids;
   }
 
-  function clearDetail() {
-    requestVersion += 1;
+  function clearDetail({ invalidate = true } = {}) {
+    if (invalidate) requestVersion += 1;
     detailLayer.clearLayers();
     rendered.clear();
     const container = map.getContainer?.();
@@ -69,6 +71,20 @@
     });
   }
 
+  function updateDetailStatus() {
+    styleRendered();
+    const container = map.getContainer?.();
+    container?.classList.toggle('has-lazy-route-detail', rendered.size > 0);
+    if (!container) return;
+    if (rendered.size) {
+      container.dataset.routeDetailCount = String(rendered.size);
+      container.dataset.routeDetailQuality = [...new Set([...rendered.values()].map(item => item.quality))].join(',');
+    } else {
+      delete container.dataset.routeDetailCount;
+      delete container.dataset.routeDetailQuality;
+    }
+  }
+
   async function targetDetails() {
     if (map.getZoom() < DETAIL_ZOOM) return [];
     const index = await AdventureRoutes.detailIndex();
@@ -93,14 +109,12 @@
     return targets;
   }
 
-  async function refreshDetail() {
-    scheduled = false;
+  async function reconcileDetail(version) {
     if (map.getZoom() < DETAIL_ZOOM) {
-      clearDetail();
+      clearDetail({ invalidate: false });
       return;
     }
 
-    const version = ++requestVersion;
     let targets;
     try {
       targets = await targetDetails();
@@ -147,19 +161,34 @@
     }));
 
     if (version !== requestVersion) return;
-    styleRendered();
-    const container = map.getContainer?.();
-    container?.classList.toggle('has-lazy-route-detail', rendered.size > 0);
-    if (container && rendered.size) {
-      container.dataset.routeDetailCount = String(rendered.size);
-      container.dataset.routeDetailQuality = [...new Set([...rendered.values()].map(item => item.quality))].join(',');
+    updateDetailStatus();
+  }
+
+  async function drainRefreshes() {
+    scheduled = false;
+    if (refreshInFlight) return;
+    refreshInFlight = true;
+    try {
+      while (refreshQueued) {
+        refreshQueued = false;
+        const version = requestVersion;
+        await reconcileDetail(version);
+      }
+    } finally {
+      refreshInFlight = false;
+      if (refreshQueued && !scheduled) {
+        scheduled = true;
+        requestAnimationFrame(() => void drainRefreshes());
+      }
     }
   }
 
   function scheduleRefresh() {
-    if (scheduled) return;
+    requestVersion += 1;
+    refreshQueued = true;
+    if (scheduled || refreshInFlight) return;
     scheduled = true;
-    requestAnimationFrame(() => void refreshDetail());
+    requestAnimationFrame(() => void drainRefreshes());
   }
 
   internal.registerPresentationHook('afterFocusStyles', scheduleRefresh);
