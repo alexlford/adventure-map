@@ -115,3 +115,57 @@ test('high-detail GPS stays lazy at overview zoom and reconciles every addressab
   await expect.poll(() => page.evaluate(() => document.getElementById('map')?.dataset.routeDetailCount || null)).toBeNull();
   expect(errors).toEqual([]);
 });
+
+test('stale detail loads never commit after the map leaves detail zoom', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  let gateDetailRequests = false;
+  let gatedRequest = false;
+  let releaseGate;
+  let markGatedRequest;
+  const gate = new Promise(resolve => { releaseGate = resolve; });
+  const requestStarted = new Promise(resolve => { markGatedRequest = resolve; });
+
+  await page.route('**/data/*', async route => {
+    let pathname = '';
+    try { pathname = new URL(route.request().url()).pathname; } catch {}
+    if (gateDetailRequests && !gatedRequest && detailFilePattern.test(pathname)) {
+      gatedRequest = true;
+      markGatedRequest();
+      await gate;
+    }
+    await route.continue();
+  });
+
+  await page.goto('/map/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+  await expect.poll(() => page.evaluate(() => window.AdventureMap?.state?.().recordCount || 0)).toBeGreaterThan(0);
+
+  gateDetailRequests = true;
+  await page.evaluate(async () => {
+    const map = window.AdventureMap.leaflet;
+    await new Promise(resolve => {
+      map.once('moveend', resolve);
+      map.setView([39.76, -105.08], 8, { animate: false });
+    });
+  });
+
+  await requestStarted;
+  await page.waitForTimeout(200);
+  expect(await page.locator('.map-route-detail-line').count(), 'staged detail routes must remain detached until the generation commits').toBe(0);
+  expect(await page.evaluate(() => document.getElementById('map')?.dataset.routeDetailCount || null)).toBeNull();
+
+  await page.evaluate(async () => {
+    const map = window.AdventureMap.leaflet;
+    await new Promise(resolve => {
+      map.once('moveend', resolve);
+      map.setView(map.getCenter(), 5, { animate: false });
+    });
+  });
+  releaseGate();
+
+  await expect.poll(() => page.evaluate(() => document.getElementById('map')?.classList.contains('has-lazy-route-detail'))).toBeFalsy();
+  await expect.poll(() => page.evaluate(() => document.getElementById('map')?.dataset.routeDetailCount || null)).toBeNull();
+  await page.waitForTimeout(250);
+  expect(await page.locator('.map-route-detail-line').count(), 'a stale in-flight generation must not repopulate the map').toBe(0);
+  expect(errors).toEqual([]);
+});
