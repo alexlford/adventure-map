@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 
 const ROOT = resolve(new URL('../', import.meta.url).pathname);
 const INDEX_PATH = resolve(ROOT, 'data/route-detail-index.json');
+const BROWSER_DETAIL_PATH = 'data/route-detail-browser-polylines.json';
 
 const readJson = async path => JSON.parse(await readFile(resolve(ROOT, path), 'utf8'));
 
@@ -15,7 +16,7 @@ function geometryPointCount(feature) {
 
 function detailScore(path, route, payload) {
   const file = path.toLowerCase();
-  const density = String(route.density || route.routeResolution || payload.sampling || '').toLowerCase();
+  const density = String(route.density || route.routeResolution || route.sampling || payload.sampling || '').toLowerCase();
   if (file.includes('full-resolution') || density.includes('full-source') || density.includes('dense-source')) return 500;
   if (file.includes('rdp3') || density.includes('rdp-3m')) return 400;
   if (file.includes('story-route')) return 350;
@@ -33,10 +34,21 @@ function qualityFor(score) {
   return 'catalog-detail';
 }
 
+function browserFileFor(path, route, format) {
+  if (format !== 'polyline') return path;
+  if (Array.isArray(route.lines) && route.lines.length) return path;
+  if ((Array.isArray(route.linesBase64) && route.linesBase64.length)
+    || (Array.isArray(route.linesBrotliBase64) && route.linesBrotliBase64.length)) {
+    return BROWSER_DETAIL_PATH;
+  }
+  return path;
+}
+
 function candidateFor(path, route, payload, format, publishedPointCount = 0) {
   const score = detailScore(path, route, payload);
   return {
-    file: path,
+    file: browserFileFor(path, route, format),
+    sourceFile: path,
     featureId: route.id || route.featureId,
     format,
     score,
@@ -52,7 +64,7 @@ function compareCandidates(a, b) {
   if (b.score !== a.score) return b.score - a.score;
   if (b.publishedPointCount !== a.publishedPointCount) return b.publishedPointCount - a.publishedPointCount;
   if (b.sourcePointCount !== a.sourcePointCount) return b.sourcePointCount - a.sourcePointCount;
-  return a.file.localeCompare(b.file) || a.featureId.localeCompare(b.featureId);
+  return a.sourceFile.localeCompare(b.sourceFile) || a.featureId.localeCompare(b.featureId);
 }
 
 function publicCandidate(candidate) {
