@@ -277,7 +277,7 @@
       "quality": "rdp-3m"
     },
     "kokopelli-three-day-2025": {
-      "file": "data/strava-route-full-resolution-mtb-2025-06-07.json",
+      "file": "data/route-detail-browser-polylines.json",
       "featureId": "activity-mtb-day-2025-06-07",
       "format": "polyline",
       "quality": "full-source"
@@ -403,13 +403,13 @@
       "quality": "full-source"
     },
     "mtb-day-2025-06-06": {
-      "file": "data/strava-route-full-resolution-mtb-2025-06-06.json",
+      "file": "data/route-detail-browser-polylines.json",
       "featureId": "activity-mtb-day-2025-06-06",
       "format": "polyline",
       "quality": "full-source"
     },
     "mtb-day-2025-06-07": {
-      "file": "data/strava-route-full-resolution-mtb-2025-06-07.json",
+      "file": "data/route-detail-browser-polylines.json",
       "featureId": "activity-mtb-day-2025-06-07",
       "format": "polyline",
       "quality": "full-source"
@@ -451,7 +451,7 @@
       "quality": "rdp-3m"
     },
     "nordic-day-2022-01-02": {
-      "file": "data/strava-route-full-resolution-nordic-2022-01-02.json",
+      "file": "data/route-detail-browser-polylines.json",
       "featureId": "activity-nordic-day-2022-01-02",
       "format": "polyline",
       "quality": "full-source"
@@ -727,7 +727,7 @@
       "quality": "backfill"
     },
     "tennessee-pass-nordic-weekend-2022": {
-      "file": "data/strava-route-full-resolution-nordic-2022-01-02.json",
+      "file": "data/route-detail-browser-polylines.json",
       "featureId": "activity-nordic-day-2022-01-02",
       "format": "polyline",
       "quality": "full-source"
