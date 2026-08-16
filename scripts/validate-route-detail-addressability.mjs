@@ -104,6 +104,18 @@ function validateLoadableEntry(recordId, entry) {
   return [`${recordId}: unsupported detail source format ${entry.format || '(none)'} for ${entry.file}`];
 }
 
+function escapeWorkflowCommand(value) {
+  return String(value)
+    .replace(/%/g, '%25')
+    .replace(/\r/g, '%0D')
+    .replace(/\n/g, '%0A');
+}
+
+function reportError(message) {
+  console.error(`ERROR ${message}`);
+  if (process.env.GITHUB_ACTIONS) console.log(`::error title=Route detail addressability::${escapeWorkflowCommand(message)}`);
+}
+
 const mapped = records.filter(record => Array.isArray(record.routeFeatureIds) && record.routeFeatureIds.length > 0);
 const missing = mapped.filter(record => !detailIndex.records?.[record.id]);
 const broken = mapped.flatMap(record => {
@@ -123,10 +135,8 @@ const broken = mapped.flatMap(record => {
 });
 
 console.log(`Route detail addressability: ${mapped.length} mapped public records checked.`);
-for (const record of missing) {
-  console.error(`ERROR ${record.id}: mapped public record has no route detail index entry`);
-}
-for (const error of broken) console.error(`ERROR ${error}`);
+for (const record of missing) reportError(`${record.id}: mapped public record has no route detail index entry`);
+for (const error of broken) reportError(error);
 
 if (missing.length || broken.length) process.exit(1);
 console.log('Every mapped public record resolves to an existing, matching, runtime-loadable route detail feature.');
