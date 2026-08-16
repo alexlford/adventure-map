@@ -10,6 +10,8 @@
   const DETAIL_LOAD_CONCURRENCY = 6;
   const detailLayer = L.layerGroup().addTo(map);
   const rendered = new Map();
+  const failures = new Map();
+  let lastTargets = [];
   let requestVersion = 0;
   let scheduled = false;
   let refreshing = false;
@@ -52,6 +54,8 @@
     if (invalidate) requestVersion += 1;
     detailLayer.clearLayers();
     rendered.clear();
+    failures.clear();
+    lastTargets = [];
     syncDetailState();
   }
 
@@ -102,6 +106,14 @@
       keys.add(key);
       targets.push({ id, entry, key });
     }
+    lastTargets = targets.map(target => ({
+      id: target.id,
+      key: target.key,
+      file: target.entry.file,
+      featureId: target.entry.featureId,
+      format: target.entry.format || null,
+      quality: target.entry.quality || null
+    }));
     return targets;
   }
 
@@ -133,12 +145,21 @@
     for (let attempt = 0; attempt < 2; attempt += 1) {
       try {
         const detail = await AdventureRoutes.loadDetailForAdventure(target.id, attempt ? { fresh: true } : undefined);
-        if (detail?.collection?.features?.length) return detail;
+        if (detail?.collection?.features?.length) {
+          failures.delete(target.key);
+          return detail;
+        }
         lastError = new Error('Detailed route contains no renderable features');
       } catch (error) {
         lastError = error;
       }
     }
+    failures.set(target.key, {
+      id: target.id,
+      file: target.entry.file,
+      featureId: target.entry.featureId,
+      error: lastError?.message || String(lastError || 'unknown error')
+    });
     console.warn(`Detailed route unavailable for ${target.id}:`, lastError);
     return null;
   }
@@ -149,6 +170,9 @@
       if (targetKeys.has(key)) return;
       detailLayer.removeLayer(item.layer);
       rendered.delete(key);
+    });
+    failures.forEach((_failure, key) => {
+      if (!targetKeys.has(key)) failures.delete(key);
     });
     styleRendered();
     syncDetailState();
@@ -229,6 +253,19 @@
     });
   }
 
+  function diagnostics() {
+    const renderedKeys = new Set(rendered.keys());
+    return {
+      zoom: map.getZoom(),
+      requestVersion,
+      targetCount: lastTargets.length,
+      renderedCount: rendered.size,
+      targets: lastTargets.map(target => ({ ...target, rendered: renderedKeys.has(target.key) })),
+      missing: lastTargets.filter(target => !renderedKeys.has(target.key)),
+      failures: [...failures.values()]
+    };
+  }
+
   internal.registerPresentationHook('afterFocusStyles', scheduleRefresh);
   map.on('zoomend moveend', scheduleRefresh);
   runtime.ready().then(scheduleRefresh).catch(() => {});
@@ -236,6 +273,7 @@
   window.AdventureMapRouteDetail = Object.freeze({
     detailZoom: DETAIL_ZOOM,
     refresh: scheduleRefresh,
-    clear: clearDetail
+    clear: clearDetail,
+    diagnostics
   });
 })();
