@@ -93,10 +93,16 @@ test('high-detail GPS stays lazy at overview zoom and reconciles every addressab
     }
   });
 
-  await expect.poll(
-    () => page.evaluate(() => Number(document.getElementById('map')?.dataset.routeDetailCount || 0)),
-    { timeout: 15000 }
-  ).toBe(expected.count);
+  try {
+    await expect.poll(
+      () => page.evaluate(() => Number(document.getElementById('map')?.dataset.routeDetailCount || 0)),
+      { timeout: 15000 }
+    ).toBe(expected.count);
+  } catch (error) {
+    const diagnostics = await page.evaluate(() => window.AdventureMapRouteDetail?.diagnostics?.() || null);
+    console.error(`ROUTE_DETAIL_DIAGNOSTICS ${JSON.stringify(diagnostics)}`);
+    throw error;
+  }
 
   const after = await page.evaluate(() => ({
     count: Number(document.getElementById('map')?.dataset.routeDetailCount || 0),
