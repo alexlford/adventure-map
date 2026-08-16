@@ -126,12 +126,22 @@ The authoritative policy is `data/update-policy.json`.
 
 ## Route handling
 
-Routes should never publish merely because a GPX/FIT file exists. Before adding geometry:
+Routes should never publish merely because a GPX/FIT/TCX file exists. Before adding geometry:
 
 1. determine whether the route is personal GPS, historical course, location-only, or privacy-withheld;
 2. avoid exposing unnecessary home/start locations;
-3. simplify large tracks enough to keep mobile performance healthy;
+3. preserve enough recorded geometry for useful close zoom while keeping the public route privacy-safe;
 4. connect the route to the stable record ID through the route catalog.
+
+The source-preserving Strava materializer accepts GPX, FIT, and TCX activity files, including their `.gz` forms. It retains recorded GPS points rather than inventing intermediate coordinates or applying RDP simplification, and it splits the published line at large source discontinuities so a recording gap cannot become a fake straight segment.
+
+After the canonical ownership/privacy review is complete, regenerate eligible Strava-backed routes from the current account export with:
+
+```bash
+npm run materialize:strava-routes -- /path/to/export.zip
+```
+
+The materializer refreshes the generated full-resolution shards and their route-catalog references. Run the normal publication build and validation stack after materialization. Treat these files as generated derivatives of the reviewed Strava source rather than hand-editing individual encoded polylines.
 
 ## Named races and Stories
 
