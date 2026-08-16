@@ -29,3 +29,34 @@ test('route detail loader supports GeoJSON catalog sources without downgrading G
   expect(result.upgradedQuality).toBe('full-source');
   expect(result.upgradedFeatureId).toBe('strava-9163211220');
 });
+
+test('route detail loader decodes Brotli-compressed full-source GPS shards', async ({ page }) => {
+  await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => Boolean(window.AdventureRoutes));
+
+  const result = await page.evaluate(async () => {
+    const pointCount = detail => {
+      const geometry = detail?.collection?.features?.[0]?.geometry;
+      if (geometry?.type === 'LineString') return geometry.coordinates?.length || 0;
+      if (geometry?.type === 'MultiLineString') {
+        return (geometry.coordinates || []).reduce((sum, line) => sum + (line?.length || 0), 0);
+      }
+      return 0;
+    };
+    const [mtb, nordic] = await Promise.all([
+      window.AdventureRoutes.loadDetailForAdventure('kokopelli-three-day-2025', { fresh: true }),
+      window.AdventureRoutes.loadDetailForAdventure('tennessee-pass-nordic-weekend-2022', { fresh: true }),
+    ]);
+    return {
+      mtbQuality: mtb?.entry?.quality,
+      mtbPoints: pointCount(mtb),
+      nordicQuality: nordic?.entry?.quality,
+      nordicPoints: pointCount(nordic),
+    };
+  });
+
+  expect(result.mtbQuality).toBe('full-source');
+  expect(result.mtbPoints).toBeGreaterThan(6000);
+  expect(result.nordicQuality).toBe('full-source');
+  expect(result.nordicPoints).toBeGreaterThan(7000);
+});
