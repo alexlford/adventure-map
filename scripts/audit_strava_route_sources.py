@@ -66,9 +66,9 @@ def canonical_strava_features(catalog: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def weakest_detail_quality(qualities: dict[str, str | None]) -> str:
-    linked = [quality for quality in qualities.values() if quality]
-    if not linked:
+    if not qualities or any(quality is None for quality in qualities.values()):
         return "unindexed"
+    linked = [str(quality) for quality in qualities.values()]
     return max(linked, key=lambda quality: QUALITY_PRIORITY.get(quality, QUALITY_PRIORITY[None]))
 
 
@@ -139,8 +139,7 @@ def main() -> None:
             adventure_id: detail_records.get(adventure_id, {}).get("quality")
             for adventure_id in feature["adventureIds"]
         }
-        linked_qualities = [quality for quality in qualities.values() if quality]
-        full_source_current = bool(linked_qualities) and all(quality == "full-source" for quality in linked_qualities)
+        full_source_current = bool(qualities) and all(quality == "full-source" for quality in qualities.values())
         weakest_quality = weakest_detail_quality(qualities)
         upgrade_candidate = point_count > 0 and not full_source_current
 
