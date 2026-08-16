@@ -8,6 +8,8 @@ def main() -> None:
     assert weakest_detail_quality({"a": "full-source", "b": "backfill"}) == "backfill"
     assert weakest_detail_quality({"a": "full-source", "b": "rdp-3m"}) == "rdp-3m"
     assert weakest_detail_quality({"a": None}) == "unindexed"
+    assert weakest_detail_quality({"a": "full-source", "b": None}) == "unindexed"
+    assert weakest_detail_quality({}) == "unindexed"
 
     rows = [
         {"featureId": "strava-rdp-large", "sourcePointCount": 25000, "weakestDetailQuality": "rdp-3m"},
