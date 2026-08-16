@@ -176,13 +176,7 @@ window.AdventureRoutes = (() => {
   async function resolveAll() {
     const cfg = await config();
     const routeFiles = cfg.routeFiles || [];
-    const catalogPolylineFiles = cfg.polylineFiles?.length ? cfg.polylineFiles : ['data/activity-route-polylines.json'];
-    // Keep the complete polyline inventory in the catalog for indexing and
-    // on-demand detail loading, while allowing startup to fetch only the
-    // lightweight overview sources needed to anchor the map.
-    const polylineFiles = Array.isArray(cfg.initialPolylineFiles)
-      ? cfg.initialPolylineFiles
-      : catalogPolylineFiles;
+    const polylineFiles = cfg.polylineFiles?.length ? cfg.polylineFiles : ['data/activity-route-polylines.json'];
     const [normalizedRoutes, polylinePayloads, relationshipPayload] = await Promise.all([
       loadAvailable(routeFiles, async path => normalizeCollection(await fetchJson(path)), 'Route source'),
       loadAvailable(polylineFiles, polylineCollection, 'Polyline route source'),
