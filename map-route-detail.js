@@ -68,7 +68,9 @@
     const memberIds = rels
       .filter(rel => rel?.adventureId === focusId && Array.isArray(rel.memberIds))
       .flatMap(rel => rel.memberIds);
-    return [...new Set([focusId, ...memberIds])];
+    return memberIds.length
+      ? [...new Set([...memberIds, focusId])]
+      : [focusId];
   }
 
   function syncDetailState() {
