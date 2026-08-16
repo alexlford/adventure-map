@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { brotliDecompressSync } from 'node:zlib';
 
 const readJson = path => JSON.parse(fs.readFileSync(path, 'utf8'));
 const publicPayload = readJson('data/public-records.json');
@@ -56,6 +57,17 @@ function decodePolyline(encoded) {
   return points;
 }
 
+function encodedLines(route) {
+  if (Array.isArray(route.lines) && route.lines.length) return route.lines;
+  if (Array.isArray(route.linesBase64) && route.linesBase64.length) {
+    return route.linesBase64.map(value => Buffer.from(value, 'base64').toString('utf8'));
+  }
+  if (Array.isArray(route.linesBrotliBase64) && route.linesBrotliBase64.length) {
+    return route.linesBrotliBase64.map(value => brotliDecompressSync(Buffer.from(value, 'base64')).toString('utf8'));
+  }
+  return [];
+}
+
 function validateSelectedSource(entry) {
   const payload = sourcePayload(entry);
   const isGeoJson = entry.format === 'geojson' || String(entry.file).toLowerCase().endsWith('.geojson');
@@ -74,8 +86,9 @@ function validateSelectedSource(entry) {
 
   const route = (payload.routes || []).find(item => item?.id === entry.featureId);
   if (!route) return `detail feature ${entry.featureId} is missing from ${entry.file}`;
-  if (!Array.isArray(route.lines) || !route.lines.length) return `detail feature ${entry.featureId} in ${entry.file} has no encoded lines`;
-  for (const line of route.lines) decodePolyline(line);
+  const lines = encodedLines(route);
+  if (!lines.length) return `detail feature ${entry.featureId} in ${entry.file} has no supported encoded lines`;
+  for (const line of lines) decodePolyline(line);
   return null;
 }
 
