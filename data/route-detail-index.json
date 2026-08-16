@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
-  "routeCatalogUpdatedOn": "2026-08-13",
+  "routeCatalogUpdatedOn": "2026-08-15",
   "recordCount": 126,
   "featureCount": 116,
   "records": {
@@ -13,10 +13,10 @@
       "quality": "backfill"
     },
     "abes-amble-2014": {
-      "file": "data/historical-routes-v2.geojson",
+      "file": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641968068",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "baltimore-5k-2018": {
       "file": "data/strava-route-backfill-02.json",
@@ -217,16 +217,16 @@
       "quality": "rdp-3m"
     },
     "garmin-half-2014": {
-      "file": "data/historical-routes-v2.geojson",
+      "file": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641968887",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "garmin-half-2016": {
-      "file": "data/historical-routes-v2.geojson",
+      "file": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641962559",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "gobble-cobble-2019": {
       "file": "data/strava-route-backfill-04.json",
@@ -259,10 +259,10 @@
       "quality": "catalog-detail"
     },
     "illinois-half-2016": {
-      "file": "data/historical-routes-v2.geojson",
+      "file": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641962439",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "illinois-marathon-2015": {
       "file": "data/strava-route-rdp3-16.json",
@@ -571,10 +571,10 @@
       "quality": "rdp-3m"
     },
     "pi-day-half-2015": {
-      "file": "data/historical-routes-v2.geojson",
+      "file": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641966412",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "pi-miler-2015": {
       "file": "data/strava-route-backfill-04.json",
@@ -589,10 +589,10 @@
       "quality": "backfill"
     },
     "rebel-run-5k-2015": {
-      "file": "data/mined-routes.geojson",
+      "file": "data/strava-route-source-complete-02.json",
       "featureId": "strava-641966162",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "rippetoe-rucksack-2025": {
       "file": "data/strava-route-backfill-01.json",
@@ -619,10 +619,10 @@
       "quality": "catalog-detail"
     },
     "rock-parkway-half-2016": {
-      "file": "data/historical-routes-v2.geojson",
+      "file": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641962666",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "rocky-mountain-5k-2025": {
       "file": "data/strava-route-backfill-04.json",
@@ -661,10 +661,10 @@
       "quality": "backfill"
     },
     "running-with-cows-half-2016": {
-      "file": "data/historical-routes-v2.geojson",
+      "file": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641962333",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "san-gabriel-peak": {
       "file": "data/strava-route-rdp3-17.json",
