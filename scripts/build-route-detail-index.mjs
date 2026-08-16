@@ -66,27 +66,39 @@ function publicRecordIds(payload) {
   return ids;
 }
 
+function ownerIds(route) {
+  return [...new Set((Array.isArray(route?.adventureIds) ? route.adventureIds : []).map(String).filter(Boolean))];
+}
+
 function consider(records, publicIds, route, candidate) {
-  const owners = route.adventureIds || [];
-  if (!candidate.featureId || !Array.isArray(owners) || !owners.length) return;
-  for (const rawAdventureId of owners) {
-    const adventureId = String(rawAdventureId);
+  const owners = ownerIds(route);
+  if (!candidate.featureId || !owners.length) return;
+  for (const adventureId of owners) {
     if (!publicIds.has(adventureId)) continue;
     const prior = records.get(adventureId);
     if (!prior || compareCandidates(candidate, prior) < 0) records.set(adventureId, candidate);
   }
 }
 
+function rememberFeatureOwners(ownerMap, featureId, owners) {
+  if (!featureId || !owners.length) return;
+  const prior = ownerMap.get(featureId) || [];
+  ownerMap.set(featureId, [...new Set([...prior, ...owners])]);
+}
+
 export async function buildRouteDetailIndex() {
   const [catalog, publicRecords] = await Promise.all([readJson('data/route-catalog.json'), readJson('data/public-records.json')]);
   const publicIds = publicRecordIds(publicRecords);
   const records = new Map();
+  const ownersByFeatureId = new Map();
 
   for (const path of catalog.routeFiles || []) {
     const payload = await readJson(path);
     for (const feature of payload.features || []) {
       const props = feature.properties || {};
       const route = { ...props, id: feature.id || props.featureId || props.id, adventureIds: props.adventureIds || [] };
+      const owners = ownerIds(route);
+      rememberFeatureOwners(ownersByFeatureId, route.id, owners);
       consider(records, publicIds, route, candidateFor(path, route, payload.metadata || {}, 'geojson', geometryPointCount(feature)));
     }
   }
@@ -94,8 +106,12 @@ export async function buildRouteDetailIndex() {
   for (const path of catalog.polylineFiles || []) {
     const payload = await readJson(path);
     for (const route of payload.routes || []) {
-      if (!route?.id || !Array.isArray(route.adventureIds) || !route.adventureIds.length) continue;
-      consider(records, publicIds, route, candidateFor(path, route, payload, 'polyline'));
+      if (!route?.id) continue;
+      const explicitOwners = ownerIds(route);
+      const inheritedOwners = explicitOwners.length ? explicitOwners : ownersByFeatureId.get(String(route.id)) || [];
+      if (!inheritedOwners.length) continue;
+      const linkedRoute = explicitOwners.length ? route : { ...route, adventureIds: inheritedOwners };
+      consider(records, publicIds, linkedRoute, candidateFor(path, linkedRoute, payload, 'polyline'));
     }
   }
 
