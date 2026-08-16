@@ -1,28 +1,26 @@
 import fs from 'node:fs';
+import { QUALITY_ORDER, auditQualityFloor } from './lib/route-detail-quality.mjs';
 
 const args = new Set(process.argv.slice(2));
 const enforce = args.has('--enforce');
 const readJson = path => JSON.parse(fs.readFileSync(path, 'utf8'));
 
 const index = readJson('data/route-detail-index.json');
+const qualityFloor = readJson('data/route-detail-quality-floor.json');
 const recordsPayload = readJson('data/public-records.json');
 const records = recordsPayload.records || recordsPayload;
 const recordsById = new Map(records.map(record => [String(record.id), record]));
 const entries = Object.entries(index.records || {});
 
-const QUALITY_ORDER = [
-  'full-source',
-  'rdp-3m',
-  'story-detail',
-  'catalog-detail',
-  'backfill',
-  'activity-overview',
-];
 const knownQualities = new Set(QUALITY_ORDER);
 const problems = [];
 const orphanEntries = [];
 const byQuality = Object.fromEntries(QUALITY_ORDER.map(quality => [quality, 0]));
 const selectedFeatures = new Set();
+
+if (qualityFloor.schemaVersion !== 1) {
+  problems.push(`route detail quality floor schemaVersion is ${qualityFloor.schemaVersion}; expected 1`);
+}
 
 for (const [recordId, entry] of entries) {
   const isPublic = recordsById.has(recordId);
@@ -48,6 +46,13 @@ const detailGradeRecords = QUALITY_ORDER
   .slice(0, QUALITY_ORDER.indexOf('backfill'))
   .reduce((sum, quality) => sum + byQuality[quality], 0);
 
+const floorAudit = auditQualityFloor({
+  indexRecords: index.records || {},
+  publicRecordIds: new Set(recordsById.keys()),
+  floorRecords: qualityFloor.records || {},
+});
+problems.push(...floorAudit.problems);
+
 const summary = {
   publicRecords: records.length,
   indexRecords: entries.length,
@@ -57,6 +62,8 @@ const summary = {
   selectedFeatures: selectedFeatures.size,
   sourceGradeRecords,
   detailGradeRecords,
+  qualityFloorRecords: Object.keys(qualityFloor.records || {}).length,
+  qualityFloorViolations: floorAudit.violations.length,
   quality: byQuality,
 };
 
@@ -75,6 +82,11 @@ for (const record of backfill) {
     recordClass: record.recordClass || record.kind || null,
     sport: record.sport || record.discipline || null,
   }));
+}
+
+if (floorAudit.violations.length) {
+  console.log('\nQUALITY_FLOOR_VIOLATIONS');
+  for (const violation of floorAudit.violations) console.log(JSON.stringify(violation));
 }
 
 if (orphanEntries.length) {
