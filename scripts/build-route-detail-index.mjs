@@ -108,6 +108,7 @@ export async function buildRouteDetailIndex() {
     for (const route of payload.routes || []) {
       if (!route?.id) continue;
       const explicitOwners = ownerIds(route);
+      if (explicitOwners.length) rememberFeatureOwners(ownersByFeatureId, String(route.id), explicitOwners);
       const inheritedOwners = explicitOwners.length ? explicitOwners : ownersByFeatureId.get(String(route.id)) || [];
       if (!inheritedOwners.length) continue;
       const linkedRoute = explicitOwners.length ? route : { ...route, adventureIds: inheritedOwners };
