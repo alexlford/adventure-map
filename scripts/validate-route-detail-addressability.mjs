@@ -4,6 +4,25 @@ const readJson = path => JSON.parse(fs.readFileSync(path, 'utf8'));
 const publicPayload = readJson('data/public-records.json');
 const detailIndex = readJson('data/route-detail-index.json');
 const records = publicPayload.records || [];
+const sourceFeatureIds = new Map();
+
+function featureId(feature) {
+  return feature?.id || feature?.properties?.featureId || feature?.properties?.id || null;
+}
+
+function idsInSource(entry) {
+  const cacheKey = `${entry.format || 'auto'}:${entry.file}`;
+  if (sourceFeatureIds.has(cacheKey)) return sourceFeatureIds.get(cacheKey);
+  const payload = readJson(entry.file);
+  const isGeoJson = entry.format === 'geojson' || String(entry.file).toLowerCase().endsWith('.geojson');
+  const ids = new Set(
+    isGeoJson
+      ? (payload.features || []).map(featureId).filter(Boolean)
+      : (payload.routes || []).map(route => route?.id).filter(Boolean)
+  );
+  sourceFeatureIds.set(cacheKey, ids);
+  return ids;
+}
 
 const mapped = records.filter(record => Array.isArray(record.routeFeatureIds) && record.routeFeatureIds.length > 0);
 const missing = mapped.filter(record => !detailIndex.records?.[record.id]);
@@ -15,7 +34,17 @@ const broken = mapped.flatMap(record => {
   if (entry.featureId && !record.routeFeatureIds.includes(entry.featureId)) {
     errors.push(`${record.id}: detail feature ${entry.featureId} is not one of the record routeFeatureIds`);
   }
-  if (!entry.file || !fs.existsSync(entry.file)) errors.push(`${record.id}: detail source file is missing: ${entry.file || '(none)'}`);
+  if (!entry.file || !fs.existsSync(entry.file)) {
+    errors.push(`${record.id}: detail source file is missing: ${entry.file || '(none)'}`);
+  } else if (entry.featureId) {
+    try {
+      if (!idsInSource(entry).has(entry.featureId)) {
+        errors.push(`${record.id}: detail feature ${entry.featureId} is missing from ${entry.file}`);
+      }
+    } catch (error) {
+      errors.push(`${record.id}: detail source cannot be read: ${entry.file} (${error.message})`);
+    }
+  }
   return errors;
 });
 
@@ -26,4 +55,4 @@ for (const record of missing) {
 for (const error of broken) console.error(`ERROR ${error}`);
 
 if (missing.length || broken.length) process.exit(1);
-console.log('Every mapped public record is addressable by an existing matching route detail source.');
+console.log('Every mapped public record is addressable by an existing source containing the selected detail feature.');
