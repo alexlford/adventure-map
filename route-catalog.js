@@ -135,11 +135,40 @@ window.AdventureRoutes = (() => {
     if (coordinates.length < 2) throw new Error('Encoded route contains fewer than two coordinates');
     return coordinates;
   }
+  function bytesFromBase64(value) {
+    const binary = atob(value);
+    const bytes = new Uint8Array(binary.length);
+    for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+    return bytes;
+  }
+  function textFromBase64(value) {
+    return new TextDecoder().decode(bytesFromBase64(value));
+  }
+  async function textFromBrotliBase64(value) {
+    if (typeof DecompressionStream !== 'function') throw new Error('Brotli route detail requires DecompressionStream support');
+    const input = new Blob([bytesFromBase64(value)]).stream();
+    let stream;
+    try {
+      stream = input.pipeThrough(new DecompressionStream('brotli'));
+    } catch (error) {
+      throw new Error(`Brotli route detail is not supported by this browser: ${error.message}`);
+    }
+    return new Response(stream).text();
+  }
+  async function encodedLinesForRoute(route, path) {
+    if (Array.isArray(route.lines) && route.lines.length) return route.lines;
+    if (Array.isArray(route.linesBase64) && route.linesBase64.length) return route.linesBase64.map(textFromBase64);
+    if (Array.isArray(route.linesBrotliBase64) && route.linesBrotliBase64.length) {
+      return Promise.all(route.linesBrotliBase64.map(textFromBrotliBase64));
+    }
+    throw new Error(`${path}: encoded route ${route.id || '(missing id)'} has no lines`);
+  }
   async function polylineCollection(path) {
     const payload = await fetchJson(path);
-    const features = (payload.routes || []).map(route => {
-      if (!route.id || !Array.isArray(route.lines) || !route.lines.length) throw new Error(`${path}: invalid encoded route`);
-      const lines = route.lines.map(decodePolyline);
+    const features = await Promise.all((payload.routes || []).map(async route => {
+      if (!route.id) throw new Error(`${path}: invalid encoded route`);
+      const encodedLines = await encodedLinesForRoute(route, path);
+      const lines = encodedLines.map(decodePolyline);
       return {
         type: 'Feature',
         id: route.id,
@@ -161,7 +190,7 @@ window.AdventureRoutes = (() => {
           ? { type: 'LineString', coordinates: lines[0] }
           : { type: 'MultiLineString', coordinates: lines }
       };
-    });
+    }));
     return normalizeCollection({ type: 'FeatureCollection', features });
   }
   async function loadAvailable(paths, loader, label) {
