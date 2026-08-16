@@ -35,14 +35,13 @@ test('focused composite adventure loads every distinct member route detail', asy
 
     window.AdventureMap.focus(focusId);
     const map = window.AdventureMap.leaflet;
-    await new Promise(resolve => {
-      map.once('moveend', resolve);
-      map.setView([39.85, -105.30], 8, { animate: false });
-    });
+    map.setView([39.85, -105.30], 8, { animate: false });
     window.AdventureMapRouteDetail.refresh();
 
     return { focusId, targets: [...byKey.values()] };
   });
+
+  await expect.poll(() => page.evaluate(() => window.AdventureMap.leaflet.getZoom())).toBe(8);
 
   expect(expected.targets.map(target => target.sourceId).sort()).toEqual([
     'colderbolder-2023',
