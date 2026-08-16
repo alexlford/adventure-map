@@ -85,10 +85,10 @@
       "quality": "rdp-3m"
     },
     "charles-street-12-2019": {
-      "file": "data/strava-route-backfill-04.json",
+      "file": "data/strava-route-source-complete-02.json",
       "featureId": "strava-4312788726",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "chicago-marathon-2021": {
       "file": "data/strava-route-rdp3-12.json",
@@ -163,10 +163,10 @@
       "quality": "backfill"
     },
     "colfax-urban-10-2026": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-source-complete-02.json",
       "featureId": "strava-18545647595",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "colorado-triathlon-2023": {
       "file": "data/strava-route-backfill-01.json",
@@ -247,10 +247,10 @@
       "quality": "rdp-3m"
     },
     "illinois-5k-2015": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641965799",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "illinois-5k-2016": {
       "file": "data/historical-routes-v2.geojson",
@@ -295,10 +295,10 @@
       "quality": "rdp-3m"
     },
     "mile-high-turkey-trot-2025": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-source-complete-02.json",
       "featureId": "strava-16584355003",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "mount-bross": {
       "file": "data/strava-route-decalibron-2023.json",
