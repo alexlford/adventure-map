@@ -30,6 +30,7 @@
     "build:route-detail-index": "node scripts/build-route-detail-index.mjs --write",
     "build:publish": "npm run build:vendor && npm run build:shared && npm run build:public-records && npm run build:static-site && npm run build:public-index && npm run build:route-detail-index",
     "scan:strava": "python3 scripts/scan_strava_export.py",
+    "materialize:strava-routes": "python3 scripts/materialize_strava_routes.py",
     "advance:strava": "python3 scripts/advance_strava_state.py",
     "test:record-schema": "node scripts/test-record-schema.mjs",
     "test:update-pipeline": "python3 scripts/test_update_pipeline.py",
