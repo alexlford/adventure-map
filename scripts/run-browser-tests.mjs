@@ -5,17 +5,41 @@ const port = '4173';
 const baseUrl = `http://${host}:${port}`;
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+const stripAnsi = value => String(value).replace(/\u001b\[[0-9;]*m/g, '');
+const escapeWorkflowCommand = value => stripAnsi(value)
+  .replace(/%/g, '%25')
+  .replace(/\r/g, '%0D')
+  .replace(/\n/g, '%0A');
 
 const run = (command, args, options = {}) => new Promise((resolve, reject) => {
+  const { captureFailure = false, ...spawnOptions } = options;
   const child = spawn(command, args, {
-    stdio: 'inherit',
+    stdio: captureFailure ? ['ignore', 'pipe', 'pipe'] : 'inherit',
     shell: false,
-    ...options
+    ...spawnOptions
   });
+  let output = '';
+
+  if (captureFailure) {
+    const capture = (stream, destination) => stream?.on('data', chunk => {
+      destination.write(chunk);
+      output = `${output}${chunk}`.slice(-12000);
+    });
+    capture(child.stdout, process.stdout);
+    capture(child.stderr, process.stderr);
+  }
+
   child.on('error', reject);
   child.on('exit', code => {
-    if (code === 0) resolve();
-    else reject(new Error(`${command} ${args.join(' ')} exited with code ${code}`));
+    if (code === 0) {
+      resolve();
+      return;
+    }
+    if (captureFailure && process.env.GITHUB_ACTIONS && output.trim()) {
+      const tail = stripAnsi(output).trim().slice(-8000);
+      console.log(`::error title=Browser regression failure::${escapeWorkflowCommand(tail)}`);
+    }
+    reject(new Error(`${command} ${args.join(' ')} exited with code ${code}`));
   });
 });
 
@@ -57,14 +81,14 @@ process.on('SIGTERM', () => {
 
 try {
   await waitForServer();
-  await run('npx', ['playwright', 'test', '--project=chromium']);
+  await run('npx', ['playwright', 'test', '--project=chromium'], { captureFailure: true });
   await run('npx', [
     'playwright',
     'test',
     'tests/mobile-layout.spec.mjs',
     'tests/world-majors-layout.spec.mjs',
     '--project=webkit-mobile'
-  ]);
+  ], { captureFailure: true });
 } finally {
   stopServer();
 }

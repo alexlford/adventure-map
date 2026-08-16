@@ -10,6 +10,8 @@
   const DETAIL_LOAD_CONCURRENCY = 6;
   const detailLayer = L.layerGroup().addTo(map);
   const rendered = new Map();
+  const failures = new Map();
+  let lastTargets = [];
   let requestVersion = 0;
   let scheduled = false;
   let refreshing = false;
@@ -52,31 +54,35 @@
     if (invalidate) requestVersion += 1;
     detailLayer.clearLayers();
     rendered.clear();
+    failures.clear();
+    lastTargets = [];
     syncDetailState();
   }
 
-  function styleRendered() {
+  function styleItem(item) {
     const focusId = runtime.snapshot().focusId;
-    rendered.forEach(item => {
-      const focused = Boolean(focusId && item.adventureIds.includes(focusId));
-      item.layer.eachLayer?.(layer => {
-        const feature = layer.feature || item.feature;
-        const record = focusId && item.adventureIds.includes(focusId)
-          ? runtime.resolveRecord(focusId)
-          : internal.recordsByIds(item.adventureIds)[0];
-        const category = record ? runtime.layerFor(record) : 'adventures';
-        const base = internal.baseRouteStyle(feature, category);
-        layer.setStyle?.({
-          ...base,
-          color: internal.categoryColor(record || category),
-          weight: focused ? Math.max(base.weight + 3, 7) : Math.max(base.weight + 1.5, 5.5),
-          opacity: focused ? 1 : .94,
-          dashArray: null,
-          className: 'map-route-detail-line'
-        });
-        layer.bringToFront?.();
+    const focused = Boolean(focusId && item.adventureIds.includes(focusId));
+    item.layer.eachLayer?.(layer => {
+      const feature = layer.feature || item.feature;
+      const record = focusId && item.adventureIds.includes(focusId)
+        ? runtime.resolveRecord(focusId)
+        : internal.recordsByIds(item.adventureIds)[0];
+      const category = record ? runtime.layerFor(record) : 'adventures';
+      const base = internal.baseRouteStyle(feature, category);
+      layer.setStyle?.({
+        ...base,
+        color: internal.categoryColor(record || category),
+        weight: focused ? Math.max(base.weight + 3, 7) : Math.max(base.weight + 1.5, 5.5),
+        opacity: focused ? 1 : .94,
+        dashArray: null,
+        className: 'map-route-detail-line'
       });
+      layer.bringToFront?.();
     });
+  }
+
+  function styleRendered() {
+    rendered.forEach(styleItem);
   }
 
   async function targetDetails() {
@@ -100,6 +106,14 @@
       keys.add(key);
       targets.push({ id, entry, key });
     }
+    lastTargets = targets.map(target => ({
+      id: target.id,
+      key: target.key,
+      file: target.entry.file,
+      featureId: target.entry.featureId,
+      format: target.entry.format || null,
+      quality: target.entry.quality || null
+    }));
     return targets;
   }
 
@@ -131,21 +145,43 @@
     for (let attempt = 0; attempt < 2; attempt += 1) {
       try {
         const detail = await AdventureRoutes.loadDetailForAdventure(target.id, attempt ? { fresh: true } : undefined);
-        if (detail?.collection?.features?.length) return detail;
+        if (detail?.collection?.features?.length) {
+          failures.delete(target.key);
+          return detail;
+        }
         lastError = new Error('Detailed route contains no renderable features');
       } catch (error) {
         lastError = error;
       }
     }
+    failures.set(target.key, {
+      id: target.id,
+      file: target.entry.file,
+      featureId: target.entry.featureId,
+      error: lastError?.message || String(lastError || 'unknown error')
+    });
     console.warn(`Detailed route unavailable for ${target.id}:`, lastError);
     return null;
   }
 
-  async function stageTargets(targets, version) {
+  function reconcileRendered(targets) {
+    const targetKeys = new Set(targets.map(target => target.key));
+    rendered.forEach((item, key) => {
+      if (targetKeys.has(key)) return;
+      detailLayer.removeLayer(item.layer);
+      rendered.delete(key);
+    });
+    failures.forEach((_failure, key) => {
+      if (!targetKeys.has(key)) failures.delete(key);
+    });
+    styleRendered();
+    syncDetailState();
+    return targetKeys;
+  }
+
+  async function loadMissingTargets(targets, targetKeys, version) {
     const missing = targets.filter(target => !rendered.has(target.key));
-    const staged = new Map();
     let nextIndex = 0;
-    let failed = false;
 
     async function worker() {
       while (nextIndex < missing.length) {
@@ -153,39 +189,18 @@
         const target = missing[nextIndex++];
         const detail = await detailForTarget(target);
         if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
-        if (!detail) {
-          failed = true;
-          continue;
-        }
-        staged.set(target.key, makeRenderedItem(target, detail));
+        if (!detail || !targetKeys.has(target.key) || rendered.has(target.key)) continue;
+
+        const item = makeRenderedItem(target, detail);
+        item.layer.addTo(detailLayer);
+        rendered.set(target.key, item);
+        styleItem(item);
+        syncDetailState();
       }
     }
 
     const workerCount = Math.min(DETAIL_LOAD_CONCURRENCY, missing.length);
     await Promise.all(Array.from({ length: workerCount }, () => worker()));
-    return {
-      staged,
-      complete: !failed && staged.size === missing.length
-    };
-  }
-
-  function commitDetails(targets, staged) {
-    const targetKeys = new Set(targets.map(target => target.key));
-
-    rendered.forEach((item, key) => {
-      if (targetKeys.has(key)) return;
-      detailLayer.removeLayer(item.layer);
-      rendered.delete(key);
-    });
-
-    staged.forEach((item, key) => {
-      if (rendered.has(key) || !targetKeys.has(key)) return;
-      item.layer.addTo(detailLayer);
-      rendered.set(key, item);
-    });
-
-    styleRendered();
-    syncDetailState();
   }
 
   async function refreshDetailPass(version) {
@@ -203,10 +218,12 @@
     }
     if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
 
-    const { staged, complete } = await stageTargets(targets, version);
-    if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM || !complete) return;
+    const targetKeys = reconcileRendered(targets);
+    await loadMissingTargets(targets, targetKeys, version);
+    if (version !== requestVersion || map.getZoom() < DETAIL_ZOOM) return;
 
-    commitDetails(targets, staged);
+    styleRendered();
+    syncDetailState();
   }
 
   async function drainRefreshes() {
@@ -236,6 +253,19 @@
     });
   }
 
+  function diagnostics() {
+    const renderedKeys = new Set(rendered.keys());
+    return {
+      zoom: map.getZoom(),
+      requestVersion,
+      targetCount: lastTargets.length,
+      renderedCount: rendered.size,
+      targets: lastTargets.map(target => ({ ...target, rendered: renderedKeys.has(target.key) })),
+      missing: lastTargets.filter(target => !renderedKeys.has(target.key)),
+      failures: [...failures.values()]
+    };
+  }
+
   internal.registerPresentationHook('afterFocusStyles', scheduleRefresh);
   map.on('zoomend moveend', scheduleRefresh);
   runtime.ready().then(scheduleRefresh).catch(() => {});
@@ -243,6 +273,7 @@
   window.AdventureMapRouteDetail = Object.freeze({
     detailZoom: DETAIL_ZOOM,
     refresh: scheduleRefresh,
-    clear: clearDetail
+    clear: clearDetail,
+    diagnostics
   });
 })();

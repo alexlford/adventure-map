@@ -85,7 +85,7 @@ test('high-detail GPS stays lazy at overview zoom and reconciles every addressab
   expect(expected.count, 'Denver/Boulder drill-in viewport should exercise more than the former eight-route ceiling').toBeGreaterThan(8);
 
   // Deliberately overlap refresh requests while detail shards are still delayed/in flight.
-  // The loader must serialize/reconcile these requests and converge on the complete current viewport.
+  // Stale generations must yield and the newest generation must converge on the complete viewport.
   await page.evaluate(async () => {
     for (let index = 0; index < 5; index += 1) {
       window.AdventureMapRouteDetail.refresh();
@@ -93,10 +93,15 @@ test('high-detail GPS stays lazy at overview zoom and reconciles every addressab
     }
   });
 
-  await expect.poll(
-    () => page.evaluate(() => Number(document.getElementById('map')?.dataset.routeDetailCount || 0)),
-    { timeout: 15000 }
-  ).toBe(expected.count);
+  try {
+    await expect.poll(
+      () => page.evaluate(() => Number(document.getElementById('map')?.dataset.routeDetailCount || 0)),
+      { timeout: 15000 }
+    ).toBe(expected.count);
+  } catch (error) {
+    const diagnostics = await page.evaluate(() => window.AdventureMapRouteDetail?.diagnostics?.() || null);
+    throw new Error(`ROUTE_DETAIL_DIAGNOSTICS ${JSON.stringify(diagnostics)}\n${error?.message || error}`);
+  }
 
   const after = await page.evaluate(() => ({
     count: Number(document.getElementById('map')?.dataset.routeDetailCount || 0),
@@ -116,7 +121,7 @@ test('high-detail GPS stays lazy at overview zoom and reconciles every addressab
   expect(errors).toEqual([]);
 });
 
-test('stale detail loads never commit after the map leaves detail zoom', async ({ page }) => {
+test('detail routes render progressively while stale loads never commit after leaving detail zoom', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   let gateDetailRequests = false;
   let gatedRequest = false;
@@ -150,9 +155,14 @@ test('stale detail loads never commit after the map leaves detail zoom', async (
   });
 
   await requestStarted;
-  await page.waitForTimeout(200);
-  expect(await page.locator('.map-route-detail-line').count(), 'staged detail routes must remain detached until the generation commits').toBe(0);
-  expect(await page.evaluate(() => document.getElementById('map')?.dataset.routeDetailCount || null)).toBeNull();
+  await expect.poll(
+    () => page.locator('.map-route-detail-line').count(),
+    { timeout: 2000 }
+  ).toBeGreaterThan(0);
+  await expect.poll(
+    () => page.evaluate(() => Number(document.getElementById('map')?.dataset.routeDetailCount || 0)),
+    { timeout: 2000 }
+  ).toBeGreaterThan(0);
 
   await page.evaluate(async () => {
     const map = window.AdventureMap.leaflet;
