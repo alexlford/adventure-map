@@ -6,9 +6,13 @@ intermediate points and it does not run Douglas-Peucker/RDP simplification.
 Large GPS discontinuities are emitted as separate line segments so a paused or
 interrupted recording cannot create a fake straight line across the map.
 
+GPX, FIT, and TCX activity files are decoded with dependency-free parsers in
+scripts/strava_route_formats.py. This matters for modern Strava exports, where
+many Garmin and watch recordings are delivered as FIT rather than GPX.
+
 By default it refreshes:
   * day-level MTB/Nordic routes from data/activity-days.json
-  * GPX-backed personal GPS features already present in route-catalog route files
+  * personal GPS features already present in route-catalog route files
 
 The output is sharded so the generated files stay reviewable in GitHub. The
 script also refreshes the generated shard paths in data/route-catalog.json.
@@ -22,15 +26,15 @@ from __future__ import annotations
 
 import argparse
 import csv
-import gzip
 import io
 import json
 import math
 import re
 import zipfile
-import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any, Iterable
+
+from strava_route_formats import is_supported_activity_file, parse_activity_segments
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -102,29 +106,6 @@ def split_discontinuities(
     return chunks
 
 
-def parse_gpx(data: bytes) -> list[list[tuple[float, float]]]:
-    root = ET.fromstring(data)
-    segments: list[list[tuple[float, float]]] = []
-    for segment in root.iter():
-        if not segment.tag.endswith("trkseg"):
-            continue
-        points: list[tuple[float, float]] = []
-        for element in segment:
-            if element.tag.endswith("trkpt"):
-                points.append((float(element.attrib["lat"]), float(element.attrib["lon"])))
-        if len(points) >= 2:
-            segments.append(points)
-    if segments:
-        return segments
-
-    points = [
-        (float(element.attrib["lat"]), float(element.attrib["lon"]))
-        for element in root.iter()
-        if element.tag.endswith("trkpt")
-    ]
-    return [points] if len(points) >= 2 else []
-
-
 class Export:
     def __init__(self, source: Path):
         self.source = source
@@ -159,15 +140,14 @@ class Export:
         filename = str(row.get("Filename") or "").strip()
         if not filename:
             raise ValueError(f"Strava activity {activity_id} has no exported activity file")
-        lower = filename.lower()
-        if not (lower.endswith(".gpx") or lower.endswith(".gpx.gz")):
-            raise ValueError(f"Strava activity {activity_id} uses {filename}; only GPX/GPX.GZ is materialized by this script")
-        data = self.read(filename)
-        if lower.endswith(".gz"):
-            data = gzip.decompress(data)
-        segments = parse_gpx(data)
+        if not is_supported_activity_file(filename):
+            raise ValueError(
+                f"Strava activity {activity_id} uses {filename}; "
+                "only GPX, FIT, and TCX route sources are supported"
+            )
+        segments = parse_activity_segments(filename, self.read(filename))
         if not segments:
-            raise ValueError(f"Strava activity {activity_id} contains no usable GPX track points")
+            raise ValueError(f"Strava activity {activity_id} contains no usable GPS track points")
         return segments, filename
 
 
@@ -233,7 +213,7 @@ def activity_day_routes(export: Export, max_gap_m: float) -> list[dict[str, Any]
     return routes
 
 
-def canonical_gpx_routes(export: Export, catalog: dict[str, Any], max_gap_m: float) -> list[dict[str, Any]]:
+def canonical_source_routes(export: Export, catalog: dict[str, Any], max_gap_m: float) -> list[dict[str, Any]]:
     features: dict[str, dict[str, Any]] = {}
     for rel in catalog.get("routeFiles", []):
         collection = read_json(ROOT / rel)
@@ -244,8 +224,8 @@ def canonical_gpx_routes(export: Export, catalog: dict[str, Any], max_gap_m: flo
             props = dict(feature.get("properties") or {})
             activity_id = str(props.get("stravaActivityId") or str(fid)[7:])
             row = export.by_id.get(activity_id)
-            filename = str((row or {}).get("Filename") or "").lower()
-            if not (filename.endswith(".gpx") or filename.endswith(".gpx.gz")):
+            filename = str((row or {}).get("Filename") or "")
+            if not is_supported_activity_file(filename):
                 continue
             override = catalog.get("featureOverrides", {}).get(str(fid), {})
             adventure_ids = override.get("adventureIds", props.get("adventureIds", []))
@@ -296,7 +276,7 @@ def refresh_catalog(catalog: dict[str, Any], generated: list[str]) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Materialize dense GPX routes from a Strava export.")
+    parser = argparse.ArgumentParser(description="Materialize dense GPS routes from a Strava export.")
     parser.add_argument("source", help="Strava export ZIP or extracted export directory")
     parser.add_argument("--activity-shard-size", type=int, default=6)
     parser.add_argument("--canonical-shard-size", type=int, default=5)
@@ -313,7 +293,7 @@ def main() -> None:
     export = Export(Path(args.source).expanduser())
     catalog = read_json(DATA / "route-catalog.json")
     activity_routes = activity_day_routes(export, args.max_gap_m)
-    canonical_routes = canonical_gpx_routes(export, catalog, args.max_gap_m)
+    canonical_routes = canonical_source_routes(export, catalog, args.max_gap_m)
     sampling = f"full-source-track-gap-split-{args.max_gap_m:g}m"
 
     activity_paths = write_shards(ACTIVITY_PREFIX, activity_routes, args.activity_shard_size, sampling)
@@ -329,7 +309,7 @@ def main() -> None:
         f"{activity_retained_points:,}/{activity_source_points:,} source GPS points retained."
     )
     print(
-        f"Materialized {len(canonical_routes)} canonical GPX routes with "
+        f"Materialized {len(canonical_routes)} canonical GPS routes with "
         f"{canonical_retained_points:,}/{canonical_source_points:,} source GPS points retained."
     )
     print(f"Split route geometry at source gaps greater than {args.max_gap_m:g} m.")
