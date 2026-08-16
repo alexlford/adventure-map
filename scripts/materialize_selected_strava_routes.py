@@ -200,6 +200,14 @@ def main() -> None:
     if args.register and not args.output:
         raise SystemExit("--register requires --output")
 
+    output = resolve_output_path(args.output) if args.output else None
+    if args.register:
+        assert output is not None
+        try:
+            repository_relative_output(output)
+        except ValueError as exc:
+            raise SystemExit(str(exc)) from exc
+
     catalog = read_json(DATA / "route-catalog.json")
     specs = canonical_feature_specs(catalog)
     try:
@@ -220,7 +228,7 @@ def main() -> None:
     if args.dry_run:
         return
 
-    output = resolve_output_path(args.output)
+    assert output is not None
     if output.exists() and not args.force:
         raise SystemExit(f"Output already exists: {output}. Pass --force to replace it.")
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -235,15 +243,12 @@ def main() -> None:
     print(f"Wrote {output}")
 
     if args.register:
-        try:
-            added = register_output(catalog, output)
-        except ValueError as exc:
-            output.unlink(missing_ok=True)
-            raise SystemExit(str(exc)) from exc
+        added = register_output(catalog, output)
+        rel = repository_relative_output(output)
         if added:
-            print(f"Registered {repository_relative_output(output)} in data/route-catalog.json")
+            print(f"Registered {rel} in data/route-catalog.json")
         else:
-            print(f"Route catalog already references {repository_relative_output(output)}")
+            print(f"Route catalog already references {rel}")
         print("Run npm run build:publish so data/route-detail-index.json selects the new full-source geometry.")
 
 
