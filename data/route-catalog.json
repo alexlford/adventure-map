@@ -61,7 +61,11 @@
     "data/strava-route-full-resolution-breckenridge-nordic-2023-01-08.json",
     "data/strava-route-full-resolution-breckenridge-nordic-2023-01-11.json",
     "data/strava-route-full-resolution-breckenridge-nordic-2023-01-21.json",
-    "data/strava-route-full-resolution-haleakala.json"
+    "data/strava-route-full-resolution-haleakala.json",
+    "data/strava-route-full-resolution-colfax-marathon-2025.json",
+    "data/strava-route-full-resolution-boulderthon-2024.json",
+    "data/strava-route-full-resolution-chicago-marathon-2021.json",
+    "data/strava-route-full-resolution-kansas-city-marathon-2019.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
