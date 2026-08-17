@@ -49,10 +49,10 @@
       "quality": "catalog-detail"
     },
     "big-ten-10k-2016": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-full-resolution-big-ten-10k-2016.json",
       "featureId": "strava-4312806997",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "bolderboulder-2022": {
       "file": "data/strava-route-full-resolution-bolderboulder-2022.json",
@@ -97,10 +97,10 @@
       "quality": "full-source"
     },
     "chicago-marathon-virtual-2020": {
-      "file": "data/strava-route-backfill-06.json",
+      "file": "data/strava-route-full-resolution-chicago-marathon-virtual-2020.json",
       "featureId": "strava-4312782134",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "clingmans-dome": {
       "file": "data/strava-route-full-resolution-clingmans-dome.json",
@@ -181,10 +181,10 @@
       "quality": "full-source"
     },
     "disney-princess-half-2018": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-full-resolution-disney-princess-half-2018.json",
       "featureId": "strava-4312794804",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "estes-park-half-2021": {
       "file": "data/strava-route-backfill-04.json",
@@ -559,10 +559,10 @@
       "quality": "rdp-3m"
     },
     "north-star-mountain": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-full-resolution-north-star-mountain.json",
       "featureId": "strava-4312782595",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "old-rag-mountain": {
       "file": "data/strava-route-rdp3-08.json",
@@ -643,10 +643,10 @@
       "quality": "backfill"
     },
     "royal-gorge-groove-mtb-2024": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-full-resolution-royal-gorge-groove-mtb-2024.json",
       "featureId": "strava-11234156794",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "rudolph-ramble-5k-2021": {
       "file": "data/strava-route-backfill-03.json",
@@ -685,10 +685,10 @@
       "quality": "full-source"
     },
     "ski-the-sky-loop-2026": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-full-resolution-ski-the-sky-loop-2026.json",
       "featureId": "strava-17688751938",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "smr-stampede-ranch-hand-classic-2022": {
       "file": "data/strava-route-full-resolution-ranch-hand-classic-2022.json",
@@ -715,10 +715,10 @@
       "quality": "rdp-3m"
     },
     "staunton-rocks-half-2022": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-full-resolution-staunton-rocks-half-2022.json",
       "featureId": "strava-7711293400",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "super-bowl-5k-2022": {
       "file": "data/strava-route-backfill-03.json",
@@ -757,10 +757,10 @@
       "quality": "backfill"
     },
     "west-maroon-pass-2026": {
-      "file": "data/strava-route-backfill-05.json",
+      "file": "data/strava-route-full-resolution-west-maroon-pass-2026.json",
       "featureId": "strava-19122155622",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     }
   }
 }
