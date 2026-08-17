@@ -6,11 +6,13 @@ from __future__ import annotations
 from materialize_selected_strava_routes import (
     ROOT,
     activity_day_spec,
+    canonical_feature_specs,
     record_activity_ids,
     repository_relative_output,
     select_specs,
     summary_rows,
 )
+from materialize_strava_routes import DATA, read_json
 
 
 specs = {
@@ -92,6 +94,28 @@ assert mtb == {
     "mtbMode": "trail",
 }
 assert activity_day_spec({"id": "no-source", "discipline": "nordic"}) is None
+
+# Lock the reviewed public wrappers to their authoritative Strava source IDs.
+real_specs = canonical_feature_specs(read_json(DATA / "route-catalog.json"))
+expected_activity_days = {
+    "activity-nordic-day-2023-01-08": ("8361268470", "nordic-day-2023-01-08"),
+    "activity-nordic-day-2023-01-11": ("8377549981", "nordic-day-2023-01-11"),
+    "activity-nordic-day-2023-01-21": ("8430418559", "nordic-day-2023-01-21"),
+    "activity-nordic-day-2023-01-28": ("8468053980", "nordic-day-2023-01-28"),
+}
+for feature_id, (activity_id, adventure_id) in expected_activity_days.items():
+    spec = real_specs[feature_id]
+    assert spec["activityIds"] == [activity_id]
+    assert spec["adventureIds"] == [adventure_id]
+    assert spec["category"] == "nordic"
+
+for feature_id, activity_id, adventure_id in [
+    ("strava-5301627345", "5301627345", "clingmans-dome"),
+    ("strava-4854788986", "4854788986", "haleakala"),
+]:
+    spec = real_specs[feature_id]
+    assert spec["activityIds"] == [activity_id]
+    assert adventure_id in spec["adventureIds"]
 
 assert repository_relative_output(ROOT / "data" / "strava-route-full-resolution-test.json") == (
     "data/strava-route-full-resolution-test.json"
