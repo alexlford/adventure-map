@@ -1,0 +1,162 @@
+name: Materialize summit full-source routes
+
+on:
+  push:
+    branches:
+      - agent/full-source-summit-batch-2026-08
+    paths:
+      - .github/workflows/materialize-summit-batch.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: materialize-summit-routes-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install locked Node dependencies
+        run: npm ci
+
+      - name: Assemble checksum-verified summit route artifacts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64
+          import gzip
+          import hashlib
+          import json
+
+          manifest_path = Path('.route-staging/manifest.json')
+          manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+          if manifest.get('schemaVersion') != 1:
+              raise SystemExit('Unsupported staging manifest schema')
+          if manifest.get('compression') != 'gzip' or manifest.get('encoding') != 'base64':
+              raise SystemExit('Unexpected staging encoding')
+
+          expected = {
+              'data/strava-route-full-resolution-mauna-kea.json': ('strava-6185031796', 24186, 1),
+              'data/strava-route-full-resolution-decalibron-2023.json': ('strava-9642214422', 20755, 1),
+              'data/strava-route-full-resolution-mount-le-conte.json': ('strava-5309635526', 19598, 1),
+              'data/strava-route-full-resolution-mount-evans-spalding.json': ('strava-7560672014', 16447, 1),
+              'data/strava-route-full-resolution-mount-sherman.json': ('strava-7866173318', 15965, 1),
+          }
+
+          outputs = []
+          for item in manifest.get('routes', []):
+              output = item['output']
+              if output not in expected:
+                  raise SystemExit(f'{output}: unexpected summit output')
+              encoded = ''.join(
+                  Path(chunk).read_text(encoding='utf-8').strip()
+                  for chunk in item['chunks']
+              )
+              raw = gzip.decompress(base64.b64decode(encoded, validate=True))
+              if len(raw) != item['bytes']:
+                  raise SystemExit(f"{output}: byte count {len(raw)} != expected {item['bytes']}")
+              actual_sha = hashlib.sha256(raw).hexdigest()
+              if actual_sha != item['sha256']:
+                  raise SystemExit(f"{output}: SHA-256 {actual_sha} != expected {item['sha256']}")
+
+              payload = json.loads(raw)
+              if payload.get('sampling') != 'full-source-track-gap-split-180m':
+                  raise SystemExit(f'{output}: unexpected sampling metadata')
+              routes = payload.get('routes', [])
+              if len(routes) != 1:
+                  raise SystemExit(f'{output}: expected exactly one route, found {len(routes)}')
+              route = routes[0]
+              feature_id, source_points, line_count = expected[output]
+              if route.get('id') != feature_id:
+                  raise SystemExit(f"{output}: feature {route.get('id')} != expected {feature_id}")
+              if route.get('sourcePointCount') != source_points:
+                  raise SystemExit(f"{output}: sourcePointCount {route.get('sourcePointCount')} != {source_points}")
+              if route.get('retainedPointCount') != source_points:
+                  raise SystemExit(f"{output}: retainedPointCount {route.get('retainedPointCount')} != {source_points}")
+              if len(route.get('lines', [])) != line_count:
+                  raise SystemExit(f"{output}: line count {len(route.get('lines', []))} != {line_count}")
+
+              path = Path(output)
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_bytes(raw)
+              outputs.append(output)
+              print(f'Verified {output}: {len(raw):,} bytes, {source_points:,} points, SHA-256 {actual_sha}')
+
+          if set(outputs) != set(expected):
+              raise SystemExit(f'Manifest outputs do not match expected summit set: {outputs}')
+
+          catalog_path = Path('data/route-catalog.json')
+          catalog = json.loads(catalog_path.read_text(encoding='utf-8'))
+          files = list(catalog.get('polylineFiles', []))
+          for output in outputs:
+              if output not in files:
+                  files.append(output)
+          catalog['polylineFiles'] = files
+          catalog['updatedOn'] = '2026-08-17'
+          catalog_path.write_text(json.dumps(catalog, indent=2) + '\n', encoding='utf-8')
+          PY
+
+      - name: Rebuild publication artifacts
+        run: npm run build:publish
+
+      - name: Advance route-detail quality floor
+        run: npm run update:route-detail-quality-floor
+
+      - name: Assert summit records resolve to full source
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+          const index = JSON.parse(fs.readFileSync('data/route-detail-index.json', 'utf8'));
+          const floor = JSON.parse(fs.readFileSync('data/route-detail-quality-floor.json', 'utf8'));
+          const expected = {
+            'mauna-kea': ['data/strava-route-full-resolution-mauna-kea.json', 'strava-6185031796'],
+            'decalibron-2023': ['data/strava-route-full-resolution-decalibron-2023.json', 'strava-9642214422'],
+            'mount-democrat': ['data/strava-route-full-resolution-decalibron-2023.json', 'strava-9642214422'],
+            'mount-cameron': ['data/strava-route-full-resolution-decalibron-2023.json', 'strava-9642214422'],
+            'mount-lincoln': ['data/strava-route-full-resolution-decalibron-2023.json', 'strava-9642214422'],
+            'mount-bross': ['data/strava-route-full-resolution-decalibron-2023.json', 'strava-9642214422'],
+            'mount-le-conte': ['data/strava-route-full-resolution-mount-le-conte.json', 'strava-5309635526'],
+            'mount-evans': ['data/strava-route-full-resolution-mount-evans-spalding.json', 'strava-7560672014'],
+            'mount-spalding': ['data/strava-route-full-resolution-mount-evans-spalding.json', 'strava-7560672014'],
+            'mount-sherman': ['data/strava-route-full-resolution-mount-sherman.json', 'strava-7866173318'],
+          };
+
+          for (const [recordId, [file, featureId]] of Object.entries(expected)) {
+            const entry = index.records?.[recordId];
+            if (!entry) throw new Error(`${recordId}: missing from route-detail index`);
+            if (entry.file !== file) throw new Error(`${recordId}: selected ${entry.file}, expected ${file}`);
+            if (entry.featureId !== featureId) throw new Error(`${recordId}: selected ${entry.featureId}, expected ${featureId}`);
+            if (entry.quality !== 'full-source') throw new Error(`${recordId}: quality ${entry.quality}, expected full-source`);
+            if (floor.records?.[recordId] !== 'full-source') throw new Error(`${recordId}: quality floor was not promoted`);
+            console.log(`${recordId}: ${featureId} -> ${file} [full-source]`);
+          }
+          NODE
+
+      - name: Run fast repository validation
+        run: npm run check:fast
+
+      - name: Commit assembled production data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data
+          if git diff --cached --quiet; then
+            echo "No production data changes to commit."
+            exit 0
+          fi
+          git commit -m "Add full-source summit route detail"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
