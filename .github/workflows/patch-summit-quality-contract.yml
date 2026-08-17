@@ -1,0 +1,74 @@
+name: Patch summit quality contract
+
+on:
+  push:
+    branches:
+      - agent/full-source-summit-batch-2026-08
+    paths:
+      - .github/workflows/patch-summit-quality-contract.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install locked Node dependencies
+        run: npm ci
+
+      - name: Update DeCaLiBron full-source contract
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+
+          path = Path('data/route-catalog.json')
+          catalog = json.loads(path.read_text(encoding='utf-8'))
+
+          dense = catalog.get('qualityExpectations', {}).get('denseRoutes', [])
+          target = next((item for item in dense if item.get('id') == 'strava-9642214422'), None)
+          if target is None:
+              raise SystemExit('Missing DeCaLiBron dense-route quality expectation')
+          target['minPoints'] = 20755
+          target['resolutionPrefix'] = 'full-source-track'
+
+          override = catalog.get('featureOverrides', {}).get('strava-9642214422')
+          if override is None:
+              raise SystemExit('Missing DeCaLiBron feature override')
+          override['note'] = (
+              'Personal GPS recording of the August 13, 2023 DeCaLiBron loop; '
+              'all 20,755 recorded FIT points are retained as full-source route detail '
+              'under the standard 180 m source-gap split rule.'
+          )
+
+          path.write_text(json.dumps(catalog, indent=2) + '\n', encoding='utf-8')
+          PY
+
+      - name: Validate compiled route contract
+        run: |
+          node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
+          node scripts/validate-public-route-contract.mjs tmp/public-routes.geojson
+
+      - name: Run fast repository validation
+        run: npm run check:fast
+
+      - name: Commit contract update and remove this workflow
+        run: |
+          rm -f .github/workflows/patch-summit-quality-contract.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/route-catalog.json .github/workflows/patch-summit-quality-contract.yml
+          git commit -m "Protect DeCaLiBron full-source route quality"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
