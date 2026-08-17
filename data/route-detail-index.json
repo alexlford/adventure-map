@@ -25,10 +25,10 @@
       "quality": "backfill"
     },
     "baltimore-half-2018": {
-      "file": "data/strava-route-backfill-03.json",
+      "file": "data/strava-route-full-resolution-baltimore-half-2018.json",
       "featureId": "strava-4312792178",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "baltimore-shamrock-5k-2020-deferred-virtual": {
       "file": "data/strava-route-backfill-04.json",
@@ -133,10 +133,10 @@
       "quality": "backfill"
     },
     "colfax-5k-2024": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-full-resolution-colfax-5k-2024.json",
       "featureId": "strava-11440407183",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "colfax-5k-2026": {
       "file": "data/strava-route-backfill-02.json",
@@ -145,10 +145,10 @@
       "quality": "backfill"
     },
     "colfax-half-2021": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-full-resolution-colfax-half-2021.json",
       "featureId": "strava-6123940860",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "colfax-marathon-2025": {
       "file": "data/strava-route-full-resolution-colfax-marathon-2025.json",
@@ -157,10 +157,10 @@
       "quality": "full-source"
     },
     "colfax-urban-10-2024": {
-      "file": "data/strava-route-backfill-04.json",
+      "file": "data/strava-route-full-resolution-colfax-urban-10-2024.json",
       "featureId": "strava-11449222885",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "colfax-urban-10-2026": {
       "file": "data/strava-route-source-complete-02.json",
@@ -187,10 +187,10 @@
       "quality": "full-source"
     },
     "estes-park-half-2021": {
-      "file": "data/strava-route-backfill-04.json",
+      "file": "data/strava-route-full-resolution-estes-park-half-2021.json",
       "featureId": "strava-5503854364",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "flying-pig-5k-2025": {
       "file": "data/strava-route-full-resolution-flying-pig-2025.json",
@@ -631,10 +631,10 @@
       "quality": "backfill"
     },
     "rocky-mountain-half-2025": {
-      "file": "data/strava-route-backfill-04.json",
+      "file": "data/strava-route-full-resolution-rocky-mountain-half-2025.json",
       "featureId": "strava-15319820628",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "royal-gorge-groove-5k-2024": {
       "file": "data/strava-route-backfill-02.json",

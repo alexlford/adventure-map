@@ -78,7 +78,13 @@
     "data/strava-route-full-resolution-chicago-marathon-virtual-2020.json",
     "data/strava-route-full-resolution-big-ten-10k-2016.json",
     "data/strava-route-full-resolution-staunton-rocks-half-2022.json",
-    "data/strava-route-full-resolution-disney-princess-half-2018.json"
+    "data/strava-route-full-resolution-disney-princess-half-2018.json",
+    "data/strava-route-full-resolution-baltimore-half-2018.json",
+    "data/strava-route-full-resolution-colfax-5k-2024.json",
+    "data/strava-route-full-resolution-colfax-half-2021.json",
+    "data/strava-route-full-resolution-colfax-urban-10-2024.json",
+    "data/strava-route-full-resolution-estes-park-half-2021.json",
+    "data/strava-route-full-resolution-rocky-mountain-half-2025.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
