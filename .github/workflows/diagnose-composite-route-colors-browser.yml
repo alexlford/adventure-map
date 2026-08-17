@@ -1,0 +1,72 @@
+name: Diagnose composite route colors in browser
+
+on:
+  push:
+    branches:
+      - agent/composite-route-colors
+    paths:
+      - .github/workflows/diagnose-composite-route-colors-browser.yml
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose-browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/composite-route-colors
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Inspect rendered Royal Gorge context
+        shell: bash
+        run: |
+          cat > tests/.diagnose-composite-route-colors.spec.mjs <<'TEST'
+          import { test } from '@playwright/test';
+
+          test('diagnose rendered Royal Gorge colors', async ({ page }) => {
+            await page.goto('/detail.html?record=royal-gorge-groove-weekend-2024', { waitUntil: 'domcontentloaded' });
+            await page.locator('#storyRouteKey .story-route-key-item').first().waitFor();
+            const state = await page.evaluate(async () => {
+              const records = await window.AdventureCatalog.load();
+              const relationships = await window.AdventureCatalog.loadRelationships();
+              const record = records.find(item => item.id === 'royal-gorge-groove-5k-2024');
+              const context = window.AdventureRoutes.compositeRouteContext('royal-gorge-groove-weekend-2024', relationships, records);
+              const root = getComputedStyle(document.documentElement);
+              const items = [...document.querySelectorAll('#storyRouteKey .story-route-key-item')].map(node => ({
+                inline: node.getAttribute('style'),
+                computed: getComputedStyle(node).getPropertyValue('--route-color').trim(),
+                label: node.querySelector('strong')?.textContent?.trim()
+              }));
+              return {
+                record: { id: record?.id, kind: record?.kind, discipline: record?.discipline, mapCategory: record?.mapCategory, name: record?.name },
+                tokens: {
+                  trail: root.getPropertyValue('--activity-trail-races').trim(),
+                  road: root.getPropertyValue('--activity-road-races').trim(),
+                  mtb: root.getPropertyValue('--activity-mtb').trim()
+                },
+                context: context?.members?.map(member => ({
+                  id: member.id,
+                  kind: member.record?.kind,
+                  discipline: member.record?.discipline,
+                  mapCategory: member.record?.mapCategory,
+                  semanticKey: member.semanticKey,
+                  colorKey: member.colorKey,
+                  color: member.color
+                })),
+                items
+              };
+            });
+            console.log('BROWSER_ROYAL_GORGE', JSON.stringify(state));
+          });
+          TEST
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/composite-color-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid || true' EXIT
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/index.html >/dev/null && break; sleep .25; done
+          npx playwright test tests/.diagnose-composite-route-colors.spec.mjs --project=chromium
