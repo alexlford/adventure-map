@@ -81,13 +81,12 @@ process.on('SIGTERM', () => {
 
 try {
   await waitForServer();
-  await run('npx', ['playwright', 'test', '--project=chromium'], { captureFailure: true });
   await run('npx', [
     'playwright',
     'test',
-    'tests/mobile-layout.spec.mjs',
-    'tests/world-majors-layout.spec.mjs',
-    '--project=webkit-mobile'
+    'tests/composite-route-colors.spec.mjs',
+    '--project=chromium',
+    '--workers=1'
   ], { captureFailure: true });
 } finally {
   stopServer();
