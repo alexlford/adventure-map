@@ -1,0 +1,190 @@
+name: Materialize backfill priority full-source routes
+
+on:
+  push:
+    branches:
+      - agent/full-source-backfill-priority-1-2026-08
+    paths:
+      - .github/workflows/materialize-backfill-priority-1.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: materialize-backfill-priority-1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install locked Node dependencies
+        run: npm ci
+
+      - name: Assemble checksum-verified route artifacts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64
+          import gzip
+          import hashlib
+          import json
+
+          manifest = json.loads(Path('.route-staging/manifest.json').read_text(encoding='utf-8'))
+          if manifest.get('schemaVersion') != 1:
+              raise SystemExit('Unsupported staging manifest schema')
+          if manifest.get('compression') != 'gzip' or manifest.get('encoding') != 'base64':
+              raise SystemExit('Unexpected staging encoding')
+
+          expected = {
+              'data/strava-route-full-resolution-west-maroon-pass-2026.json': {
+                  'routes': {
+                      'strava-19122155622': (24843, 1, ['west-maroon-pass-2026'], 'hiking', None),
+                      'strava-19129157273': (23641, 1, ['west-maroon-pass-2026'], 'hiking', None),
+                  },
+              },
+              'data/strava-route-full-resolution-north-star-mountain.json': {
+                  'routes': {'strava-4312782595': (16233, 1, ['north-star-mountain'], 'hiking', None)},
+              },
+              'data/strava-route-full-resolution-royal-gorge-groove-mtb-2024.json': {
+                  'routes': {'strava-11234156794': (9938, 1, ['royal-gorge-groove-mtb-2024'], 'mtb', 'mtb')},
+              },
+              'data/strava-route-full-resolution-ski-the-sky-loop-2026.json': {
+                  'routes': {'strava-17688751938': (4213, 1, ['ski-the-sky-loop-2026'], 'skiing', None)},
+              },
+              'data/strava-route-full-resolution-chicago-marathon-virtual-2020.json': {
+                  'routes': {'strava-4312782134': (3734, 1, ['chicago-marathon-virtual-2020'], 'run', None)},
+              },
+              'data/strava-route-full-resolution-big-ten-10k-2016.json': {
+                  'routes': {'strava-4312806997': (2923, 1, ['big-ten-10k-2016'], 'run', None)},
+              },
+              'data/strava-route-full-resolution-staunton-rocks-half-2022.json': {
+                  'routes': {'strava-7711293400': (1935, 1, ['staunton-rocks-half-2022'], 'run', None)},
+              },
+              'data/strava-route-full-resolution-disney-princess-half-2018.json': {
+                  'routes': {'strava-4312794804': (1917, 2, ['disney-princess-half-2018'], 'run', None)},
+              },
+          }
+
+          outputs = []
+          total_points = 0
+          for item in manifest.get('routes', []):
+              output = item['output']
+              spec = expected.get(output)
+              if spec is None:
+                  raise SystemExit(f'{output}: unexpected output')
+
+              encoded = ''.join(Path(chunk).read_text(encoding='utf-8').strip() for chunk in item['chunks'])
+              raw = gzip.decompress(base64.b64decode(encoded, validate=True))
+              if len(raw) != item['bytes']:
+                  raise SystemExit(f"{output}: byte count {len(raw)} != expected {item['bytes']}")
+              actual_sha = hashlib.sha256(raw).hexdigest()
+              if actual_sha != item['sha256']:
+                  raise SystemExit(f"{output}: SHA-256 {actual_sha} != expected {item['sha256']}")
+
+              payload = json.loads(raw)
+              if payload.get('sampling') != 'full-source-track-gap-split-180m':
+                  raise SystemExit(f'{output}: unexpected sampling metadata')
+              routes = payload.get('routes', [])
+              by_id = {route.get('id'): route for route in routes}
+              if set(by_id) != set(spec['routes']):
+                  raise SystemExit(f"{output}: route IDs {sorted(by_id)} != expected {sorted(spec['routes'])}")
+
+              for feature_id, (source_points, line_count, adventure_ids, category, mtb_mode) in spec['routes'].items():
+                  route = by_id[feature_id]
+                  if route.get('sourcePointCount') != source_points:
+                      raise SystemExit(f"{feature_id}: sourcePointCount {route.get('sourcePointCount')} != {source_points}")
+                  if route.get('retainedPointCount') != source_points:
+                      raise SystemExit(f"{feature_id}: retainedPointCount {route.get('retainedPointCount')} != {source_points}")
+                  if len(route.get('lines', [])) != line_count:
+                      raise SystemExit(f"{feature_id}: line count {len(route.get('lines', []))} != {line_count}")
+                  if route.get('adventureIds') != adventure_ids:
+                      raise SystemExit(f"{feature_id}: adventureIds {route.get('adventureIds')} != {adventure_ids}")
+                  if route.get('category') != category:
+                      raise SystemExit(f"{feature_id}: category {route.get('category')} != {category}")
+                  if route.get('mtbMode') != mtb_mode:
+                      raise SystemExit(f"{feature_id}: mtbMode {route.get('mtbMode')} != {mtb_mode}")
+                  total_points += source_points
+
+              path = Path(output)
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_bytes(raw)
+              outputs.append(output)
+              print(f'Verified {output}: {len(raw):,} bytes, SHA-256 {actual_sha}')
+
+          if set(outputs) != set(expected):
+              raise SystemExit('Manifest outputs do not match expected Batch 1 set')
+          if total_points != 89377:
+              raise SystemExit(f'Batch source-point total {total_points} != expected 89377')
+
+          catalog_path = Path('data/route-catalog.json')
+          catalog = json.loads(catalog_path.read_text(encoding='utf-8'))
+          files = list(catalog.get('polylineFiles', []))
+          for output in outputs:
+              if output not in files:
+                  files.append(output)
+          catalog['polylineFiles'] = files
+          catalog['updatedOn'] = '2026-08-17'
+          catalog_path.write_text(json.dumps(catalog, indent=2) + '\n', encoding='utf-8')
+          PY
+
+      - name: Rebuild publication artifacts
+        run: npm run build:publish
+
+      - name: Advance route-detail quality floor
+        run: npm run update:route-detail-quality-floor
+
+      - name: Assert Batch 1 records resolve to full source
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+          const index = JSON.parse(fs.readFileSync('data/route-detail-index.json', 'utf8'));
+          const floor = JSON.parse(fs.readFileSync('data/route-detail-quality-floor.json', 'utf8'));
+          const expected = {
+            'west-maroon-pass-2026': ['data/strava-route-full-resolution-west-maroon-pass-2026.json', 'strava-19122155622'],
+            'north-star-mountain': ['data/strava-route-full-resolution-north-star-mountain.json', 'strava-4312782595'],
+            'royal-gorge-groove-mtb-2024': ['data/strava-route-full-resolution-royal-gorge-groove-mtb-2024.json', 'strava-11234156794'],
+            'ski-the-sky-loop-2026': ['data/strava-route-full-resolution-ski-the-sky-loop-2026.json', 'strava-17688751938'],
+            'chicago-marathon-virtual-2020': ['data/strava-route-full-resolution-chicago-marathon-virtual-2020.json', 'strava-4312782134'],
+            'big-ten-10k-2016': ['data/strava-route-full-resolution-big-ten-10k-2016.json', 'strava-4312806997'],
+            'staunton-rocks-half-2022': ['data/strava-route-full-resolution-staunton-rocks-half-2022.json', 'strava-7711293400'],
+            'disney-princess-half-2018': ['data/strava-route-full-resolution-disney-princess-half-2018.json', 'strava-4312794804'],
+          };
+
+          for (const [recordId, [file, featureId]] of Object.entries(expected)) {
+            const entry = index.records?.[recordId];
+            if (!entry) throw new Error(`${recordId}: missing from route-detail index`);
+            if (entry.file !== file) throw new Error(`${recordId}: selected ${entry.file}, expected ${file}`);
+            if (entry.featureId !== featureId) throw new Error(`${recordId}: selected ${entry.featureId}, expected ${featureId}`);
+            if (entry.quality !== 'full-source') throw new Error(`${recordId}: quality ${entry.quality}, expected full-source`);
+            if (floor.records?.[recordId] !== 'full-source') throw new Error(`${recordId}: quality floor was not promoted`);
+            console.log(`${recordId}: ${featureId} -> ${file} [full-source]`);
+          }
+          NODE
+
+      - name: Run fast repository validation
+        run: npm run check:fast
+
+      - name: Commit assembled production data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data
+          if git diff --cached --quiet; then
+            echo "No production data changes to commit."
+            exit 0
+          fi
+          git commit -m "Upgrade backfill priority routes to full source"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
