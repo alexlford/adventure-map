@@ -11,6 +11,7 @@
   const detailLayer = L.layerGroup().addTo(map);
   const rendered = new Map();
   const failures = new Map();
+  let relationshipsPromise;
   let lastTargets = [];
   let requestVersion = 0;
   let scheduled = false;
@@ -35,6 +36,41 @@
       }
     }));
     return ids;
+  }
+
+  async function relationships() {
+    if (!relationshipsPromise) {
+      relationshipsPromise = (window.AdventureCatalog?.loadRelationships
+        ? window.AdventureCatalog.loadRelationships()
+        : fetch('data/relationships.json', { cache: 'no-cache' })
+          .then(response => {
+            if (!response.ok) throw new Error(`Failed to load data/relationships.json (${response.status})`);
+            return response.json();
+          })
+          .then(payload => payload?.relationships || [])
+      ).catch(error => {
+        relationshipsPromise = null;
+        throw error;
+      });
+    }
+    return relationshipsPromise;
+  }
+
+  async function focusedSourceIds(focusId) {
+    if (!focusId) return [];
+    let rels;
+    try {
+      rels = await relationships();
+    } catch (error) {
+      console.warn('Adventure relationships unavailable for composite route detail:', error);
+      return [focusId];
+    }
+    const memberIds = rels
+      .filter(rel => rel?.adventureId === focusId && Array.isArray(rel.memberIds))
+      .flatMap(rel => rel.memberIds);
+    return memberIds.length
+      ? [...new Set([...memberIds, focusId])]
+      : [focusId];
   }
 
   function syncDetailState() {
@@ -96,18 +132,23 @@
       ids.unshift(focusId);
     }
 
+    const focusedIds = new Set(await focusedSourceIds(focusId));
     const targets = [];
     const keys = new Set();
     for (const id of ids) {
-      const entry = index.records?.[id];
-      if (!entry) continue;
-      const key = keyForEntry(entry);
-      if (keys.has(key)) continue;
-      keys.add(key);
-      targets.push({ id, entry, key });
+      const sourceIds = id === focusId && focusedIds.size ? [...focusedIds] : [id];
+      for (const sourceId of sourceIds) {
+        const entry = index.records?.[sourceId];
+        if (!entry) continue;
+        const key = keyForEntry(entry);
+        if (keys.has(key)) continue;
+        keys.add(key);
+        targets.push({ id, sourceId, entry, key });
+      }
     }
     lastTargets = targets.map(target => ({
       id: target.id,
+      sourceId: target.sourceId,
       key: target.key,
       file: target.entry.file,
       featureId: target.entry.featureId,
@@ -144,7 +185,7 @@
     let lastError;
     for (let attempt = 0; attempt < 2; attempt += 1) {
       try {
-        const detail = await AdventureRoutes.loadDetailForAdventure(target.id, attempt ? { fresh: true } : undefined);
+        const detail = await AdventureRoutes.loadDetailForAdventure(target.sourceId, attempt ? { fresh: true } : undefined);
         if (detail?.collection?.features?.length) {
           failures.delete(target.key);
           return detail;
@@ -156,11 +197,12 @@
     }
     failures.set(target.key, {
       id: target.id,
+      sourceId: target.sourceId,
       file: target.entry.file,
       featureId: target.entry.featureId,
       error: lastError?.message || String(lastError || 'unknown error')
     });
-    console.warn(`Detailed route unavailable for ${target.id}:`, lastError);
+    console.warn(`Detailed route unavailable for ${target.sourceId}:`, lastError);
     return null;
   }
 
