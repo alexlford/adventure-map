@@ -2,19 +2,22 @@
 
 The map keeps lightweight overview geometry for normal browsing and loads denser route detail when a record is focused or the map is zoomed in. Route quality should therefore improve by promoting reviewed personal GPS sources to `full-source`, not by adding synthetic points to coarse lines.
 
-## Current high-priority full-source candidates
+## Current reviewed priority batch
 
-The August 2026 Strava export audit identified the following visible records as strong first upgrades. Each already has canonical public ownership and a usable source track, but the route-detail index currently selects an `rdp-3m` derivative.
+The current priority is a mixed set of raw Strava features and stable activity-day wrappers. All six currently resolve to `rdp-3m`; the authoritative Strava export contains clean full-source tracks for each.
 
-| Public record | Feature ID | Export format | Source points | Current detail | Target |
-| --- | --- | --- | ---: | --- | --- |
-| Colfax Marathon 2025 | `strava-14522257426` | FIT.GZ | 3,835 | `rdp-3m` | `full-source` |
-| Boulderthon 2024 | `strava-12535362010` | FIT.GZ | 3,829 | `rdp-3m` | `full-source` |
-| Chicago Marathon 2021 | `strava-6094685711` | FIT.GZ | 3,666 | `rdp-3m` | `full-source` |
-| Kansas City Marathon 2019 | `strava-4312788772` | FIT.GZ | 3,618 | `rdp-3m` | `full-source` |
-| Clingmans Dome | `strava-5301627345` | FIT.GZ | 2,161 | `rdp-3m` | `full-source` |
+| Public record | Feature ID | Export format | Source points | Full-source lines | Current detail | Target |
+| --- | --- | --- | ---: | ---: | --- | --- |
+| Clingmans Dome | `strava-5301627345` | FIT.GZ | 2,161 | 1 | `rdp-3m` | `full-source` |
+| Frisco Nordic — 2023-01-28 | `activity-nordic-day-2023-01-28` | GPX | 3,949 | 1 | `rdp-3m` | `full-source` |
+| Breckenridge Nordic — 2023-01-08 | `activity-nordic-day-2023-01-08` | GPX | 1,422 | 1 | `rdp-3m` | `full-source` |
+| Breckenridge Nordic — 2023-01-11 | `activity-nordic-day-2023-01-11` | GPX | 1,028 | 1 | `rdp-3m` | `full-source` |
+| Breckenridge Nordic — 2023-01-21 | `activity-nordic-day-2023-01-21` | GPX | 1,075 | 1 | `rdp-3m` | `full-source` |
+| Haleakalā | `strava-4854788986` | FIT.GZ | 17,479 | 1 | `rdp-3m` | `full-source` |
 
-The 180 m discontinuity rule retains every recorded point in this batch. Chicago is emitted as two source-derived lines because its recording contains a gap large enough that drawing a connector would fabricate geometry.
+The 180 m discontinuity rule retains every recorded point in this batch. No synthetic connector or interpolation is required.
+
+The stable `activity-*` feature IDs are sourced from `data/activity-days.json`. Generated RDP/full-resolution files are outputs only and must never become the specification for their own replacement.
 
 ## Inspect before writing
 
@@ -22,46 +25,47 @@ Use the selective materializer to decode only the intended records and report so
 
 ```bash
 npm run materialize:strava-routes:selected -- /path/to/export.zip \
-  --feature-id strava-14522257426 \
-  --feature-id strava-12535362010 \
-  --feature-id strava-6094685711 \
-  --feature-id strava-4312788772 \
   --feature-id strava-5301627345 \
+  --feature-id activity-nordic-day-2023-01-28 \
+  --feature-id activity-nordic-day-2023-01-08 \
+  --feature-id activity-nordic-day-2023-01-11 \
+  --feature-id activity-nordic-day-2023-01-21 \
+  --feature-id strava-4854788986 \
   --dry-run
 ```
 
-Selection can also use a stable public record ID, for example:
+Selection can also use stable public record IDs, including activity-day records:
 
 ```bash
 npm run materialize:strava-routes:selected -- /path/to/export.zip \
-  --adventure-id colfax-marathon-2025 \
+  --adventure-id nordic-day-2023-01-28 \
   --dry-run
 ```
 
 Unknown feature IDs or public record IDs fail closed instead of silently producing a partial batch.
 
-## Materialize and register the batch
+## Materialize and register
 
-After reviewing the dry-run output, write the selected full-source derivatives and register the file with the route catalog:
+Prefer one lazy-loaded output file per upgraded route. This keeps focused-record downloads small and avoids forcing a Haleakalā view to download unrelated Colorado geometry.
+
+For example:
 
 ```bash
 npm run materialize:strava-routes:selected -- /path/to/export.zip \
-  --feature-id strava-14522257426 \
-  --feature-id strava-12535362010 \
-  --feature-id strava-6094685711 \
-  --feature-id strava-4312788772 \
-  --feature-id strava-5301627345 \
-  --output data/strava-route-full-resolution-priority-2026-08.json \
+  --feature-id activity-nordic-day-2023-01-28 \
+  --output data/strava-route-full-resolution-frisco-nordic-2023-01-28.json \
   --register
 
 npm run build:publish
 npm run check
 ```
 
+Repeat for the reviewed routes, then regenerate publication artifacts and advance the route-detail quality floor only after the deterministic index selects the new `full-source` files.
+
 The command refuses to replace an existing output unless `--force` is explicit. Registered outputs must remain under `data/` and include `full-resolution` in the filename so the deterministic route-detail index assigns the intended quality tier.
 
 Do not hand-edit or copy encoded polylines between systems. Regenerate them from the authoritative export with the repository tooling so the encoded bytes, source point counts, gap splitting, and provenance remain reproducible.
 
-## Next density tier
+## Subsequent candidates
 
-Several mountain routes have much larger source tracks and should be promoted after the first batch confirms the repository-size and browser-detail behavior at full source resolution. The current audit found approximately 15,965 to 24,186 source points for Mount Sherman, Mount Evans, Haleakala, Mount Le Conte, DeCaLiBron, and Mauna Kea. Those are intentionally a second tier rather than being bulk-promoted without measuring payload and interaction performance.
+After the current batch, continue ranking upgrades by visible quality improvement first and source density second. Strong candidates already identified include Colfax Marathon 2025, Boulderthon 2024, Chicago Marathon 2021, Kansas City Marathon 2019, Mount Sherman, Mount Evans, Mount Le Conte, DeCaLiBron, and Mauna Kea.
