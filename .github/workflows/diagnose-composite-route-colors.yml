@@ -1,0 +1,56 @@
+name: Diagnose composite route colors
+
+on:
+  push:
+    branches:
+      - agent/composite-route-colors
+    paths:
+      - .github/workflows/diagnose-composite-route-colors.yml
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/composite-route-colors
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Inspect source-level Royal Gorge color context
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import vm from 'node:vm';
+          const tokens = {
+            '--activity-mtb':'#2f7d4a',
+            '--activity-nordic':'#1779a8',
+            '--activity-road-races':'#d97706',
+            '--activity-trail-races':'#b45309',
+            '--activity-skiing':'#16a6c9',
+            '--activity-summits':'#16836d',
+            '--activity-adventures':'#8b5cf6',
+            '--activity-mixed':'#59636d'
+          };
+          const window = {
+            getComputedStyle: () => ({ getPropertyValue: name => tokens[name] || '' }),
+            AdventureCatalog: null
+          };
+          const document = { documentElement: {} };
+          const context = vm.createContext({ window, document, fetch: async()=>{throw new Error('unexpected fetch')} });
+          vm.runInContext(fs.readFileSync('route-catalog.js','utf8'), context, { filename:'route-catalog.js' });
+          const records = JSON.parse(fs.readFileSync('data/public-records.json','utf8')).records;
+          const relationships = JSON.parse(fs.readFileSync('data/relationships.json','utf8')).relationships;
+          const record = records.find(r => r.id === 'royal-gorge-groove-5k-2024');
+          console.log('ROYAL_GORGE_RECORD', JSON.stringify({id:record?.id,kind:record?.kind,discipline:record?.discipline,mapCategory:record?.mapCategory,name:record?.name}));
+          const composite = window.AdventureRoutes.compositeRouteContext('royal-gorge-groove-weekend-2024', relationships, records);
+          console.log('ROYAL_GORGE_CONTEXT', JSON.stringify(composite?.members?.map(m => ({id:m.id,kind:m.record?.kind,discipline:m.record?.discipline,mapCategory:m.record?.mapCategory,semanticKey:m.semanticKey,colorKey:m.colorKey,color:m.color}))));
+          NODE
+      - name: Find activity color definitions and overrides
+        shell: bash
+        run: |
+          grep -R -n --exclude-dir=.git --exclude='*.map' -- '--activity-trail-races\|--activity-road-races\|--activity-mtb' . || true
