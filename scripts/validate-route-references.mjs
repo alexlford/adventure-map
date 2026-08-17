@@ -11,6 +11,7 @@ const publicIds = new Set((publicPayload.records || []).map(record => record.id)
 const routeCatalog = await readJson('data/route-catalog.json');
 const routeIds = new Set();
 const routeFiles = new Set();
+const polylineFiles = new Set();
 let featureCount = 0;
 let referenceCount = 0;
 
@@ -60,6 +61,31 @@ for (const routeFile of routeCatalog.routeFiles || []) {
   }
 }
 
+for (const polylineFile of routeCatalog.polylineFiles || []) {
+  if (polylineFiles.has(polylineFile)) {
+    problems.push(`route-catalog lists ${polylineFile} more than once`);
+    continue;
+  }
+  polylineFiles.add(polylineFile);
+  if (routeFiles.has(polylineFile)) problems.push(`route-catalog registers ${polylineFile} as both a route file and a polyline file`);
+  try {
+    await readJson(polylineFile);
+  } catch (error) {
+    problems.push(`${polylineFile}: unable to read polyline route collection (${error.message})`);
+  }
+}
+
+const publishableRouteDetailFile = name =>
+  /^(?:strava-route-|story-route-|activity-route-).+\.json$/.test(name) || name === 'ski-the-sky-runs.json';
+const dataEntries = await fs.readdir(path.join(root, 'data'), { withFileTypes: true });
+for (const entry of dataEntries) {
+  if (!entry.isFile() || !publishableRouteDetailFile(entry.name)) continue;
+  const rel = `data/${entry.name}`;
+  if (!routeFiles.has(rel) && !polylineFiles.has(rel)) {
+    problems.push(`${rel}: publishable route detail file is not registered in route-catalog`);
+  }
+}
+
 for (const routeId of Object.keys(routeCatalog.featureOverrides || {})) {
   if (!routeIds.has(routeId)) problems.push(`route-catalog featureOverrides references unknown route ${routeId}`);
 }
@@ -67,7 +93,7 @@ for (const recordId of Object.keys(routeCatalog.recordOverrides || {})) {
   if (!publicIds.has(recordId)) problems.push(`route-catalog recordOverrides references non-public or unknown record ${recordId}`);
 }
 
-console.log(`Public route reference audit: ${featureCount} route features, ${referenceCount} record links`);
+console.log(`Public route reference audit: ${featureCount} route features, ${referenceCount} record links, ${polylineFiles.size} polyline files`);
 if (problems.length) {
   problems.forEach(problem => console.error(`ERROR ${problem}`));
   process.exitCode = 1;
