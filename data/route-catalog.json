@@ -70,7 +70,15 @@
     "data/strava-route-full-resolution-decalibron-2023.json",
     "data/strava-route-full-resolution-mount-le-conte.json",
     "data/strava-route-full-resolution-mount-evans-spalding.json",
-    "data/strava-route-full-resolution-mount-sherman.json"
+    "data/strava-route-full-resolution-mount-sherman.json",
+    "data/strava-route-full-resolution-west-maroon-pass-2026.json",
+    "data/strava-route-full-resolution-north-star-mountain.json",
+    "data/strava-route-full-resolution-royal-gorge-groove-mtb-2024.json",
+    "data/strava-route-full-resolution-ski-the-sky-loop-2026.json",
+    "data/strava-route-full-resolution-chicago-marathon-virtual-2020.json",
+    "data/strava-route-full-resolution-big-ten-10k-2016.json",
+    "data/strava-route-full-resolution-staunton-rocks-half-2022.json",
+    "data/strava-route-full-resolution-disney-princess-half-2018.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
