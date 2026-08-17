@@ -3,12 +3,16 @@
 
 The bulk materializer is intentionally deterministic and rewrites all generated
 full-resolution shards. This companion command is for surgical upgrades: select
-one or more already-reviewed canonical Strava features (or their public record
-owners), inspect exactly what the export contains, and write only that subset.
+one or more already-reviewed canonical Strava features or activity-day wrappers
+(or their public record owners), inspect exactly what the export contains, and
+write only that subset.
 
 Examples:
   npm run materialize:strava-routes:selected -- /path/to/export.zip \
     --feature-id strava-14522257426 --dry-run
+
+  npm run materialize:strava-routes:selected -- /path/to/export.zip \
+    --feature-id activity-nordic-day-2023-01-28 --dry-run
 
   npm run materialize:strava-routes:selected -- /path/to/export.zip \
     --adventure-id colfax-marathon-2025 \
@@ -31,9 +35,49 @@ from typing import Any
 from materialize_strava_routes import DATA, ROOT, Export, encoded_route, read_json
 
 
+def record_activity_ids(record: dict[str, Any]) -> list[str]:
+    """Return a record's Strava activity IDs in source order without duplicates."""
+    values = record.get("stravaActivityIds") or []
+    if not values and record.get("stravaActivityId") is not None:
+        values = [record["stravaActivityId"]]
+    return list(dict.fromkeys(str(value).strip() for value in values if str(value).strip()))
+
+
+def activity_day_spec(record: dict[str, Any]) -> dict[str, Any] | None:
+    """Convert one reviewed activity-day record into a selectable route spec."""
+    record_id = str(record.get("id") or "").strip()
+    activity_ids = record_activity_ids(record)
+    if not record_id or not activity_ids:
+        return None
+    discipline = record.get("discipline")
+    category = "mtb" if discipline == "mountain-bike" else discipline
+    return {
+        "featureId": f"activity-{record_id}",
+        "activityIds": activity_ids,
+        "adventureIds": [record_id],
+        "category": category,
+        "mtbMode": record.get("mtbMode"),
+    }
+
+
 def canonical_feature_specs(catalog: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    """Return the reviewed canonical Strava feature inventory keyed by feature ID."""
+    """Return reviewed selectable Strava-backed route specs keyed by feature ID.
+
+    Raw ``strava-*`` features come from canonical GeoJSON route files. Stable
+    ``activity-*`` day wrappers come from activity-days.json, which is their
+    canonical metadata source. Generated polyline shards are deliberately not
+    read here, so a generated output can never become the input specification
+    for its own replacement.
+    """
     specs: dict[str, dict[str, Any]] = {}
+
+    def add(spec: dict[str, Any]) -> None:
+        feature_id = str(spec["featureId"])
+        prior = specs.get(feature_id)
+        if prior is not None and prior != spec:
+            raise ValueError(f"Conflicting canonical route specification for {feature_id}")
+        specs[feature_id] = spec
+
     for rel in catalog.get("routeFiles", []):
         collection = read_json(ROOT / rel)
         for feature in collection.get("features", []):
@@ -44,13 +88,20 @@ def canonical_feature_specs(catalog: dict[str, Any]) -> dict[str, dict[str, Any]
             props = dict(feature.get("properties") or {})
             override = catalog.get("featureOverrides", {}).get(feature_id, {})
             adventure_ids = override.get("adventureIds", props.get("adventureIds", []))
-            specs[feature_id] = {
+            add({
                 "featureId": feature_id,
-                "activityId": str(props.get("stravaActivityId") or feature_id[7:]),
+                "activityIds": [str(props.get("stravaActivityId") or feature_id[7:])],
                 "adventureIds": [str(value) for value in adventure_ids],
                 "category": props.get("category"),
                 "mtbMode": props.get("mtbMode"),
-            }
+            })
+
+    activity_days = read_json(DATA / "activity-days.json")
+    for record in activity_days.get("adventures", []):
+        spec = activity_day_spec(record)
+        if spec is not None:
+            add(spec)
+
     return specs
 
 
@@ -107,10 +158,13 @@ def build_selected_routes(
             raise ValueError(
                 f"{spec['featureId']}: selected canonical route has no public adventureIds ownership"
             )
+        activity_ids = list(spec.get("activityIds") or [])
+        if not activity_ids:
+            raise ValueError(f"{spec['featureId']}: selected canonical route has no Strava activity IDs")
         routes.append(encoded_route(
             export,
             spec["featureId"],
-            [spec["activityId"]],
+            activity_ids,
             owners,
             spec.get("category"),
             spec.get("mtbMode"),
@@ -169,13 +223,16 @@ def main() -> None:
         "--feature-id",
         action="append",
         default=[],
-        help="Canonical feature ID to materialize (repeatable, e.g. strava-14522257426).",
+        help=(
+            "Canonical feature ID to materialize (repeatable, e.g. strava-14522257426 "
+            "or activity-nordic-day-2023-01-28)."
+        ),
     )
     parser.add_argument(
         "--adventure-id",
         action="append",
         default=[],
-        help="Public record ID whose canonical Strava feature should be materialized (repeatable).",
+        help="Public record ID whose canonical Strava route should be materialized (repeatable).",
     )
     parser.add_argument("--output", help="Output JSON path. Required unless --dry-run is used.")
     parser.add_argument("--register", action="store_true", help="Add --output to route-catalog polylineFiles.")
@@ -209,8 +266,8 @@ def main() -> None:
             raise SystemExit(str(exc)) from exc
 
     catalog = read_json(DATA / "route-catalog.json")
-    specs = canonical_feature_specs(catalog)
     try:
+        specs = canonical_feature_specs(catalog)
         selected = select_specs(specs, args.feature_id, args.adventure_id)
     except ValueError as exc:
         raise SystemExit(str(exc)) from exc
