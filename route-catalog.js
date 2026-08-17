@@ -16,6 +16,58 @@ window.AdventureRoutes = (() => {
     ? window.AdventureCatalog.loadRelationships().then(items => ({ relationships: items }))
     : fetchJson('data/relationships.json')
   ).catch(() => ({ relationships: [] }));
+  const COMPOSITE_COLOR_TOKENS = Object.freeze({
+    mtb: ['--activity-mtb', '#2f7d4a'],
+    nordic: ['--activity-nordic', '#1779a8'],
+    'road-races': ['--activity-road-races', '#d97706'],
+    'trail-races': ['--activity-trail-races', '#b45309'],
+    skiing: ['--activity-skiing', '#16a6c9'],
+    summits: ['--activity-summits', '#16836d'],
+    adventures: ['--activity-adventures', '#8b5cf6'],
+    mixed: ['--activity-mixed', '#59636d']
+  });
+  const COMPOSITE_FALLBACK_ORDER = Object.freeze(['adventures', 'nordic', 'trail-races', 'skiing', 'road-races', 'summits', 'mtb', 'mixed']);
+  const routeLayerForRecord = record => {
+    if (!record) return 'adventures';
+    if (record.kind === 'summit') return 'summits';
+    if (record.mapCategory === 'ski' || record.discipline === 'ski') return 'skiing';
+    if (record.discipline === 'mountain-bike' || record.mapCategory === 'mountain-bike' || record.mapCategory === 'downhill-mtb') return 'mtb';
+    if (record.discipline === 'nordic' || record.mapCategory === 'nordic') return 'nordic';
+    if (record.kind === 'race' && record.discipline === 'trail') return 'trail-races';
+    if (record.kind === 'race') return 'road-races';
+    return record.kind === 'event' && record.discipline === 'nordic' ? 'nordic' : 'adventures';
+  };
+  const compositeThemeColor = key => {
+    const [token, fallback] = COMPOSITE_COLOR_TOKENS[key] || COMPOSITE_COLOR_TOKENS.mixed;
+    try {
+      const value = window.getComputedStyle?.(document.documentElement)?.getPropertyValue(token)?.trim();
+      if (value) return value;
+    } catch (_error) {}
+    return fallback;
+  };
+  function compositeRouteContext(recordId, relationshipItems = [], records = []) {
+    if (!recordId || !Array.isArray(relationshipItems) || !Array.isArray(records)) return null;
+    const relationship = relationshipItems.find(rel => rel?.adventureId === recordId && Array.isArray(rel.memberIds) && rel.memberIds.length > 1);
+    if (!relationship) return null;
+    const byId = new Map(records.map(record => [record.id, record]));
+    const usedKeys = new Set();
+    const members = relationship.memberIds.map((id, index) => {
+      const record = byId.get(id) || null;
+      const semanticKey = routeLayerForRecord(record);
+      let colorKey = semanticKey;
+      if (usedKeys.has(colorKey)) colorKey = COMPOSITE_FALLBACK_ORDER.find(key => !usedKeys.has(key)) || COMPOSITE_FALLBACK_ORDER[index % COMPOSITE_FALLBACK_ORDER.length];
+      usedKeys.add(colorKey);
+      return Object.freeze({ id, index, record, semanticKey, colorKey, color: compositeThemeColor(colorKey) });
+    });
+    return Object.freeze({ recordId, relationship, members: Object.freeze(members) });
+  }
+  const compositeRouteColorForId = (memberId, context) => context?.members?.find(member => member.id === memberId)?.color || null;
+  const compositeRouteColor = (feature, context) => {
+    if (!context) return null;
+    const owners = feature?.properties?.adventureIds || [];
+    const member = context.members.find(item => owners.includes(item.id));
+    return member?.color || null;
+  };
   const keyFor = feature => feature.id || feature.properties?.featureId || feature.properties?.id || null;
   const geometryPointCount = feature => feature?.geometry?.type === 'LineString'
     ? (feature.geometry.coordinates || []).length
@@ -267,6 +319,10 @@ window.AdventureRoutes = (() => {
     detailSourceForAdventure,
     loadDetailForAdventure,
     recordProvenance,
+    compositeRouteContext,
+    compositeRouteColor,
+    compositeRouteColorForId,
+    routeLayerForRecord,
     keyFor
   };
 })();

@@ -107,7 +107,7 @@
       const base = internal.baseRouteStyle(feature, category);
       layer.setStyle?.({
         ...base,
-        color: internal.categoryColor(record || category),
+        color: base.color,
         weight: focused ? Math.max(base.weight + 3, 7) : Math.max(base.weight + 1.5, 5.5),
         opacity: focused ? 1 : .94,
         dashArray: null,
@@ -162,11 +162,12 @@
     const feature = detail.collection.features[0];
     const record = runtime.resolveRecord(target.id);
     const adventureIds = [...new Set([target.id, ...(feature.properties?.adventureIds || [])])];
+    const base = internal.baseRouteStyle(feature, runtime.layerFor(record));
     const layer = L.geoJSON(detail.collection, {
       interactive: false,
       style: {
-        ...internal.baseRouteStyle(feature, runtime.layerFor(record)),
-        color: internal.categoryColor(record || 'adventures'),
+        ...base,
+        color: base.color,
         weight: 5.5,
         opacity: .94,
         dashArray: null,
