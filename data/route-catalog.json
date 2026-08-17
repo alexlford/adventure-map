@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-15",
+  "updatedOn": "2026-08-17",
   "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
@@ -55,7 +55,17 @@
     "data/story-route-kokopelli-2025-06-07.json",
     "data/story-route-tennessee-pass-2022-01-02.json",
     "data/story-route-tennessee-pass-2022-01-03.json",
-    "data/strava-route-full-resolution-twin-cities-2015.json"
+    "data/strava-route-full-resolution-twin-cities-2015.json",
+    "data/strava-route-full-resolution-clingmans-dome.json",
+    "data/strava-route-full-resolution-frisco-nordic-2023-01-28.json",
+    "data/strava-route-full-resolution-breckenridge-nordic-2023-01-08.json",
+    "data/strava-route-full-resolution-breckenridge-nordic-2023-01-11.json",
+    "data/strava-route-full-resolution-breckenridge-nordic-2023-01-21.json",
+    "data/strava-route-full-resolution-haleakala.json",
+    "data/strava-route-full-resolution-colfax-marathon-2025.json",
+    "data/strava-route-full-resolution-boulderthon-2024.json",
+    "data/strava-route-full-resolution-chicago-marathon-2021.json",
+    "data/strava-route-full-resolution-kansas-city-marathon-2019.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
-  "routeCatalogUpdatedOn": "2026-08-15",
+  "routeCatalogUpdatedOn": "2026-08-17",
   "recordCount": 126,
   "featureCount": 116,
   "records": {
@@ -79,10 +79,10 @@
       "quality": "backfill"
     },
     "boulderthon-2024": {
-      "file": "data/strava-route-rdp3-07.json",
+      "file": "data/strava-route-full-resolution-boulderthon-2024.json",
       "featureId": "strava-12535362010",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "charles-street-12-2019": {
       "file": "data/strava-route-source-complete-02.json",
@@ -91,10 +91,10 @@
       "quality": "full-source"
     },
     "chicago-marathon-2021": {
-      "file": "data/strava-route-rdp3-12.json",
+      "file": "data/strava-route-full-resolution-chicago-marathon-2021.json",
       "featureId": "strava-6094685711",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "chicago-marathon-virtual-2020": {
       "file": "data/strava-route-backfill-06.json",
@@ -103,10 +103,10 @@
       "quality": "backfill"
     },
     "clingmans-dome": {
-      "file": "data/strava-route-rdp3-10.json",
+      "file": "data/strava-route-full-resolution-clingmans-dome.json",
       "featureId": "strava-5301627345",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "colderbolder-2022": {
       "file": "data/strava-route-backfill-02.json",
@@ -151,10 +151,10 @@
       "quality": "backfill"
     },
     "colfax-marathon-2025": {
-      "file": "data/strava-route-rdp3-08.json",
+      "file": "data/strava-route-full-resolution-colfax-marathon-2025.json",
       "featureId": "strava-14522257426",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "colfax-urban-10-2024": {
       "file": "data/strava-route-backfill-04.json",
@@ -235,10 +235,10 @@
       "quality": "backfill"
     },
     "haleakala": {
-      "file": "data/strava-route-rdp3-10.json",
+      "file": "data/strava-route-full-resolution-haleakala.json",
       "featureId": "strava-4854788986",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "hawksbill-mountain": {
       "file": "data/strava-route-rdp3-10.json",
@@ -271,10 +271,10 @@
       "quality": "rdp-3m"
     },
     "kansas-city-marathon-2019": {
-      "file": "data/strava-route-rdp3-09.json",
+      "file": "data/strava-route-full-resolution-kansas-city-marathon-2019.json",
       "featureId": "strava-4312788772",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "kokopelli-three-day-2025": {
       "file": "data/strava-route-full-resolution-mtb-2025-06-07.json",
@@ -499,28 +499,28 @@
       "quality": "rdp-3m"
     },
     "nordic-day-2023-01-08": {
-      "file": "data/strava-route-rdp3-05.json",
+      "file": "data/strava-route-full-resolution-breckenridge-nordic-2023-01-08.json",
       "featureId": "activity-nordic-day-2023-01-08",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "nordic-day-2023-01-11": {
-      "file": "data/strava-route-rdp3-05.json",
+      "file": "data/strava-route-full-resolution-breckenridge-nordic-2023-01-11.json",
       "featureId": "activity-nordic-day-2023-01-11",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "nordic-day-2023-01-21": {
-      "file": "data/strava-route-rdp3-05.json",
+      "file": "data/strava-route-full-resolution-breckenridge-nordic-2023-01-21.json",
       "featureId": "activity-nordic-day-2023-01-21",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "nordic-day-2023-01-28": {
-      "file": "data/strava-route-rdp3-05.json",
+      "file": "data/strava-route-full-resolution-frisco-nordic-2023-01-28.json",
       "featureId": "activity-nordic-day-2023-01-28",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "nordic-day-2023-03-01": {
       "file": "data/strava-route-rdp3-05.json",
