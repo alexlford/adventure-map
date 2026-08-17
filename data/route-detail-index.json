@@ -175,10 +175,10 @@
       "quality": "backfill"
     },
     "decalibron-2023": {
-      "file": "data/strava-route-decalibron-2023.json",
+      "file": "data/strava-route-full-resolution-decalibron-2023.json",
       "featureId": "strava-9642214422",
       "format": "polyline",
-      "quality": "catalog-detail"
+      "quality": "full-source"
     },
     "disney-princess-half-2018": {
       "file": "data/strava-route-backfill-01.json",
@@ -283,10 +283,10 @@
       "quality": "full-source"
     },
     "mauna-kea": {
-      "file": "data/strava-route-rdp3-13.json",
+      "file": "data/strava-route-full-resolution-mauna-kea.json",
       "featureId": "strava-6185031796",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "midland-hill": {
       "file": "data/strava-route-rdp3-18.json",
@@ -301,28 +301,28 @@
       "quality": "full-source"
     },
     "mount-bross": {
-      "file": "data/strava-route-decalibron-2023.json",
+      "file": "data/strava-route-full-resolution-decalibron-2023.json",
       "featureId": "strava-9642214422",
       "format": "polyline",
-      "quality": "catalog-detail"
+      "quality": "full-source"
     },
     "mount-cameron": {
-      "file": "data/strava-route-decalibron-2023.json",
+      "file": "data/strava-route-full-resolution-decalibron-2023.json",
       "featureId": "strava-9642214422",
       "format": "polyline",
-      "quality": "catalog-detail"
+      "quality": "full-source"
     },
     "mount-democrat": {
-      "file": "data/strava-route-decalibron-2023.json",
+      "file": "data/strava-route-full-resolution-decalibron-2023.json",
       "featureId": "strava-9642214422",
       "format": "polyline",
-      "quality": "catalog-detail"
+      "quality": "full-source"
     },
     "mount-evans": {
-      "file": "data/strava-route-rdp3-17.json",
+      "file": "data/strava-route-full-resolution-mount-evans-spalding.json",
       "featureId": "strava-7560672014",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "mount-jumullong-manglo": {
       "file": "data/strava-route-rdp3-16.json",
@@ -337,28 +337,28 @@
       "quality": "rdp-3m"
     },
     "mount-le-conte": {
-      "file": "data/strava-route-rdp3-11.json",
+      "file": "data/strava-route-full-resolution-mount-le-conte.json",
       "featureId": "strava-5309635526",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "mount-lincoln": {
-      "file": "data/strava-route-decalibron-2023.json",
+      "file": "data/strava-route-full-resolution-decalibron-2023.json",
       "featureId": "strava-9642214422",
       "format": "polyline",
-      "quality": "catalog-detail"
+      "quality": "full-source"
     },
     "mount-sherman": {
-      "file": "data/strava-route-rdp3-17.json",
+      "file": "data/strava-route-full-resolution-mount-sherman.json",
       "featureId": "strava-7866173318",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "mount-spalding": {
-      "file": "data/strava-route-rdp3-17.json",
+      "file": "data/strava-route-full-resolution-mount-evans-spalding.json",
       "featureId": "strava-7560672014",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "mount-wachusett": {
       "file": "data/strava-route-rdp3-09.json",

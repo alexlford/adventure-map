@@ -65,7 +65,12 @@
     "data/strava-route-full-resolution-colfax-marathon-2025.json",
     "data/strava-route-full-resolution-boulderthon-2024.json",
     "data/strava-route-full-resolution-chicago-marathon-2021.json",
-    "data/strava-route-full-resolution-kansas-city-marathon-2019.json"
+    "data/strava-route-full-resolution-kansas-city-marathon-2019.json",
+    "data/strava-route-full-resolution-mauna-kea.json",
+    "data/strava-route-full-resolution-decalibron-2023.json",
+    "data/strava-route-full-resolution-mount-le-conte.json",
+    "data/strava-route-full-resolution-mount-evans-spalding.json",
+    "data/strava-route-full-resolution-mount-sherman.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
