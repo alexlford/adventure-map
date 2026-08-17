@@ -23,46 +23,54 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - name: Inspect rendered Royal Gorge context
+      - name: Inspect rendered Royal Gorge context through route load
         shell: bash
         run: |
           cat > tests/.diagnose-composite-route-colors.spec.mjs <<'TEST'
-          import { test } from '@playwright/test';
+          import { test, expect } from '@playwright/test';
 
-          test('diagnose rendered Royal Gorge colors', async ({ page }) => {
+          const snapshot = page => page.evaluate(async () => {
+            const records = await window.AdventureCatalog.load();
+            const relationships = await window.AdventureCatalog.loadRelationships();
+            const record = records.find(item => item.id === 'royal-gorge-groove-5k-2024');
+            const context = window.AdventureRoutes.compositeRouteContext('royal-gorge-groove-weekend-2024', relationships, records);
+            const root = getComputedStyle(document.documentElement);
+            const read = selector => [...document.querySelectorAll(selector)].map(node => ({
+              inline: node.getAttribute('style'),
+              computed: getComputedStyle(node).getPropertyValue('--route-color').trim(),
+              stroke: node.getAttribute('stroke'),
+              label: node.querySelector?.('strong')?.textContent?.trim()
+            }));
+            return {
+              url: location.href,
+              record: { id: record?.id, kind: record?.kind, discipline: record?.discipline, mapCategory: record?.mapCategory, name: record?.name },
+              tokens: {
+                trail: root.getPropertyValue('--activity-trail-races').trim(),
+                road: root.getPropertyValue('--activity-road-races').trim(),
+                mtb: root.getPropertyValue('--activity-mtb').trim()
+              },
+              context: context?.members?.map(member => ({
+                id: member.id,
+                kind: member.record?.kind,
+                discipline: member.record?.discipline,
+                mapCategory: member.record?.mapCategory,
+                semanticKey: member.semanticKey,
+                colorKey: member.colorKey,
+                color: member.color
+              })),
+              keyItems: read('#storyRouteKey .story-route-key-item'),
+              cards: read('.story-component.has-route-color'),
+              strokes: read('#detailMap .leaflet-overlay-pane path')
+            };
+          });
+
+          test('diagnose rendered Royal Gorge colors through map load', async ({ page }) => {
             await page.goto('/detail.html?record=royal-gorge-groove-weekend-2024', { waitUntil: 'domcontentloaded' });
             await page.locator('#storyRouteKey .story-route-key-item').first().waitFor();
-            const state = await page.evaluate(async () => {
-              const records = await window.AdventureCatalog.load();
-              const relationships = await window.AdventureCatalog.loadRelationships();
-              const record = records.find(item => item.id === 'royal-gorge-groove-5k-2024');
-              const context = window.AdventureRoutes.compositeRouteContext('royal-gorge-groove-weekend-2024', relationships, records);
-              const root = getComputedStyle(document.documentElement);
-              const items = [...document.querySelectorAll('#storyRouteKey .story-route-key-item')].map(node => ({
-                inline: node.getAttribute('style'),
-                computed: getComputedStyle(node).getPropertyValue('--route-color').trim(),
-                label: node.querySelector('strong')?.textContent?.trim()
-              }));
-              return {
-                record: { id: record?.id, kind: record?.kind, discipline: record?.discipline, mapCategory: record?.mapCategory, name: record?.name },
-                tokens: {
-                  trail: root.getPropertyValue('--activity-trail-races').trim(),
-                  road: root.getPropertyValue('--activity-road-races').trim(),
-                  mtb: root.getPropertyValue('--activity-mtb').trim()
-                },
-                context: context?.members?.map(member => ({
-                  id: member.id,
-                  kind: member.record?.kind,
-                  discipline: member.record?.discipline,
-                  mapCategory: member.record?.mapCategory,
-                  semanticKey: member.semanticKey,
-                  colorKey: member.colorKey,
-                  color: member.color
-                })),
-                items
-              };
-            });
-            console.log('BROWSER_ROYAL_GORGE', JSON.stringify(state));
+            console.log('BROWSER_BEFORE_MAP', JSON.stringify(await snapshot(page)));
+            await expect.poll(() => page.locator('#detailMap .leaflet-overlay-pane path').count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
+            await page.waitForTimeout(500);
+            console.log('BROWSER_AFTER_MAP', JSON.stringify(await snapshot(page)));
           });
           TEST
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/composite-color-http.log 2>&1 &
