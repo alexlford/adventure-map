@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "compression": "gzip",
+  "encoding": "base64",
+  "routes": [
+    {
+      "output": "data/strava-route-full-resolution-west-maroon-pass-2026.json",
+      "sha256": "dd7f25e1579c7c174a1d2113d9da1945967940b7e850fb4c7bd75ddc94904dec",
+      "bytes": 97759,
+      "chunks": [
+        ".route-staging/west-maroon-pass-2026.001.b64",
+        ".route-staging/west-maroon-pass-2026.002.b64",
+        ".route-staging/west-maroon-pass-2026.003.b64",
+        ".route-staging/west-maroon-pass-2026.004.b64",
+        ".route-staging/west-maroon-pass-2026.005.b64",
+        ".route-staging/west-maroon-pass-2026.006.b64",
+        ".route-staging/west-maroon-pass-2026.007.b64",
+        ".route-staging/west-maroon-pass-2026.008.b64",
+        ".route-staging/west-maroon-pass-2026.009.b64",
+        ".route-staging/west-maroon-pass-2026.010.b64",
+        ".route-staging/west-maroon-pass-2026.011.b64",
+        ".route-staging/west-maroon-pass-2026.012.b64",
+        ".route-staging/west-maroon-pass-2026.013.b64",
+        ".route-staging/west-maroon-pass-2026.014.b64",
+        ".route-staging/west-maroon-pass-2026.015.b64",
+        ".route-staging/west-maroon-pass-2026.016.b64",
+        ".route-staging/west-maroon-pass-2026.017.b64",
+        ".route-staging/west-maroon-pass-2026.018.b64",
+        ".route-staging/west-maroon-pass-2026.019.b64",
+        ".route-staging/west-maroon-pass-2026.020.b64"
+      ]
+    },
+    {
+      "output": "data/strava-route-full-resolution-north-star-mountain.json",
+      "sha256": "f0396cab2d0e2356c7b66541f29cab988787a66fe9faa8e10b9fb4875c7fbca1",
+      "bytes": 32918,
+      "chunks": [
+        ".route-staging/north-star-mountain.001.b64",
+        ".route-staging/north-star-mountain.002.b64",
+        ".route-staging/north-star-mountain.003.b64",
+        ".route-staging/north-star-mountain.004.b64",
+        ".route-staging/north-star-mountain.005.b64",
+        ".route-staging/north-star-mountain.006.b64",
+        ".route-staging/north-star-mountain.007.b64"
+      ]
+    },
+    {
+      "output": "data/strava-route-full-resolution-royal-gorge-groove-mtb-2024.json",
+      "sha256": "89ed8f8f6257afa503800507e2eaeb4616c179e128d6d1a678fa9ccf466b398e",
+      "bytes": 20330,
+      "chunks": [
+        ".route-staging/royal-gorge-groove-mtb-2024.001.b64",
+        ".route-staging/royal-gorge-groove-mtb-2024.002.b64",
+        ".route-staging/royal-gorge-groove-mtb-2024.003.b64",
+        ".route-staging/royal-gorge-groove-mtb-2024.004.b64",
+        ".route-staging/royal-gorge-groove-mtb-2024.005.b64",
+        ".route-staging/royal-gorge-groove-mtb-2024.006.b64",
+        ".route-staging/royal-gorge-groove-mtb-2024.007.b64",
+        ".route-staging/royal-gorge-groove-mtb-2024.008.b64",
+        ".route-staging/royal-gorge-groove-mtb-2024.009.b64"
+      ]
+    },
+    {
+      "output": "data/strava-route-full-resolution-ski-the-sky-loop-2026.json",
+      "sha256": "20769e9d88d89c68208aca759ae37046f6a42afa6970f5b769c656e73e99ffa3",
+      "bytes": 9740,
+      "chunks": [
+        ".route-staging/ski-the-sky-loop-2026.001.b64",
+        ".route-staging/ski-the-sky-loop-2026.002.b64",
+        ".route-staging/ski-the-sky-loop-2026.003.b64",
+        ".route-staging/ski-the-sky-loop-2026.004.b64",
+        ".route-staging/ski-the-sky-loop-2026.005.b64",
+        ".route-staging/ski-the-sky-loop-2026.006.b64"
+      ]
+    },
+    {
+      "output": "data/strava-route-full-resolution-chicago-marathon-virtual-2020.json",
+      "sha256": "31b2dda197898e7da52f652b8aa42830c18e257646bab9611fdf29c952fffbd5",
+      "bytes": 7944,
+      "chunks": [".route-staging/chicago-marathon-virtual-2020.b64"]
+    },
+    {
+      "output": "data/strava-route-full-resolution-big-ten-10k-2016.json",
+      "sha256": "44b1f62e176fef102f87bb98fa4c844ac23c6097dfbb9e60ac763219d76accc7",
+      "bytes": 6288,
+      "chunks": [
+        ".route-staging/big-ten-10k-2016.001.b64",
+        ".route-staging/big-ten-10k-2016.002.b64",
+        ".route-staging/big-ten-10k-2016.003.b64"
+      ]
+    },
+    {
+      "output": "data/strava-route-full-resolution-staunton-rocks-half-2022.json",
+      "sha256": "d39ec8e464cb565bd628841ca64aecfd82295b81c86eda61f1651624bddf029d",
+      "bytes": 4329,
+      "chunks": [".route-staging/staunton-rocks-half-2022.b64"]
+    },
+    {
+      "output": "data/strava-route-full-resolution-disney-princess-half-2018.json",
+      "sha256": "423b67efccd7e0378f69a1454425efdb367e074e65983266be375833e52a4581",
+      "bytes": 4301,
+      "chunks": [".route-staging/disney-princess-half-2018.b64"]
+    }
+  ]
+}
