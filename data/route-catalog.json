@@ -104,8 +104,8 @@
       },
       {
         "id": "strava-9642214422",
-        "minPoints": 1000,
-        "resolutionPrefix": "every-20th-source-point"
+        "minPoints": 20755,
+        "resolutionPrefix": "full-source-track"
       },
       {
         "id": "strava-14364821809",
@@ -204,7 +204,7 @@
       ],
       "provenance": "personal-gps",
       "sourceLabel": "Strava GPS export",
-      "note": "Personal GPS recording of the August 13, 2023 DeCaLiBron loop; 1,039 recorded source points retained by deterministic every-20th-point sampling from the 20,755-point FIT track for detailed public rendering."
+      "note": "Personal GPS recording of the August 13, 2023 DeCaLiBron loop; all 20,755 recorded FIT points are retained as full-source route detail under the standard 180 m source-gap split rule."
     },
     "river-to-river-relay-historical-course": {
       "provenance": "historical-course",
