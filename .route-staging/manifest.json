@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "compression": "gzip",
+  "encoding": "base64",
+  "routes": [
+    {
+      "output": "data/strava-route-full-resolution-colfax-marathon-2025.json",
+      "sha256": "0881d6f3d707b4c8946ea7cedde667d3664f8422d8213cd6c1a2e58f8fa28120",
+      "bytes": 8273,
+      "chunks": [
+        ".route-staging/colfax-marathon-2025.001.b64",
+        ".route-staging/colfax-marathon-2025.002.b64",
+        ".route-staging/colfax-marathon-2025.003.b64",
+        ".route-staging/colfax-marathon-2025.004.b64"
+      ]
+    },
+    {
+      "output": "data/strava-route-full-resolution-boulderthon-2024.json",
+      "sha256": "90124e5492df4554c3f43500f5516aedbb7d40e944d181c182a38d7c620ab342",
+      "bytes": 8143,
+      "chunks": [
+        ".route-staging/boulderthon-2024.001.b64",
+        ".route-staging/boulderthon-2024.002.b64",
+        ".route-staging/boulderthon-2024.003.b64"
+      ]
+    },
+    {
+      "output": "data/strava-route-full-resolution-chicago-marathon-2021.json",
+      "sha256": "a7f1eb563cea50e08cddb0953d698184f964f52576fbc6b39f8d8ec7f79b9b16",
+      "bytes": 7977,
+      "chunks": [
+        ".route-staging/chicago-marathon-2021.001.b64",
+        ".route-staging/chicago-marathon-2021.002.b64",
+        ".route-staging/chicago-marathon-2021.003.b64",
+        ".route-staging/chicago-marathon-2021.004.b64"
+      ]
+    },
+    {
+      "output": "data/strava-route-full-resolution-kansas-city-marathon-2019.json",
+      "sha256": "4f2951da74fa209db1f23f5d02bfe0b2569a469421d48557384e1b58a01e5a03",
+      "bytes": 7812,
+      "chunks": [
+        ".route-staging/kansas-city-marathon-2019.001.b64",
+        ".route-staging/kansas-city-marathon-2019.002.b64",
+        ".route-staging/kansas-city-marathon-2019.003.b64",
+        ".route-staging/kansas-city-marathon-2019.004.b64"
+      ]
+    }
+  ]
+}
