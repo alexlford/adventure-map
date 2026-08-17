@@ -7,6 +7,7 @@ on:
     paths:
       - .github/workflows/patch-composite-route-colors.yml
       - .github/patch-composite-route-colors.py
+      - .github/fix-composite-route-routing.py
 
 permissions:
   contents: write
@@ -25,7 +26,9 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Apply composite route color system
-        run: python3 .github/patch-composite-route-colors.py
+        run: |
+          python3 .github/patch-composite-route-colors.py
+          python3 .github/fix-composite-route-routing.py
       - name: Validate production source changes
         run: |
           npm run check:fast
@@ -33,7 +36,7 @@ jobs:
       - name: Commit source changes and remove temporary patch files
         shell: bash
         run: |
-          rm .github/workflows/patch-composite-route-colors.yml .github/patch-composite-route-colors.py
+          rm .github/workflows/patch-composite-route-colors.yml .github/patch-composite-route-colors.py .github/fix-composite-route-routing.py
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
