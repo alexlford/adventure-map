@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 135,
+  "recordCount": 136,
   "records": [
     {
       "id": "mount-lincoln",
@@ -7352,6 +7352,56 @@
       },
       "routeInfo": {
         "status": "gps-source-available",
+        "provenance": null
+      }
+    },
+    {
+      "id": "beerfit-kansas-city-2016",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "BeerFit Kansas City 2016: 5K + Brew Mile",
+      "year": 2016,
+      "date": "2016-06-04",
+      "distance": "5K + Brew Mile",
+      "officialDistance": "5K + 1 Mile",
+      "officialDistanceKm": 6.60934,
+      "officialDistanceMi": 4.11,
+      "location": "Arrowhead Stadium, Kansas City, Missouri",
+      "region": "Missouri",
+      "lat": 39.0482,
+      "lon": -94.4881,
+      "coordinatePrecision": "venue",
+      "routeStatus": "multi-event-match",
+      "matchSource": "Canonical BeerFit Kansas City 5K Classic and Brew Mile records + contemporary BeerFit Kansas City event documentation + user confirmation",
+      "matchConfidence": "confirmed",
+      "note": "Same-day BeerFit Kansas City event at Arrowhead Stadium: the 5K Classic followed by the Brew Mile. The Story groups the two completed races while preserving each race as its own public record and displaying both recorded GPS routes together.",
+      "_catalogSource": "data/notable-adventures-2026-08-17-beerfit-kansas-city.json",
+      "slug": "2016-06-04-beerfit-kansas-city-2016-5k-brew-mile",
+      "recordClass": "adventure",
+      "sport": "adventure",
+      "startDate": "2016-06-04",
+      "finishDate": "2016-06-04",
+      "distanceInfo": {
+        "km": 6.60934,
+        "mi": 4.11,
+        "label": "5K + 1 Mile",
+        "source": "official"
+      },
+      "locationInfo": {
+        "label": "Arrowhead Stadium, Kansas City, Missouri",
+        "region": "Missouri",
+        "lat": 39.0482,
+        "lon": -94.4881,
+        "precision": "venue"
+      },
+      "evidence": {
+        "source": "Canonical BeerFit Kansas City 5K Classic and Brew Mile records + contemporary BeerFit Kansas City event documentation + user confirmation",
+        "matchSource": "Canonical BeerFit Kansas City 5K Classic and Brew Mile records + contemporary BeerFit Kansas City event documentation + user confirmation",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "multi-event-match",
         "provenance": null
       }
     },
