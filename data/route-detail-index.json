@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
-  "routeCatalogUpdatedOn": "2026-08-18",
-  "recordCount": 126,
-  "featureCount": 116,
+  "routeCatalogUpdatedOn": "2026-08-17",
+  "recordCount": 127,
+  "featureCount": 117,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
@@ -39,6 +39,12 @@
     "beerfit-kansas-city-5k-2016": {
       "file": "data/strava-route-full-resolution-beerfit-kansas-city-5k-2016.json",
       "featureId": "strava-641962129",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "beerfit-kansas-city-brew-mile-2016": {
+      "file": "data/strava-route-full-resolution-beerfit-kansas-city-brew-mile-2016.json",
+      "featureId": "strava-641962098",
       "format": "polyline",
       "quality": "full-source"
     },

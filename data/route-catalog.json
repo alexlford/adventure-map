@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-18",
+  "updatedOn": "2026-08-17",
   "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
@@ -102,7 +102,8 @@
     "data/strava-route-full-resolution-colderbolder-2024.json",
     "data/strava-route-full-resolution-royal-gorge-groove-5k-2024.json",
     "data/strava-route-full-resolution-super-bowl-5k-2022.json",
-    "data/strava-route-full-resolution-polar-bear-5k-2022.json"
+    "data/strava-route-full-resolution-polar-bear-5k-2022.json",
+    "data/strava-route-full-resolution-beerfit-kansas-city-brew-mile-2016.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -192,6 +193,11 @@
       {
         "id": "strava-11509394019",
         "minPoints": 880,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-641962098",
+        "minPoints": 150,
         "resolutionPrefix": "full-source-track"
       }
     ],
