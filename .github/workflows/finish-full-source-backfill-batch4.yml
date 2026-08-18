@@ -1,0 +1,46 @@
+name: Finish full-source backfill Batch 4
+
+on:
+  push:
+    branches:
+      - agent/full-source-backfill-priority-4-2026-08
+    paths:
+      - .github/workflows/finish-full-source-backfill-batch4.yml
+
+permissions:
+  contents: write
+
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v6
+        with:
+          ref: agent/full-source-backfill-priority-4-2026-08
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Register Batch 4 route files
+        run: node scripts/.finish-full-source-backfill-batch4.mjs
+      - name: Rebuild route detail index
+        run: npm run build:route-detail-index
+      - name: Advance route quality floor
+        run: npm run update:route-detail-quality-floor
+      - name: Assert Batch 4 winners
+        run: |
+          node --input-type=module -e "import fs from 'node:fs'; const idx=JSON.parse(fs.readFileSync('data/route-detail-index.json','utf8')); const floor=JSON.parse(fs.readFileSync('data/route-detail-quality-floor.json','utf8')); const expected={ 'abbott-chicago-5k-2021':'data/strava-route-full-resolution-abbott-chicago-5k-2021.json', 'baltimore-5k-2018':'data/strava-route-full-resolution-baltimore-5k-2018.json', 'baltimore-shamrock-5k-2020-deferred-virtual':'data/strava-route-full-resolution-baltimore-shamrock-5k-2020-deferred-virtual.json', 'beerfit-kansas-city-5k-2016':'data/strava-route-full-resolution-beerfit-kansas-city-5k-2016.json', 'colderbolder-2022':'data/strava-route-full-resolution-colderbolder-2022.json', 'colfax-5k-2026':'data/strava-route-full-resolution-colfax-5k-2026.json' }; for (const [id,file] of Object.entries(expected)) { const r=idx.records[id]; if (!r || r.file!==file || r.quality!=='full-source') throw new Error('Unexpected winner for '+id+': '+JSON.stringify(r)); if (floor.records[id]!=='full-source') throw new Error('Quality floor not promoted for '+id); }"
+      - name: Run fast repository validation
+        run: npm run check:fast
+      - name: Commit production-only Batch 4 changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/finish-full-source-backfill-batch4.yml scripts/.finish-full-source-backfill-batch4.mjs
+          git add data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json
+          git commit -m "Register full-source route backfill Batch 4"
+          git push origin HEAD:agent/full-source-backfill-priority-4-2026-08
