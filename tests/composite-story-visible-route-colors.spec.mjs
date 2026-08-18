@@ -20,7 +20,7 @@ test('Royal Gorge Story shows only route-key colors on visible component routes'
   await expect.poll(async () => page.locator('#detailMap .leaflet-overlay-pane path').count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
 
   const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
-    nodes.map(node => String(node.getAttribute('stroke') || getComputedStyle(node).stroke || '').trim().toLowerCase())
+    nodes.map(node => String(getComputedStyle(node).stroke || '').trim().toLowerCase())
   )).map(normalizeCssColor);
   const visible = strokes.filter(color => color && color !== 'transparent');
 
