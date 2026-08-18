@@ -1,11 +1,19 @@
 import { test, expect } from '@playwright/test';
 
+const normalizeStroke = value => String(value || '').replace(/\s+/g, '').toLowerCase();
+const isTransparentStroke = value => {
+  const color = normalizeStroke(value);
+  return color === 'transparent' || color === 'rgba(0,0,0,0)' || color === 'rgba(0,0,0,0.0)' || color.endsWith(',0)');
+};
+
 async function routeKeyColors(page) {
   return page.locator('#storyRouteKey .story-route-key-item').evaluateAll(nodes => nodes.map(node => String(getComputedStyle(node).getPropertyValue('--route-color') || '').trim().toLowerCase()));
 }
 
 async function routeStrokeColors(page) {
-  return page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes => nodes.map(node => String(node.getAttribute('stroke') || '').trim().toLowerCase()).filter(Boolean));
+  return page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes => nodes
+    .map(node => String(node.getAttribute('stroke') || '').trim().toLowerCase())
+    .filter(Boolean));
 }
 
 async function componentColors(page, selector) {
@@ -24,9 +32,10 @@ async function expectCompositeStory(page, recordId, expectedCount, cardSelector)
   await expect(page.locator('#storyRouteKey .story-route-key-item')).toHaveCount(expectedCount);
   const legendColors = await routeKeyColors(page);
   expect(new Set(legendColors).size).toBe(expectedCount);
-  await expect.poll(async () => (await routeStrokeColors(page)).length, { timeout: 15000 }).toBeGreaterThanOrEqual(expectedCount);
-  const strokes = await routeStrokeColors(page);
+  await expect.poll(async () => (await routeStrokeColors(page)).filter(color => !isTransparentStroke(color)).length, { timeout: 15000 }).toBeGreaterThanOrEqual(expectedCount);
+  const strokes = (await routeStrokeColors(page)).filter(color => !isTransparentStroke(color));
   for (const color of legendColors) expect(strokes).toContain(color);
+  for (const color of strokes) expect(legendColors).toContain(color);
   const cardColors = await componentColors(page, cardSelector);
   expect(cardColors).toEqual(legendColors);
   return legendColors;
@@ -39,7 +48,7 @@ test('multi-sport Royal Gorge story uses distinct semantic route colors', async 
 });
 
 test('multi-day same-sport Kokopelli story assigns a distinct color to each day', async ({ page }) => {
-  await expectCompositeStory(page, 'kokopelli-three-day-2025', 3, '.story-linked-record.has-route-color');
+  await expectCompositeStory(page, 'kokopelli-three-day-2025', 3, '.story-component.has-route-color');
 });
 
 test('single-route records do not add a composite route key', async ({ page }) => {
