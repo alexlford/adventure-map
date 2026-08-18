@@ -3,8 +3,8 @@
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
   "routeCatalogUpdatedOn": "2026-08-18",
-  "recordCount": 128,
-  "featureCount": 118,
+  "recordCount": 129,
+  "featureCount": 119,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
@@ -705,6 +705,12 @@
     "smr-stampede-ranch-hand-skate-2022": {
       "file": "data/strava-route-full-resolution-ranch-hand-skate-2022.json",
       "featureId": "strava-6814188054",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "snowman-shuffle-2021-virtual": {
+      "file": "data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json",
+      "featureId": "strava-4676340941",
       "format": "polyline",
       "quality": "full-source"
     },

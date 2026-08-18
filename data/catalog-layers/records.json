@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceCount": 35,
-  "recordCount": 140,
+  "recordCount": 141,
   "layeredMergeCount": 38,
   "adventures": [
     {
@@ -1485,6 +1485,34 @@
       "matchSource": "Strava activity description 'Ugly Sweater Run!' + exact December 1, 2012 date + 2:07 PM Watson Park GPS start + contemporary Lawrence event coverage + user confirmation",
       "matchConfidence": "confirmed",
       "note": "User confirms this was a fun run rather than a formal 5K race. The matched Strava activity begins at 2:07 PM from Watson Park and its own description says 'Ugly Sweater Run!'. Strava recorded 3.9461 km in 25:09; those metrics are retained as personal activity evidence without asserting an official race distance or result.",
+      "_catalogSource": "data/user-confirmed-races.json"
+    },
+    {
+      "id": "snowman-shuffle-2021-virtual",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Snowman Shuffle Virtual 5K",
+      "year": 2021,
+      "date": "2021-01-10",
+      "distance": "5K",
+      "distanceKm": 5.0592,
+      "distanceMi": 3.14,
+      "location": "Baltimore, Maryland",
+      "region": "Maryland",
+      "lat": 39.273253,
+      "lon": -76.603429,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "4676340941",
+      "stravaActivityName": "Saturday Afternoon Run",
+      "stravaDistanceKm": 5.0592,
+      "stravaDistanceMi": 3.14,
+      "stravaElapsedSeconds": 1688,
+      "stravaMovingSeconds": 1681,
+      "elevationGainM": 23.3,
+      "routeStatus": "gps-source-available",
+      "matchSource": "User instruction to treat the 2021 virtual Snowman Shuffle as completed + January 10, 2021 Strava 5.06 km activity",
+      "matchConfidence": "confirmed",
+      "note": "User confirms the 2021 Snowman Shuffle as a virtual completion. The matched Strava activity was completed in Baltimore on January 10, 2021 and recorded 5.0592 km in 28:08 elapsed (28:01 moving). No official individual result is asserted; the participation identity is user-confirmed and the attached route is the personal GPS track from the virtual 5K.",
       "_catalogSource": "data/user-confirmed-races.json"
     },
     {
@@ -3762,6 +3790,9 @@
       "data/mined-races.json"
     ],
     "ugly-sweater-run-2012": [
+      "data/user-confirmed-races.json"
+    ],
+    "snowman-shuffle-2021-virtual": [
       "data/user-confirmed-races.json"
     ],
     "colderbolder-2022": [

@@ -105,7 +105,8 @@
     "data/strava-route-full-resolution-polar-bear-5k-2022.json",
     "data/strava-route-full-resolution-beerfit-kansas-city-brew-mile-2016.json",
     "data/strava-route-full-resolution-illinois-marathon-2015.json",
-    "data/strava-route-full-resolution-frisco-brewski-2024.json"
+    "data/strava-route-full-resolution-frisco-brewski-2024.json",
+    "data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
