@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-17",
+  "updatedOn": "2026-08-18",
   "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
@@ -90,7 +90,13 @@
     "data/strava-route-full-resolution-rippetoe-rucksack-2025.json",
     "data/strava-route-full-resolution-run-snetterton-10k-2026.json",
     "data/strava-route-full-resolution-st-louis-turkey-trot-8k-2018.json",
-    "data/strava-route-full-resolution-valentines-day-4m-2022.json"
+    "data/strava-route-full-resolution-valentines-day-4m-2022.json",
+    "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
+    "data/strava-route-full-resolution-baltimore-5k-2018.json",
+    "data/strava-route-full-resolution-baltimore-shamrock-5k-2020-deferred-virtual.json",
+    "data/strava-route-full-resolution-beerfit-kansas-city-5k-2016.json",
+    "data/strava-route-full-resolution-colderbolder-2022.json",
+    "data/strava-route-full-resolution-colfax-5k-2026.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",

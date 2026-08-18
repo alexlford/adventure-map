@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
-  "routeCatalogUpdatedOn": "2026-08-17",
+  "routeCatalogUpdatedOn": "2026-08-18",
   "recordCount": 126,
   "featureCount": 116,
   "records": {
     "abbott-chicago-5k-2021": {
-      "file": "data/strava-route-backfill-03.json",
+      "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
       "featureId": "strava-6088254839",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "abes-amble-2014": {
       "file": "data/strava-route-source-complete-01.json",
@@ -19,10 +19,10 @@
       "quality": "full-source"
     },
     "baltimore-5k-2018": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-full-resolution-baltimore-5k-2018.json",
       "featureId": "strava-4312792085",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "baltimore-half-2018": {
       "file": "data/strava-route-full-resolution-baltimore-half-2018.json",
@@ -31,16 +31,16 @@
       "quality": "full-source"
     },
     "baltimore-shamrock-5k-2020-deferred-virtual": {
-      "file": "data/strava-route-backfill-04.json",
+      "file": "data/strava-route-full-resolution-baltimore-shamrock-5k-2020-deferred-virtual.json",
       "featureId": "strava-5115941734",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "beerfit-kansas-city-5k-2016": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-full-resolution-beerfit-kansas-city-5k-2016.json",
       "featureId": "strava-641962129",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "big-12-run-12k-2016": {
       "file": "data/mined-routes.geojson",
@@ -109,10 +109,10 @@
       "quality": "full-source"
     },
     "colderbolder-2022": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-full-resolution-colderbolder-2022.json",
       "featureId": "strava-8232311338",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "colderbolder-2023": {
       "file": "data/strava-route-backfill-01.json",
@@ -139,10 +139,10 @@
       "quality": "full-source"
     },
     "colfax-5k-2026": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-full-resolution-colfax-5k-2026.json",
       "featureId": "strava-18531584324",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "colfax-half-2021": {
       "file": "data/strava-route-full-resolution-colfax-half-2021.json",
