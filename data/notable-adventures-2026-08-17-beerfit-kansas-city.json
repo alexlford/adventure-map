@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "source": "Canonical BeerFit 5K Classic + Brew Mile race records + contemporary event documentation + user confirmation",
+    "updatedOn": "2026-08-17",
+    "policy": "Group the two independently published BeerFit Kansas City races into one same-day Story without replacing or collapsing either race record."
+  },
+  "adventures": [
+    {
+      "id": "beerfit-kansas-city-2016",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "BeerFit Kansas City 2016: 5K + Brew Mile",
+      "year": 2016,
+      "date": "2016-06-04",
+      "distance": "5K + Brew Mile",
+      "officialDistance": "5K + 1 Mile",
+      "officialDistanceKm": 6.60934,
+      "officialDistanceMi": 4.11,
+      "location": "Arrowhead Stadium, Kansas City, Missouri",
+      "region": "Missouri",
+      "lat": 39.0482,
+      "lon": -94.4881,
+      "coordinatePrecision": "venue",
+      "routeStatus": "multi-event-match",
+      "matchSource": "Canonical BeerFit Kansas City 5K Classic and Brew Mile records + contemporary BeerFit Kansas City event documentation + user confirmation",
+      "matchConfidence": "confirmed",
+      "note": "Same-day BeerFit Kansas City event at Arrowhead Stadium: the 5K Classic followed by the Brew Mile. The Story groups the two completed races while preserving each race as its own public record and displaying both recorded GPS routes together."
+    }
+  ]
+}
