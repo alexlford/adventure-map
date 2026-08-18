@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 134,
+  "recordCount": 135,
   "records": [
     {
       "id": "mount-lincoln",
@@ -7295,6 +7295,63 @@
       },
       "routeInfo": {
         "status": "matched-no-public-route",
+        "provenance": null
+      }
+    },
+    {
+      "id": "beerfit-kansas-city-brew-mile-2016",
+      "kind": "race",
+      "discipline": "road",
+      "name": "BeerFit Kansas City Brew Mile",
+      "year": 2016,
+      "date": "2016-06-04",
+      "distance": "1 Mile",
+      "officialDistance": "1 Mile",
+      "officialDistanceKm": 1.60934,
+      "officialDistanceMi": 1,
+      "location": "Arrowhead Stadium, Kansas City, Missouri",
+      "region": "Missouri",
+      "lat": 39.048172,
+      "lon": -94.48802,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "641962098",
+      "stravaActivityName": "Lunch Run",
+      "stravaDistanceKm": 1.7042,
+      "stravaDistanceMi": 1.06,
+      "stravaElapsedSeconds": 572,
+      "stravaMovingSeconds": 545,
+      "elevationGainM": 0,
+      "routeStatus": "gps-source-available",
+      "matchSource": "Exact June 4, 2016 post-5K Strava run + Arrowhead Stadium GPX + contemporary BeerFit Kansas City 5K/Brew Mile event documentation + user confirmation",
+      "matchConfidence": "verified",
+      "note": "Strava activity 641962098 was recorded at Arrowhead Stadium about an hour after the BeerFit 5K Classic. It records 1.7042 km (1.06 mi), matching the event's Brew Mile format. The race is published independently so the two BeerFit races can later be grouped into one multi-event Story without collapsing their identities.",
+      "_catalogSource": "data/strava-mining-2026-08-17-beerfit-brew-mile.json",
+      "slug": "2016-06-04-beerfit-kansas-city-brew-mile",
+      "recordClass": "race",
+      "sport": "running",
+      "startDate": "2016-06-04",
+      "finishDate": "2016-06-04",
+      "distanceInfo": {
+        "km": 1.60934,
+        "mi": 1,
+        "label": "1 Mile",
+        "source": "official"
+      },
+      "locationInfo": {
+        "label": "Arrowhead Stadium, Kansas City, Missouri",
+        "region": "Missouri",
+        "lat": 39.048172,
+        "lon": -94.48802,
+        "precision": "gps-start"
+      },
+      "evidence": {
+        "source": "Exact June 4, 2016 post-5K Strava run + Arrowhead Stadium GPX + contemporary BeerFit Kansas City 5K/Brew Mile event documentation + user confirmation",
+        "matchSource": "Exact June 4, 2016 post-5K Strava run + Arrowhead Stadium GPX + contemporary BeerFit Kansas City 5K/Brew Mile event documentation + user confirmation",
+        "resultSource": null,
+        "confidence": "verified"
+      },
+      "routeInfo": {
+        "status": "gps-source-available",
         "provenance": null
       }
     },

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "sourceCount": 33,
-  "recordCount": 137,
+  "sourceCount": 34,
+  "recordCount": 138,
   "layeredMergeCount": 38,
   "adventures": [
     {
@@ -3313,6 +3313,35 @@
       "elapsedSeconds": 8889
     },
     {
+      "id": "beerfit-kansas-city-brew-mile-2016",
+      "kind": "race",
+      "discipline": "road",
+      "name": "BeerFit Kansas City Brew Mile",
+      "year": 2016,
+      "date": "2016-06-04",
+      "distance": "1 Mile",
+      "officialDistance": "1 Mile",
+      "officialDistanceKm": 1.60934,
+      "officialDistanceMi": 1,
+      "location": "Arrowhead Stadium, Kansas City, Missouri",
+      "region": "Missouri",
+      "lat": 39.048172,
+      "lon": -94.48802,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "641962098",
+      "stravaActivityName": "Lunch Run",
+      "stravaDistanceKm": 1.7042,
+      "stravaDistanceMi": 1.06,
+      "stravaElapsedSeconds": 572,
+      "stravaMovingSeconds": 545,
+      "elevationGainM": 0,
+      "routeStatus": "gps-source-available",
+      "matchSource": "Exact June 4, 2016 post-5K Strava run + Arrowhead Stadium GPX + contemporary BeerFit Kansas City 5K/Brew Mile event documentation + user confirmation",
+      "matchConfidence": "verified",
+      "note": "Strava activity 641962098 was recorded at Arrowhead Stadium about an hour after the BeerFit 5K Classic. It records 1.7042 km (1.06 mi), matching the event's Brew Mile format. The race is published independently so the two BeerFit races can later be grouped into one multi-event Story without collapsing their identities.",
+      "_catalogSource": "data/strava-mining-2026-08-17-beerfit-brew-mile.json"
+    },
+    {
       "id": "pi-miler-2015",
       "kind": "race",
       "discipline": "trail",
@@ -3919,6 +3948,9 @@
       "data/strava-mining-2026-08-11i.json",
       "data/official-results-overrides.json"
     ],
+    "beerfit-kansas-city-brew-mile-2016": [
+      "data/strava-mining-2026-08-17-beerfit-brew-mile.json"
+    ],
     "pi-miler-2015": [
       "data/official-results-overrides.json"
     ],
@@ -3963,6 +3995,7 @@
       "data/strava-mining-2026-08-11l.json",
       "data/strava-mining-2026-08-11m.json",
       "data/strava-mining-2026-08-11n.json",
+      "data/strava-mining-2026-08-17-beerfit-brew-mile.json",
       "data/official-results-overrides.json",
       "data/official-results-overrides-2026-08-11b.json",
       "data/official-results-overrides-2026-08-11c.json",
