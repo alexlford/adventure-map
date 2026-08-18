@@ -28,6 +28,27 @@ jobs:
         run: npm ci
       - name: Build publication artifacts
         run: npm run build:publish
+      - name: Capture generated publication artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-publication
+          path: |
+            shared.js
+            data/catalog-layers/records.json
+            data/public-records.json
+            data/route-detail-index.json
+            sitemap.xml
+            robots.txt
+            record
+            map
+            explore
+            timeline
+            stories
+            races
+            summits
+            skiing
+            nordic
+            mtb
       - name: Run static and data validation
         run: npm run validate:all
       - name: Test maintenance pipeline
