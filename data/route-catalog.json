@@ -96,7 +96,13 @@
     "data/strava-route-full-resolution-baltimore-shamrock-5k-2020-deferred-virtual.json",
     "data/strava-route-full-resolution-beerfit-kansas-city-5k-2016.json",
     "data/strava-route-full-resolution-colderbolder-2022.json",
-    "data/strava-route-full-resolution-colfax-5k-2026.json"
+    "data/strava-route-full-resolution-colfax-5k-2026.json",
+    "data/strava-route-full-resolution-colderbolder-2025.json",
+    "data/strava-route-full-resolution-rocky-mountain-5k-2025.json",
+    "data/strava-route-full-resolution-colderbolder-2024.json",
+    "data/strava-route-full-resolution-royal-gorge-groove-5k-2024.json",
+    "data/strava-route-full-resolution-super-bowl-5k-2022.json",
+    "data/strava-route-full-resolution-polar-bear-5k-2022.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
