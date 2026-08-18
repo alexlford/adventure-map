@@ -121,16 +121,16 @@
       "quality": "backfill"
     },
     "colderbolder-2024": {
-      "file": "data/strava-route-backfill-03.json",
+      "file": "data/strava-route-full-resolution-colderbolder-2024.json",
       "featureId": "strava-13066323551",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "colderbolder-2025": {
-      "file": "data/strava-route-backfill-04.json",
+      "file": "data/strava-route-full-resolution-colderbolder-2025.json",
       "featureId": "strava-16667231280",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "colfax-5k-2024": {
       "file": "data/strava-route-full-resolution-colfax-5k-2024.json",
@@ -583,10 +583,10 @@
       "quality": "backfill"
     },
     "polar-bear-5k-2022": {
-      "file": "data/strava-route-backfill-03.json",
+      "file": "data/strava-route-full-resolution-polar-bear-5k-2022.json",
       "featureId": "strava-6535048864",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "rebel-run-5k-2015": {
       "file": "data/strava-route-source-complete-02.json",
@@ -625,10 +625,10 @@
       "quality": "full-source"
     },
     "rocky-mountain-5k-2025": {
-      "file": "data/strava-route-backfill-04.json",
+      "file": "data/strava-route-full-resolution-rocky-mountain-5k-2025.json",
       "featureId": "strava-15313567459",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "rocky-mountain-half-2025": {
       "file": "data/strava-route-full-resolution-rocky-mountain-half-2025.json",
@@ -637,10 +637,10 @@
       "quality": "full-source"
     },
     "royal-gorge-groove-5k-2024": {
-      "file": "data/strava-route-backfill-02.json",
+      "file": "data/strava-route-full-resolution-royal-gorge-groove-5k-2024.json",
       "featureId": "strava-11224486648",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "royal-gorge-groove-mtb-2024": {
       "file": "data/strava-route-full-resolution-royal-gorge-groove-mtb-2024.json",
@@ -721,10 +721,10 @@
       "quality": "full-source"
     },
     "super-bowl-5k-2022": {
-      "file": "data/strava-route-backfill-03.json",
+      "file": "data/strava-route-full-resolution-super-bowl-5k-2022.json",
       "featureId": "strava-6674072473",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "tennessee-pass-nordic-weekend-2022": {
       "file": "data/strava-route-full-resolution-nordic-2022-01-02.json",
