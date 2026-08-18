@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
-  "routeCatalogUpdatedOn": "2026-08-17",
+  "routeCatalogUpdatedOn": "2026-08-18",
   "recordCount": 127,
   "featureCount": 117,
   "records": {
@@ -271,10 +271,10 @@
       "quality": "full-source"
     },
     "illinois-marathon-2015": {
-      "file": "data/strava-route-rdp3-16.json",
+      "file": "data/strava-route-full-resolution-illinois-marathon-2015.json",
       "featureId": "strava-641965920",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "kansas-city-marathon-2019": {
       "file": "data/strava-route-full-resolution-kansas-city-marathon-2019.json",
