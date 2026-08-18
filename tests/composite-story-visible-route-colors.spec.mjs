@@ -20,8 +20,10 @@ test('Royal Gorge Story shows only route-key colors on visible component routes'
 
   // Computed stroke is intentional here. A CSS !important rule can repaint a
   // Leaflet path onscreen while its presentation attribute still looks correct.
+  // Exclude the location-point SVG path because its white outline is a marker,
+  // not one of the Story's component routes.
   await expect.poll(async () => {
-    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
+    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path.leaflet-interactive:not(.detail-location-point)').evaluateAll(nodes =>
       nodes.map(node => String(getComputedStyle(node).stroke || node.getAttribute('stroke') || '').trim().toLowerCase())
     )).map(normalizeCssColor);
     return [...new Set(strokes.filter(color => color && color !== 'transparent'))].sort();
