@@ -1,0 +1,64 @@
+name: Materialize Frisco BrewSki full-source route
+
+on:
+  push:
+    branches:
+      - agent/full-source-backfill-priority-6-2026-08
+    paths:
+      - '.github/workflows/materialize-frisco-brewski-full-source.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v6
+        with:
+          ref: agent/full-source-backfill-priority-6-2026-08
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+      - name: Register full-source route
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('data/route-catalog.json')
+          data = json.loads(p.read_text())
+          data['updatedOn'] = '2026-08-18'
+          route_file = 'data/strava-route-full-resolution-frisco-brewski-2024.json'
+          if route_file not in data['polylineFiles']:
+              data['polylineFiles'].append(route_file)
+          dense = data.setdefault('qualityExpectations', {}).setdefault('denseRoutes', [])
+          rid = 'strava-10926255561'
+          entry = {'id': rid, 'minPoints': 8300, 'resolutionPrefix': 'full-source-track'}
+          for i, item in enumerate(dense):
+              if item.get('id') == rid:
+                  dense[i] = entry
+                  break
+          else:
+              dense.append(entry)
+          p.write_text(json.dumps(data, indent=2) + '\n')
+          PY
+      - name: Build publication artifacts
+        run: npm run build:publish
+      - name: Advance route quality floor
+        run: node scripts/update-route-detail-quality-floor.mjs
+      - name: Validate publication
+        run: npm run validate:all
+      - name: Remove one-time materializer and commit
+        run: |
+          git rm .github/workflows/materialize-frisco-brewski-full-source.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish full-source Frisco BrewSki route"
+          git push origin HEAD:agent/full-source-backfill-priority-6-2026-08
