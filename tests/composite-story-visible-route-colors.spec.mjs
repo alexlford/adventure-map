@@ -17,6 +17,7 @@ test('Royal Gorge composite Story preserves route colors and mobile hierarchy', 
 
   const routeItems = page.locator('#storyRouteKey .story-route-key-item');
   await expect(routeItems).toHaveCount(2);
+  await expect(page.locator('body')).toHaveClass(/has-composite-routes/);
 
   const legend = uniqueSorted((await routeItems.evaluateAll(nodes =>
     nodes.map(node => String(getComputedStyle(node).getPropertyValue('--route-color') || '').trim().toLowerCase())
