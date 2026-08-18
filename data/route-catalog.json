@@ -84,7 +84,13 @@
     "data/strava-route-full-resolution-colfax-half-2021.json",
     "data/strava-route-full-resolution-colfax-urban-10-2024.json",
     "data/strava-route-full-resolution-estes-park-half-2021.json",
-    "data/strava-route-full-resolution-rocky-mountain-half-2025.json"
+    "data/strava-route-full-resolution-rocky-mountain-half-2025.json",
+    "data/strava-route-full-resolution-bolderboulder-2025.json",
+    "data/strava-route-full-resolution-that-dam-run-10k-2022.json",
+    "data/strava-route-full-resolution-rippetoe-rucksack-2025.json",
+    "data/strava-route-full-resolution-run-snetterton-10k-2026.json",
+    "data/strava-route-full-resolution-st-louis-turkey-trot-8k-2018.json",
+    "data/strava-route-full-resolution-valentines-day-4m-2022.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
