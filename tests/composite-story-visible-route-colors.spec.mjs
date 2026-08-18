@@ -16,16 +16,14 @@ test('Royal Gorge Story shows only route-key colors on visible component routes'
   const legend = (await page.locator('#storyRouteKey .story-route-key-item').evaluateAll(nodes =>
     nodes.map(node => String(getComputedStyle(node).getPropertyValue('--route-color') || '').trim().toLowerCase())
   )).map(normalizeCssColor);
-
-  await expect.poll(async () => page.locator('#detailMap .leaflet-overlay-pane path').count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
+  const expectedVisible = [...new Set(legend)].sort();
 
   // Use the computed stroke first. Presentation attributes can still contain the
   // correct Leaflet color while a CSS !important rule repaints the path onscreen.
-  const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
-    nodes.map(node => String(getComputedStyle(node).stroke || node.getAttribute('stroke') || '').trim().toLowerCase())
-  )).map(normalizeCssColor);
-  const visible = strokes.filter(color => color && color !== 'transparent');
-
-  expect(new Set(visible)).toEqual(new Set(legend));
-  for (const color of visible) expect(legend).toContain(color);
+  await expect.poll(async () => {
+    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
+      nodes.map(node => String(getComputedStyle(node).stroke || node.getAttribute('stroke') || '').trim().toLowerCase())
+    )).map(normalizeCssColor);
+    return [...new Set(strokes.filter(color => color && color !== 'transparent'))].sort();
+  }, { timeout: 15000 }).toEqual(expectedVisible);
 });
