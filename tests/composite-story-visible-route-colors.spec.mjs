@@ -16,14 +16,14 @@ test('Royal Gorge Story shows only route-key colors on visible component routes'
   const legend = (await page.locator('#storyRouteKey .story-route-key-item').evaluateAll(nodes =>
     nodes.map(node => String(getComputedStyle(node).getPropertyValue('--route-color') || '').trim().toLowerCase())
   )).map(normalizeCssColor);
+  const expectedVisible = [...new Set(legend)].sort();
 
-  await expect.poll(async () => page.locator('#detailMap .leaflet-overlay-pane path').count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
-
-  const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
-    nodes.map(node => String(node.getAttribute('stroke') || getComputedStyle(node).stroke || '').trim().toLowerCase())
-  )).map(normalizeCssColor);
-  const visible = strokes.filter(color => color && color !== 'transparent');
-
-  expect(new Set(visible)).toEqual(new Set(legend));
-  for (const color of visible) expect(legend).toContain(color);
+  // Computed stroke is intentional here. A CSS !important rule can repaint a
+  // Leaflet path onscreen while its presentation attribute still looks correct.
+  await expect.poll(async () => {
+    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
+      nodes.map(node => String(getComputedStyle(node).stroke || node.getAttribute('stroke') || '').trim().toLowerCase())
+    )).map(normalizeCssColor);
+    return [...new Set(strokes.filter(color => color && color !== 'transparent'))].sort();
+  }, { timeout: 15000 }).toEqual(expectedVisible);
 });
