@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceCount": 35,
-  "recordCount": 141,
+  "recordCount": 145,
   "layeredMergeCount": 38,
   "adventures": [
     {
@@ -1462,6 +1462,94 @@
       "_catalogSource": "data/mined-races.json"
     },
     {
+      "id": "snowman-shuffle-2006",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Snowman Shuffle 5K",
+      "year": 2006,
+      "date": "2006-01-07",
+      "distance": "5K",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5,
+      "officialDistanceMi": 3.11,
+      "location": "John A. Logan College, Carterville, Illinois",
+      "region": "Illinois",
+      "coordinatePrecision": "venue-placeholder",
+      "participationMode": "in-person",
+      "routeStatus": "historical-course-pending",
+      "matchSource": "User confirmation + River to River Runners 2006 event calendar",
+      "matchConfidence": "confirmed",
+      "sourceUrl": "https://r2rrelay.com/members/calendar.html",
+      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 7, 2006 5K Run and Walk at John A. Logan College. No personal GPS survives, and no historical course geometry has yet been sourced strongly enough to publish as the race route.",
+      "_catalogSource": "data/user-confirmed-races.json"
+    },
+    {
+      "id": "snowman-shuffle-2007",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Snowman Shuffle 5K",
+      "year": 2007,
+      "date": "2007-01-06",
+      "distance": "5K",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5,
+      "officialDistanceMi": 3.11,
+      "location": "John A. Logan College, Carterville, Illinois",
+      "region": "Illinois",
+      "coordinatePrecision": "venue-placeholder",
+      "participationMode": "in-person",
+      "routeStatus": "historical-course-pending",
+      "matchSource": "User confirmation + River to River Runners 2007 event calendar",
+      "matchConfidence": "confirmed",
+      "sourceUrl": "https://r2rrelay.com/members/calendar.html",
+      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 6, 2007 5K Run and Walk at John A. Logan College. No personal GPS survives, and no historical course geometry has yet been sourced strongly enough to publish as the race route.",
+      "_catalogSource": "data/user-confirmed-races.json"
+    },
+    {
+      "id": "snowman-shuffle-2008",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Snowman Shuffle 5K",
+      "year": 2008,
+      "date": "2008-01-05",
+      "distance": "5K",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5,
+      "officialDistanceMi": 3.11,
+      "location": "John A. Logan College, Carterville, Illinois",
+      "region": "Illinois",
+      "coordinatePrecision": "venue-placeholder",
+      "participationMode": "in-person",
+      "routeStatus": "historical-course-pending",
+      "matchSource": "User confirmation + River to River Runners 2008 event calendar",
+      "matchConfidence": "confirmed",
+      "sourceUrl": "https://r2rrelay.com/members/calendar.html",
+      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 5, 2008 5K Run and Walk at John A. Logan College. No personal GPS survives, and no historical course geometry has yet been sourced strongly enough to publish as the race route.",
+      "_catalogSource": "data/user-confirmed-races.json"
+    },
+    {
+      "id": "snowman-shuffle-2009",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Snowman Shuffle 5K",
+      "year": 2009,
+      "date": "2009-01-03",
+      "distance": "5K",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5,
+      "officialDistanceMi": 3.11,
+      "location": "John A. Logan College, Carterville, Illinois",
+      "region": "Illinois",
+      "coordinatePrecision": "venue-placeholder",
+      "participationMode": "in-person",
+      "routeStatus": "historical-course-pending",
+      "matchSource": "User confirmation + River to River Runners 2009 event calendar",
+      "matchConfidence": "confirmed",
+      "sourceUrl": "https://r2rrelay.com/members/calendar.html",
+      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 3, 2009 5K Run and Walk at John A. Logan College. No personal GPS survives, and no historical course geometry has yet been sourced strongly enough to publish as the race route.",
+      "_catalogSource": "data/user-confirmed-races.json"
+    },
+    {
       "id": "ugly-sweater-run-2012",
       "kind": "event",
       "discipline": "road",
@@ -1512,6 +1600,7 @@
       "routeStatus": "gps-source-available",
       "matchSource": "User instruction to treat the 2021 virtual Snowman Shuffle as completed + January 10, 2021 Strava 5.06 km activity",
       "matchConfidence": "confirmed",
+      "participationMode": "virtual",
       "note": "User confirms the 2021 Snowman Shuffle as a virtual completion. The matched Strava activity was completed in Baltimore on January 10, 2021 and recorded 5.0592 km in 28:08 elapsed (28:01 moving). No official individual result is asserted; the participation identity is user-confirmed and the attached route is the personal GPS track from the virtual 5K.",
       "_catalogSource": "data/user-confirmed-races.json"
     },
@@ -3788,6 +3877,18 @@
     ],
     "big-12-run-12k-2016": [
       "data/mined-races.json"
+    ],
+    "snowman-shuffle-2006": [
+      "data/user-confirmed-races.json"
+    ],
+    "snowman-shuffle-2007": [
+      "data/user-confirmed-races.json"
+    ],
+    "snowman-shuffle-2008": [
+      "data/user-confirmed-races.json"
+    ],
+    "snowman-shuffle-2009": [
+      "data/user-confirmed-races.json"
     ],
     "ugly-sweater-run-2012": [
       "data/user-confirmed-races.json"
