@@ -48,7 +48,7 @@ test('multi-sport Royal Gorge story uses distinct semantic route colors', async 
 });
 
 test('multi-day same-sport Kokopelli story assigns a distinct color to each day', async ({ page }) => {
-  await expectCompositeStory(page, 'kokopelli-three-day-2025', 3, '.story-linked-record.has-route-color');
+  await expectCompositeStory(page, 'kokopelli-three-day-2025', 3, '.story-component.has-route-color');
 });
 
 test('single-route records do not add a composite route key', async ({ page }) => {
