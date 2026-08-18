@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 136,
+  "recordCount": 137,
   "records": [
     {
       "id": "mount-lincoln",
@@ -3423,6 +3423,60 @@
       },
       "routeInfo": {
         "status": "gps",
+        "provenance": null
+      }
+    },
+    {
+      "id": "ugly-sweater-run-2012",
+      "kind": "event",
+      "discipline": "road",
+      "name": "Ugly Sweater Fun Run",
+      "year": 2012,
+      "date": "2012-12-01",
+      "distance": "Fun Run",
+      "location": "Watson Park, Lawrence, Kansas",
+      "region": "Kansas",
+      "lat": 38.9711,
+      "lon": -95.2395,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "643102245",
+      "stravaActivityName": "Running 12/1/12 2:07 pm",
+      "stravaDistanceKm": 3.9461,
+      "stravaDistanceMi": 2.45,
+      "stravaElapsedSeconds": 1509,
+      "stravaMovingSeconds": 1509,
+      "elevationGainM": 10.5,
+      "routeStatus": "gps-source-available",
+      "matchSource": "Strava activity description 'Ugly Sweater Run!' + exact December 1, 2012 date + 2:07 PM Watson Park GPS start + contemporary Lawrence event coverage + user confirmation",
+      "matchConfidence": "confirmed",
+      "note": "User confirms this was a fun run rather than a formal 5K race. The matched Strava activity begins at 2:07 PM from Watson Park and its own description says 'Ugly Sweater Run!'. Strava recorded 3.9461 km in 25:09; those metrics are retained as personal activity evidence without asserting an official race distance or result.",
+      "_catalogSource": "data/user-confirmed-races.json",
+      "slug": "2012-12-01-ugly-sweater-fun-run",
+      "recordClass": "event",
+      "sport": "adventure",
+      "startDate": "2012-12-01",
+      "finishDate": "2012-12-01",
+      "distanceInfo": {
+        "km": null,
+        "mi": null,
+        "label": "Fun Run",
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Watson Park, Lawrence, Kansas",
+        "region": "Kansas",
+        "lat": 38.9711,
+        "lon": -95.2395,
+        "precision": "gps-start"
+      },
+      "evidence": {
+        "source": "Strava activity description 'Ugly Sweater Run!' + exact December 1, 2012 date + 2:07 PM Watson Park GPS start + contemporary Lawrence event coverage + user confirmation",
+        "matchSource": "Strava activity description 'Ugly Sweater Run!' + exact December 1, 2012 date + 2:07 PM Watson Park GPS start + contemporary Lawrence event coverage + user confirmation",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "gps-source-available",
         "provenance": null
       }
     },
