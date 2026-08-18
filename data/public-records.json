@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 142,
+  "recordCount": 149,
   "records": [
     {
       "id": "mount-lincoln",
@@ -3901,6 +3901,323 @@
       },
       "routeInfo": {
         "status": "gps-source-available",
+        "provenance": null
+      }
+    },
+    {
+      "id": "snowman-shuffle-series",
+      "slug": "snowman-shuffle-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Snowman Shuffle",
+      "year": 2006,
+      "date": "2006-01-07",
+      "endDate": "2021-01-10",
+      "distance": "Five 5K editions",
+      "location": "John A. Logan College, Carterville, Illinois + 2021 virtual completion",
+      "region": "Illinois / Maryland",
+      "routeStatus": "multi-event-match",
+      "matchSource": "User confirmation + River to River Runners historical calendars + 2021 virtual event record + Strava",
+      "matchConfidence": "confirmed",
+      "note": "A recurring Snowman Shuffle chapter spanning four in-person 5Ks at John A. Logan College in 2006–2009 and the 2021 virtual edition completed in Baltimore. The early editions predate the surviving Strava archive, so their event records are preserved separately from the 2021 personal GPS route.",
+      "_catalogSource": "data/notable-adventures.json",
+      "recordClass": "adventure",
+      "sport": "adventure",
+      "startDate": "2006-01-07",
+      "finishDate": "2021-01-10",
+      "distanceInfo": {
+        "km": null,
+        "mi": null,
+        "label": "Five 5K editions",
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "John A. Logan College, Carterville, Illinois + 2021 virtual completion",
+        "region": "Illinois / Maryland",
+        "lat": null,
+        "lon": null,
+        "precision": null
+      },
+      "evidence": {
+        "source": "User confirmation + River to River Runners historical calendars + 2021 virtual event record + Strava",
+        "matchSource": "User confirmation + River to River Runners historical calendars + 2021 virtual event record + Strava",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "multi-event-match",
+        "provenance": null
+      }
+    },
+    {
+      "id": "river-to-river-relay-series-story",
+      "slug": "river-to-river-relay-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "River to River Relay",
+      "year": 2006,
+      "date": "2006-04-22",
+      "endDate": "2010-04-17",
+      "distance": "Three relay editions",
+      "location": "Southern Illinois",
+      "region": "Illinois",
+      "routeStatus": "historical-course",
+      "matchSource": "Official River to River Relay results + historical course archive",
+      "matchConfidence": "verified",
+      "note": "Three editions of the classic Southern Illinois point-to-point relay: 2006 with Cambria Moonsnakes, 2008 with Team Swampass, and 2010 with Legion of Doom. The shared route is a historical full-course reference, not a personal GPS track.",
+      "_catalogSource": "data/notable-adventures.json",
+      "recordClass": "adventure",
+      "sport": "adventure",
+      "startDate": "2006-04-22",
+      "finishDate": "2010-04-17",
+      "distanceInfo": {
+        "km": null,
+        "mi": null,
+        "label": "Three relay editions",
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Southern Illinois",
+        "region": "Illinois",
+        "lat": null,
+        "lon": null,
+        "precision": null
+      },
+      "evidence": {
+        "source": "Official River to River Relay results + historical course archive",
+        "matchSource": "Official River to River Relay results + historical course archive",
+        "resultSource": null,
+        "confidence": "verified"
+      },
+      "routeInfo": {
+        "status": "historical-course",
+        "provenance": null
+      }
+    },
+    {
+      "id": "illinois-marathon-weekend-series",
+      "slug": "illinois-marathon-weekend-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Illinois Marathon Weekend",
+      "year": 2015,
+      "date": "2015-04-24",
+      "endDate": "2016-04-30",
+      "distance": "Two race weekends · 5K + Marathon / Half Marathon",
+      "location": "Champaign-Urbana, Illinois",
+      "region": "Illinois",
+      "lat": 40.0998,
+      "lon": -88.2362,
+      "routeStatus": "multi-event-match",
+      "matchSource": "Strava + Illinois Marathon weekend schedules + medal evidence",
+      "matchConfidence": "confirmed",
+      "note": "Two Illinois Marathon weekends: the 2015 5K plus full marathon I-Challenge and the 2016 5K plus half marathon Half I-Challenge.",
+      "_catalogSource": "data/notable-adventures.json",
+      "recordClass": "adventure",
+      "sport": "adventure",
+      "startDate": "2015-04-24",
+      "finishDate": "2016-04-30",
+      "distanceInfo": {
+        "km": null,
+        "mi": null,
+        "label": "Two race weekends · 5K + Marathon / Half Marathon",
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Champaign-Urbana, Illinois",
+        "region": "Illinois",
+        "lat": 40.0998,
+        "lon": -88.2362,
+        "precision": "unknown"
+      },
+      "evidence": {
+        "source": "Strava + Illinois Marathon weekend schedules + medal evidence",
+        "matchSource": "Strava + Illinois Marathon weekend schedules + medal evidence",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "multi-event-match",
+        "provenance": null
+      }
+    },
+    {
+      "id": "rundenver-series-story",
+      "slug": "rundenver-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "RunDenver Series",
+      "year": 2021,
+      "date": "2021-12-05",
+      "endDate": "2022-03-06",
+      "distance": "Five winter-series races",
+      "location": "Denver metro, Colorado",
+      "region": "Colorado",
+      "routeStatus": "multi-event-match",
+      "matchSource": "Organizer schedules + medal evidence + Strava",
+      "matchConfidence": "confirmed",
+      "note": "Five races from the 2021–22 RunDenver winter series: Rudolph Ramble, Polar Bear, Super Bowl, Valentine's Day, and That Dam Run, with in-person and virtual completions kept distinct.",
+      "_catalogSource": "data/notable-adventures.json",
+      "recordClass": "adventure",
+      "sport": "adventure",
+      "startDate": "2021-12-05",
+      "finishDate": "2022-03-06",
+      "distanceInfo": {
+        "km": null,
+        "mi": null,
+        "label": "Five winter-series races",
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Denver metro, Colorado",
+        "region": "Colorado",
+        "lat": null,
+        "lon": null,
+        "precision": null
+      },
+      "evidence": {
+        "source": "Organizer schedules + medal evidence + Strava",
+        "matchSource": "Organizer schedules + medal evidence + Strava",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "multi-event-match",
+        "provenance": null
+      }
+    },
+    {
+      "id": "bolderboulder-series-story",
+      "slug": "bolderboulder-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "BOLDERBoulder",
+      "year": 2022,
+      "date": "2022-05-30",
+      "endDate": "2025-05-26",
+      "distance": "Four consecutive 10K editions",
+      "location": "Boulder, Colorado",
+      "region": "Colorado",
+      "routeStatus": "multi-event-gps",
+      "matchSource": "Official BOLDERBoulder results + Strava GPS",
+      "matchConfidence": "verified",
+      "note": "Four consecutive Memorial Day BOLDERBoulder 10Ks from 2022 through 2025, collected as one recurring race series while retaining each year's official result and personal GPS route.",
+      "_catalogSource": "data/notable-adventures.json",
+      "recordClass": "adventure",
+      "sport": "adventure",
+      "startDate": "2022-05-30",
+      "finishDate": "2025-05-26",
+      "distanceInfo": {
+        "km": null,
+        "mi": null,
+        "label": "Four consecutive 10K editions",
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Boulder, Colorado",
+        "region": "Colorado",
+        "lat": null,
+        "lon": null,
+        "precision": null
+      },
+      "evidence": {
+        "source": "Official BOLDERBoulder results + Strava GPS",
+        "matchSource": "Official BOLDERBoulder results + Strava GPS",
+        "resultSource": null,
+        "confidence": "verified"
+      },
+      "routeInfo": {
+        "status": "multi-event-gps",
+        "provenance": null
+      }
+    },
+    {
+      "id": "colderbolder-series-story",
+      "slug": "colderbolder-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "COLDERBolder 5K",
+      "year": 2022,
+      "date": "2022-12-10",
+      "endDate": "2025-12-06",
+      "distance": "Four consecutive 5K editions",
+      "location": "Boulder, Colorado",
+      "region": "Colorado",
+      "routeStatus": "multi-event-gps",
+      "matchSource": "Organizer archives + user confirmation + Strava GPS",
+      "matchConfidence": "confirmed",
+      "note": "Four consecutive COLDERBolder 5K editions from 2022 through 2025. The 2023 edition also served as the opening leg of the self-described Colorado Triathlon.",
+      "_catalogSource": "data/notable-adventures.json",
+      "recordClass": "adventure",
+      "sport": "adventure",
+      "startDate": "2022-12-10",
+      "finishDate": "2025-12-06",
+      "distanceInfo": {
+        "km": null,
+        "mi": null,
+        "label": "Four consecutive 5K editions",
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Boulder, Colorado",
+        "region": "Colorado",
+        "lat": null,
+        "lon": null,
+        "precision": null
+      },
+      "evidence": {
+        "source": "Organizer archives + user confirmation + Strava GPS",
+        "matchSource": "Organizer archives + user confirmation + Strava GPS",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "multi-event-gps",
+        "provenance": null
+      }
+    },
+    {
+      "id": "colfax-marathon-weekend-series",
+      "slug": "denver-colfax-marathon-weekend-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Denver Colfax Marathon Weekend",
+      "year": 2021,
+      "date": "2021-10-16",
+      "endDate": "2026-05-17",
+      "distance": "Six races across four Colfax weekends",
+      "location": "Denver, Colorado",
+      "region": "Colorado",
+      "routeStatus": "multi-event-gps",
+      "matchSource": "Denver Colfax event archives + medals + Strava GPS",
+      "matchConfidence": "confirmed",
+      "note": "A recurring Colfax Marathon Weekend chapter spanning the 2021 Half Marathon, the 2024 5K and Urban 10 two-day challenge, the 2025 Marathon, and the 2026 5K and Urban 10 two-day challenge.",
+      "_catalogSource": "data/notable-adventures.json",
+      "recordClass": "adventure",
+      "sport": "adventure",
+      "startDate": "2021-10-16",
+      "finishDate": "2026-05-17",
+      "distanceInfo": {
+        "km": null,
+        "mi": null,
+        "label": "Six races across four Colfax weekends",
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Denver, Colorado",
+        "region": "Colorado",
+        "lat": null,
+        "lon": null,
+        "precision": null
+      },
+      "evidence": {
+        "source": "Denver Colfax event archives + medals + Strava GPS",
+        "matchSource": "Denver Colfax event archives + medals + Strava GPS",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "multi-event-gps",
         "provenance": null
       }
     },
