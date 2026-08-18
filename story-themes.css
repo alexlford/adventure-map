@@ -18,3 +18,27 @@ body.story-record-page{--story-accent:#27654e;--story-wash:rgba(39,101,78,.07);-
 .story-linked-record.has-route-color{position:relative;overflow:hidden;padding-left:20px}.story-linked-record.has-route-color:before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 999px 999px 0;background:var(--route-color)}
 .story-linked-record.has-route-color:hover,.story-linked-record.has-route-color:focus-visible{border-color:color-mix(in srgb,var(--route-color) 46%,var(--line));box-shadow:0 10px 28px color-mix(in srgb,var(--route-color) 10%,transparent)}
 @media(max-width:520px){.story-route-key{align-items:flex-start}.story-route-key-label{width:100%}.story-route-key-items{display:grid;grid-template-columns:1fr;width:100%;gap:8px}.story-route-key-item strong{font-size:.78rem}}
+
+/* Composite challenge presentation: keep the chapter anatomy and route identity legible on phone-sized screens. */
+.story-theme-challenge .challenge-feature{margin:34px 0 42px;padding:30px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(255,255,255,.4)),var(--story-wash);box-shadow:0 18px 42px rgba(23,32,42,.07)}
+.story-theme-challenge .challenge-feature .story-objective-head{align-items:start}
+.story-theme-challenge .challenge-feature .story-objective-stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:24px;border:0}
+.story-theme-challenge .challenge-feature .story-objective-stats article,.story-theme-challenge .challenge-feature .story-objective-stats article+article{min-width:0;padding:13px 14px;border:1px solid rgba(23,32,42,.1);border-radius:13px;background:rgba(255,255,255,.78)}
+.story-theme-challenge .challenge-feature .story-objective-stats small{margin:0 0 5px;line-height:1.15}
+.story-theme-challenge .challenge-feature .story-objective-stats strong{margin:0;overflow-wrap:anywhere}
+.story-theme-challenge .story-component-chain{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.story-theme-challenge .story-component{min-height:148px;padding:17px 18px 16px 21px;background:rgba(255,255,255,.84);box-shadow:0 6px 18px rgba(23,32,42,.035)}
+.story-theme-challenge .story-component strong{font-size:1.08rem;overflow-wrap:anywhere}
+.story-theme-challenge .story-component em{padding-top:13px}
+.story-theme-challenge .story-component.has-route-color:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--route-color)}
+.story-theme-challenge .story-component.has-route-color:after{display:none}
+.story-route-key{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;gap:10px 14px;margin:10px 0 16px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.82)}
+.story-route-key-label{padding-top:10px;white-space:nowrap}
+.story-route-key-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
+.story-route-key-item{display:grid;grid-template-columns:32px minmax(0,1fr);align-items:center;gap:9px;min-width:0;padding:9px 10px;border:1px solid rgba(23,32,42,.09);border-radius:11px;background:rgba(247,244,238,.72)}
+.story-route-key-line{width:30px;height:4px}
+.story-route-key-item strong{font-size:.78rem;line-height:1.16;overflow-wrap:anywhere}
+.story-route-key-item small{margin-top:3px;font-size:.6rem;line-height:1.25}
+@media(max-width:760px){.story-theme-challenge .challenge-feature .story-objective-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.story-theme-challenge .challenge-feature{margin:26px 0 34px;padding:18px 16px;border-radius:19px}.story-theme-challenge .challenge-feature .story-objective-head{gap:9px}.story-theme-challenge .challenge-feature .story-objective-head h3{font-size:clamp(2rem,10vw,2.65rem);line-height:.96}.story-theme-challenge .challenge-feature .story-objective-head>p{font-size:.8rem;line-height:1.5}.story-theme-challenge .challenge-feature .story-objective-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:18px}.story-theme-challenge .challenge-feature .story-objective-stats article,.story-theme-challenge .challenge-feature .story-objective-stats article+article{padding:11px 12px}.story-theme-challenge .story-component-chain{grid-template-columns:1fr;gap:9px;margin-top:12px}.story-theme-challenge .story-component{min-height:0;padding:15px 17px 14px 20px}.story-theme-challenge .story-component>span{font-size:1.55rem}.story-theme-challenge .story-component strong{margin-top:9px}.story-theme-challenge .story-component em{margin-top:5px;padding-top:0}.story-route-key{grid-template-columns:1fr;gap:7px;padding:11px}.story-route-key-label{width:auto;padding-top:0}.story-route-key-items{grid-template-columns:1fr;gap:7px}.story-route-key-item{padding:9px}.story-route-key-item strong{font-size:.8rem}.story-route-key-item small{font-size:.62rem}}
+@media(max-width:360px){.story-theme-challenge .challenge-feature .story-objective-stats{grid-template-columns:1fr}}
