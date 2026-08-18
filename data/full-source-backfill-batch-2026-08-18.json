@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "source": "Strava account export export_16347985.zip",
+  "policy": "Planning manifest only. A record is not promoted to full-source until its encoded route, route catalog entry, generated publication artifacts, quality floor, and browser/data validations are committed together.",
+  "candidates": [
+    {
+      "recordId": "frisco-brewski-2024",
+      "featureId": "strava-10926255561",
+      "sourceFile": "activities/10926255561.gpx",
+      "sourcePointCount": 8315,
+      "sourceGapCountOver180m": 0,
+      "currentQuality": "rdp-3m",
+      "targetQuality": "full-source",
+      "status": "source-verified"
+    },
+    {
+      "recordId": "midland-hill",
+      "featureId": "strava-9635633600",
+      "sourceFile": "activities/9635633600.gpx",
+      "sourcePointCount": 10286,
+      "sourceGapCountOver180m": 0,
+      "currentQuality": "rdp-3m",
+      "targetQuality": "full-source",
+      "status": "source-verified"
+    },
+    {
+      "recordId": "stagecoach-classic-15k-2024",
+      "featureId": "strava-10596610840",
+      "sourceFile": "activities/10596610840.gpx",
+      "sourcePointCount": 6972,
+      "sourceGapCountOver180m": 0,
+      "currentQuality": "rdp-3m",
+      "targetQuality": "full-source",
+      "status": "source-verified"
+    },
+    {
+      "recordId": "mount-jumullong-manglo",
+      "featureId": "strava-7123707788",
+      "sourceFile": "activities/7584342142.fit.gz",
+      "currentQuality": "rdp-3m",
+      "targetQuality": "full-source",
+      "status": "fit-source-identified"
+    },
+    {
+      "recordId": "hawksbill-mountain",
+      "featureId": "strava-4469336427",
+      "sourceFile": "activities/4775858438.fit.gz",
+      "currentQuality": "rdp-3m",
+      "targetQuality": "full-source",
+      "status": "fit-source-identified"
+    }
+  ]
+}
