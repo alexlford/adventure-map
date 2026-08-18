@@ -1,0 +1,41 @@
+name: Materialize Midland and Stagecoach full-source routes
+
+on:
+  push:
+    branches:
+      - agent/full-source-midland-stagecoach-2026-08
+    paths:
+      - '.github/workflows/materialize-midland-stagecoach-full-source.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: agent/full-source-midland-stagecoach-2026-08
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Materialize exact Strava source geometry
+        run: |
+          node scripts/materialize-full-source-routes.mjs --route midland-hill --route stagecoach-classic-15k-2024
+      - name: Build and validate publication
+        run: |
+          npm run build:publish
+          node scripts/update-route-detail-quality-floor.mjs
+          npm run validate:all
+      - name: Remove one-time materializer and commit
+        run: |
+          git rm .github/workflows/materialize-midland-stagecoach-full-source.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish full-source Midland Hill and Stagecoach routes"
+          git push origin HEAD:agent/full-source-midland-stagecoach-2026-08
