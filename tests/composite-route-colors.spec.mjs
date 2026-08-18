@@ -32,10 +32,11 @@ async function expectCompositeStory(page, recordId, expectedCount, cardSelector)
   await expect(page.locator('#storyRouteKey .story-route-key-item')).toHaveCount(expectedCount);
   const legendColors = await routeKeyColors(page);
   expect(new Set(legendColors).size).toBe(expectedCount);
-  await expect.poll(async () => (await routeStrokeColors(page)).filter(color => !isTransparentStroke(color)).length, { timeout: 15000 }).toBeGreaterThanOrEqual(expectedCount);
-  const strokes = (await routeStrokeColors(page)).filter(color => !isTransparentStroke(color));
-  for (const color of legendColors) expect(strokes).toContain(color);
-  for (const color of strokes) expect(legendColors).toContain(color);
+  const expectedVisibleColors = [...new Set(legendColors)].sort();
+  await expect.poll(async () => {
+    const strokes = (await routeStrokeColors(page)).filter(color => !isTransparentStroke(color));
+    return [...new Set(strokes)].sort();
+  }, { timeout: 15000 }).toEqual(expectedVisibleColors);
   const cardColors = await componentColors(page, cardSelector);
   expect(cardColors).toEqual(legendColors);
   return legendColors;
