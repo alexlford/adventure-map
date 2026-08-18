@@ -1,0 +1,87 @@
+name: Materialize BeerFit Kansas City Story
+
+on:
+  push:
+    branches:
+      - feature/beerfit-kansas-city-story-2016
+    paths:
+      - '.github/workflows/materialize-beerfit-kansas-city-story.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Story branch
+        uses: actions/checkout@v6
+        with:
+          ref: feature/beerfit-kansas-city-story-2016
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+      - name: Register Story evidence and relationship
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          source_id = 'editorial-beerfit-kansas-city-2016'
+          source_path = 'data/notable-adventures-2026-08-17-beerfit-kansas-city.json'
+
+          p = Path('data/evidence-sources.json')
+          manifest = json.loads(p.read_text())
+          manifest['updatedOn'] = '2026-08-17'
+          if not any(s.get('id') == source_id for s in manifest['sources']):
+              manifest['sources'].append({
+                  'id': source_id,
+                  'path': source_path,
+                  'layer': 'editorial',
+                  'description': 'Same-day BeerFit Kansas City 2016 Story grouping the independently published 5K Classic and Brew Mile race records.'
+              })
+          if source_id not in manifest['loadOrder']:
+              idx = manifest['loadOrder'].index('official-results-base')
+              manifest['loadOrder'].insert(idx, source_id)
+          p.write_text(json.dumps(manifest, indent=2) + '\n')
+
+          p = Path('data/relationships.json')
+          payload = json.loads(p.read_text())
+          payload['updatedOn'] = '2026-08-17'
+          relationship = {
+              'id': 'beerfit-kansas-city-2016',
+              'type': 'same-day',
+              'name': 'BeerFit Kansas City 2016',
+              'years': [2016],
+              'memberIds': [
+                  'beerfit-kansas-city-5k-2016',
+                  'beerfit-kansas-city-brew-mile-2016'
+              ],
+              'adventureId': 'beerfit-kansas-city-2016',
+              'summary': 'BeerFit Kansas City at Arrowhead Stadium: the 5K Classic followed by the Brew Mile on June 4, 2016.'
+          }
+          relationships = payload.setdefault('relationships', [])
+          existing = next((i for i, item in enumerate(relationships) if item.get('id') == relationship['id']), None)
+          if existing is None:
+              relationships.append(relationship)
+          else:
+              relationships[existing] = relationship
+          p.write_text(json.dumps(payload, indent=2) + '\n')
+          PY
+      - name: Build Story publication
+        run: npm run build:publish
+      - name: Validate Story publication
+        run: npm run validate:all
+      - name: Remove one-time materializer and commit publication
+        run: |
+          git rm .github/workflows/materialize-beerfit-kansas-city-story.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish BeerFit Kansas City multi-event Story"
+          git push origin HEAD:feature/beerfit-kansas-city-story-2016
