@@ -3,8 +3,8 @@
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
   "routeCatalogUpdatedOn": "2026-08-18",
-  "recordCount": 127,
-  "featureCount": 117,
+  "recordCount": 128,
+  "featureCount": 118,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
@@ -748,6 +748,12 @@
       "file": "data/strava-route-full-resolution-twin-cities-2015.json",
       "featureId": "strava-641964287",
       "format": "polyline",
+      "quality": "full-source"
+    },
+    "ugly-sweater-run-2012": {
+      "file": "data/event-routes.geojson",
+      "featureId": "strava-643102245",
+      "format": "geojson",
       "quality": "full-source"
     },
     "universal-sole-virtual-5k-2020": {
