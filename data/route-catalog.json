@@ -270,14 +270,6 @@
       "provenance": "historical-course",
       "sourceLabel": "Brew to Brew historical race archives + preserved participant guide",
       "note": "Shared historical 2013 relay overview; simplified exchange/corridor geometry, not turn-by-turn GPS and not the user's individual-leg recording."
-    },
-    "strava-643096101": {
-      "adventureIds": [
-        "brew-to-brew-relay-2013"
-      ],
-      "provenance": "personal-gps",
-      "sourceLabel": "Strava FIT export",
-      "note": "Personal GPS recording of Alex's 2013 Brew to Brew Leg 3; all 841 recorded FIT points are retained."
     }
   },
   "recordOverrides": {
