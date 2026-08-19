@@ -8,7 +8,7 @@
 
   routes.compositeRouteColor = (feature, context) => {
     const isComposite = Boolean(context?.recordId && context?.members?.length);
-    document.getElementById('detailMap')?.classList.toggle('has-composite-routes', isComposite);
+    if (isComposite) document.getElementById('detailMap')?.classList.add('has-composite-routes');
 
     const memberColor = resolveCompositeColor(feature, context);
     if (memberColor) return memberColor;
