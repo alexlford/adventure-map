@@ -50,7 +50,7 @@
       "region": "Colorado",
       "lat": 39.692913,
       "lon": -104.968327,
-      "coordinatePrecision": "gps-course-start",
+      "coordinatePrecision": "gps-course",
       "stravaActivityId": "10269813911",
       "stravaActivityName": "Nike Run Club: Thursday Morning Run",
       "stravaDistanceKm": 8.186,
