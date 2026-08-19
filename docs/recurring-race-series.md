@@ -33,6 +33,12 @@ Official organizer/timer results are always preferred. GPS elapsed time is used 
 
 The audit is generated during `npm run build:publish` and checked by `npm run validate:all`. It is intentionally a review aid: heuristic candidate families are never auto-promoted into public series without evidence.
 
+### Initial audit baseline
+
+The first generated audit covers **76 race records across 10 recurring series**. It found **no repeated multi-year race-name family left outside the recurring-series relationship model**, which means the current family structure is complete under the audit's conservative naming heuristic. The remaining work is evidence enrichment rather than adding obvious missing umbrella pages.
+
+The initial research queue contains **33 evidence tasks**. Highest-value gaps include published results for the Colfax weekend records, BOLDERBoulder 2023 and 2025, COLDERBolder 2022, the Illinois Marathon Weekend records, RunDenver, Turkey Trot, and Garmin/Land of Oz. Route recovery is concentrated in River to River Relay (2006, 2008, 2010) plus the 2015 Illinois 5K.
+
 ## Historical route policy
 
 Personal GPS remains the preferred route source. Organizer-issued or edition-specific historical geometry can also be used with explicit provenance. When the user explicitly approves a current or oldest-known course as a historical proxy, that geometry may be attached to earlier editions only when it is clearly labeled as a representative historical-course proxy rather than personal GPS or proof that every turn was identical.
