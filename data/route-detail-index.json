@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
-  "routeCatalogUpdatedOn": "2026-08-18",
+  "routeCatalogUpdatedOn": "2026-08-19",
   "recordCount": 138,
   "featureCount": 124,
   "records": {
@@ -91,7 +91,7 @@
       "quality": "full-source"
     },
     "brew-to-brew-relay-2013": {
-      "file": "data/strava-route-full-resolution-beerfit-kansas-city-brew-mile-2016.json",
+      "file": "data/strava-route-full-resolution-brew-to-brew-2013.json",
       "featureId": "strava-643096101",
       "format": "polyline",
       "quality": "full-source"
