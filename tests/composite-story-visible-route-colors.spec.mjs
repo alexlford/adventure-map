@@ -9,21 +9,29 @@ const normalizeCssColor = value => {
   return `#${match.slice(1, 4).map(part => Number(part).toString(16).padStart(2, '0')).join('')}`;
 };
 
-test('Royal Gorge Story shows only route-key colors on visible component routes', async ({ page }) => {
+const uniqueSorted = values => [...new Set(values.filter(Boolean))].sort();
+
+test('Royal Gorge Story renders the two route-key colors on the map', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/detail.html?record=royal-gorge-groove-weekend-2024', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#storyRouteKey .story-route-key-item')).toHaveCount(2);
 
-  const legend = (await page.locator('#storyRouteKey .story-route-key-item').evaluateAll(nodes =>
+  const routeItems = page.locator('#storyRouteKey .story-route-key-item');
+  await expect(routeItems).toHaveCount(2);
+
+  await page.waitForFunction(() => {
+    const link = document.querySelector('link[data-adventure-map-visuals]');
+    return Boolean(link && link.sheet);
+  });
+
+  const legend = uniqueSorted((await routeItems.evaluateAll(nodes =>
     nodes.map(node => String(getComputedStyle(node).getPropertyValue('--route-color') || '').trim().toLowerCase())
-  )).map(normalizeCssColor);
+  )).map(normalizeCssColor));
+  expect(legend).toEqual(['#2f7d4a', '#b45309']);
 
-  await expect.poll(async () => page.locator('#detailMap .leaflet-overlay-pane path').count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
-
-  const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
-    nodes.map(node => String(node.getAttribute('stroke') || getComputedStyle(node).stroke || '').trim().toLowerCase())
-  )).map(normalizeCssColor);
-  const visible = strokes.filter(color => color && color !== 'transparent');
-
-  expect(new Set(visible)).toEqual(new Set(legend));
-  for (const color of visible) expect(legend).toContain(color);
+  await expect.poll(async () => {
+    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
+      nodes.map(node => String(getComputedStyle(node).stroke || '').trim().toLowerCase())
+    )).map(normalizeCssColor);
+    return uniqueSorted(strokes.filter(color => color && color !== 'transparent'));
+  }, { timeout: 15000 }).toEqual(legend);
 });
