@@ -2,270 +2,33 @@
   "schemaVersion": 1,
   "updatedOn": "2026-08-18",
   "relationships": [
-    {
-      "id": "snowman-shuffle-series",
-      "type": "series",
-      "name": "Snowman Shuffle",
-      "years": [2006, 2007, 2008, 2009, 2021],
-      "memberIds": [
-        "snowman-shuffle-2006",
-        "snowman-shuffle-2007",
-        "snowman-shuffle-2008",
-        "snowman-shuffle-2009",
-        "snowman-shuffle-2021-virtual"
-      ],
-      "adventureId": "snowman-shuffle-series",
-      "summary": "Four in-person John A. Logan College 5Ks from 2006–2009 plus the 2021 virtual edition completed in Baltimore.",
-      "routeId": "snowman-shuffle-jalc-course-proxy",
-      "routeScope": "shared-historical-course-proxy"
-    },
-    {
-      "id": "river-to-river-relay-series",
-      "type": "series",
-      "name": "River to River Relay",
-      "years": [2006, 2008, 2010],
-      "memberIds": [
-        "river-to-river-relay-2006",
-        "river-to-river-relay-2008",
-        "river-to-river-relay-2010"
-      ],
-      "adventureId": "river-to-river-relay-series-story",
-      "summary": "Three editions of the classic Southern Illinois point-to-point team relay from the Mississippi River side to the Ohio River side.",
-      "routeId": "river-to-river-relay-historical-course",
-      "routeScope": "historical-full-course"
-    },
-    {
-      "id": "pi-day-river-rotation-2015",
-      "type": "same-day",
-      "name": "Pi Day River Rotation",
-      "years": [2015],
-      "memberIds": ["pi-miler-2015", "pi-day-half-2015"],
-      "summary": "Pi Miler and Half Marathon from the March 14, 2015 Lawrence Trail Hawks Pi Day River Rotation; both were trail races in Lawrence, and the Pi Miler award records 3rd Place Men."
-    },
-    {
-      "id": "illinois-i-challenge-2015-series",
-      "type": "challenge",
-      "name": "Illinois I-Challenge",
-      "years": [2015],
-      "memberIds": ["illinois-5k-2015", "illinois-marathon-2015"],
-      "adventureId": "illinois-i-challenge-2015",
-      "summary": "2015 Illinois 5K followed by the full Illinois Marathon; the medal identifies the 42K + 5K I-Challenge."
-    },
-    {
-      "id": "illinois-marathon-weekend-series",
-      "type": "series",
-      "name": "Illinois Marathon Weekend",
-      "years": [2015, 2016],
-      "memberIds": [
-        "illinois-5k-2015",
-        "illinois-marathon-2015",
-        "illinois-5k-2016",
-        "illinois-half-2016"
-      ],
-      "adventureId": "illinois-marathon-weekend-series",
-      "summary": "Two Illinois Marathon weekends: the 2015 5K + Marathon and the 2016 5K + Half Marathon."
-    },
-    {
-      "id": "heartland-39-3-series-2016",
-      "type": "challenge",
-      "name": "Heartland 39.3",
-      "years": [2016],
-      "memberIds": ["rock-parkway-half-2016", "garmin-half-2016", "running-with-cows-half-2016"],
-      "adventureId": "heartland-39-3-2016",
-      "summary": "Three half marathons in five weeks: Rock the Parkway, Garmin Marathon in the Land of Oz Half, and Running With The Cows."
-    },
-    {
-      "id": "illinois-half-i-challenge-2016-series",
-      "type": "challenge",
-      "name": "Illinois Half I-Challenge",
-      "years": [2016],
-      "memberIds": ["illinois-5k-2016", "illinois-half-2016"],
-      "adventureId": "illinois-half-i-challenge-2016",
-      "summary": "Friday-night Presence Health 5K followed by the Illinois Half Marathon the next morning."
-    },
-    {
-      "id": "baltimoron-2018-series",
-      "type": "challenge",
-      "name": "BaltiMORON-a-thon",
-      "years": [2018],
-      "memberIds": ["baltimore-5k-2018", "baltimore-half-2018"],
-      "adventureId": "baltimoron-2018",
-      "summary": "Baltimore Running Festival 5K followed by the Half Marathon on the same day."
-    },
-    {
-      "id": "chicago-marathon-weekend-2021",
-      "type": "weekend",
-      "name": "Chicago Marathon Weekend",
-      "years": [2021],
-      "memberIds": ["abbott-chicago-5k-2021", "chicago-marathon-2021"],
-      "summary": "Abbott Chicago 5K on Saturday followed by the Bank of America Chicago Marathon on Sunday."
-    },
-    {
-      "id": "mile-high-united-way-turkey-trot-series",
-      "type": "series",
-      "name": "Mile High United Way Turkey Trot",
-      "years": [2021, 2023, 2025],
-      "memberIds": [
-        "mile-high-turkey-trot-2021",
-        "mile-high-turkey-trot-2023",
-        "mile-high-turkey-trot-2025"
-      ],
-      "adventureId": "mile-high-united-way-turkey-trot-series",
-      "summary": "Three Thanksgiving four-mile appearances at Washington Park recovered from repeat-course GPS: 2021, 2023, and 2025."
-    },
-    {
-      "id": "rundenver-2021-2022",
-      "type": "series",
-      "name": "RunDenver Series",
-      "years": [2021, 2022],
-      "memberIds": [
-        "rudolph-ramble-5k-2021",
-        "polar-bear-5k-2022",
-        "super-bowl-5k-2022",
-        "valentines-day-4m-2022",
-        "that-dam-run-10k-2022"
-      ],
-      "adventureId": "rundenver-series-story",
-      "summary": "Five races from the 2021–22 RunDenver winter series. Rudolph Ramble and Polar Bear align to in-person dates; Super Bowl, Valentine's Day, and That Dam Run were completed within the organizer's virtual windows."
-    },
-    {
-      "id": "tennessee-pass-nordic-2022",
-      "type": "multi-day",
-      "name": "Tennessee Pass Nordic Days",
-      "years": [2022],
-      "memberIds": ["nordic-day-2022-01-02", "nordic-day-2022-01-03"],
-      "adventureId": "tennessee-pass-nordic-weekend-2022",
-      "summary": "Back-to-back Nordic outings at Tennessee Pass Nordic Center on January 2–3, 2022."
-    },
-    {
-      "id": "ranch-hand-2022",
-      "type": "challenge",
-      "name": "Ranch Hand",
-      "years": [2022],
-      "memberIds": ["smr-stampede-ranch-hand-skate-2022", "smr-stampede-ranch-hand-classic-2022"],
-      "adventureId": "ranch-hand-2022",
-      "summary": "Snow Mountain Ranch Stampede: 25K freestyle/skate on Saturday followed by the 25K Classic on Sunday; the Classic produced a 1st Place Age Class award."
-    },
-    {
-      "id": "bolderboulder-series-2022-2025",
-      "type": "series",
-      "name": "BOLDERBoulder",
-      "years": [2022, 2023, 2024, 2025],
-      "memberIds": ["bolderboulder-2022", "bolderboulder-2023", "bolderboulder-2024", "bolderboulder-2025"],
-      "adventureId": "bolderboulder-series-story",
-      "summary": "Four consecutive Memorial Day BOLDERBoulder 10K editions currently represented in the race archive."
-    },
-    {
-      "id": "colderbolder-series-2022-2025",
-      "type": "series",
-      "name": "COLDERBolder 5K",
-      "years": [2022, 2023, 2024, 2025],
-      "memberIds": ["colderbolder-2022", "colderbolder-2023", "colderbolder-2024", "colderbolder-2025"],
-      "adventureId": "colderbolder-series-story",
-      "summary": "Four consecutive COLDERBolder 5K editions in the race archive."
-    },
-    {
-      "id": "colorado-triathlon-2023-legs",
-      "type": "challenge",
-      "name": "Colorado Triathlon",
-      "years": [2023],
-      "memberIds": ["colderbolder-2023", "ski-colorado-triathlon-leg", "mtb-day-2023-12-02"],
-      "adventureId": "colorado-triathlon-2023",
-      "summary": "Three-leg same-day Colorado Triathlon: COLDERBolder 5K in Boulder, alpine skiing at Eldora, then mountain biking at North Table Mountain."
-    },
-    {
-      "id": "colfax-marathon-weekend-series",
-      "type": "series",
-      "name": "Denver Colfax Marathon Weekend",
-      "years": [2021, 2024, 2025, 2026],
-      "memberIds": [
-        "colfax-half-2021",
-        "colfax-5k-2024",
-        "colfax-urban-10-2024",
-        "colfax-5k-2025",
-        "colfax-marathon-2025",
-        "colfax-5k-2026",
-        "colfax-urban-10-2026"
-      ],
-      "adventureId": "colfax-marathon-weekend-series",
-      "summary": "Seven races across four Colfax weekends: 2021 Half, 2024 5K + Urban 10, 2025 5K + Marathon, and 2026 5K + Urban 10."
-    },
-    {
-      "id": "colfax-two-day-weekend-2024",
-      "type": "weekend",
-      "name": "Denver Colfax 5K + Urban 10 Weekend",
-      "years": [2024],
-      "memberIds": ["colfax-5k-2024", "colfax-urban-10-2024"],
-      "summary": "Colfax 5K on Saturday followed by the Urban 10 Miler on Sunday, the two-race combination used by the 2-Day Mile High Challenge."
-    },
-    {
-      "id": "colfax-two-day-weekend-2025",
-      "type": "weekend",
-      "name": "Denver Colfax 5K + Marathon Weekend",
-      "years": [2025],
-      "memberIds": ["colfax-5k-2025", "colfax-marathon-2025"],
-      "summary": "Colfax 5K on Saturday followed by the full Denver Colfax Marathon on Sunday."
-    },
-    {
-      "id": "royal-gorge-groove-run-ride-2024",
-      "type": "weekend",
-      "name": "Royal Gorge Groove Run + Ride",
-      "years": [2024],
-      "memberIds": ["royal-gorge-groove-5k-2024", "royal-gorge-groove-mtb-2024"],
-      "adventureId": "royal-gorge-groove-weekend-2024",
-      "summary": "Back-to-back race weekend at Royal Gorge: a Saturday trail run followed by a Sunday mountain-bike race."
-    },
-    {
-      "id": "flying-pig-marathon-weekend-2025",
-      "type": "weekend",
-      "name": "Flying Pig Marathon Weekend: 5K + Marathon",
-      "years": [2025],
-      "memberIds": ["flying-pig-5k-2025", "flying-pig-marathon-2025"],
-      "adventureId": "flying-pig-marathon-weekend-2025",
-      "summary": "Saturday Flying Pig 5K followed by the full marathon Sunday. The archive contains these two completed races and does not add an unsupported 10K leg."
-    },
-    {
-      "id": "kokopelli-mtb-2025",
-      "type": "multi-day",
-      "name": "Kokopelli Trails MTB Trip",
-      "years": [2025],
-      "memberIds": ["mtb-day-2025-06-05", "mtb-day-2025-06-06", "mtb-day-2025-06-07"],
-      "adventureId": "kokopelli-three-day-2025",
-      "summary": "Three consecutive mountain-bike days on the Kokopelli Trails around Loma and Fruita, June 5–7, 2025."
-    },
-    {
-      "id": "rocky-mountain-race-weekend-2025",
-      "type": "weekend",
-      "name": "Rocky Mountain 5K + Half Weekend",
-      "years": [2025],
-      "memberIds": ["rocky-mountain-5k-2025", "rocky-mountain-half-2025"],
-      "adventureId": "rocky-mountain-race-weekend-2025",
-      "summary": "Rocky Mountain 5K on Friday followed by the Half Marathon on Saturday in Estes Park."
-    },
-    {
-      "id": "colfax-two-day-weekend-2026",
-      "type": "weekend",
-      "name": "Denver Colfax 5K + Urban 10 Weekend",
-      "years": [2026],
-      "memberIds": ["colfax-5k-2026", "colfax-urban-10-2026"],
-      "summary": "Colfax 5K on Saturday followed by the Urban 10 Miler on Sunday, the two-race combination used by the 2-Day Mile High Challenge."
-    },
-    {
-      "id": "mount-evans-spalding-2022",
-      "type": "same-day",
-      "name": "Mount Evans + Mount Spalding",
-      "years": [2022],
-      "memberIds": ["mount-evans", "mount-spalding"],
-      "summary": "Two summits reached on the same July 31, 2022 hiking activity."
-    },
-    {
-      "id": "beerfit-kansas-city-2016",
-      "type": "same-day",
-      "name": "BeerFit Kansas City 2016",
-      "years": [2016],
-      "memberIds": ["beerfit-kansas-city-5k-2016", "beerfit-kansas-city-brew-mile-2016"],
-      "adventureId": "beerfit-kansas-city-2016",
-      "summary": "BeerFit Kansas City at Arrowhead Stadium: the 5K Classic followed by the Brew Mile on June 4, 2016."
-    }
+    {"id":"snowman-shuffle-series","type":"series","name":"Snowman Shuffle","years":[2006,2007,2008,2009,2021],"memberIds":["snowman-shuffle-2006","snowman-shuffle-2007","snowman-shuffle-2008","snowman-shuffle-2009","snowman-shuffle-2021-virtual"],"adventureId":"snowman-shuffle-series","summary":"Four in-person John A. Logan College 5Ks from 2006–2009 plus the 2021 virtual edition completed in Baltimore.","routeId":"snowman-shuffle-jalc-course-proxy","routeScope":"shared-historical-course-proxy"},
+    {"id":"river-to-river-relay-series","type":"series","name":"River to River Relay","years":[2006,2008,2010],"memberIds":["river-to-river-relay-2006","river-to-river-relay-2008","river-to-river-relay-2010"],"adventureId":"river-to-river-relay-series-story","summary":"Three editions of the classic Southern Illinois point-to-point team relay from the Mississippi River side to the Ohio River side.","routeId":"river-to-river-relay-historical-course","routeScope":"historical-full-course"},
+    {"id":"pi-day-river-rotation-2015","type":"same-day","name":"Pi Day River Rotation","years":[2015],"memberIds":["pi-miler-2015","pi-day-half-2015"],"summary":"Pi Miler and Half Marathon from the March 14, 2015 Lawrence Trail Hawks Pi Day River Rotation; both were trail races in Lawrence, and the Pi Miler award records 3rd Place Men."},
+    {"id":"illinois-i-challenge-2015-series","type":"challenge","name":"Illinois I-Challenge","years":[2015],"memberIds":["illinois-5k-2015","illinois-marathon-2015"],"adventureId":"illinois-i-challenge-2015","summary":"2015 Illinois 5K followed by the full Illinois Marathon; the medal identifies the 42K + 5K I-Challenge."},
+    {"id":"illinois-marathon-weekend-series","type":"series","name":"Illinois Marathon Weekend","years":[2015,2016],"memberIds":["illinois-5k-2015","illinois-marathon-2015","illinois-5k-2016","illinois-half-2016"],"adventureId":"illinois-marathon-weekend-series","summary":"Two Illinois Marathon weekends: the 2015 5K + Marathon and the 2016 5K + Half Marathon."},
+    {"id":"heartland-39-3-series-2016","type":"challenge","name":"Heartland 39.3","years":[2016],"memberIds":["rock-parkway-half-2016","garmin-half-2016","running-with-cows-half-2016"],"adventureId":"heartland-39-3-2016","summary":"Three half marathons in five weeks: Rock the Parkway, Garmin Marathon in the Land of Oz Half, and Running With The Cows."},
+    {"id":"garmin-marathon-land-of-oz-series","type":"series","name":"Garmin Marathon in the Land of Oz","years":[2014,2016],"memberIds":["garmin-half-2014","garmin-half-2016"],"adventureId":"garmin-marathon-land-of-oz-series","summary":"Two Olathe half-marathon appearances in the Garmin Marathon in the Land of Oz event family: 2014 and 2016."},
+    {"id":"illinois-half-i-challenge-2016-series","type":"challenge","name":"Illinois Half I-Challenge","years":[2016],"memberIds":["illinois-5k-2016","illinois-half-2016"],"adventureId":"illinois-half-i-challenge-2016","summary":"Friday-night Presence Health 5K followed by the Illinois Half Marathon the next morning."},
+    {"id":"baltimoron-2018-series","type":"challenge","name":"BaltiMORON-a-thon","years":[2018],"memberIds":["baltimore-5k-2018","baltimore-half-2018"],"adventureId":"baltimoron-2018","summary":"Baltimore Running Festival 5K followed by the Half Marathon on the same day."},
+    {"id":"chicago-marathon-series","type":"series","name":"Chicago Marathon","years":[2020,2021],"memberIds":["chicago-marathon-virtual-2020","chicago-marathon-2021"],"adventureId":"chicago-marathon-series","summary":"Two Chicago Marathon editions: the 2020 virtual completion in Baltimore followed by the in-person 2021 Bank of America Chicago Marathon."},
+    {"id":"chicago-marathon-weekend-2021","type":"weekend","name":"Chicago Marathon Weekend","years":[2021],"memberIds":["abbott-chicago-5k-2021","chicago-marathon-2021"],"summary":"Abbott Chicago 5K on Saturday followed by the Bank of America Chicago Marathon on Sunday."},
+    {"id":"mile-high-united-way-turkey-trot-series","type":"series","name":"Mile High United Way Turkey Trot","years":[2021,2023,2025],"memberIds":["mile-high-turkey-trot-2021","mile-high-turkey-trot-2023","mile-high-turkey-trot-2025"],"adventureId":"mile-high-united-way-turkey-trot-series","summary":"Three Thanksgiving four-mile appearances at Washington Park recovered from repeat-course GPS: 2021, 2023, and 2025."},
+    {"id":"rundenver-2021-2022","type":"series","name":"RunDenver Series","years":[2021,2022],"memberIds":["rudolph-ramble-5k-2021","polar-bear-5k-2022","super-bowl-5k-2022","valentines-day-4m-2022","that-dam-run-10k-2022"],"adventureId":"rundenver-series-story","summary":"Five races from the 2021–22 RunDenver winter series. Rudolph Ramble and Polar Bear align to in-person dates; Super Bowl, Valentine's Day, and That Dam Run were completed within the organizer's virtual windows."},
+    {"id":"tennessee-pass-nordic-2022","type":"multi-day","name":"Tennessee Pass Nordic Days","years":[2022],"memberIds":["nordic-day-2022-01-02","nordic-day-2022-01-03"],"adventureId":"tennessee-pass-nordic-weekend-2022","summary":"Back-to-back Nordic outings at Tennessee Pass Nordic Center on January 2–3, 2022."},
+    {"id":"ranch-hand-2022","type":"challenge","name":"Ranch Hand","years":[2022],"memberIds":["smr-stampede-ranch-hand-skate-2022","smr-stampede-ranch-hand-classic-2022"],"adventureId":"ranch-hand-2022","summary":"Snow Mountain Ranch Stampede: 25K freestyle/skate on Saturday followed by the 25K Classic on Sunday; the Classic produced a 1st Place Age Class award."},
+    {"id":"bolderboulder-series-2022-2025","type":"series","name":"BOLDERBoulder","years":[2022,2023,2024,2025],"memberIds":["bolderboulder-2022","bolderboulder-2023","bolderboulder-2024","bolderboulder-2025"],"adventureId":"bolderboulder-series-story","summary":"Four consecutive Memorial Day BOLDERBoulder 10K editions currently represented in the race archive."},
+    {"id":"colderbolder-series-2022-2025","type":"series","name":"COLDERBolder 5K","years":[2022,2023,2024,2025],"memberIds":["colderbolder-2022","colderbolder-2023","colderbolder-2024","colderbolder-2025"],"adventureId":"colderbolder-series-story","summary":"Four consecutive COLDERBolder 5K editions in the race archive."},
+    {"id":"colorado-triathlon-2023-legs","type":"challenge","name":"Colorado Triathlon","years":[2023],"memberIds":["colderbolder-2023","ski-colorado-triathlon-leg","mtb-day-2023-12-02"],"adventureId":"colorado-triathlon-2023","summary":"Three-leg same-day Colorado Triathlon: COLDERBolder 5K in Boulder, alpine skiing at Eldora, then mountain biking at North Table Mountain."},
+    {"id":"colfax-marathon-weekend-series","type":"series","name":"Denver Colfax Marathon Weekend","years":[2021,2024,2025,2026],"memberIds":["colfax-half-2021","colfax-5k-2024","colfax-urban-10-2024","colfax-5k-2025","colfax-marathon-2025","colfax-5k-2026","colfax-urban-10-2026"],"adventureId":"colfax-marathon-weekend-series","summary":"Seven races across four Colfax weekends: 2021 Half, 2024 5K + Urban 10, 2025 5K + Marathon, and 2026 5K + Urban 10."},
+    {"id":"colfax-two-day-weekend-2024","type":"weekend","name":"Denver Colfax 5K + Urban 10 Weekend","years":[2024],"memberIds":["colfax-5k-2024","colfax-urban-10-2024"],"summary":"Colfax 5K on Saturday followed by the Urban 10 Miler on Sunday, the two-race combination used by the 2-Day Mile High Challenge."},
+    {"id":"colfax-two-day-weekend-2025","type":"weekend","name":"Denver Colfax 5K + Marathon Weekend","years":[2025],"memberIds":["colfax-5k-2025","colfax-marathon-2025"],"summary":"Colfax 5K on Saturday followed by the full Denver Colfax Marathon on Sunday."},
+    {"id":"royal-gorge-groove-run-ride-2024","type":"weekend","name":"Royal Gorge Groove Run + Ride","years":[2024],"memberIds":["royal-gorge-groove-5k-2024","royal-gorge-groove-mtb-2024"],"adventureId":"royal-gorge-groove-weekend-2024","summary":"Back-to-back race weekend at Royal Gorge: a Saturday trail run followed by a Sunday mountain-bike race."},
+    {"id":"flying-pig-marathon-weekend-2025","type":"weekend","name":"Flying Pig Marathon Weekend: 5K + Marathon","years":[2025],"memberIds":["flying-pig-5k-2025","flying-pig-marathon-2025"],"adventureId":"flying-pig-marathon-weekend-2025","summary":"Saturday Flying Pig 5K followed by the full marathon Sunday. The archive contains these two completed races and does not add an unsupported 10K leg."},
+    {"id":"kokopelli-mtb-2025","type":"multi-day","name":"Kokopelli Trails MTB Trip","years":[2025],"memberIds":["mtb-day-2025-06-05","mtb-day-2025-06-06","mtb-day-2025-06-07"],"adventureId":"kokopelli-three-day-2025","summary":"Three consecutive mountain-bike days on the Kokopelli Trails around Loma and Fruita, June 5–7, 2025."},
+    {"id":"rocky-mountain-race-weekend-2025","type":"weekend","name":"Rocky Mountain 5K + Half Weekend","years":[2025],"memberIds":["rocky-mountain-5k-2025","rocky-mountain-half-2025"],"adventureId":"rocky-mountain-race-weekend-2025","summary":"Rocky Mountain 5K on Friday followed by the Half Marathon on Saturday in Estes Park."},
+    {"id":"colfax-two-day-weekend-2026","type":"weekend","name":"Denver Colfax 5K + Urban 10 Weekend","years":[2026],"memberIds":["colfax-5k-2026","colfax-urban-10-2026"],"summary":"Colfax 5K on Saturday followed by the Urban 10 Miler on Sunday, the two-race combination used by the 2-Day Mile High Challenge."},
+    {"id":"mount-evans-spalding-2022","type":"same-day","name":"Mount Evans + Mount Spalding","years":[2022],"memberIds":["mount-evans","mount-spalding"],"summary":"Two summits reached on the same July 31, 2022 hiking activity."},
+    {"id":"beerfit-kansas-city-2016","type":"same-day","name":"BeerFit Kansas City 2016","years":[2016],"memberIds":["beerfit-kansas-city-5k-2016","beerfit-kansas-city-brew-mile-2016"],"adventureId":"beerfit-kansas-city-2016","summary":"BeerFit Kansas City at Arrowhead Stadium: the 5K Classic followed by the Brew Mile on June 4, 2016."}
   ]
 }

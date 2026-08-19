@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "source": "Existing verified Adventures race records and recurring-race reconciliation",
+    "updatedOn": "2026-08-18",
+    "policy": "Recurring series stories group independently verified race records without changing the evidence or official result attached to each individual race."
+  },
+  "adventures": [
+    {
+      "id": "chicago-marathon-series",
+      "slug": "chicago-marathon-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Chicago Marathon",
+      "year": 2020,
+      "date": "2020-10-07",
+      "endDate": "2021-10-10",
+      "distance": "Two marathon editions · 2020 virtual + 2021 Chicago",
+      "distanceMi": 52.4,
+      "location": "Baltimore virtual completion + Chicago, Illinois",
+      "region": "Maryland / Illinois",
+      "routeStatus": "multi-event-gps",
+      "matchSource": "Existing verified Chicago Marathon records + personal GPS",
+      "matchConfidence": "confirmed",
+      "note": "Two consecutive Chicago Marathon chapters with very different settings: the 2020 virtual marathon completed in Baltimore, followed by the in-person 2021 Bank of America Chicago Marathon. Each marathon keeps its own result and GPS route while this page preserves the recurring event history."
+    },
+    {
+      "id": "garmin-marathon-land-of-oz-series",
+      "slug": "garmin-marathon-land-of-oz-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Garmin Marathon in the Land of Oz",
+      "year": 2014,
+      "date": "2014-04-26",
+      "endDate": "2016-04-16",
+      "distance": "Two half-marathon editions",
+      "distanceMi": 26.2,
+      "location": "Olathe, Kansas",
+      "region": "Kansas",
+      "routeStatus": "multi-event-gps",
+      "matchSource": "Existing verified Garmin/Olathe half-marathon records + personal GPS",
+      "matchConfidence": "high",
+      "note": "Two half-marathon appearances in the Garmin Marathon in the Land of Oz event family: the 2014 Wickedly Fast Half Marathon and the 2016 Garmin Marathon in the Land of Oz Half Marathon. The individual race records retain their original naming and GPS evidence."
+    }
+  ]
+}
