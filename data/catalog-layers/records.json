@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceCount": 35,
-  "recordCount": 153,
+  "recordCount": 156,
   "layeredMergeCount": 38,
   "adventures": [
     {
@@ -3645,6 +3645,90 @@
       "elapsedSeconds": 8889
     },
     {
+      "id": "mile-high-turkey-trot-2021",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Mile High United Way Turkey Trot",
+      "year": 2021,
+      "date": "2021-11-25",
+      "distance": "4 miles",
+      "officialDistance": "4 miles",
+      "officialDistanceMi": 4,
+      "officialDistanceKm": 6.437,
+      "location": "Washington Park, Denver, Colorado",
+      "region": "Colorado",
+      "lat": 39.692991,
+      "lon": -104.968359,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "6311007412",
+      "stravaActivityName": "University Park",
+      "stravaDistanceKm": 6.4879,
+      "stravaDistanceMi": 4.03,
+      "stravaElapsedSeconds": 1872,
+      "stravaMovingSeconds": 1868,
+      "elevationGainM": 20.4,
+      "routeStatus": "gps-source-available",
+      "resultSource": "HAL Sports 2021 event-results archive + Mile High United Way event identity",
+      "resultUrl": "https://halsports.acclarodev.com/results/",
+      "matchSource": "Exact Thanksgiving Day date + 4.03-mile GPS recording + Washington Park start/finish + near-identical route geometry to the independently verified 2025 Mile High United Way Turkey Trot course",
+      "matchConfidence": "verified",
+      "note": "Recovered despite the generic Strava name. HAL Sports lists the Mile High United Way Turkey Trot at Washington Park on November 25, 2021, and contemporary event coverage identifies it as a four-mile run/walk. The personal GPS track starts and finishes within meters of the verified 2025 Turkey Trot track and follows essentially the same Washington Park course. No indexed individual timing row has been recovered, so 31:12 is retained only as the Strava elapsed-time fallback.",
+      "_catalogSource": "data/strava-mining-2026-08-11l.json"
+    },
+    {
+      "id": "mile-high-turkey-trot-2023",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Mile High United Way Turkey Trot",
+      "year": 2023,
+      "date": "2023-11-23",
+      "distance": "4 miles",
+      "officialDistance": "4 miles",
+      "officialDistanceMi": 4,
+      "officialDistanceKm": 6.437,
+      "location": "Washington Park, Denver, Colorado",
+      "region": "Colorado",
+      "lat": 39.692913,
+      "lon": -104.968327,
+      "coordinatePrecision": "gps-course",
+      "stravaActivityId": "10269813911",
+      "stravaActivityName": "Nike Run Club: Thursday Morning Run",
+      "stravaDistanceKm": 8.186,
+      "stravaDistanceMi": 5.09,
+      "stravaElapsedSeconds": 3482,
+      "stravaMovingSeconds": 2947,
+      "gpsRaceSegmentDistanceKm": 6.571,
+      "gpsRaceSegmentDistanceMi": 4.08,
+      "gpsRaceSegmentElapsedSeconds": 2297,
+      "elevationGainM": 29,
+      "routeStatus": "gps-source-available",
+      "resultSource": "Mile High United Way official 2023 Turkey Trot event archive",
+      "resultUrl": "https://unitedwaydenver.org/event/2023-turkey-trot/",
+      "matchSource": "Exact Thanksgiving Day date + official four-mile Washington Park event + source GPS contains the complete repeated Turkey Trot course after an approximately 1.60 km approach/warmup",
+      "matchConfidence": "verified",
+      "note": "The generic 8.186 km Strava activity includes approximately 1.60 km of approach/warmup before reaching the Turkey Trot start. The published route is intentionally cropped to the 566-point race-course segment: about 6.57 km / 4.08 miles, starting and finishing within meters of the 2021 and 2025 course and matching the repeated route throughout. The race-course segment spans 38:17 in the GPS source, but no indexed individual timing row has been recovered, so that value is route-context evidence rather than an official result.",
+      "_catalogSource": "data/strava-mining-2026-08-11l.json"
+    },
+    {
+      "id": "mile-high-united-way-turkey-trot-series",
+      "slug": "mile-high-united-way-turkey-trot-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Mile High United Way Turkey Trot",
+      "year": 2021,
+      "date": "2021-11-25",
+      "endDate": "2025-11-27",
+      "distance": "Three 4-mile editions",
+      "distanceMi": 12,
+      "location": "Washington Park, Denver, Colorado",
+      "region": "Colorado",
+      "routeStatus": "multi-event-gps",
+      "matchSource": "Mile High United Way event archives + HAL Sports + repeated Strava GPS course matching",
+      "matchConfidence": "verified",
+      "note": "Three Thanksgiving four-mile appearances at Washington Park in 2021, 2023, and 2025. The 2021 and 2025 activities are near-identical full-course GPS recordings. The 2023 source activity contains an approach/warmup before joining the same race course, so only its race-course segment is published.",
+      "_catalogSource": "data/strava-mining-2026-08-11l.json"
+    },
+    {
       "id": "beerfit-kansas-city-brew-mile-2016",
       "kind": "race",
       "discipline": "road",
@@ -4343,6 +4427,15 @@
     "rocky-mountain-half-2025": [
       "data/strava-mining-2026-08-11i.json",
       "data/official-results-overrides.json"
+    ],
+    "mile-high-turkey-trot-2021": [
+      "data/strava-mining-2026-08-11l.json"
+    ],
+    "mile-high-turkey-trot-2023": [
+      "data/strava-mining-2026-08-11l.json"
+    ],
+    "mile-high-united-way-turkey-trot-series": [
+      "data/strava-mining-2026-08-11l.json"
     ],
     "beerfit-kansas-city-brew-mile-2016": [
       "data/strava-mining-2026-08-17-beerfit-brew-mile.json"

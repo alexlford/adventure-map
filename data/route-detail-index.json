@@ -3,8 +3,8 @@
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
   "routeCatalogUpdatedOn": "2026-08-18",
-  "recordCount": 135,
-  "featureCount": 121,
+  "recordCount": 137,
+  "featureCount": 123,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
@@ -305,6 +305,18 @@
       "featureId": "strava-9635633600",
       "format": "polyline",
       "quality": "rdp-3m"
+    },
+    "mile-high-turkey-trot-2021": {
+      "file": "data/strava-route-full-resolution-mile-high-turkey-trot-2021.json",
+      "featureId": "strava-6311007412",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mile-high-turkey-trot-2023": {
+      "file": "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
+      "featureId": "strava-10269813911-turkey-trot-segment",
+      "format": "polyline",
+      "quality": "full-source"
     },
     "mile-high-turkey-trot-2025": {
       "file": "data/strava-route-source-complete-02.json",
