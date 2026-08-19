@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "User confirmation + Strava export + historical event matching",
-    "updatedOn": "2026-08-10",
+    "updatedOn": "2026-08-19",
     "policy": "Recovered events discussed during the August 2026 archive audit."
   },
   "removeIds": ["smr-stampede-50k-2022"],
@@ -136,6 +136,37 @@
       "matchSource": "Strava export + user confirmation + historical event schedule",
       "matchConfidence": "confirmed",
       "note": "Sunday mountain-bike race of the Royal Gorge Groove weekend."
+    },
+    {
+      "id": "brew-to-brew-relay-2013",
+      "kind": "race",
+      "discipline": "relay",
+      "name": "Brew to Brew Relay",
+      "year": 2013,
+      "date": "2013-04-07",
+      "distance": "44.4 mi relay",
+      "officialDistanceMi": 44.4,
+      "officialDistanceKm": 71.45,
+      "location": "Kansas City, Missouri to Lawrence, Kansas",
+      "region": "Missouri / Kansas",
+      "lat": 39.081978,
+      "lon": -94.596669,
+      "coordinatePrecision": "venue",
+      "stravaActivityId": "643096101",
+      "stravaActivityName": "Running 4/7/13 9:57 am",
+      "stravaDistanceKm": 9.5713,
+      "stravaDistanceMi": 5.95,
+      "stravaElapsedSeconds": 4095,
+      "stravaMovingSeconds": 3535,
+      "personalLeg": "Leg 3",
+      "personalLegDistanceMi": 5.95,
+      "routeStatus": "gps",
+      "routeFeatureIds": ["brew-to-brew-relay-historical-course", "strava-643096101"],
+      "matchSource": "Strava FIT export + 2013 Brew to Brew event archives + preserved participant guide",
+      "resultSource": "Brew to Brew historical race archive",
+      "resultUrl": "https://trailrunner.com/event/brew-to-brew-42-5-miler/",
+      "matchConfidence": "verified",
+      "note": "User ran Leg 3 of the 2013 Brew to Brew team relay. The Strava FIT track begins at the Copart exchange on Kansas Avenue and records 5.95 miles toward the Edwardsville exchange. The map also includes a separate historical full-course overview; that shared route is not personal GPS."
     }
   ]
 }
