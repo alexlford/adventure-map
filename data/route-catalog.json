@@ -1,12 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-18",
+  "updatedOn": "2026-08-19",
   "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
     "data/mined-routes.geojson",
     "data/historical-routes-v2.geojson",
-    "data/event-routes.geojson"
+    "data/event-routes.geojson",
+    "data/brew-to-brew-2013-historical.geojson"
   ],
   "polylineFiles": [
     "data/activity-route-polylines.json",
@@ -108,7 +109,8 @@
     "data/strava-route-full-resolution-frisco-brewski-2024.json",
     "data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json",
     "data/strava-route-full-resolution-mile-high-turkey-trot-2021.json",
-    "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json"
+    "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
+    "data/strava-route-full-resolution-brew-to-brew-2013.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -209,6 +211,11 @@
         "id": "strava-10926255561",
         "minPoints": 8300,
         "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-643096101",
+        "minPoints": 841,
+        "resolutionPrefix": "full-source-track"
       }
     ],
     "sourceRdpArchive": {
@@ -258,6 +265,19 @@
       "provenance": "historical-course",
       "sourceLabel": "Official River to River course description + public historical GPS reference",
       "note": "Shared historical full relay course for the 2006, 2008, and 2010 entries; not a personal GPS recording."
+    },
+    "brew-to-brew-relay-historical-course": {
+      "provenance": "historical-course",
+      "sourceLabel": "Brew to Brew historical race archives + preserved participant guide",
+      "note": "Shared historical 2013 relay overview; simplified exchange/corridor geometry, not turn-by-turn GPS and not the user's individual-leg recording."
+    },
+    "strava-643096101": {
+      "adventureIds": [
+        "brew-to-brew-relay-2013"
+      ],
+      "provenance": "personal-gps",
+      "sourceLabel": "Strava FIT export",
+      "note": "Personal GPS recording of Alex's 2013 Brew to Brew Leg 3; all 841 recorded FIT points are retained."
     }
   },
   "recordOverrides": {
