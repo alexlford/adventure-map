@@ -23,9 +23,11 @@ test('Royal Gorge Story shows only route-key colors on visible component routes'
 
   // Check what the browser actually paints. SVG presentation attributes can
   // still contain the correct Leaflet colors while an !important CSS rule
-  // repaints every path with the Story accent.
+  // repaints every path with the Story accent. Exclude the detail location
+  // CircleMarker: it is intentionally styled with a white stroke and is not a
+  // route layer.
   await expect.poll(async () => {
-    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
+    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path:not(.detail-location-point)').evaluateAll(nodes =>
       nodes.map(node => String(getComputedStyle(node).stroke || '').trim().toLowerCase())
     )).map(normalizeCssColor);
     return uniqueVisible(strokes);
