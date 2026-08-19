@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "sourceCount": 36,
   "recordCount": 158,
-  "layeredMergeCount": 38,
+  "layeredMergeCount": 42,
   "adventures": [
     {
       "id": "mount-lincoln",
@@ -1483,11 +1483,17 @@
       ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2006 event calendar",
-      "matchConfidence": "confirmed",
+      "matchConfidence": "verified",
       "sourceUrl": "https://r2rrelay.com/members/calendar.html",
       "routeSourceUrl": "https://runsignup.com/Race/TheSummerSickness/Page-2",
       "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 7, 2006 5K at John A. Logan College. No personal GPS survives. Per user instruction, the shared JALC Snowman course proxy uses the modern event venue and the oldest digitized-course reference found (the 2020 Summer Sickness listing) as a stand-in for the historical course; it is not represented as personal GPS or proof that the 2006 road alignment was identical.",
-      "_catalogSource": "data/user-confirmed-races.json"
+      "_catalogSource": "data/official-results-overrides.json",
+      "officialTime": "27:50",
+      "officialPace": "8:59/mi",
+      "officialPlace": 85,
+      "division": "Men 19 and under",
+      "divisionPlace": 10,
+      "resultSource": "River to River Runners / Race Management Systems official 2006 Snowman Shuffle results"
     },
     {
       "id": "snowman-shuffle-2007",
@@ -1511,11 +1517,17 @@
       ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2007 event calendar",
-      "matchConfidence": "confirmed",
+      "matchConfidence": "verified",
       "sourceUrl": "https://r2rrelay.com/members/calendar.html",
       "routeSourceUrl": "https://runsignup.com/Race/TheSummerSickness/Page-2",
       "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 6, 2007 5K at John A. Logan College. No personal GPS survives. Per user instruction, the shared JALC Snowman course proxy uses the modern event venue and the oldest digitized-course reference found (the 2020 Summer Sickness listing) as a stand-in for the historical course; it is not represented as personal GPS or proof that the 2007 road alignment was identical.",
-      "_catalogSource": "data/user-confirmed-races.json"
+      "_catalogSource": "data/official-results-overrides.json",
+      "officialTime": "27:38",
+      "officialPace": "8:55/mi",
+      "officialPlace": 87,
+      "division": "Men 19 and under",
+      "divisionPlace": 11,
+      "resultSource": "River to River Runners official 2007 Snowman Shuffle results"
     },
     {
       "id": "snowman-shuffle-2008",
@@ -1539,11 +1551,17 @@
       ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2008 event calendar",
-      "matchConfidence": "confirmed",
+      "matchConfidence": "verified",
       "sourceUrl": "https://r2rrelay.com/members/calendar.html",
       "routeSourceUrl": "https://runsignup.com/Race/TheSummerSickness/Page-2",
       "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 5, 2008 5K at John A. Logan College. No personal GPS survives. Per user instruction, the shared JALC Snowman course proxy uses the modern event venue and the oldest digitized-course reference found (the 2020 Summer Sickness listing) as a stand-in for the historical course; it is not represented as personal GPS or proof that the 2008 road alignment was identical.",
-      "_catalogSource": "data/user-confirmed-races.json"
+      "_catalogSource": "data/official-results-overrides.json",
+      "officialTime": "26:32",
+      "officialPace": "8:34/mi",
+      "officialPlace": 66,
+      "division": "Men 19 and under",
+      "divisionPlace": 9,
+      "resultSource": "River to River Runners official 2008 Snowman Shuffle results"
     },
     {
       "id": "snowman-shuffle-2009",
@@ -1567,11 +1585,17 @@
       ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2009 event calendar",
-      "matchConfidence": "confirmed",
+      "matchConfidence": "verified",
       "sourceUrl": "https://r2rrelay.com/members/calendar.html",
       "routeSourceUrl": "https://runsignup.com/Race/TheSummerSickness/Page-2",
       "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 3, 2009 5K at John A. Logan College. No personal GPS survives. Per user instruction, the shared JALC Snowman course proxy uses the modern event venue and the oldest digitized-course reference found (the 2020 Summer Sickness listing) as a stand-in for the historical course; it is not represented as personal GPS or proof that the 2009 road alignment was identical.",
-      "_catalogSource": "data/user-confirmed-races.json"
+      "_catalogSource": "data/official-results-overrides.json",
+      "officialTime": "29:29",
+      "officialPlace": 80,
+      "division": "Men 20–24",
+      "divisionPlace": 6,
+      "bib": "520",
+      "resultSource": "River to River Runners official 2009 Snowman Shuffle results"
     },
     {
       "id": "ugly-sweater-run-2012",
@@ -4190,16 +4214,20 @@
       "data/mined-races.json"
     ],
     "snowman-shuffle-2006": [
-      "data/user-confirmed-races.json"
+      "data/user-confirmed-races.json",
+      "data/official-results-overrides.json"
     ],
     "snowman-shuffle-2007": [
-      "data/user-confirmed-races.json"
+      "data/user-confirmed-races.json",
+      "data/official-results-overrides.json"
     ],
     "snowman-shuffle-2008": [
-      "data/user-confirmed-races.json"
+      "data/user-confirmed-races.json",
+      "data/official-results-overrides.json"
     ],
     "snowman-shuffle-2009": [
-      "data/user-confirmed-races.json"
+      "data/user-confirmed-races.json",
+      "data/official-results-overrides.json"
     ],
     "ugly-sweater-run-2012": [
       "data/user-confirmed-races.json"
@@ -4556,6 +4584,10 @@
       "mile-high-turkey-trot-2025: data/discovered-races.json → data/strava-mining-2026-08-11l.json",
       "beerfit-kansas-city-5k-2016: data/recovered-events-2026-08.json → data/strava-mining-2026-08-11m.json",
       "shamrock-shuffle-10k-2015: data/mined-races.json → data/strava-mining-2026-08-11n.json",
+      "snowman-shuffle-2006: data/user-confirmed-races.json → data/official-results-overrides.json",
+      "snowman-shuffle-2007: data/user-confirmed-races.json → data/official-results-overrides.json",
+      "snowman-shuffle-2008: data/user-confirmed-races.json → data/official-results-overrides.json",
+      "snowman-shuffle-2009: data/user-confirmed-races.json → data/official-results-overrides.json",
       "illinois-5k-2015: data/discovered-races.json → data/official-results-overrides.json",
       "illinois-marathon-2015: data/strava-mining-2026-08-11j.json → data/official-results-overrides.json",
       "colderbolder-2022: data/user-confirmed-races.json → data/official-results-overrides.json",
