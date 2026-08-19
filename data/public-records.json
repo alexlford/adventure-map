@@ -4002,10 +4002,13 @@
       "distance": "Five 5K editions",
       "location": "John A. Logan College, Carterville, Illinois + 2021 virtual completion",
       "region": "Illinois / Maryland",
-      "routeStatus": "multi-event-match",
-      "matchSource": "User confirmation + River to River Runners historical calendars + 2021 virtual event record + Strava",
+      "routeFeatureIds": [
+        "snowman-shuffle-jalc-course-proxy"
+      ],
+      "routeStatus": "historical-course",
+      "matchSource": "User confirmation + River to River Runners historical calendars + 2020 Summer Sickness digitized-course reference + current JALC event venue + 2021 virtual event record + Strava",
       "matchConfidence": "confirmed",
-      "note": "A recurring Snowman Shuffle chapter spanning four in-person 5Ks at John A. Logan College in 2006–2009 and the 2021 virtual edition completed in Baltimore. The early editions predate the surviving Strava archive, so their event records are preserved separately from the 2021 personal GPS route.",
+      "note": "A recurring Snowman Shuffle chapter spanning four in-person 5Ks at John A. Logan College in 2006–2009 and the 2021 virtual edition completed in Baltimore. The early editions predate the surviving Strava archive. Per user instruction, they share a representative JALC course proxy based on the modern event venue and the oldest digitized-course reference found; the proxy is historical context rather than personal GPS. The 2021 virtual edition retains its own personal Baltimore GPS route.",
       "_catalogSource": "data/notable-adventures.json",
       "recordClass": "adventure",
       "sport": "adventure",
@@ -4025,13 +4028,13 @@
         "precision": null
       },
       "evidence": {
-        "source": "User confirmation + River to River Runners historical calendars + 2021 virtual event record + Strava",
-        "matchSource": "User confirmation + River to River Runners historical calendars + 2021 virtual event record + Strava",
+        "source": "User confirmation + River to River Runners historical calendars + 2020 Summer Sickness digitized-course reference + current JALC event venue + 2021 virtual event record + Strava",
+        "matchSource": "User confirmation + River to River Runners historical calendars + 2020 Summer Sickness digitized-course reference + current JALC event venue + 2021 virtual event record + Strava",
         "resultSource": null,
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "multi-event-match",
+        "status": "historical-course",
         "provenance": null
       }
     },
@@ -4271,13 +4274,13 @@
       "year": 2021,
       "date": "2021-10-16",
       "endDate": "2026-05-17",
-      "distance": "Six races across four Colfax weekends",
+      "distance": "Seven races across four Colfax weekends",
       "location": "Denver, Colorado",
       "region": "Colorado",
       "routeStatus": "multi-event-gps",
-      "matchSource": "Denver Colfax event archives + medals + Strava GPS",
+      "matchSource": "Denver Colfax event archives + user confirmation + medals + Strava GPS",
       "matchConfidence": "confirmed",
-      "note": "A recurring Colfax Marathon Weekend chapter spanning the 2021 Half Marathon, the 2024 5K and Urban 10 two-day challenge, the 2025 Marathon, and the 2026 5K and Urban 10 two-day challenge.",
+      "note": "A recurring Colfax Marathon Weekend chapter spanning the 2021 Half Marathon, the 2024 5K and Urban 10 two-day challenge, the 2025 5K on Saturday followed by the full Marathon on Sunday, and the 2026 5K and Urban 10 two-day challenge.",
       "_catalogSource": "data/notable-adventures.json",
       "recordClass": "adventure",
       "sport": "adventure",
@@ -4286,7 +4289,7 @@
       "distanceInfo": {
         "km": null,
         "mi": null,
-        "label": "Six races across four Colfax weekends",
+        "label": "Seven races across four Colfax weekends",
         "source": "recorded"
       },
       "locationInfo": {
@@ -4297,8 +4300,8 @@
         "precision": null
       },
       "evidence": {
-        "source": "Denver Colfax event archives + medals + Strava GPS",
-        "matchSource": "Denver Colfax event archives + medals + Strava GPS",
+        "source": "Denver Colfax event archives + user confirmation + medals + Strava GPS",
+        "matchSource": "Denver Colfax event archives + user confirmation + medals + Strava GPS",
         "resultSource": null,
         "confidence": "confirmed"
       },
