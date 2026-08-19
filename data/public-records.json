@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 155,
+  "recordCount": 156,
   "records": [
     {
       "id": "mount-lincoln",
@@ -5213,6 +5213,69 @@
         "source": "Strava export + Town of Frisco event archive",
         "matchSource": "Strava export + Town of Frisco event archive",
         "resultSource": null,
+        "confidence": "verified"
+      },
+      "routeInfo": {
+        "status": "gps",
+        "provenance": null
+      }
+    },
+    {
+      "id": "brew-to-brew-relay-2013",
+      "kind": "race",
+      "discipline": "relay",
+      "name": "Brew to Brew Relay",
+      "year": 2013,
+      "date": "2013-04-07",
+      "distance": "44.4 mi relay",
+      "officialDistanceMi": 44.4,
+      "officialDistanceKm": 71.45,
+      "location": "Kansas City, Missouri to Lawrence, Kansas",
+      "region": "Missouri / Kansas",
+      "lat": 39.081978,
+      "lon": -94.596669,
+      "coordinatePrecision": "venue",
+      "stravaActivityId": "643096101",
+      "stravaActivityName": "Running 4/7/13 9:57 am",
+      "stravaDistanceKm": 9.5713,
+      "stravaDistanceMi": 5.95,
+      "stravaElapsedSeconds": 4095,
+      "stravaMovingSeconds": 3535,
+      "personalLeg": "Leg 3",
+      "personalLegDistanceMi": 5.95,
+      "routeStatus": "gps",
+      "routeFeatureIds": [
+        "brew-to-brew-relay-historical-course",
+        "strava-643096101"
+      ],
+      "matchSource": "Strava FIT export + 2013 Brew to Brew event archives + preserved participant guide",
+      "resultSource": "Brew to Brew historical race archive",
+      "resultUrl": "https://trailrunner.com/event/brew-to-brew-42-5-miler/",
+      "matchConfidence": "verified",
+      "note": "User ran Leg 3 of the 2013 Brew to Brew team relay. The Strava FIT track begins at the Copart exchange on Kansas Avenue and records 5.95 miles toward the Edwardsville exchange. The map also includes a separate historical full-course overview; that shared route is not personal GPS.",
+      "_catalogSource": "data/recovered-events-2026-08.json",
+      "slug": "2013-04-07-brew-to-brew-relay",
+      "recordClass": "race",
+      "sport": "running",
+      "startDate": "2013-04-07",
+      "finishDate": "2013-04-07",
+      "distanceInfo": {
+        "km": 71.45,
+        "mi": 44.4,
+        "label": "44.4 mi relay",
+        "source": "official"
+      },
+      "locationInfo": {
+        "label": "Kansas City, Missouri to Lawrence, Kansas",
+        "region": "Missouri / Kansas",
+        "lat": 39.081978,
+        "lon": -94.596669,
+        "precision": "venue"
+      },
+      "evidence": {
+        "source": "Brew to Brew historical race archive",
+        "matchSource": "Strava FIT export + 2013 Brew to Brew event archives + preserved participant guide",
+        "resultSource": "Brew to Brew historical race archive",
         "confidence": "verified"
       },
       "routeInfo": {
