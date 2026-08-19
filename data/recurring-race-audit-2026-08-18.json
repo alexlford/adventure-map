@@ -5,102 +5,22 @@
   "methodology": {
     "stravaRunsScanned": 1396,
     "runsWithGps": 1286,
-    "approach": "Compared official race dates with Strava dates, race-like distances, GPS start/finish geofences, and repeated route geometry. Routine home-start clusters were excluded from recurring-event promotion unless event evidence and course geometry independently aligned."
+    "approach": "Compared official race dates with Strava dates, race-like distances, GPS start/finish geofences, repeated route geometry, and already-verified race families. Routine home-start clusters were excluded from recurring-event promotion unless event evidence and course geometry independently aligned."
   },
   "series": [
-    {
-      "id": "denver-colfax-marathon-weekend",
-      "confirmedYears": [2021, 2024, 2025, 2026],
-      "checkedGaps": [
-        {
-          "year": 2022,
-          "status": "no-match",
-          "evidence": "No Strava activities were recorded on the May 14-15, 2022 Colfax race weekend."
-        },
-        {
-          "year": 2023,
-          "status": "no-match",
-          "evidence": "No Saturday May 20 Colfax 5K activity was found. The May 21 generic 5.00 km run is GPS-confirmed in the Denver home area and occurs well after the Sunday race starts."
-        }
-      ]
-    },
-    {
-      "id": "colderbolder",
-      "confirmedYears": [2022, 2023, 2024, 2025],
-      "checkedGaps": [
-        {
-          "year": 2021,
-          "status": "no-match",
-          "evidence": "The 2021 event was December 4; the only nearby candidate is a 4.92 km home-area run on December 5."
-        }
-      ]
-    },
-    {
-      "id": "bolderboulder",
-      "confirmedYears": [2022, 2023, 2024, 2025],
-      "checkedGaps": [
-        {
-          "year": 2021,
-          "status": "no-match",
-          "evidence": "The BOLDER on the Run window was May 29-31; the nearby 5.23 km activity occurred May 28 outside the event window."
-        },
-        {
-          "year": 2026,
-          "status": "no-match",
-          "evidence": "An exact-date 10.00 km run exists on May 25, 2026, but its GPS is in Denver approximately 40 km from the Boulder/Folsom Field event."
-        }
-      ]
-    },
-    {
-      "id": "rundenver",
-      "confirmedSeasons": ["2021-2022"],
-      "checkedGaps": [
-        {
-          "season": "2022-2023",
-          "status": "no-match",
-          "evidence": "No matching Strava runs were found around the recurring race dates December 4, January 15, February 5, February 12, or March 5."
-        },
-        {
-          "season": "2025-2026",
-          "status": "no-match",
-          "evidence": "No event-distance/location matches were found around the December 7, January 18, February 1, February 8, or March 1 race dates."
-        }
-      ]
-    },
-    {
-      "id": "illinois-marathon-weekend",
-      "confirmedYears": [2015, 2016],
-      "checkedGaps": [
-        {
-          "years": "2017-2026",
-          "status": "no-match",
-          "evidence": "No April running activities after 2016 were found within 30 km of Champaign-Urbana during the race-weekend windows."
-        }
-      ]
-    },
-    {
-      "id": "river-to-river-relay",
-      "confirmedYears": [2006, 2008, 2010],
-      "status": "complete-against-known-personal-inventory",
-      "evidence": "The existing personal race inventory lists the River to River Relay in exactly 2006, 2008, and 2010, matching the three current archive records."
-    },
-    {
-      "id": "mile-high-united-way-turkey-trot",
-      "confirmedYears": [2021, 2023, 2025],
-      "status": "new-recurring-series",
-      "evidence": "The 2021 and 2025 Thanksgiving activities are near-identical Washington Park four-mile GPS tracks. The 2023 Thanksgiving source activity contains the complete same course after an approximately 1.60 km approach/warmup; its published route is cropped to the 566-point race-course segment. Event archives independently match the dates, venue, and four-mile distance."
-    }
+    {"id":"denver-colfax-marathon-weekend","confirmedYears":[2021,2024,2025,2026],"checkedGaps":[{"year":2022,"status":"no-match","evidence":"No Strava activities were recorded on the May 14-15, 2022 Colfax race weekend."},{"year":2023,"status":"no-match","evidence":"No Saturday May 20 Colfax 5K activity was found. The May 21 generic 5.00 km run is GPS-confirmed in the Denver home area and occurs well after the Sunday race starts."}]},
+    {"id":"colderbolder","confirmedYears":[2022,2023,2024,2025],"checkedGaps":[{"year":2021,"status":"no-match","evidence":"The 2021 event was December 4; the only nearby candidate is a 4.92 km home-area run on December 5."}]},
+    {"id":"bolderboulder","confirmedYears":[2022,2023,2024,2025],"checkedGaps":[{"year":2021,"status":"no-match","evidence":"The BOLDER on the Run window was May 29-31; the nearby 5.23 km activity occurred May 28 outside the event window."},{"year":2026,"status":"no-match","evidence":"An exact-date 10.00 km run exists on May 25, 2026, but its GPS is in Denver approximately 40 km from the Boulder/Folsom Field event."}]},
+    {"id":"rundenver","confirmedSeasons":["2021-2022"],"checkedGaps":[{"season":"2022-2023","status":"no-match","evidence":"No matching Strava runs were found around the recurring race dates December 4, January 15, February 5, February 12, or March 5."},{"season":"2025-2026","status":"no-match","evidence":"No event-distance/location matches were found around the December 7, January 18, February 1, February 8, or March 1 race dates."}]},
+    {"id":"illinois-marathon-weekend","confirmedYears":[2015,2016],"checkedGaps":[{"years":"2017-2026","status":"no-match","evidence":"No April running activities after 2016 were found within 30 km of Champaign-Urbana during the race-weekend windows."}]},
+    {"id":"river-to-river-relay","confirmedYears":[2006,2008,2010],"status":"complete-against-known-personal-inventory","evidence":"The existing personal race inventory lists the River to River Relay in exactly 2006, 2008, and 2010, matching the three current archive records."},
+    {"id":"mile-high-united-way-turkey-trot","confirmedYears":[2021,2023,2025],"status":"new-recurring-series","evidence":"The 2021 and 2025 Thanksgiving activities are near-identical Washington Park four-mile GPS tracks. The 2023 Thanksgiving source activity contains the complete same course after an approximately 1.60 km approach/warmup; its published route is cropped to the 566-point race-course segment. Event archives independently match the dates, venue, and four-mile distance."},
+    {"id":"chicago-marathon","confirmedYears":[2020,2021],"status":"series-page-added","evidence":"The archive already contained two independently supported Chicago Marathon records: the 2020 virtual marathon completed in Baltimore and the 2021 in-person Chicago Marathon. A recurring series page now links the two without altering either race record."},
+    {"id":"garmin-marathon-land-of-oz","confirmedYears":[2014,2016],"status":"series-page-added","evidence":"The archive already contained Garmin/Olathe half-marathon records in 2014 and 2016 with GPS. A recurring event-family page now links the two while preserving the 2014 Wickedly Fast Half Marathon branding."}
   ],
   "routeClusterAudit": {
-    "clearRecurringRaceClusters": [
-      "COLDERBolder 2022-2025",
-      "Colfax 5K 2024-2026",
-      "BOLDERBoulder 2022-2025",
-      "Mile High United Way Turkey Trot 2021, 2023, 2025",
-      "Colfax Urban 10 2024, 2026"
-    ],
-    "unmodeledBeforeAudit": [
-      "Mile High United Way Turkey Trot"
-    ]
+    "clearRecurringRaceClusters": ["COLDERBolder 2022-2025","Colfax 5K 2024-2026","BOLDERBoulder 2022-2025","Mile High United Way Turkey Trot 2021, 2023, 2025","Colfax Urban 10 2024, 2026"],
+    "unmodeledBeforeAudit": ["Mile High United Way Turkey Trot"],
+    "additionalVerifiedRaceFamiliesGivenSeriesPages": ["Chicago Marathon 2020-2021","Garmin Marathon in the Land of Oz 2014, 2016"]
   }
 }
