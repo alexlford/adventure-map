@@ -33,8 +33,9 @@ test('Royal Gorge Story shows only route-key colors on visible component routes'
   // Check computed onscreen strokes and wait for both asynchronous route layers.
   // SVG stroke attributes alone can look correct while CSS !important repaints
   // the visible paths, which is the regression this test protects against.
+  // The detail location marker is intentionally white and is not a route layer.
   await expect.poll(async () => {
-    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
+    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path:not(.detail-location-point)').evaluateAll(nodes =>
       nodes.map(node => String(getComputedStyle(node).stroke || '').trim().toLowerCase())
     )).map(normalizeCssColor);
     return uniqueSorted(strokes.filter(color => color && color !== 'transparent'));
