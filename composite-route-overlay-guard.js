@@ -7,9 +7,12 @@
   const resolveCompositeColor = routes.compositeRouteColor.bind(routes);
 
   routes.compositeRouteColor = (feature, context) => {
+    const isComposite = Boolean(context?.recordId && context?.members?.length);
+    document.getElementById('detailMap')?.classList.toggle('has-composite-routes', isComposite);
+
     const memberColor = resolveCompositeColor(feature, context);
     if (memberColor) return memberColor;
-    if (!context?.recordId || !context?.members?.length) return null;
+    if (!isComposite) return null;
 
     const owners = feature?.properties?.adventureIds || [];
     if (!owners.includes(context.recordId)) return null;
