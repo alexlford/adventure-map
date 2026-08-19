@@ -25,6 +25,7 @@ on:
       - 'scripts/build-shared.mjs'
       - 'scripts/build-catalog-record-layer.mjs'
       - 'scripts/build-public-records.mjs'
+      - 'scripts/build-recurring-race-audit.mjs'
       - 'scripts/build-static-site.mjs'
       - 'scripts/build-public-index.mjs'
       - 'scripts/build-route-detail-index.mjs'
@@ -82,7 +83,7 @@ jobs:
               node scripts/audit-strava-route-coverage.mjs
             fi
 
-            git add package-lock.json shared.js data/catalog-layers/records.json data/public-records.json data/route-detail-index.json sitemap.xml robots.txt vendor/leaflet record map explore timeline stories races summits skiing nordic mtb
+            git add package-lock.json shared.js data/catalog-layers/records.json data/public-records.json data/recurring-race-audit.json data/route-detail-index.json sitemap.xml robots.txt vendor/leaflet record map explore timeline stories races summits skiing nordic mtb
             if git diff --cached --quiet; then
               echo "Publication artifacts are already current."
               exit 0
