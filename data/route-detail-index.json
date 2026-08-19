@@ -3,8 +3,8 @@
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
   "routeCatalogUpdatedOn": "2026-08-18",
-  "recordCount": 129,
-  "featureCount": 119,
+  "recordCount": 135,
+  "featureCount": 121,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
@@ -141,6 +141,12 @@
     "colfax-5k-2024": {
       "file": "data/strava-route-full-resolution-colfax-5k-2024.json",
       "featureId": "strava-11440407183",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colfax-5k-2025": {
+      "file": "data/strava-route-full-resolution-colfax-5k-2024.json",
+      "featureId": "strava-14509902400",
       "format": "polyline",
       "quality": "full-source"
     },
@@ -708,11 +714,41 @@
       "format": "polyline",
       "quality": "full-source"
     },
+    "snowman-shuffle-2006": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "snowman-shuffle-jalc-course-proxy",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "snowman-shuffle-2007": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "snowman-shuffle-jalc-course-proxy",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "snowman-shuffle-2008": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "snowman-shuffle-jalc-course-proxy",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "snowman-shuffle-2009": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "snowman-shuffle-jalc-course-proxy",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
     "snowman-shuffle-2021-virtual": {
       "file": "data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json",
       "featureId": "strava-4676340941",
       "format": "polyline",
       "quality": "full-source"
+    },
+    "snowman-shuffle-series": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "snowman-shuffle-jalc-course-proxy",
+      "format": "geojson",
+      "quality": "catalog-detail"
     },
     "st-louis-turkey-trot-8k-2018": {
       "file": "data/strava-route-full-resolution-st-louis-turkey-trot-8k-2018.json",

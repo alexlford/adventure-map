@@ -15,7 +15,9 @@
         "snowman-shuffle-2021-virtual"
       ],
       "adventureId": "snowman-shuffle-series",
-      "summary": "Four in-person John A. Logan College 5Ks from 2006–2009 plus the 2021 virtual edition completed in Baltimore."
+      "summary": "Four in-person John A. Logan College 5Ks from 2006–2009 plus the 2021 virtual edition completed in Baltimore.",
+      "routeId": "snowman-shuffle-jalc-course-proxy",
+      "routeScope": "shared-historical-course-proxy"
     },
     {
       "id": "river-to-river-relay-series",
@@ -167,12 +169,13 @@
         "colfax-half-2021",
         "colfax-5k-2024",
         "colfax-urban-10-2024",
+        "colfax-5k-2025",
         "colfax-marathon-2025",
         "colfax-5k-2026",
         "colfax-urban-10-2026"
       ],
       "adventureId": "colfax-marathon-weekend-series",
-      "summary": "Six races across four Colfax weekends: 2021 Half, 2024 5K + Urban 10, 2025 Marathon, and 2026 5K + Urban 10."
+      "summary": "Seven races across four Colfax weekends: 2021 Half, 2024 5K + Urban 10, 2025 5K + Marathon, and 2026 5K + Urban 10."
     },
     {
       "id": "colfax-two-day-weekend-2024",
@@ -181,6 +184,14 @@
       "years": [2024],
       "memberIds": ["colfax-5k-2024", "colfax-urban-10-2024"],
       "summary": "Colfax 5K on Saturday followed by the Urban 10 Miler on Sunday, the two-race combination used by the 2-Day Mile High Challenge."
+    },
+    {
+      "id": "colfax-two-day-weekend-2025",
+      "type": "weekend",
+      "name": "Denver Colfax 5K + Marathon Weekend",
+      "years": [2025],
+      "memberIds": ["colfax-5k-2025", "colfax-marathon-2025"],
+      "summary": "Colfax 5K on Saturday followed by the full Denver Colfax Marathon on Sunday."
     },
     {
       "id": "royal-gorge-groove-run-ride-2024",

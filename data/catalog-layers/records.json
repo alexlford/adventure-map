@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceCount": 35,
-  "recordCount": 152,
+  "recordCount": 153,
   "layeredMergeCount": 38,
   "adventures": [
     {
@@ -1474,13 +1474,19 @@
       "officialDistanceMi": 3.11,
       "location": "John A. Logan College, Carterville, Illinois",
       "region": "Illinois",
-      "coordinatePrecision": "venue-placeholder",
+      "lat": 37.7481,
+      "lon": -89.08914,
+      "coordinatePrecision": "venue",
       "participationMode": "in-person",
-      "routeStatus": "historical-course-pending",
+      "routeFeatureIds": [
+        "snowman-shuffle-jalc-course-proxy"
+      ],
+      "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2006 event calendar",
       "matchConfidence": "confirmed",
       "sourceUrl": "https://r2rrelay.com/members/calendar.html",
-      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 7, 2006 5K Run and Walk at John A. Logan College. No personal GPS survives, and no historical course geometry has yet been sourced strongly enough to publish as the race route.",
+      "routeSourceUrl": "https://runsignup.com/Race/TheSummerSickness/Page-2",
+      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 7, 2006 5K at John A. Logan College. No personal GPS survives. Per user instruction, the shared JALC Snowman course proxy uses the modern event venue and the oldest digitized-course reference found (the 2020 Summer Sickness listing) as a stand-in for the historical course; it is not represented as personal GPS or proof that the 2006 road alignment was identical.",
       "_catalogSource": "data/user-confirmed-races.json"
     },
     {
@@ -1496,13 +1502,19 @@
       "officialDistanceMi": 3.11,
       "location": "John A. Logan College, Carterville, Illinois",
       "region": "Illinois",
-      "coordinatePrecision": "venue-placeholder",
+      "lat": 37.7481,
+      "lon": -89.08914,
+      "coordinatePrecision": "venue",
       "participationMode": "in-person",
-      "routeStatus": "historical-course-pending",
+      "routeFeatureIds": [
+        "snowman-shuffle-jalc-course-proxy"
+      ],
+      "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2007 event calendar",
       "matchConfidence": "confirmed",
       "sourceUrl": "https://r2rrelay.com/members/calendar.html",
-      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 6, 2007 5K Run and Walk at John A. Logan College. No personal GPS survives, and no historical course geometry has yet been sourced strongly enough to publish as the race route.",
+      "routeSourceUrl": "https://runsignup.com/Race/TheSummerSickness/Page-2",
+      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 6, 2007 5K at John A. Logan College. No personal GPS survives. Per user instruction, the shared JALC Snowman course proxy uses the modern event venue and the oldest digitized-course reference found (the 2020 Summer Sickness listing) as a stand-in for the historical course; it is not represented as personal GPS or proof that the 2007 road alignment was identical.",
       "_catalogSource": "data/user-confirmed-races.json"
     },
     {
@@ -1518,13 +1530,19 @@
       "officialDistanceMi": 3.11,
       "location": "John A. Logan College, Carterville, Illinois",
       "region": "Illinois",
-      "coordinatePrecision": "venue-placeholder",
+      "lat": 37.7481,
+      "lon": -89.08914,
+      "coordinatePrecision": "venue",
       "participationMode": "in-person",
-      "routeStatus": "historical-course-pending",
+      "routeFeatureIds": [
+        "snowman-shuffle-jalc-course-proxy"
+      ],
+      "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2008 event calendar",
       "matchConfidence": "confirmed",
       "sourceUrl": "https://r2rrelay.com/members/calendar.html",
-      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 5, 2008 5K Run and Walk at John A. Logan College. No personal GPS survives, and no historical course geometry has yet been sourced strongly enough to publish as the race route.",
+      "routeSourceUrl": "https://runsignup.com/Race/TheSummerSickness/Page-2",
+      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 5, 2008 5K at John A. Logan College. No personal GPS survives. Per user instruction, the shared JALC Snowman course proxy uses the modern event venue and the oldest digitized-course reference found (the 2020 Summer Sickness listing) as a stand-in for the historical course; it is not represented as personal GPS or proof that the 2008 road alignment was identical.",
       "_catalogSource": "data/user-confirmed-races.json"
     },
     {
@@ -1540,13 +1558,19 @@
       "officialDistanceMi": 3.11,
       "location": "John A. Logan College, Carterville, Illinois",
       "region": "Illinois",
-      "coordinatePrecision": "venue-placeholder",
+      "lat": 37.7481,
+      "lon": -89.08914,
+      "coordinatePrecision": "venue",
       "participationMode": "in-person",
-      "routeStatus": "historical-course-pending",
+      "routeFeatureIds": [
+        "snowman-shuffle-jalc-course-proxy"
+      ],
+      "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2009 event calendar",
       "matchConfidence": "confirmed",
       "sourceUrl": "https://r2rrelay.com/members/calendar.html",
-      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 3, 2009 5K Run and Walk at John A. Logan College. No personal GPS survives, and no historical course geometry has yet been sourced strongly enough to publish as the race route.",
+      "routeSourceUrl": "https://runsignup.com/Race/TheSummerSickness/Page-2",
+      "note": "User-confirmed Snowman Shuffle participation. River to River Runners lists the January 3, 2009 5K at John A. Logan College. No personal GPS survives. Per user instruction, the shared JALC Snowman course proxy uses the modern event venue and the oldest digitized-course reference found (the 2020 Summer Sickness listing) as a stand-in for the historical course; it is not represented as personal GPS or proof that the 2009 road alignment was identical.",
       "_catalogSource": "data/user-confirmed-races.json"
     },
     {
@@ -1688,6 +1712,40 @@
       "_catalogSource": "data/recovered-events-2026-08.json"
     },
     {
+      "id": "colfax-5k-2025",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Colfax 5K",
+      "year": 2025,
+      "date": "2025-05-17",
+      "distance": "5K",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5,
+      "officialDistanceMi": 3.11,
+      "location": "City Park, Denver, Colorado",
+      "region": "Colorado",
+      "lat": 39.7479424,
+      "lon": -104.9480164,
+      "coordinatePrecision": "gps-start",
+      "participationMode": "in-person",
+      "stravaActivityId": "14509902400",
+      "stravaActivityName": "Nike Run Club: Saturday Morning Run",
+      "stravaDistanceKm": 5.12,
+      "stravaDistanceMi": 3.18,
+      "stravaElapsedSeconds": 1981,
+      "stravaMovingSeconds": 1969,
+      "elevationGainM": 20,
+      "routeFeatureIds": [
+        "strava-14509902400"
+      ],
+      "routeStatus": "gps-source-available",
+      "matchSource": "User confirmation + exact-date 5.12 km Strava GPS + Denver Colfax 5K schedule and City Park start",
+      "matchConfidence": "confirmed",
+      "resultUrl": "https://www.runcolfax.org/races/race-results/",
+      "note": "User recalls running the 2025 Colfax 5K. The matched Strava activity was recorded Saturday, May 17, 2025 at 9:09 AM local time, starts at the Colfax City Park start/finish area, and records 5.12 km in 33:01 elapsed (32:49 moving). This is treated as a confirmed participation match from user memory plus exact race-day GPS; no individual organizer result time is asserted.",
+      "_catalogSource": "data/user-confirmed-races.json"
+    },
+    {
       "id": "snowman-shuffle-series",
       "slug": "snowman-shuffle-series",
       "kind": "adventure",
@@ -1699,10 +1757,13 @@
       "distance": "Five 5K editions",
       "location": "John A. Logan College, Carterville, Illinois + 2021 virtual completion",
       "region": "Illinois / Maryland",
-      "routeStatus": "multi-event-match",
-      "matchSource": "User confirmation + River to River Runners historical calendars + 2021 virtual event record + Strava",
+      "routeFeatureIds": [
+        "snowman-shuffle-jalc-course-proxy"
+      ],
+      "routeStatus": "historical-course",
+      "matchSource": "User confirmation + River to River Runners historical calendars + 2020 Summer Sickness digitized-course reference + current JALC event venue + 2021 virtual event record + Strava",
       "matchConfidence": "confirmed",
-      "note": "A recurring Snowman Shuffle chapter spanning four in-person 5Ks at John A. Logan College in 2006–2009 and the 2021 virtual edition completed in Baltimore. The early editions predate the surviving Strava archive, so their event records are preserved separately from the 2021 personal GPS route.",
+      "note": "A recurring Snowman Shuffle chapter spanning four in-person 5Ks at John A. Logan College in 2006–2009 and the 2021 virtual edition completed in Baltimore. The early editions predate the surviving Strava archive. Per user instruction, they share a representative JALC course proxy based on the modern event venue and the oldest digitized-course reference found; the proxy is historical context rather than personal GPS. The 2021 virtual edition retains its own personal Baltimore GPS route.",
       "_catalogSource": "data/notable-adventures.json"
     },
     {
@@ -1806,13 +1867,13 @@
       "year": 2021,
       "date": "2021-10-16",
       "endDate": "2026-05-17",
-      "distance": "Six races across four Colfax weekends",
+      "distance": "Seven races across four Colfax weekends",
       "location": "Denver, Colorado",
       "region": "Colorado",
       "routeStatus": "multi-event-gps",
-      "matchSource": "Denver Colfax event archives + medals + Strava GPS",
+      "matchSource": "Denver Colfax event archives + user confirmation + medals + Strava GPS",
       "matchConfidence": "confirmed",
-      "note": "A recurring Colfax Marathon Weekend chapter spanning the 2021 Half Marathon, the 2024 5K and Urban 10 two-day challenge, the 2025 Marathon, and the 2026 5K and Urban 10 two-day challenge.",
+      "note": "A recurring Colfax Marathon Weekend chapter spanning the 2021 Half Marathon, the 2024 5K and Urban 10 two-day challenge, the 2025 5K on Saturday followed by the full Marathon on Sunday, and the 2026 5K and Urban 10 two-day challenge.",
       "_catalogSource": "data/notable-adventures.json"
     },
     {
@@ -4034,6 +4095,9 @@
     "royal-gorge-groove-mtb-2024": [
       "data/user-confirmed-races.json",
       "data/recovered-events-2026-08.json"
+    ],
+    "colfax-5k-2025": [
+      "data/user-confirmed-races.json"
     ],
     "snowman-shuffle-series": [
       "data/notable-adventures.json"
