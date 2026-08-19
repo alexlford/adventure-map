@@ -9,21 +9,25 @@ const normalizeCssColor = value => {
   return `#${match.slice(1, 4).map(part => Number(part).toString(16).padStart(2, '0')).join('')}`;
 };
 
-test('Royal Gorge Story shows only route-key colors on visible component routes', async ({ page }) => {
+const uniqueSorted = values => [...new Set(values.filter(Boolean))].sort();
+
+test('Royal Gorge Story visibly uses the route-key colors on the map', async ({ page }) => {
   await page.goto('/detail.html?record=royal-gorge-groove-weekend-2024', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#storyRouteKey .story-route-key-item')).toHaveCount(2);
+  const routeItems = page.locator('#storyRouteKey .story-route-key-item');
+  await expect(routeItems).toHaveCount(2);
 
-  const legend = (await page.locator('#storyRouteKey .story-route-key-item').evaluateAll(nodes =>
+  const legend = uniqueSorted((await routeItems.evaluateAll(nodes =>
     nodes.map(node => String(getComputedStyle(node).getPropertyValue('--route-color') || '').trim().toLowerCase())
-  )).map(normalizeCssColor);
+  )).map(normalizeCssColor));
+  expect(legend).toEqual(['#2f7d4a', '#b45309']);
 
-  await expect.poll(async () => page.locator('#detailMap .leaflet-overlay-pane path').count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
-
-  const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
-    nodes.map(node => String(node.getAttribute('stroke') || getComputedStyle(node).stroke || '').trim().toLowerCase())
-  )).map(normalizeCssColor);
-  const visible = strokes.filter(color => color && color !== 'transparent');
-
-  expect(new Set(visible)).toEqual(new Set(legend));
-  for (const color of visible) expect(legend).toContain(color);
+  // Assert the computed onscreen stroke, not only Leaflet's SVG presentation
+  // attribute. A CSS !important rule can otherwise repaint the route while the
+  // stroke attribute still looks correct to the test.
+  await expect.poll(async () => {
+    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
+      nodes.map(node => String(getComputedStyle(node).stroke || node.getAttribute('stroke') || '').trim().toLowerCase())
+    )).map(normalizeCssColor);
+    return uniqueSorted(strokes.filter(color => color !== 'transparent'));
+  }, { timeout: 15000 }).toEqual(legend);
 });
