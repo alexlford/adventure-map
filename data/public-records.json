@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 155,
+  "recordCount": 156,
   "records": [
     {
       "id": "mount-lincoln",
@@ -4995,6 +4995,72 @@
       },
       "routeInfo": {
         "status": "multi-event-gps",
+        "provenance": null
+      }
+    },
+    {
+      "id": "brew-to-brew-relay-2013",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Brew to Brew Team Relay",
+      "eventSeries": "Brew to Brew",
+      "year": 2013,
+      "date": "2013-04-07",
+      "distance": "44.4-mile relay",
+      "officialDistance": "44.4 miles",
+      "officialDistanceMi": 44.4,
+      "location": "Kansas City, Missouri to Lawrence, Kansas",
+      "region": "Kansas / Missouri",
+      "lat": 39.087725,
+      "lon": -94.722098,
+      "coordinatePrecision": "gps-start",
+      "participationMode": "in-person",
+      "stravaActivityId": "643096101",
+      "stravaActivityName": "Running 4/7/13 9:57 am",
+      "stravaDistanceKm": 9.5713,
+      "stravaDistanceMi": 5.95,
+      "stravaElapsedSeconds": 4095,
+      "stravaMovingSeconds": 3535,
+      "elevationGainM": 11.8,
+      "personalLeg": "Leg 3",
+      "personalLegIdentification": "high-confidence",
+      "routeFeatureIds": [
+        "brew-to-brew-historical-course",
+        "strava-643096101"
+      ],
+      "routeStatus": "gps-source-available",
+      "matchSource": "User confirmation + exact-date Strava FIT + Copart Auto Auctions GPS start + historical Brew to Brew team-relay date/course documentation",
+      "matchConfidence": "confirmed",
+      "sourceUrl": "https://universityextras.com/letsgorun.com/upcoming-events/2013-race-calendar",
+      "routeSourceUrl": "https://abcdocz.com/doc/965987/your-2015-participant-guide-",
+      "note": "User confirms running a Brew to Brew relay section while living in Kansas. The April 7, 2013 Strava activity matches the 2013 team-relay date, starts at the historical Copart Auto Auctions exchange at 6211 Kansas Ave, and records 9.5713 km (5.95 mi) to Edwardsville. That makes Leg 3 the high-confidence leg identification. The full Brew to Brew line is published separately as a historical course overview; Alex's 841-point FIT track is preserved as personal GPS for his section.",
+      "_catalogSource": "data/recovered-events-2026-08.json",
+      "slug": "2013-04-07-brew-to-brew-team-relay",
+      "recordClass": "race",
+      "sport": "running",
+      "startDate": "2013-04-07",
+      "finishDate": "2013-04-07",
+      "distanceInfo": {
+        "km": null,
+        "mi": 44.4,
+        "label": "44.4 miles",
+        "source": "official"
+      },
+      "locationInfo": {
+        "label": "Kansas City, Missouri to Lawrence, Kansas",
+        "region": "Kansas / Missouri",
+        "lat": 39.087725,
+        "lon": -94.722098,
+        "precision": "gps-start"
+      },
+      "evidence": {
+        "source": "User confirmation + exact-date Strava FIT + Copart Auto Auctions GPS start + historical Brew to Brew team-relay date/course documentation",
+        "matchSource": "User confirmation + exact-date Strava FIT + Copart Auto Auctions GPS start + historical Brew to Brew team-relay date/course documentation",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "gps-source-available",
         "provenance": null
       }
     },

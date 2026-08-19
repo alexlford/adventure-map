@@ -3,8 +3,8 @@
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
   "routeCatalogUpdatedOn": "2026-08-18",
-  "recordCount": 137,
-  "featureCount": 123,
+  "recordCount": 138,
+  "featureCount": 124,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
@@ -87,6 +87,12 @@
     "boulderthon-2024": {
       "file": "data/strava-route-full-resolution-boulderthon-2024.json",
       "featureId": "strava-12535362010",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "brew-to-brew-relay-2013": {
+      "file": "data/strava-route-full-resolution-beerfit-kansas-city-brew-mile-2016.json",
+      "featureId": "strava-643096101",
       "format": "polyline",
       "quality": "full-source"
     },
