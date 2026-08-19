@@ -7,6 +7,11 @@
   const resolveCompositeColor = routes.compositeRouteColor.bind(routes);
 
   routes.compositeRouteColor = (feature, context) => {
+    // Give shared map CSS a deterministic runtime signal. The Story route key
+    // is rendered before the map, but a body class is more robust than a
+    // structural :has() selector across the browsers used by CI and production.
+    document.body?.classList.toggle('has-composite-routes', Boolean(context?.members?.length));
+
     const memberColor = resolveCompositeColor(feature, context);
     if (memberColor) return memberColor;
     if (!context?.recordId || !context?.members?.length) return null;
