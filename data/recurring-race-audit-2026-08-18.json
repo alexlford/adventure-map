@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedOn": "2026-08-18",
+  "publicationArtifactsMaterialized": true,
   "methodology": {
     "stravaRunsScanned": 1396,
     "runsWithGps": 1286,
