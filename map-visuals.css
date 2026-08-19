@@ -44,7 +44,7 @@
 .detail-route-section>p.card-meta[data-provenance="historical-course"]:before{height:2px;border-radius:0;background:repeating-linear-gradient(90deg,var(--accent) 0 5px,transparent 5px 8px)}
 .detail-route-section>p.card-meta[data-provenance="location-only"]:before{width:8px;height:8px;border:2px solid #fff;border-radius:50%;background:var(--accent);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 68%,var(--line))}
 .detail-route-section>p.card-meta[data-provenance="privacy-withheld"]:before{width:9px;height:9px;border-radius:3px;background:var(--muted);opacity:.62}
-body[data-page] .detail-map .leaflet-interactive{stroke:var(--accent)!important}
+body[data-page] .detail-map:not(.has-composite-routes) .leaflet-interactive{stroke:var(--accent)!important}
 .detail-map path.leaflet-interactive{filter:drop-shadow(0 1px 0 rgba(255,255,255,.88))}
 body[data-page] .detail-map path.detail-location-point{stroke:#fff!important;stroke-width:2.5px!important;fill:var(--accent)!important;filter:drop-shadow(0 3px 6px rgba(23,32,42,.24))}
 .leaflet-tooltip.detail-location-label{padding:5px 8px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.96);box-shadow:0 5px 16px rgba(23,32,42,.12);color:var(--ink);font-size:10px;font-weight:800;line-height:1.2}
