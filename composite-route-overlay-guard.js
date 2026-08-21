@@ -19,16 +19,20 @@
   };
 
   // Challenges are presented as one themed route only on Story detail pages.
-  // The master map must retain the full composite context so focused source
-  // activities keep their independent semantic route colors.
+  // Once identified, that policy is monotonic for the page lifetime: later
+  // context lookups must not re-enable member colors before Leaflet paints.
+  // The master map has no #detailMap, so it always retains member contexts.
   if (resolveCompositeContext) {
     routes.compositeRouteContext = (...args) => {
       const context = resolveCompositeContext(...args);
       const hasCompositeMembers = Boolean(context?.recordId && context?.members?.length);
-      useUnifiedStoryAccent = isDetailStoryPage()
+      if (isDetailStoryPage()
         && hasCompositeMembers
-        && UNIFIED_STORY_RELATIONSHIP_TYPES.has(context?.relationship?.type);
-      return useUnifiedStoryAccent ? null : context;
+        && UNIFIED_STORY_RELATIONSHIP_TYPES.has(context?.relationship?.type)) {
+        useUnifiedStoryAccent = true;
+        return null;
+      }
+      return context;
     };
   }
 
