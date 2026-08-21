@@ -100,10 +100,9 @@
     const focused = Boolean(focusId && item.adventureIds.includes(focusId));
     item.layer.eachLayer?.(layer => {
       const feature = layer.feature || item.feature;
-      const sourceRecord = item.sourceId ? runtime.resolveRecord(item.sourceId) : null;
-      const record = sourceRecord
-        || (focusId && item.adventureIds.includes(focusId) ? runtime.resolveRecord(focusId) : null)
-        || internal.recordsByIds(item.adventureIds)[0];
+      const record = focusId && item.adventureIds.includes(focusId)
+        ? runtime.resolveRecord(focusId)
+        : internal.recordsByIds(item.adventureIds)[0];
       const category = record ? runtime.layerFor(record) : 'adventures';
       const base = internal.baseRouteStyle(feature, category);
       layer.setStyle?.({
@@ -161,8 +160,8 @@
 
   function makeRenderedItem(target, detail) {
     const feature = detail.collection.features[0];
-    const record = runtime.resolveRecord(target.sourceId) || runtime.resolveRecord(target.id);
-    const adventureIds = [...new Set([target.id, target.sourceId, ...(feature.properties?.adventureIds || [])].filter(Boolean))];
+    const record = runtime.resolveRecord(target.id);
+    const adventureIds = [...new Set([target.id, ...(feature.properties?.adventureIds || [])])];
     const base = internal.baseRouteStyle(feature, runtime.layerFor(record));
     const layer = L.geoJSON(detail.collection, {
       interactive: false,
@@ -178,7 +177,6 @@
     return {
       layer,
       feature,
-      sourceId: target.sourceId,
       adventureIds,
       quality: detail.entry.quality
     };
