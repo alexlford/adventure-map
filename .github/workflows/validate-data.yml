@@ -34,16 +34,6 @@ jobs:
         run: npm run test:update-pipeline
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
-      - name: Diagnose Story title
-        run: node scripts/run-browser-tests.mjs tests/story-accent-diagnostic.spec.mjs --grep "^diagnostic title$"
-      - name: Diagnose Story theme
-        run: node scripts/run-browser-tests.mjs tests/story-accent-diagnostic.spec.mjs --grep "^diagnostic theme$"
-      - name: Diagnose Story tokens
-        run: node scripts/run-browser-tests.mjs tests/story-accent-diagnostic.spec.mjs --grep "^diagnostic tokens$"
-      - name: Diagnose Story route visibility
-        run: node scripts/run-browser-tests.mjs tests/story-accent-diagnostic.spec.mjs --grep "^diagnostic route visible$"
-      - name: Diagnose Story route stroke
-        run: node scripts/run-browser-tests.mjs tests/story-accent-diagnostic.spec.mjs --grep "^diagnostic route stroke$"
       - name: Run browser regression suite
         run: npm run test:browser
       - name: Verify publication artifacts are committed
