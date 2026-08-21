@@ -38,6 +38,13 @@ jobs:
         run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs --grep "Story records use one theme accent"
       - name: Run browser regression suite
         run: npm run test:browser
+      - name: Upload browser failure log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-failure-log
+          path: browser-failure.log
+          if-no-files-found: ignore
       - name: Verify publication artifacts are committed
         run: |
           CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/catalog-layers/records.json data/public-records.json data/route-detail-index.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
