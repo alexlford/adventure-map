@@ -17,13 +17,15 @@ test('Royal Gorge Story shows only route-key colors on visible component routes'
     nodes.map(node => String(getComputedStyle(node).getPropertyValue('--route-color') || '').trim().toLowerCase())
   )).map(normalizeCssColor);
 
-  await expect.poll(async () => page.locator('#detailMap .leaflet-overlay-pane path').count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
+  const routePaths = page.locator('#detailMap .leaflet-overlay-pane path:not(.detail-location-point)');
+  await expect.poll(async () => routePaths.count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
   await expect(page.locator('#detailMap')).toHaveClass(/has-composite-routes/);
 
   // Check the visible/computed stroke, not the SVG presentation attribute.
   // A CSS !important rule can repaint the path while leaving the attribute
-  // unchanged, which is the regression this test protects against.
-  const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
+  // unchanged, which is the regression this test protects against. The white
+  // detail-location marker is intentionally not a route layer.
+  const strokes = (await routePaths.evaluateAll(nodes =>
     nodes.map(node => String(getComputedStyle(node).stroke || '').trim().toLowerCase())
   )).map(normalizeCssColor);
   const visible = strokes.filter(color => color && color !== 'transparent');
