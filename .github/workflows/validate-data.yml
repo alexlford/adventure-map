@@ -34,16 +34,6 @@ jobs:
         run: npm run test:update-pipeline
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
-      - name: Diagnose Story title
-        run: npx playwright test tests/visual-system-convergence.spec.mjs --project=chromium --grep "Story diagnostic title"
-      - name: Diagnose Story theme class
-        run: npx playwright test tests/visual-system-convergence.spec.mjs --project=chromium --grep "Story diagnostic theme class"
-      - name: Diagnose Story endpoint dots
-        run: npx playwright test tests/visual-system-convergence.spec.mjs --project=chromium --grep "Story diagnostic endpoint dots"
-      - name: Diagnose Story theme tokens
-        run: npx playwright test tests/visual-system-convergence.spec.mjs --project=chromium --grep "Story diagnostic theme tokens"
-      - name: Diagnose Story route stroke
-        run: npx playwright test tests/visual-system-convergence.spec.mjs --project=chromium --grep "Story diagnostic route stroke"
       - name: Run browser regression suite
         run: npm run test:browser
       - name: Verify publication artifacts are committed
