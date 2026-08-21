@@ -34,14 +34,6 @@ jobs:
         run: npm run test:update-pipeline
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
-      - name: Diagnose visual map shell
-        run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs --grep "Map shell shares chapter tokens"
-      - name: Diagnose visual map failure state
-        run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs --grep "Map data failure uses the shared error-state treatment"
-      - name: Diagnose visual activity chapters
-        run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs --grep "Activity chapters use consistent section rhythm"
-      - name: Diagnose visual Story route accent
-        run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs --grep "Story records use one theme accent"
       - name: Run browser regression suite
         run: npm run test:browser
       - name: Verify publication artifacts are committed
