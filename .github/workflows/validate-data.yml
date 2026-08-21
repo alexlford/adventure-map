@@ -38,6 +38,55 @@ jobs:
         run: node scripts/run-browser-tests.mjs tests/composite-route-colors.spec.mjs
       - name: Diagnose visible composite route color regression
         run: node scripts/run-browser-tests.mjs tests/composite-story-visible-route-colors.spec.mjs
+      - name: Diagnose browser group A - stories and detail
+        run: >-
+          node scripts/run-browser-tests.mjs
+          tests/beerfit-story.spec.mjs
+          tests/catalog-runtime-performance.spec.mjs
+          tests/chapter-filter-state.spec.mjs
+          tests/chapter-index-navigation.spec.mjs
+          tests/chapter-presentation-polish.spec.mjs
+          tests/decalibron-route.spec.mjs
+          tests/detail-record-classes.spec.mjs
+          tests/detail-renderer-single-pass.spec.mjs
+          tests/geojson-route-detail.spec.mjs
+      - name: Diagnose browser group B - map runtime
+        run: >-
+          node scripts/run-browser-tests.mjs
+          tests/composite-route-detail.spec.mjs
+          tests/map-api-boundary.spec.mjs
+          tests/map-current-contracts.spec.mjs
+          tests/map-keyboard-accessibility.spec.mjs
+          tests/map-popup-links.spec.mjs
+          tests/map-render-core.spec.mjs
+          tests/map-route-detail-loading.spec.mjs
+          tests/map-runtime-boundary.spec.mjs
+          tests/map-url-state-api.spec.mjs
+          tests/map-url-state.spec.mjs
+      - name: Diagnose browser group C - publishing and resilience
+        run: >-
+          node scripts/run-browser-tests.mjs
+          tests/mobile-layout.spec.mjs
+          tests/optional-enrichment-resilience.spec.mjs
+          tests/public-media-integrity.spec.mjs
+          tests/publication-model.spec.mjs
+          tests/race-core-enrichment-resilience.spec.mjs
+          tests/race-timeline-consistency.spec.mjs
+          tests/record-map-deep-link.spec.mjs
+          tests/record-presentation-boundary.spec.mjs
+          tests/route-feature-dedupe.spec.mjs
+          tests/route-source-resilience.spec.mjs
+      - name: Diagnose browser group D - site shell and visual
+        run: >-
+          node scripts/run-browser-tests.mjs
+          tests/runtime-internal-links.spec.mjs
+          tests/runtime-smoke.spec.mjs
+          tests/shared-activity-records.spec.mjs
+          tests/site-shell-consistency.spec.mjs
+          tests/static-publishing.spec.mjs
+          tests/ux-editorial-consistency.spec.mjs
+          tests/visual-system-convergence.spec.mjs
+          tests/world-majors-layout.spec.mjs
       - name: Run browser regression suite
         run: npm run test:browser
       - name: Verify publication artifacts are committed
