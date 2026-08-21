@@ -34,22 +34,14 @@ jobs:
         run: npm run test:update-pipeline
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
-      - name: Diagnose runtime internal links
-        run: node scripts/run-browser-tests.mjs tests/runtime-internal-links.spec.mjs
-      - name: Diagnose runtime smoke
-        run: node scripts/run-browser-tests.mjs tests/runtime-smoke.spec.mjs
-      - name: Diagnose shared activity records
-        run: node scripts/run-browser-tests.mjs tests/shared-activity-records.spec.mjs
-      - name: Diagnose site shell consistency
-        run: node scripts/run-browser-tests.mjs tests/site-shell-consistency.spec.mjs
-      - name: Diagnose static publishing
-        run: node scripts/run-browser-tests.mjs tests/static-publishing.spec.mjs
-      - name: Diagnose editorial consistency
-        run: node scripts/run-browser-tests.mjs tests/ux-editorial-consistency.spec.mjs
-      - name: Diagnose visual system convergence
-        run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs
-      - name: Diagnose World Majors layout
-        run: node scripts/run-browser-tests.mjs tests/world-majors-layout.spec.mjs
+      - name: Diagnose visual map shell
+        run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs --grep "Map shell shares chapter tokens"
+      - name: Diagnose visual map failure state
+        run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs --grep "Map data failure uses the shared error-state treatment"
+      - name: Diagnose visual activity chapters
+        run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs --grep "Activity chapters use consistent section rhythm"
+      - name: Diagnose visual Story route accent
+        run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs --grep "Story records use one theme accent"
       - name: Run browser regression suite
         run: npm run test:browser
       - name: Verify publication artifacts are committed
