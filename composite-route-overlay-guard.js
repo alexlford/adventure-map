@@ -9,6 +9,14 @@
   const resolveCompositeColor = routes.compositeRouteColor.bind(routes);
   let useUnifiedStoryAccent = false;
 
+  const unifiedStoryAccent = () => {
+    const themedNode = document.body || document.documentElement;
+    const style = getComputedStyle(themedNode);
+    return style.getPropertyValue('--story-accent').trim()
+      || style.getPropertyValue('--accent').trim()
+      || null;
+  };
+
   // A multi-member relationship is not automatically a multi-color Story.
   // Challenges, recurring series, and same-day grouped records are presented
   // as one themed narrative on detail pages. Weekend and multi-day Stories are
@@ -31,12 +39,10 @@
 
     // For unified multi-member Stories, do not leak the source feature color
     // back into the detail route after the composite context is suppressed.
-    // The renderer falls back to its source route color when this hook returns
-    // no color, so return the active Story token explicitly instead of null.
+    // Story theme tokens live on the themed body, so resolve them there rather
+    // than from :root. The renderer otherwise falls back to the source color.
     if (!isComposite && useUnifiedStoryAccent) {
-      const storyAccent = getComputedStyle(document.documentElement)
-        .getPropertyValue('--detail-route-accent')
-        .trim();
+      const storyAccent = unifiedStoryAccent();
       if (storyAccent) return storyAccent;
     }
 
