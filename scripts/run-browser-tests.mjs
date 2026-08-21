@@ -1,9 +1,13 @@
+import { rmSync, writeFileSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 
 const host = '127.0.0.1';
 const port = '4173';
 const baseUrl = `http://${host}:${port}`;
 const requestedTests = process.argv.slice(2);
+const failureLogPath = 'browser-failure.log';
+
+rmSync(failureLogPath, { force: true });
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 const stripAnsi = value => String(value).replace(/\u001b\[[0-9;]*m/g, '');
@@ -36,9 +40,12 @@ const run = (command, args, options = {}) => new Promise((resolve, reject) => {
       resolve();
       return;
     }
-    if (captureFailure && process.env.GITHUB_ACTIONS && output.trim()) {
-      const tail = stripAnsi(output).trim().slice(-8000);
-      console.log(`::error title=Browser regression failure::${escapeWorkflowCommand(tail)}`);
+    if (captureFailure && output.trim()) {
+      const tail = stripAnsi(output).trim();
+      writeFileSync(failureLogPath, `${tail}\n`, 'utf8');
+      if (process.env.GITHUB_ACTIONS) {
+        console.log(`::error title=Browser regression failure::${escapeWorkflowCommand(tail.slice(-8000))}`);
+      }
     }
     reject(new Error(`${command} ${args.join(' ')} exited with code ${code}`));
   });
