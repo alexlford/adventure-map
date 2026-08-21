@@ -9,6 +9,7 @@
   const resolveCompositeColor = routes.compositeRouteColor.bind(routes);
   let useUnifiedStoryAccent = false;
 
+  const isDetailStoryPage = () => Boolean(document.getElementById('detailMap'));
   const unifiedStoryAccent = () => {
     const themedNode = document.body || document.documentElement;
     const style = getComputedStyle(themedNode);
@@ -17,15 +18,15 @@
       || null;
   };
 
-  // Most multi-member Stories intentionally expose their component routes.
-  // A challenge is the exception: it is presented as one themed narrative on
-  // the detail page even though the master map can still expose its individual
-  // source activities at high resolution.
+  // Challenges are presented as one themed route only on Story detail pages.
+  // The master map must retain the full composite context so focused source
+  // activities keep their independent semantic route colors.
   if (resolveCompositeContext) {
     routes.compositeRouteContext = (...args) => {
       const context = resolveCompositeContext(...args);
       const hasCompositeMembers = Boolean(context?.recordId && context?.members?.length);
-      useUnifiedStoryAccent = hasCompositeMembers
+      useUnifiedStoryAccent = isDetailStoryPage()
+        && hasCompositeMembers
         && UNIFIED_STORY_RELATIONSHIP_TYPES.has(context?.relationship?.type);
       return useUnifiedStoryAccent ? null : context;
     };
@@ -35,9 +36,7 @@
     const isComposite = Boolean(context?.recordId && context?.members?.length);
     if (isComposite) document.getElementById('detailMap')?.classList.add('has-composite-routes');
 
-    // Unified challenge Stories use the Story accent instead of leaking an
-    // individual source activity color back into the detail route.
-    if (!isComposite && useUnifiedStoryAccent) {
+    if (!isComposite && useUnifiedStoryAccent && isDetailStoryPage()) {
       const storyAccent = unifiedStoryAccent();
       if (storyAccent) return storyAccent;
     }
