@@ -48,12 +48,15 @@ test('Activity chapters use consistent section rhythm and editorial provenance c
   await expect(page.locator('.section-title').first()).toHaveCSS('margin-top','60px');
 });
 
-test('Story records use one theme accent and do not decorate GPS routes with endpoint dots', async ({ page }) => {
+test('Story diagnostic shell', async ({ page }) => {
   await page.goto('/detail.html?record=2023-12-02-colorado-triathlon',{waitUntil:'domcontentloaded'});
   await expect(page.locator('.hero h1')).toHaveText('Colorado Triathlon');
   await expect(page.locator('body')).toHaveClass(/story-theme-challenge/);
   await expect(page.locator('.route-endpoint-wrap')).toHaveCount(0);
+});
 
+test('Story diagnostic theme tokens', async ({ page }) => {
+  await page.goto('/detail.html?record=2023-12-02-colorado-triathlon',{waitUntil:'domcontentloaded'});
   const tokens=await page.locator('body').evaluate(node=>{
     const style=getComputedStyle(node);
     return {
@@ -62,7 +65,10 @@ test('Story records use one theme accent and do not decorate GPS routes with end
     };
   });
   expect(tokens).toEqual({story:'#7b4b66',accent:'#7b4b66'});
+});
 
+test('Story diagnostic route stroke', async ({ page }) => {
+  await page.goto('/detail.html?record=2023-12-02-colorado-triathlon',{waitUntil:'domcontentloaded'});
   const route=page.locator('.detail-map path.leaflet-interactive:not(.detail-location-point)').first();
   await expect(route).toBeVisible();
   await expect(route).toHaveCSS('stroke','rgb(123, 75, 102)');
