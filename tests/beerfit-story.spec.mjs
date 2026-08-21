@@ -31,8 +31,10 @@ test('BeerFit Kansas City Story preserves both races and both GPS routes', async
   const legend = (await key.evaluateAll(nodes => nodes.map(node => String(getComputedStyle(node).getPropertyValue('--route-color') || '').trim().toLowerCase()))).map(normalizeCssColor);
   expect(new Set(legend).size).toBe(2);
 
-  await expect.poll(async () => page.locator('#detailMap .leaflet-overlay-pane path').count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
-  const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes => nodes.map(node => String(node.getAttribute('stroke') || getComputedStyle(node).stroke || '').trim().toLowerCase()))).map(normalizeCssColor).filter(color => color && color !== 'transparent');
+  // The white detail-location marker is a point annotation, not GPS route geometry.
+  const routePaths = page.locator('#detailMap .leaflet-overlay-pane path:not(.detail-location-point)');
+  await expect.poll(async () => routePaths.count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
+  const strokes = (await routePaths.evaluateAll(nodes => nodes.map(node => String(node.getAttribute('stroke') || getComputedStyle(node).stroke || '').trim().toLowerCase()))).map(normalizeCssColor).filter(color => color && color !== 'transparent');
 
   expect(new Set(strokes)).toEqual(new Set(legend));
 });
