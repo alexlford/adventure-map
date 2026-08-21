@@ -34,6 +34,10 @@ jobs:
         run: npm run test:update-pipeline
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
+      - name: Diagnose composite route color regression
+        run: node scripts/run-browser-tests.mjs tests/composite-route-colors.spec.mjs
+      - name: Diagnose visible composite route color regression
+        run: node scripts/run-browser-tests.mjs tests/composite-story-visible-route-colors.spec.mjs
       - name: Run browser regression suite
         run: npm run test:browser
       - name: Verify publication artifacts are committed
