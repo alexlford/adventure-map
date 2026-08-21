@@ -9,7 +9,13 @@
   const resolveCompositeColor = routes.compositeRouteColor.bind(routes);
   let useUnifiedStoryAccent = false;
 
-  const isDetailStoryPage = () => Boolean(document.getElementById('detailMap'));
+  // Composite context is resolved before record-renderer inserts #detailMap, so
+  // page identity cannot depend on that element already existing. The query/path
+  // checks identify detail rendering early; the element check remains a fallback
+  // after composition/history replacement.
+  const isDetailStoryPage = () => /(?:^|\/)detail\.html$/.test(location.pathname)
+    || new URLSearchParams(location.search).has('record')
+    || Boolean(document.getElementById('detailMap'));
   const unifiedStoryAccent = () => {
     const themedNode = document.body || document.documentElement;
     const style = getComputedStyle(themedNode);
@@ -21,7 +27,7 @@
   // Challenges are presented as one themed route only on Story detail pages.
   // Once identified, that policy is monotonic for the page lifetime: later
   // context lookups must not re-enable member colors before Leaflet paints.
-  // The master map has no #detailMap, so it always retains member contexts.
+  // The master map retains member contexts because it is not a detail route.
   if (resolveCompositeContext) {
     routes.compositeRouteContext = (...args) => {
       const context = resolveCompositeContext(...args);
