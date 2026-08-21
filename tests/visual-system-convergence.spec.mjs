@@ -48,10 +48,18 @@ test('Activity chapters use consistent section rhythm and editorial provenance c
   await expect(page.locator('.section-title').first()).toHaveCSS('margin-top','60px');
 });
 
-test('Story diagnostic shell', async ({ page }) => {
+test('Story diagnostic title', async ({ page }) => {
   await page.goto('/detail.html?record=2023-12-02-colorado-triathlon',{waitUntil:'domcontentloaded'});
   await expect(page.locator('.hero h1')).toHaveText('Colorado Triathlon');
+});
+
+test('Story diagnostic theme class', async ({ page }) => {
+  await page.goto('/detail.html?record=2023-12-02-colorado-triathlon',{waitUntil:'domcontentloaded'});
   await expect(page.locator('body')).toHaveClass(/story-theme-challenge/);
+});
+
+test('Story diagnostic endpoint dots', async ({ page }) => {
+  await page.goto('/detail.html?record=2023-12-02-colorado-triathlon',{waitUntil:'domcontentloaded'});
   await expect(page.locator('.route-endpoint-wrap')).toHaveCount(0);
 });
 
