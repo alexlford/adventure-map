@@ -4,7 +4,7 @@
   const routes = window.AdventureRoutes;
   if (!routes?.compositeRouteColor) return;
 
-  const STORY_COMPONENT_RELATIONSHIP_TYPES = new Set(['weekend', 'multi-day']);
+  const UNIFIED_STORY_RELATIONSHIP_TYPES = new Set(['challenge']);
   const resolveCompositeContext = routes.compositeRouteContext?.bind(routes);
   const resolveCompositeColor = routes.compositeRouteColor.bind(routes);
   let useUnifiedStoryAccent = false;
@@ -17,19 +17,17 @@
       || null;
   };
 
-  // A multi-member relationship is not automatically a multi-color Story.
-  // Challenges, recurring series, and same-day grouped records are presented
-  // as one themed narrative on detail pages. Weekend and multi-day Stories are
-  // the component-route narratives whose route key and geometry intentionally
-  // distinguish each member. Keep this detail-page policy separate from the
-  // main map, which may still color focused source routes independently.
+  // Most multi-member Stories intentionally expose their component routes.
+  // A challenge is the exception: it is presented as one themed narrative on
+  // the detail page even though the master map can still expose its individual
+  // source activities at high resolution.
   if (resolveCompositeContext) {
     routes.compositeRouteContext = (...args) => {
       const context = resolveCompositeContext(...args);
       const hasCompositeMembers = Boolean(context?.recordId && context?.members?.length);
-      const usesComponentRoutes = hasCompositeMembers && STORY_COMPONENT_RELATIONSHIP_TYPES.has(context?.relationship?.type);
-      useUnifiedStoryAccent = hasCompositeMembers && !usesComponentRoutes;
-      return usesComponentRoutes ? context : null;
+      useUnifiedStoryAccent = hasCompositeMembers
+        && UNIFIED_STORY_RELATIONSHIP_TYPES.has(context?.relationship?.type);
+      return useUnifiedStoryAccent ? null : context;
     };
   }
 
@@ -37,10 +35,8 @@
     const isComposite = Boolean(context?.recordId && context?.members?.length);
     if (isComposite) document.getElementById('detailMap')?.classList.add('has-composite-routes');
 
-    // For unified multi-member Stories, do not leak the source feature color
-    // back into the detail route after the composite context is suppressed.
-    // Story theme tokens live on the themed body, so resolve them there rather
-    // than from :root. The renderer otherwise falls back to the source color.
+    // Unified challenge Stories use the Story accent instead of leaking an
+    // individual source activity color back into the detail route.
     if (!isComposite && useUnifiedStoryAccent) {
       const storyAccent = unifiedStoryAccent();
       if (storyAccent) return storyAccent;
