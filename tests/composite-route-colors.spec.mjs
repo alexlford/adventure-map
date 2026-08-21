@@ -11,7 +11,7 @@ async function routeKeyColors(page) {
 }
 
 async function routeStrokeColors(page) {
-  return page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes => nodes
+  return page.locator('#detailMap .leaflet-overlay-pane path:not(.detail-location-point)').evaluateAll(nodes => nodes
     .map(node => String(node.getAttribute('stroke') || '').trim().toLowerCase())
     .filter(Boolean));
 }
