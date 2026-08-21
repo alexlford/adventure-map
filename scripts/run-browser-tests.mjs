@@ -3,6 +3,7 @@ import { spawn } from 'node:child_process';
 const host = '127.0.0.1';
 const port = '4173';
 const baseUrl = `http://${host}:${port}`;
+const requestedTests = process.argv.slice(2);
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 const stripAnsi = value => String(value).replace(/\u001b\[[0-9;]*m/g, '');
@@ -81,14 +82,18 @@ process.on('SIGTERM', () => {
 
 try {
   await waitForServer();
-  await run('npx', ['playwright', 'test', '--project=chromium'], { captureFailure: true });
-  await run('npx', [
-    'playwright',
-    'test',
-    'tests/mobile-layout.spec.mjs',
-    'tests/world-majors-layout.spec.mjs',
-    '--project=webkit-mobile'
-  ], { captureFailure: true });
+  if (requestedTests.length) {
+    await run('npx', ['playwright', 'test', ...requestedTests, '--project=chromium'], { captureFailure: true });
+  } else {
+    await run('npx', ['playwright', 'test', '--project=chromium'], { captureFailure: true });
+    await run('npx', [
+      'playwright',
+      'test',
+      'tests/mobile-layout.spec.mjs',
+      'tests/world-majors-layout.spec.mjs',
+      '--project=webkit-mobile'
+    ], { captureFailure: true });
+  }
 } finally {
   stopServer();
 }
