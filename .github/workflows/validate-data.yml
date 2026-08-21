@@ -34,6 +34,8 @@ jobs:
         run: npm run test:update-pipeline
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
+      - name: Diagnose Story route accent
+        run: node scripts/run-browser-tests.mjs tests/visual-system-convergence.spec.mjs --grep "Story records use one theme accent"
       - name: Run browser regression suite
         run: npm run test:browser
       - name: Verify publication artifacts are committed
