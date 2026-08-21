@@ -31,10 +31,14 @@
 
     // For unified multi-member Stories, do not leak the source feature color
     // back into the detail route after the composite context is suppressed.
-    // Returning no inline color lets the Story theme's detail-map accent own
-    // the route, while ordinary single-record detail pages retain their route
-    // catalog color behavior.
-    if (!isComposite && useUnifiedStoryAccent) return null;
+    // The renderer falls back to its source route color when this hook returns
+    // no color, so return the active Story token explicitly instead of null.
+    if (!isComposite && useUnifiedStoryAccent) {
+      const storyAccent = getComputedStyle(document.documentElement)
+        .getPropertyValue('--detail-route-accent')
+        .trim();
+      if (storyAccent) return storyAccent;
+    }
 
     const memberColor = resolveCompositeColor(feature, context);
     if (memberColor) return memberColor;
