@@ -4,7 +4,24 @@
   const routes = window.AdventureRoutes;
   if (!routes?.compositeRouteColor) return;
 
+  const STORY_COMPONENT_RELATIONSHIP_TYPES = new Set(['weekend', 'multi-day']);
+  const resolveCompositeContext = routes.compositeRouteContext?.bind(routes);
   const resolveCompositeColor = routes.compositeRouteColor.bind(routes);
+
+  // A multi-member relationship is not automatically a multi-color Story.
+  // Challenges, recurring series, and same-day grouped records are presented
+  // as one themed narrative on detail pages. Weekend and multi-day Stories are
+  // the component-route narratives whose route key and geometry intentionally
+  // distinguish each member. Keep this detail-page policy separate from the
+  // main map, which may still color focused source routes independently.
+  if (resolveCompositeContext) {
+    routes.compositeRouteContext = (...args) => {
+      const context = resolveCompositeContext(...args);
+      return STORY_COMPONENT_RELATIONSHIP_TYPES.has(context?.relationship?.type)
+        ? context
+        : null;
+    };
+  }
 
   routes.compositeRouteColor = (feature, context) => {
     const isComposite = Boolean(context?.recordId && context?.members?.length);
