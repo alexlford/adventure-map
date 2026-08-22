@@ -75,6 +75,7 @@ window.AdventureRoutes = (() => {
       ? (feature.geometry.coordinates || []).reduce((sum, line) => sum + (line?.length || 0), 0)
       : 0;
   const detailRank = feature => {
+    if (feature?.properties?.publicationSelected === true) return 4;
     const resolution = String(feature?.properties?.routeResolution || feature?.properties?.density || '').toLowerCase();
     if (resolution.includes('full-source') || resolution.includes('dense-source')) return 3;
     if (resolution.includes('rdp-3m')) return 2;
@@ -207,7 +208,11 @@ window.AdventureRoutes = (() => {
           segmentType: route.segmentType || null,
           segmentCount: route.segmentCount || null,
           note: route.note || null,
-          supersedesFeatureId: route.supersedesFeatureId || null
+          supersedesFeatureId: route.supersedesFeatureId || null,
+          routeResolution: route.sampling || payload.sampling || null,
+          geometryClass: route.geometryClass || payload.geometryClass || null,
+          geometryEvidence: route.geometryEvidence || 'recorded',
+          publicationSelected: route.publicationSelected === true
         },
         geometry: lines.length === 1
           ? { type: 'LineString', coordinates: lines[0] }
