@@ -1,0 +1,229 @@
+name: Materialize segmented route publication boundary
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Wire segmented routes through compiler and lazy loader
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          # Server/public compiler: expand reviewed route segments into individual
+          # GeoJSON features with a stable routeFeatureId linking them back to the
+          # route-level entry used by the detail index.
+          p = Path('scripts/build-public-routes.mjs')
+          text = p.read_text()
+          start = text.index('for (const polylineFile of polylineFiles) {')
+          end = text.index('\nconst payload = {', start)
+          replacement = r'''for (const polylineFile of polylineFiles) {
+  const text = await readText(polylineFile);
+  sourceTexts.push(text);
+  const payload = JSON.parse(text);
+  for (const route of payload.routes || []) {
+    if (!route.id) throw new Error(`${polylineFile}: encoded route missing id`);
+    const sourceActivityIds = Array.isArray(route.stravaActivityIds)
+      ? route.stravaActivityIds.map(String)
+      : route.stravaActivityId != null ? [String(route.stravaActivityId)] : [];
+    const baseProperties = {
+      adventureIds: route.adventureIds || [],
+      provenance: 'personal-gps',
+      category: route.category,
+      source: 'Strava GPS export',
+      mtbMode: route.mtbMode || null,
+      stravaActivityId: sourceActivityIds.length === 1 ? sourceActivityIds[0] : null,
+      stravaActivityIds: sourceActivityIds,
+      routeResolution: route.sampling || payload.sampling || null,
+      sourcePointCount: route.sourcePointCount || null,
+      geometryClass: route.geometryClass || payload.geometryClass || null,
+      publicationSelected: route.publicationSelected === true,
+    };
+
+    if (Array.isArray(route.segments) && route.segments.length) {
+      route.segments.forEach((segment, segmentIndex) => {
+        if (typeof segment.line !== 'string' || !segment.line.length) {
+          throw new Error(`${route.id}: segment ${segmentIndex + 1} is missing encoded line geometry`);
+        }
+        const segmentId = segmentIndex === 0 ? route.id : `${route.id}::segment-${segmentIndex + 1}`;
+        const coordinates = decodePolyline(segment.line, { routeId: route.id, lineIndex: segmentIndex });
+        addFeature({
+          type: 'Feature',
+          id: segmentId,
+          properties: {
+            ...baseProperties,
+            featureId: segmentId,
+            routeFeatureId: route.id,
+            geometryEvidence: segment.evidence || 'recorded',
+            geometryConfidence: segment.confidence || null,
+          },
+          geometry: { type: 'LineString', coordinates },
+        }, polylineFile);
+      });
+      continue;
+    }
+
+    let encodedLines = Array.isArray(route.lines) && route.lines.length
+      ? route.lines
+      : (route.linesBase64 || []).map(value => Buffer.from(value, 'base64').toString('utf8'));
+    if (!encodedLines.length && Array.isArray(route.linesBrotliBase64)) {
+      encodedLines = route.linesBrotliBase64.map(value => brotliDecompressSync(Buffer.from(value, 'base64')).toString('utf8'));
+    }
+    if (!encodedLines.length) throw new Error(`${route.id}: encoded route has no lines`);
+    const lines = encodedLines.map((line, lineIndex) => decodePolyline(line, { routeId: route.id, lineIndex }));
+    addFeature({
+      type: 'Feature',
+      id: route.id,
+      properties: {
+        ...baseProperties,
+        featureId: route.id,
+        geometryEvidence: route.geometryEvidence || 'recorded',
+      },
+      geometry: lines.length === 1
+        ? { type: 'LineString', coordinates: lines[0] }
+        : { type: 'MultiLineString', coordinates: lines },
+    }, polylineFile);
+  }
+}
+'''
+          text = text[:start] + replacement + text[end:]
+          p.write_text(text)
+
+          # Browser/lazy route loader: mirror the same segment expansion, then
+          # load all child segments that share the routeFeatureId selected by the
+          # route-detail index.
+          p = Path('route-catalog.js')
+          text = p.read_text()
+          start = text.index('  async function polylineCollection(path) {')
+          end = text.index('  async function loadAvailable(', start)
+          replacement = r'''  async function polylineCollection(path) {
+    const payload = await fetchJson(path);
+    const features = (payload.routes || []).flatMap(route => {
+      if (!route.id) throw new Error(`${path}: invalid encoded route`);
+      const baseProperties = {
+        stravaActivityId: route.stravaActivityId || null,
+        adventureIds: route.adventureIds || [],
+        provenance: 'personal-gps',
+        source: payload.source || 'Strava GPS export',
+        category: route.category || null,
+        mtbMode: route.mtbMode || null,
+        density: route.density || null,
+        segmentType: route.segmentType || null,
+        segmentCount: route.segmentCount || null,
+        note: route.note || null,
+        supersedesFeatureId: route.supersedesFeatureId || null,
+        routeResolution: route.sampling || payload.sampling || null,
+        geometryClass: route.geometryClass || payload.geometryClass || null,
+        publicationSelected: route.publicationSelected === true
+      };
+
+      if (Array.isArray(route.segments) && route.segments.length) {
+        return route.segments.map((segment, segmentIndex) => {
+          if (typeof segment.line !== 'string' || !segment.line.length) throw new Error(`${path}: invalid encoded route segment`);
+          const segmentId = segmentIndex === 0 ? route.id : `${route.id}::segment-${segmentIndex + 1}`;
+          return {
+            type: 'Feature',
+            id: segmentId,
+            properties: {
+              ...baseProperties,
+              featureId: segmentId,
+              routeFeatureId: route.id,
+              geometryEvidence: segment.evidence || 'recorded',
+              geometryConfidence: segment.confidence || null
+            },
+            geometry: { type: 'LineString', coordinates: decodePolyline(segment.line) }
+          };
+        });
+      }
+
+      if (!Array.isArray(route.lines) || !route.lines.length) throw new Error(`${path}: invalid encoded route`);
+      const lines = route.lines.map(decodePolyline);
+      return [{
+        type: 'Feature',
+        id: route.id,
+        properties: {
+          ...baseProperties,
+          featureId: route.id,
+          geometryEvidence: route.geometryEvidence || 'recorded'
+        },
+        geometry: lines.length === 1
+          ? { type: 'LineString', coordinates: lines[0] }
+          : { type: 'MultiLineString', coordinates: lines }
+      }];
+    });
+    return normalizeCollection({ type: 'FeatureCollection', features });
+  }
+'''
+          text = text[:start] + replacement + text[end:]
+          old = "    const features = (collection.features || []).filter(feature => keyFor(feature) === entry.featureId);"
+          new = "    const features = (collection.features || []).filter(feature => keyFor(feature) === entry.featureId || feature.properties?.routeFeatureId === entry.featureId);"
+          if text.count(old) != 1:
+              raise SystemExit('detail feature filter patch did not match exactly once')
+          text = text.replace(old, new)
+          p.write_text(text)
+
+          test_path = Path('scripts/test-segmented-route-publication.mjs')
+          test_path.write_text(r'''import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+
+const compiler = await readFile(new URL('./build-public-routes.mjs', import.meta.url), 'utf8');
+const catalogRuntime = await readFile(new URL('../route-catalog.js', import.meta.url), 'utf8');
+
+for (const source of [compiler, catalogRuntime]) {
+  assert.match(source, /Array\.isArray\(route\.segments\)/);
+  assert.match(source, /routeFeatureId/);
+  assert.match(source, /geometryEvidence/);
+  assert.match(source, /segment\.confidence/);
+}
+assert.match(catalogRuntime, /feature\.properties\?\.routeFeatureId === entry\.featureId/);
+assert.match(compiler, /segmentIndex === 0 \? route\.id : `\$\{route\.id\}::segment-\$\{segmentIndex \+ 1\}`/);
+
+console.log('Segmented route publication boundary tests passed.');
+''')
+
+          package_path = Path('package.json')
+          package = json.loads(package_path.read_text())
+          scripts = package['scripts']
+          scripts['test:segmented-route-publication'] = 'node scripts/test-segmented-route-publication.mjs'
+          if 'npm run test:segmented-route-publication' not in scripts['validate:all']:
+              scripts['validate:all'] += ' && npm run test:segmented-route-publication'
+          package_path.write_text(json.dumps(package, indent=2) + '\n')
+          PY
+
+      - name: Validate segment boundary
+        run: |
+          npm ci
+          npm run test:route-geometry-quality
+          npm run test:segmented-route-publication
+          npm run build:publish
+          npm run validate:all
+          git diff --exit-code -- data/route-detail-index.json map/index.html
+
+      - name: Commit boundary implementation
+        run: |
+          rm -f .github/workflows/materialize-segment-publication-boundary.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/build-public-routes.mjs route-catalog.js scripts/test-segmented-route-publication.mjs package.json
+          git add -u .github/workflows/materialize-segment-publication-boundary.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Wire segmented route publication end to end"
+          git push origin HEAD:${{ github.head_ref }}
