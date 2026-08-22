@@ -223,10 +223,10 @@
       "quality": "full-source"
     },
     "free-state-tri-100-relay-2015": {
-      "file": "data/strava-route-rdp3-15.json",
+      "file": "data/strava-route-full-resolution-free-state-tri-100-relay-2015.json",
       "featureId": "strava-641965501",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "frisco-brewski-2024": {
       "file": "data/strava-route-full-resolution-frisco-brewski-2024.json",

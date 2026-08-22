@@ -114,7 +114,8 @@
     "data/strava-route-full-resolution-mount-jumullong-manglo.json",
     "data/strava-route-full-resolution-hawksbill-mountain.json",
     "data/strava-route-full-resolution-old-rag-mountain.json",
-    "data/strava-route-full-resolution-mount-wachusett.json"
+    "data/strava-route-full-resolution-mount-wachusett.json",
+    "data/strava-route-full-resolution-free-state-tri-100-relay-2015.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -239,6 +240,11 @@
       {
         "id": "strava-4337907837",
         "minPoints": 8800,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-641965501",
+        "minPoints": 2550,
         "resolutionPrefix": "full-source-track"
       }
     ],
