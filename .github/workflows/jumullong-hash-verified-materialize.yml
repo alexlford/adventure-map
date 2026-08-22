@@ -1,10 +1,7 @@
 name: Materialize hash-verified Mount Jumullong route
-# PR validation passed; this push triggers the clean final materialization.
+# PR-visible validation and cleanup; bot-authored syncs are excluded to prevent loops.
 
 on:
-  push:
-    branches:
-      - gps/full-source-mount-jumullong-manglo-2026-08-22
   pull_request:
     branches:
       - main
@@ -17,8 +14,10 @@ jobs:
     if: ${{ github.actor != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Check out branch
+      - name: Check out PR head branch
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
       - name: Set up Node
         uses: actions/setup-node@v6
         with:
@@ -101,8 +100,7 @@ jobs:
           node scripts/audit-route-quality.mjs tmp/public-routes.geojson
           npm run validate:all
 
-      - name: Commit clean Jumullong change
-        if: ${{ github.event_name == 'push' }}
+      - name: Commit clean Jumullong change to PR head
         run: |
           rm .github/workflows/jumullong-hash-verified-materialize.yml
           rm tmp/jumullong-payload-gz.part*.b64 tmp/jumullong-payload.json.gz
@@ -110,4 +108,4 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A .github/workflows/jumullong-hash-verified-materialize.yml tmp data/strava-route-full-resolution-mount-jumullong-manglo.json data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json
           git commit -m 'Upgrade Mount Jumullong Manglo to full-source GPS'
-          git push
+          git push origin HEAD:${{ github.head_ref }}
