@@ -159,6 +159,46 @@ for (const polylineFile of polylineFiles) {
   const payload = JSON.parse(text);
   for (const route of payload.routes || []) {
     if (!route.id) throw new Error(`${polylineFile}: encoded route missing id`);
+    const sourceActivityIds = Array.isArray(route.stravaActivityIds)
+      ? route.stravaActivityIds.map(String)
+      : route.stravaActivityId != null ? [String(route.stravaActivityId)] : [];
+    const baseProperties = {
+      adventureIds: route.adventureIds || [],
+      provenance: 'personal-gps',
+      category: route.category,
+      source: 'Strava GPS export',
+      mtbMode: route.mtbMode || null,
+      stravaActivityId: sourceActivityIds.length === 1 ? sourceActivityIds[0] : null,
+      stravaActivityIds: sourceActivityIds,
+      routeResolution: route.sampling || payload.sampling || null,
+      sourcePointCount: route.sourcePointCount || null,
+      geometryClass: route.geometryClass || payload.geometryClass || null,
+      publicationSelected: route.publicationSelected === true,
+    };
+
+    if (Array.isArray(route.segments) && route.segments.length) {
+      route.segments.forEach((segment, segmentIndex) => {
+        if (typeof segment.line !== 'string' || !segment.line.length) {
+          throw new Error(`${route.id}: segment ${segmentIndex + 1} is missing encoded line geometry`);
+        }
+        const segmentId = segmentIndex === 0 ? route.id : `${route.id}::segment-${segmentIndex + 1}`;
+        const coordinates = decodePolyline(segment.line, { routeId: route.id, lineIndex: segmentIndex });
+        addFeature({
+          type: 'Feature',
+          id: segmentId,
+          properties: {
+            ...baseProperties,
+            featureId: segmentId,
+            routeFeatureId: route.id,
+            geometryEvidence: segment.evidence || 'recorded',
+            geometryConfidence: segment.confidence || null,
+          },
+          geometry: { type: 'LineString', coordinates },
+        }, polylineFile);
+      });
+      continue;
+    }
+
     let encodedLines = Array.isArray(route.lines) && route.lines.length
       ? route.lines
       : (route.linesBase64 || []).map(value => Buffer.from(value, 'base64').toString('utf8'));
@@ -167,26 +207,13 @@ for (const polylineFile of polylineFiles) {
     }
     if (!encodedLines.length) throw new Error(`${route.id}: encoded route has no lines`);
     const lines = encodedLines.map((line, lineIndex) => decodePolyline(line, { routeId: route.id, lineIndex }));
-    const sourceActivityIds = Array.isArray(route.stravaActivityIds)
-      ? route.stravaActivityIds.map(String)
-      : route.stravaActivityId != null ? [String(route.stravaActivityId)] : [];
     addFeature({
       type: 'Feature',
       id: route.id,
       properties: {
+        ...baseProperties,
         featureId: route.id,
-        adventureIds: route.adventureIds || [],
-        provenance: 'personal-gps',
-        category: route.category,
-        source: 'Strava GPS export',
-        mtbMode: route.mtbMode || null,
-        stravaActivityId: sourceActivityIds.length === 1 ? sourceActivityIds[0] : null,
-        stravaActivityIds: sourceActivityIds,
-        routeResolution: route.sampling || payload.sampling || null,
-        sourcePointCount: route.sourcePointCount || null,
-        geometryClass: route.geometryClass || payload.geometryClass || null,
         geometryEvidence: route.geometryEvidence || 'recorded',
-        publicationSelected: route.publicationSelected === true,
       },
       geometry: lines.length === 1
         ? { type: 'LineString', coordinates: lines[0] }

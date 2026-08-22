@@ -190,34 +190,62 @@ window.AdventureRoutes = (() => {
   }
   async function polylineCollection(path) {
     const payload = await fetchJson(path);
-    const features = (payload.routes || []).map(route => {
-      if (!route.id || !Array.isArray(route.lines) || !route.lines.length) throw new Error(`${path}: invalid encoded route`);
+    const features = (payload.routes || []).flatMap(route => {
+      if (!route.id) throw new Error(`${path}: invalid encoded route`);
+      const sourceActivityIds = Array.isArray(route.stravaActivityIds)
+        ? route.stravaActivityIds.map(String)
+        : route.stravaActivityId != null ? [String(route.stravaActivityId)] : [];
+      const baseProperties = {
+        stravaActivityId: sourceActivityIds.length === 1 ? sourceActivityIds[0] : null,
+        stravaActivityIds: sourceActivityIds,
+        adventureIds: route.adventureIds || [],
+        provenance: 'personal-gps',
+        source: payload.source || 'Strava GPS export',
+        category: route.category || null,
+        mtbMode: route.mtbMode || null,
+        density: route.density || null,
+        segmentType: route.segmentType || null,
+        segmentCount: route.segmentCount || null,
+        note: route.note || null,
+        supersedesFeatureId: route.supersedesFeatureId || null,
+        routeResolution: route.sampling || payload.sampling || null,
+        geometryClass: route.geometryClass || payload.geometryClass || null,
+        publicationSelected: route.publicationSelected === true
+      };
+
+      if (Array.isArray(route.segments) && route.segments.length) {
+        return route.segments.map((segment, segmentIndex) => {
+          if (typeof segment.line !== 'string' || !segment.line.length) throw new Error(`${path}: invalid encoded route segment`);
+          const segmentId = segmentIndex === 0 ? route.id : `${route.id}::segment-${segmentIndex + 1}`;
+          return {
+            type: 'Feature',
+            id: segmentId,
+            properties: {
+              ...baseProperties,
+              featureId: segmentId,
+              routeFeatureId: route.id,
+              geometryEvidence: segment.evidence || 'recorded',
+              geometryConfidence: segment.confidence || null
+            },
+            geometry: { type: 'LineString', coordinates: decodePolyline(segment.line) }
+          };
+        });
+      }
+
+      if (!Array.isArray(route.lines) || !route.lines.length) throw new Error(`${path}: invalid encoded route`);
       const lines = route.lines.map(decodePolyline);
-      return {
+      return [{
         type: 'Feature',
         id: route.id,
         properties: {
+          ...baseProperties,
           featureId: route.id,
-          stravaActivityId: route.stravaActivityId || null,
-          adventureIds: route.adventureIds || [],
-          provenance: 'personal-gps',
-          source: payload.source || 'Strava GPS export',
-          category: route.category || null,
-          mtbMode: route.mtbMode || null,
-          density: route.density || null,
-          segmentType: route.segmentType || null,
-          segmentCount: route.segmentCount || null,
-          note: route.note || null,
-          supersedesFeatureId: route.supersedesFeatureId || null,
-          routeResolution: route.sampling || payload.sampling || null,
-          geometryClass: route.geometryClass || payload.geometryClass || null,
-          geometryEvidence: route.geometryEvidence || 'recorded',
-          publicationSelected: route.publicationSelected === true
+          geometryEvidence: route.geometryEvidence || 'recorded'
         },
         geometry: lines.length === 1
           ? { type: 'LineString', coordinates: lines[0] }
           : { type: 'MultiLineString', coordinates: lines }
-      };
+      }];
     });
     return normalizeCollection({ type: 'FeatureCollection', features });
   }
@@ -290,7 +318,7 @@ window.AdventureRoutes = (() => {
     const entry = index.records?.[adventureId];
     if (!entry) return null;
     const collection = await detailFile(entry.file, { ...options, format: entry.format || null });
-    const features = (collection.features || []).filter(feature => keyFor(feature) === entry.featureId);
+    const features = (collection.features || []).filter(feature => keyFor(feature) === entry.featureId || feature.properties?.routeFeatureId === entry.featureId);
     if (!features.length) throw new Error(`Detail route ${entry.featureId} is missing from ${entry.file}`);
     return {
       entry: { ...entry },
