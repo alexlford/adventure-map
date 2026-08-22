@@ -9,25 +9,35 @@ const normalizeCssColor = value => {
   return `#${match.slice(1, 4).map(part => Number(part).toString(16).padStart(2, '0')).join('')}`;
 };
 
+const uniqueSorted = values => [...new Set(values.filter(Boolean))].sort();
+
 test('Royal Gorge Story shows only route-key colors on visible component routes', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/detail.html?record=royal-gorge-groove-weekend-2024', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#storyRouteKey .story-route-key-item')).toHaveCount(2);
 
-  const legend = (await page.locator('#storyRouteKey .story-route-key-item').evaluateAll(nodes =>
+  const routeItems = page.locator('#storyRouteKey .story-route-key-item');
+  await expect(routeItems).toHaveCount(2);
+
+  await page.waitForFunction(() => {
+    const link = document.querySelector('link[data-adventure-map-visuals]');
+    return Boolean(link && link.sheet);
+  });
+
+  const legend = uniqueSorted((await routeItems.evaluateAll(nodes =>
     nodes.map(node => String(getComputedStyle(node).getPropertyValue('--route-color') || '').trim().toLowerCase())
-  )).map(normalizeCssColor);
+  )).map(normalizeCssColor));
+  expect(legend).toEqual(['#2f7d4a', '#b45309']);
 
-  await expect.poll(async () => page.locator('#detailMap .leaflet-overlay-pane path').count(), { timeout: 15000 }).toBeGreaterThanOrEqual(2);
   await expect(page.locator('#detailMap')).toHaveClass(/has-composite-routes/);
 
-  // Check the visible/computed stroke, not the SVG presentation attribute.
-  // A CSS !important rule can repaint the path while leaving the attribute
-  // unchanged, which is the regression this test protects against.
-  const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path').evaluateAll(nodes =>
-    nodes.map(node => String(getComputedStyle(node).stroke || '').trim().toLowerCase())
-  )).map(normalizeCssColor);
-  const visible = strokes.filter(color => color && color !== 'transparent');
-
-  expect(new Set(visible)).toEqual(new Set(legend));
-  for (const color of visible) expect(legend).toContain(color);
+  // Check computed onscreen strokes and wait for both asynchronous route layers.
+  // SVG stroke attributes alone can look correct while CSS !important repaints
+  // the visible paths, which is the regression this test protects against.
+  // The detail location marker is intentionally white and is not a route layer.
+  await expect.poll(async () => {
+    const strokes = (await page.locator('#detailMap .leaflet-overlay-pane path:not(.detail-location-point)').evaluateAll(nodes =>
+      nodes.map(node => String(getComputedStyle(node).stroke || '').trim().toLowerCase())
+    )).map(normalizeCssColor);
+    return uniqueSorted(strokes.filter(color => color && color !== 'transparent'));
+  }, { timeout: 15000 }).toEqual(legend);
 });

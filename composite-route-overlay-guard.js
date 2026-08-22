@@ -4,11 +4,52 @@
   const routes = window.AdventureRoutes;
   if (!routes?.compositeRouteColor) return;
 
+  const UNIFIED_STORY_RELATIONSHIP_TYPES = new Set(['challenge']);
+  const resolveCompositeContext = routes.compositeRouteContext?.bind(routes);
   const resolveCompositeColor = routes.compositeRouteColor.bind(routes);
+  let useUnifiedStoryAccent = false;
+
+  // Composite context is resolved before record-renderer inserts #detailMap, so
+  // page identity cannot depend on that element already existing. Restrict the
+  // early check to actual detail routes: the master map also uses ?record= when
+  // focusing a record and must retain distinct component colors.
+  const isDetailStoryPage = () => /(?:^|\/)detail\.html$/.test(location.pathname)
+    || /(?:^|\/)record\/[^/]+(?:\/index\.html)?\/?$/.test(location.pathname)
+    || Boolean(document.getElementById('detailMap'));
+  const unifiedStoryAccent = () => {
+    const themedNode = document.body || document.documentElement;
+    const style = getComputedStyle(themedNode);
+    return style.getPropertyValue('--story-accent').trim()
+      || style.getPropertyValue('--accent').trim()
+      || null;
+  };
+
+  // Challenges are presented as one themed route only on Story detail pages.
+  // Once identified, that policy is monotonic for the page lifetime: later
+  // context lookups must not re-enable member colors before Leaflet paints.
+  // The master map retains member contexts because it is not a detail route.
+  if (resolveCompositeContext) {
+    routes.compositeRouteContext = (...args) => {
+      const context = resolveCompositeContext(...args);
+      const hasCompositeMembers = Boolean(context?.recordId && context?.members?.length);
+      if (isDetailStoryPage()
+        && hasCompositeMembers
+        && UNIFIED_STORY_RELATIONSHIP_TYPES.has(context?.relationship?.type)) {
+        useUnifiedStoryAccent = true;
+        return null;
+      }
+      return context;
+    };
+  }
 
   routes.compositeRouteColor = (feature, context) => {
     const isComposite = Boolean(context?.recordId && context?.members?.length);
-    document.getElementById('detailMap')?.classList.toggle('has-composite-routes', isComposite);
+    if (isComposite) document.getElementById('detailMap')?.classList.add('has-composite-routes');
+
+    if (!isComposite && useUnifiedStoryAccent && isDetailStoryPage()) {
+      const storyAccent = unifiedStoryAccent();
+      if (storyAccent) return storyAccent;
+    }
 
     const memberColor = resolveCompositeColor(feature, context);
     if (memberColor) return memberColor;
