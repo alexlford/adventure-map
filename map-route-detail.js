@@ -110,7 +110,7 @@
         color: base.color,
         weight: focused ? Math.max(base.weight + 3, 7) : Math.max(base.weight + 1.5, 5.5),
         opacity: focused ? 1 : .94,
-        dashArray: null,
+        dashArray: base.dashArray || null,
         className: 'map-route-detail-line'
       });
       layer.bringToFront?.();
@@ -165,13 +165,16 @@
     const base = internal.baseRouteStyle(feature, runtime.layerFor(record));
     const layer = L.geoJSON(detail.collection, {
       interactive: false,
-      style: {
-        ...base,
-        color: base.color,
-        weight: 5.5,
-        opacity: .94,
-        dashArray: null,
-        className: 'map-route-detail-line'
+      style: childFeature => {
+        const childBase = internal.baseRouteStyle(childFeature, runtime.layerFor(record));
+        return {
+          ...childBase,
+          color: childBase.color,
+          weight: 5.5,
+          opacity: .94,
+          dashArray: childBase.dashArray || null,
+          className: 'map-route-detail-line'
+        };
       }
     });
     return {
