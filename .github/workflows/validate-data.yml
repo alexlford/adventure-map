@@ -34,12 +34,6 @@ jobs:
         run: npm run test:update-pipeline
       - name: Install Chromium and WebKit
         run: npx playwright install --with-deps chromium webkit
-      - name: Diagnose Chromium browser suite
-        continue-on-error: true
-        run: node scripts/run-browser-tests.mjs --project=chromium
-      - name: Diagnose WebKit mobile suite
-        continue-on-error: true
-        run: node scripts/run-browser-tests.mjs tests/mobile-layout.spec.mjs tests/world-majors-layout.spec.mjs --project=webkit-mobile
       - name: Run browser regression suite
         run: npm run test:browser
       - name: Verify publication artifacts are committed
