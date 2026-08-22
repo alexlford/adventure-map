@@ -1,0 +1,103 @@
+name: Materialize reviewed Midland Hill route
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Register reviewed route and rebuild index
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          catalog_path = Path('data/route-catalog.json')
+          new_file = 'data/strava-route-reviewed-midland-hill.json'
+          anchor = 'data/strava-route-rdp3-18.json'
+          catalog = json.loads(catalog_path.read_text())
+          files = catalog['polylineFiles']
+          if new_file not in files:
+              i = files.index(anchor) + 1
+              files.insert(i, new_file)
+          catalog['updatedOn'] = '2026-08-22'
+          catalog_path.write_text(json.dumps(catalog, indent=2) + '\n')
+          PY
+
+          node scripts/build-route-detail-index.mjs
+
+      - name: Verify reviewed selection and geometry
+        run: |
+          python - <<'PY'
+          import json, math
+          from pathlib import Path
+
+          route_file = 'data/strava-route-reviewed-midland-hill.json'
+          payload = json.loads(Path(route_file).read_text())
+          route = payload['routes'][0]
+          assert route['id'] == 'strava-9635633600'
+          assert route['publicationSelected'] is True
+          assert route['geometryClass'] == 'recorded-filtered'
+          assert route['publishedPointCount'] == 1082
+          assert payload['simplificationToleranceMeters'] == 2
+
+          def decode(line):
+              coords=[]; i=0; lat=0; lon=0
+              while i < len(line):
+                  for axis in range(2):
+                      result=0; shift=0
+                      while True:
+                          b=ord(line[i])-63; i+=1
+                          result |= (b & 0x1f) << shift
+                          shift += 5
+                          if b < 0x20: break
+                      delta = ~(result >> 1) if result & 1 else result >> 1
+                      if axis == 0: lat += delta
+                      else: lon += delta
+                  coords.append((lat/1e5, lon/1e5))
+              return coords
+
+          pts = decode(route['lines'][0])
+          assert len(pts) == 1082, len(pts)
+
+          index = json.loads(Path('data/route-detail-index.json').read_text())
+          record = index['records']['midland-hill']
+          assert record['file'] == route_file, record
+          assert record['featureId'] == 'strava-9635633600'
+          assert record['quality'] == 'rdp-3m', record
+          PY
+
+      - name: Run route validators
+        run: |
+          node scripts/validate-route-geometry-policy.mjs
+          node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
+          node scripts/validate-public-route-contract.mjs tmp/public-routes.geojson
+          node scripts/audit-route-quality.mjs tmp/public-routes.geojson
+
+      - name: Commit materialized catalog and index
+        run: |
+          rm -f tmp/public-routes.geojson
+          rm -f .github/workflows/materialize-midland-hill-reviewed.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/route-catalog.json data/route-detail-index.json
+          git add -u .github/workflows/materialize-midland-hill-reviewed.yml
+          git diff --cached --quiet && exit 0
+          git commit -m "Materialize reviewed Midland Hill route"
+          git push origin HEAD:${{ github.head_ref }}
