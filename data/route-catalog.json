@@ -111,7 +111,8 @@
     "data/strava-route-full-resolution-mile-high-turkey-trot-2021.json",
     "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
     "data/strava-route-full-resolution-stagecoach-classic-15k-2024.json",
-    "data/strava-route-full-resolution-mount-jumullong-manglo.json"
+    "data/strava-route-full-resolution-mount-jumullong-manglo.json",
+    "data/strava-route-full-resolution-hawksbill-mountain.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -221,6 +222,11 @@
       {
         "id": "strava-7123707788",
         "minPoints": 4600,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-4469336427",
+        "minPoints": 18800,
         "resolutionPrefix": "full-source-track"
       }
     ],
