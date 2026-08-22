@@ -1,0 +1,162 @@
+name: Materialize reviewed San Gabriel Peak route
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Reconstruct and verify reviewed route payload
+        run: |
+          cat tmp/san-gabriel-peak-gz.part00.b64 \
+              tmp/san-gabriel-peak-gz.part01.b64 \
+              tmp/san-gabriel-peak-gz.part02.b64 \
+              tmp/san-gabriel-peak-gz.part03.b64 > tmp/san-gabriel-peak.json.gz.b64
+          base64 --decode tmp/san-gabriel-peak.json.gz.b64 > tmp/san-gabriel-peak.json.gz
+          echo '08ec6e5f2b4dbdb73e821373c1eae8ee8ca3c42274875c837d45362cee0c70db  tmp/san-gabriel-peak.json.gz' | sha256sum --check --strict
+          gzip --decompress --stdout tmp/san-gabriel-peak.json.gz > data/strava-route-reviewed-san-gabriel-peak.json
+          echo 'cd248d116c84b2219ede6482a1f9e309f501c555e8a2bac4d7c79aa8efbc61fb  data/strava-route-reviewed-san-gabriel-peak.json' | sha256sum --check --strict
+          test "$(git hash-object data/strava-route-reviewed-san-gabriel-peak.json)" = 'd073afada13fb987c4557fc46958c883feb2be07'
+
+      - name: Register reviewed route and rebuild index
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          catalog_path = Path('data/route-catalog.json')
+          new_file = 'data/strava-route-reviewed-san-gabriel-peak.json'
+          anchor = 'data/strava-route-reviewed-mount-lamlam.json'
+          catalog = json.loads(catalog_path.read_text())
+          files = catalog['polylineFiles']
+          if new_file not in files:
+              i = files.index(anchor) + 1
+              files.insert(i, new_file)
+
+          dense = catalog['qualityExpectations']['denseRoutes']
+          if not any(item.get('id') == 'strava-9552205777' for item in dense):
+              dense.append({
+                  'id': 'strava-9552205777',
+                  'minPoints': 5350,
+                  'resolutionPrefix': 'full-source-track',
+              })
+          catalog['updatedOn'] = '2026-08-22'
+          catalog_path.write_text(json.dumps(catalog, indent=2) + '\n')
+
+          floor_path = Path('data/route-detail-quality-floor.json')
+          floor = json.loads(floor_path.read_text())
+          prior = floor['records'].get('san-gabriel-peak')
+          if prior not in ('rdp-3m', 'full-source'):
+              raise SystemExit(f'unexpected San Gabriel quality floor: {prior}')
+          floor['records']['san-gabriel-peak'] = 'full-source'
+          floor_path.write_text(json.dumps(floor, indent=2) + '\n')
+          PY
+
+          node scripts/build-route-detail-index.mjs --write
+
+      - name: Verify mixed geometry selection
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          route_file = 'data/strava-route-reviewed-san-gabriel-peak.json'
+          payload = json.loads(Path(route_file).read_text())
+          route = payload['routes'][0]
+          assert route['id'] == 'strava-9552205777'
+          assert route['publicationSelected'] is True
+          assert route['geometryClass'] == 'mixed'
+          assert route['sourcePointCount'] == 5341
+          assert route['publishedPointCount'] == 5393
+          assert len(route['segments']) == 9
+          assert [s.get('evidence', 'recorded') for s in route['segments']].count('inferred') == 5
+          assert sum(1 for s in route['segments'] if s.get('confidence') == 'high') == 3
+          assert sum(1 for s in route['segments'] if s.get('confidence') == 'medium') == 2
+
+          def decode(line):
+              coords = []
+              i = 0
+              lat = 0
+              lon = 0
+              while i < len(line):
+                  for axis in range(2):
+                      result = 0
+                      shift = 0
+                      while True:
+                          b = ord(line[i]) - 63
+                          i += 1
+                          result |= (b & 0x1f) << shift
+                          shift += 5
+                          if b < 0x20:
+                              break
+                      delta = ~(result >> 1) if result & 1 else result >> 1
+                      if axis == 0:
+                          lat += delta
+                      else:
+                          lon += delta
+                  coords.append((lat / 1e5, lon / 1e5))
+              return coords
+
+          decoded = [decode(segment['line']) for segment in route['segments']]
+          assert sum(map(len, decoded)) == 5393
+
+          index = json.loads(Path('data/route-detail-index.json').read_text())
+          record = index['records']['san-gabriel-peak']
+          assert record['file'] == route_file, record
+          assert record['featureId'] == 'strava-9552205777', record
+          assert record['quality'] == 'full-source', record
+          assert record['geometryClass'] == 'mixed', record
+          PY
+
+      - name: Validate publication and evidence rendering contract
+        run: |
+          node scripts/validate-route-geometry-policy.mjs
+          node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          fc = json.loads(Path('tmp/public-routes.geojson').read_text())
+          route_id = 'strava-9552205777'
+          features = [f for f in fc['features'] if f.get('id') == route_id or f.get('properties', {}).get('routeFeatureId') == route_id]
+          assert len(features) == 9, len(features)
+          assert sum(f.get('properties', {}).get('geometryEvidence') == 'inferred' for f in features) == 5
+          assert sum(f.get('properties', {}).get('geometryEvidence') == 'recorded' for f in features) == 4
+          PY
+          node scripts/validate-public-route-contract.mjs tmp/public-routes.geojson
+          node scripts/audit-route-quality.mjs tmp/public-routes.geojson
+          node scripts/validate-source-rdp-routes.mjs
+          npm run validate:route-detail-index
+          npm run test:route-quality-floor
+
+      - name: Commit materialized route only
+        run: |
+          rm -f tmp/public-routes.geojson tmp/san-gabriel-peak.json.gz.b64 tmp/san-gabriel-peak.json.gz
+          rm -f .github/workflows/materialize-san-gabriel-peak-reviewed.yml
+          rm -f tmp/san-gabriel-peak-gz.part00.b64 tmp/san-gabriel-peak-gz.part01.b64 tmp/san-gabriel-peak-gz.part02.b64 tmp/san-gabriel-peak-gz.part03.b64
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/strava-route-reviewed-san-gabriel-peak.json data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json
+          git add -u .github/workflows/materialize-san-gabriel-peak-reviewed.yml \
+                     tmp/san-gabriel-peak-gz.part00.b64 \
+                     tmp/san-gabriel-peak-gz.part01.b64 \
+                     tmp/san-gabriel-peak-gz.part02.b64 \
+                     tmp/san-gabriel-peak-gz.part03.b64
+          git diff --cached --quiet && exit 0
+          git commit -m "Materialize reviewed San Gabriel Peak route"
+          git push origin HEAD:${{ github.head_ref }}
