@@ -1,0 +1,77 @@
+name: Materialize Midland Hill full-source route
+
+on:
+  push:
+    branches:
+      - gps/full-source-midland-hill-2026-08-22
+    paths:
+      - '.github/workflows/materialize-midland-hill-full-source.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v6
+        with:
+          ref: gps/full-source-midland-hill-2026-08-22
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+      - name: Materialize verified full-source route
+        env:
+          MIDLAND_ROUTE_GZIP_B64: |
+            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
+        run: |
+          python3 - <<'PY'
+          import base64, gzip, json, os
+          from pathlib import Path
+
+          route_path = Path('data/strava-route-full-resolution-midland-hill.json')
+          raw = gzip.decompress(base64.b64decode(os.environ['MIDLAND_ROUTE_GZIP_B64']))
+          route_path.write_bytes(raw)
+          payload = json.loads(raw)
+          route = payload['routes'][0]
+          assert route['id'] == 'strava-9635633600'
+          assert route['sourcePointCount'] == 10286
+          assert route['retainedPointCount'] == 10286
+          assert len(route['lines']) == 1
+
+          catalog_path = Path('data/route-catalog.json')
+          catalog = json.loads(catalog_path.read_text())
+          catalog['updatedOn'] = '2026-08-22'
+          rel = route_path.as_posix()
+          if rel not in catalog['polylineFiles']:
+              catalog['polylineFiles'].append(rel)
+          dense = catalog.setdefault('qualityExpectations', {}).setdefault('denseRoutes', [])
+          entry = {'id': 'strava-9635633600', 'minPoints': 10280, 'resolutionPrefix': 'full-source-track'}
+          for i, item in enumerate(dense):
+              if item.get('id') == entry['id']:
+                  dense[i] = entry
+                  break
+          else:
+              dense.append(entry)
+          catalog_path.write_text(json.dumps(catalog, indent=2) + '\n')
+          PY
+      - name: Build publication artifacts
+        run: npm run build:publish
+      - name: Advance route quality floor
+        run: node scripts/update-route-detail-quality-floor.mjs
+      - name: Validate publication
+        run: npm run validate:all
+      - name: Remove one-time materializer and commit
+        run: |
+          git rm .github/workflows/materialize-midland-hill-full-source.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish full-source Midland Hill route"
+          git push origin HEAD:gps/full-source-midland-hill-2026-08-22
