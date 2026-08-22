@@ -7,8 +7,38 @@ Recurring race families are modeled with two layers:
 
 The race archive renders these relationships in **Series & challenges**, while each individual race record can link back into the larger recurring series.
 
-Current recurring series pages include Snowman Shuffle, River to River Relay, Illinois Marathon Weekend, RunDenver, BOLDERBoulder, COLDERBolder, and Denver Colfax Marathon Weekend.
+Current recurring-series pages include Snowman Shuffle, River to River Relay, Illinois Marathon Weekend, Garmin Marathon in the Land of Oz, Chicago Marathon, Mile High United Way Turkey Trot, RunDenver, BOLDERBoulder, COLDERBolder, and Denver Colfax Marathon Weekend.
+
+## Series metrics
+
+Recurring-series story pages derive their statistics from the member race records rather than maintaining a second set of hand-entered results. The presentation includes:
+
+- appearances and years raced;
+- cumulative organizer race distance;
+- official-result and route coverage;
+- distance history across editions;
+- best and average result for the largest comparable same-distance cohort;
+- year-over-year charts and PR markers when at least two comparable results exist.
+
+Official organizer/timer results are always preferred. GPS elapsed time is used only when no comparable official-result cohort exists, and the UI labels that distinction explicitly. Mixed-distance series such as Colfax are never averaged as though every race were equivalent.
+
+## Completeness audit
+
+`scripts/build-recurring-race-audit.mjs` builds `data/recurring-race-audit.json` from the published record layer and relationships. The audit records:
+
+- every modeled recurring series and its member coverage;
+- missing official results and missing usable routes within those series;
+- repeated multi-year race-name families that are not fully represented by a `type: "series"` relationship;
+- a research queue for result recovery, route recovery, and series-review candidates.
+
+The audit is generated during `npm run build:publish` and checked by `npm run validate:all`. It is intentionally a review aid: heuristic candidate families are never auto-promoted into public series without evidence.
+
+### Initial audit baseline
+
+The first generated audit covers **76 race records across 10 recurring series**. It found **no repeated multi-year race-name family left outside the recurring-series relationship model**, which means the current family structure is complete under the audit's conservative naming heuristic. The remaining work is evidence enrichment rather than adding obvious missing umbrella pages.
+
+The initial research queue contains **33 evidence tasks**. Highest-value gaps include published results for the Colfax weekend records, BOLDERBoulder 2023 and 2025, COLDERBolder 2022, the Illinois Marathon Weekend records, RunDenver, Turkey Trot, and Garmin/Land of Oz. Route recovery is concentrated in River to River Relay (2006, 2008, 2010) plus the 2015 Illinois 5K.
 
 ## Historical route policy
 
-A recurring event's venue is not sufficient evidence that its course geometry remained unchanged. Historical race records without surviving personal GPS use a published historical course only when the geometry can be tied to the relevant edition or defensibly documented as a shared course. Otherwise the record remains route-pending rather than displaying inferred geometry.
+Personal GPS remains the preferred route source. Organizer-issued or edition-specific historical geometry can also be used with explicit provenance. When the user explicitly approves a current or oldest-known course as a historical proxy, that geometry may be attached to earlier editions only when it is clearly labeled as a representative historical-course proxy rather than personal GPS or proof that every turn was identical.
