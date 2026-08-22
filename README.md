@@ -127,6 +127,7 @@ The validation layers are intentionally separate:
 - The 2019/20 ski season has three known ski days, but season vertical was not recorded and is intentionally not shown as zero.
 - The exact 2020 virtual Chicago Marathon route is privacy-withheld.
 - MTB riding style belongs to the individual outing, not permanently to the venue.
+- Historical relay records may publish a shared full-course overview and a separate personal GPS leg; the historical course must never be presented as the user's recorded track, and a surviving personal leg must not be stretched to imply full-course GPS coverage.
 
 ## Editorial Stories
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-18",
+  "updatedOn": "2026-08-19",
   "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
@@ -104,6 +104,7 @@
     "data/strava-route-full-resolution-super-bowl-5k-2022.json",
     "data/strava-route-full-resolution-polar-bear-5k-2022.json",
     "data/strava-route-full-resolution-beerfit-kansas-city-brew-mile-2016.json",
+    "data/strava-route-full-resolution-brew-to-brew-2013.json",
     "data/strava-route-full-resolution-illinois-marathon-2015.json",
     "data/strava-route-full-resolution-frisco-brewski-2024.json",
     "data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json",
