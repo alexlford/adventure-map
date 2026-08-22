@@ -1,0 +1,89 @@
+name: Materialize Midland Hill on PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.head_ref == 'gps/full-source-midland-hill-2026-08-22'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source branch
+        uses: actions/checkout@v6
+        with:
+          ref: gps/full-source-midland-hill-2026-08-22
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+      - name: Materialize verified Midland Hill route
+        run: |
+          python3 - <<'PY'
+          import base64, gzip, json
+          from pathlib import Path
+
+          carrier = Path('.github/workflows/materialize-midland-hill-full-source.yml').read_text().splitlines()
+          capture = False
+          chunks = []
+          for line in carrier:
+              if line.strip() == 'MIDLAND_ROUTE_GZIP_B64: |':
+                  capture = True
+                  continue
+              if capture:
+                  if line.startswith('            '):
+                      chunks.append(line.strip())
+                      continue
+                  break
+          if not chunks:
+              raise SystemExit('Embedded Midland Hill route payload not found')
+
+          raw = gzip.decompress(base64.b64decode(''.join(chunks)))
+          payload = json.loads(raw)
+          route = payload['routes'][0]
+          assert route['id'] == 'strava-9635633600'
+          assert route['sourcePointCount'] == 10286
+          assert route['retainedPointCount'] == 10286
+          assert len(route['lines']) == 1
+
+          route_path = Path('data/strava-route-full-resolution-midland-hill.json')
+          route_path.write_bytes(raw)
+
+          catalog_path = Path('data/route-catalog.json')
+          catalog = json.loads(catalog_path.read_text())
+          catalog['updatedOn'] = '2026-08-22'
+          rel = route_path.as_posix()
+          if rel not in catalog['polylineFiles']:
+              catalog['polylineFiles'].append(rel)
+          dense = catalog.setdefault('qualityExpectations', {}).setdefault('denseRoutes', [])
+          entry = {'id': 'strava-9635633600', 'minPoints': 10280, 'resolutionPrefix': 'full-source-track'}
+          for i, item in enumerate(dense):
+              if item.get('id') == entry['id']:
+                  dense[i] = entry
+                  break
+          else:
+              dense.append(entry)
+          catalog_path.write_text(json.dumps(catalog, indent=2) + '\n')
+          PY
+      - name: Build publication artifacts
+        run: npm run build:publish
+      - name: Advance route quality floor
+        run: node scripts/update-route-detail-quality-floor.mjs
+      - name: Validate publication
+        run: npm run validate:all
+      - name: Commit validated promotion
+        run: |
+          git rm .github/workflows/materialize-midland-hill-full-source.yml .github/workflows/materialize-midland-on-pr.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish full-source Midland Hill route"
+          git push origin HEAD:gps/full-source-midland-hill-2026-08-22
