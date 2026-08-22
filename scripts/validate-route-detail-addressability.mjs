@@ -53,15 +53,23 @@ function loadSource(path) {
 function validatePolylineEntry(recordId, entry, payload) {
   const route = (payload.routes || []).find(candidate => candidate?.id === entry.featureId);
   if (!route) return [`${recordId}: polyline source ${entry.file} does not contain feature ${entry.featureId}`];
-  if (!Array.isArray(route.lines) || !route.lines.length) {
-    return [`${recordId}: polyline feature ${entry.featureId} in ${entry.file} is not browser-loadable (missing plain lines array)`];
+
+  const encoded = Array.isArray(route.segments) && route.segments.length
+    ? route.segments.map((segment, index) => ({ line: segment?.line, label: `segment ${index + 1}` }))
+    : Array.isArray(route.lines) && route.lines.length
+      ? route.lines.map((line, index) => ({ line, label: `line ${index + 1}` }))
+      : [];
+
+  if (!encoded.length) {
+    return [`${recordId}: polyline feature ${entry.featureId} in ${entry.file} is not browser-loadable (missing plain lines or segments array)`];
   }
+
   const errors = [];
-  route.lines.forEach((line, index) => {
+  encoded.forEach(item => {
     try {
-      decodePolyline(line);
+      decodePolyline(item.line);
     } catch (error) {
-      errors.push(`${recordId}: polyline feature ${entry.featureId} line ${index + 1} in ${entry.file} is invalid: ${error.message}`);
+      errors.push(`${recordId}: polyline feature ${entry.featureId} ${item.label} in ${entry.file} is invalid: ${error.message}`);
     }
   });
   return errors;
