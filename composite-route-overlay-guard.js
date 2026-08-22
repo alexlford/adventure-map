@@ -10,11 +10,11 @@
   let useUnifiedStoryAccent = false;
 
   // Composite context is resolved before record-renderer inserts #detailMap, so
-  // page identity cannot depend on that element already existing. The query/path
-  // checks identify detail rendering early; the element check remains a fallback
-  // after composition/history replacement.
+  // page identity cannot depend on that element already existing. Restrict the
+  // early check to actual detail routes: the master map also uses ?record= when
+  // focusing a record and must retain distinct component colors.
   const isDetailStoryPage = () => /(?:^|\/)detail\.html$/.test(location.pathname)
-    || new URLSearchParams(location.search).has('record')
+    || /(?:^|\/)record\/[^/]+(?:\/index\.html)?\/?$/.test(location.pathname)
     || Boolean(document.getElementById('detailMap'));
   const unifiedStoryAccent = () => {
     const themedNode = document.body || document.documentElement;
