@@ -17,7 +17,7 @@ const sourceRdpTolerance = value => {
 };
 
 export function routeSampling(route = {}, payload = {}, filePath = '') {
-  return String(route.sampling || route.density || payload.sampling || filePath || '').toLowerCase();
+  return String(route.sampling || route.density || route.routeResolution || payload.sampling || filePath || '').toLowerCase();
 }
 
 export function routeGeometryClass(route = {}, payload = {}) {
@@ -26,18 +26,19 @@ export function routeGeometryClass(route = {}, payload = {}) {
 
 export function technicalDetailQuality({ route = {}, payload = {}, filePath = '' } = {}) {
   const sampling = routeSampling(route, payload, filePath);
-  if (sampling.includes('full-source') || sampling.includes('dense-source') || String(filePath).includes('full-resolution')) {
+  const file = String(filePath).toLowerCase();
+  if (sampling.includes('full-source') || sampling.includes('dense-source') || file.includes('full-resolution')) {
     return 'full-source';
   }
 
   const tolerance = sourceRdpTolerance(sampling);
-  if ((Number.isFinite(tolerance) && tolerance <= 3) || sampling.includes('rdp3') || sampling.includes('rdp-3m')) {
+  if ((Number.isFinite(tolerance) && tolerance <= 3) || sampling.includes('rdp3') || sampling.includes('rdp-3m') || file.includes('rdp3')) {
     return 'rdp-3m';
   }
 
-  if (String(filePath).includes('story-route-details')) return 'story-detail';
-  if (String(filePath).includes('strava-route-backfill')) return 'backfill';
-  if (String(filePath).includes('activity-route-polylines')) return 'activity-overview';
+  if (file.includes('story-route')) return 'story-detail';
+  if (file.includes('backfill')) return 'backfill';
+  if (file.includes('activity-route-polylines')) return 'activity-overview';
   return 'catalog-detail';
 }
 
