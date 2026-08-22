@@ -1,0 +1,757 @@
+{
+  "schemaVersion": 1,
+  "raceCount": 76,
+  "seriesCount": 10,
+  "series": [
+    {
+      "id": "bolderboulder-series-2022-2025",
+      "name": "BOLDERBoulder",
+      "adventureId": "bolderboulder-series-story",
+      "storyPresent": true,
+      "appearanceCount": 4,
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "memberIds": [
+        "bolderboulder-2022",
+        "bolderboulder-2023",
+        "bolderboulder-2024",
+        "bolderboulder-2025"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 2,
+      "routeCount": 4,
+      "distanceHistory": [
+        {
+          "label": "10K",
+          "count": 4
+        }
+      ],
+      "resultRecoveryIds": [
+        "bolderboulder-2023",
+        "bolderboulder-2025"
+      ],
+      "routeRecoveryIds": []
+    },
+    {
+      "id": "chicago-marathon-series",
+      "name": "Chicago Marathon",
+      "adventureId": "chicago-marathon-series",
+      "storyPresent": true,
+      "appearanceCount": 2,
+      "years": [
+        2020,
+        2021
+      ],
+      "memberIds": [
+        "chicago-marathon-virtual-2020",
+        "chicago-marathon-2021"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 1,
+      "routeCount": 2,
+      "distanceHistory": [
+        {
+          "label": "26.2 mi",
+          "count": 1
+        },
+        {
+          "label": "Marathon",
+          "count": 1
+        }
+      ],
+      "resultRecoveryIds": [
+        "chicago-marathon-virtual-2020"
+      ],
+      "routeRecoveryIds": []
+    },
+    {
+      "id": "colderbolder-series-2022-2025",
+      "name": "COLDERBolder 5K",
+      "adventureId": "colderbolder-series-story",
+      "storyPresent": true,
+      "appearanceCount": 4,
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "memberIds": [
+        "colderbolder-2022",
+        "colderbolder-2023",
+        "colderbolder-2024",
+        "colderbolder-2025"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 3,
+      "routeCount": 4,
+      "distanceHistory": [
+        {
+          "label": "5K",
+          "count": 4
+        }
+      ],
+      "resultRecoveryIds": [
+        "colderbolder-2022"
+      ],
+      "routeRecoveryIds": []
+    },
+    {
+      "id": "colfax-marathon-weekend-series",
+      "name": "Denver Colfax Marathon Weekend",
+      "adventureId": "colfax-marathon-weekend-series",
+      "storyPresent": true,
+      "appearanceCount": 7,
+      "years": [
+        2021,
+        2024,
+        2025,
+        2026
+      ],
+      "memberIds": [
+        "colfax-half-2021",
+        "colfax-5k-2024",
+        "colfax-urban-10-2024",
+        "colfax-5k-2025",
+        "colfax-marathon-2025",
+        "colfax-5k-2026",
+        "colfax-urban-10-2026"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 0,
+      "routeCount": 7,
+      "distanceHistory": [
+        {
+          "label": "13.1 miles",
+          "count": 1
+        },
+        {
+          "label": "5K",
+          "count": 3
+        },
+        {
+          "label": "10 miles",
+          "count": 2
+        },
+        {
+          "label": "Marathon",
+          "count": 1
+        }
+      ],
+      "resultRecoveryIds": [
+        "colfax-half-2021",
+        "colfax-5k-2024",
+        "colfax-urban-10-2024",
+        "colfax-5k-2025",
+        "colfax-marathon-2025",
+        "colfax-5k-2026",
+        "colfax-urban-10-2026"
+      ],
+      "routeRecoveryIds": []
+    },
+    {
+      "id": "garmin-marathon-land-of-oz-series",
+      "name": "Garmin Marathon in the Land of Oz",
+      "adventureId": "garmin-marathon-land-of-oz-series",
+      "storyPresent": true,
+      "appearanceCount": 2,
+      "years": [
+        2014,
+        2016
+      ],
+      "memberIds": [
+        "garmin-half-2014",
+        "garmin-half-2016"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 0,
+      "routeCount": 2,
+      "distanceHistory": [
+        {
+          "label": "Half marathon",
+          "count": 2
+        }
+      ],
+      "resultRecoveryIds": [
+        "garmin-half-2014",
+        "garmin-half-2016"
+      ],
+      "routeRecoveryIds": []
+    },
+    {
+      "id": "illinois-marathon-weekend-series",
+      "name": "Illinois Marathon Weekend",
+      "adventureId": "illinois-marathon-weekend-series",
+      "storyPresent": true,
+      "appearanceCount": 4,
+      "years": [
+        2015,
+        2016
+      ],
+      "memberIds": [
+        "illinois-5k-2015",
+        "illinois-marathon-2015",
+        "illinois-5k-2016",
+        "illinois-half-2016"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 0,
+      "routeCount": 3,
+      "distanceHistory": [
+        {
+          "label": "5K",
+          "count": 2
+        },
+        {
+          "label": "Marathon",
+          "count": 1
+        },
+        {
+          "label": "Half marathon",
+          "count": 1
+        }
+      ],
+      "resultRecoveryIds": [
+        "illinois-5k-2015",
+        "illinois-marathon-2015",
+        "illinois-5k-2016",
+        "illinois-half-2016"
+      ],
+      "routeRecoveryIds": [
+        "illinois-5k-2015"
+      ]
+    },
+    {
+      "id": "mile-high-united-way-turkey-trot-series",
+      "name": "Mile High United Way Turkey Trot",
+      "adventureId": "mile-high-united-way-turkey-trot-series",
+      "storyPresent": true,
+      "appearanceCount": 3,
+      "years": [
+        2021,
+        2023,
+        2025
+      ],
+      "memberIds": [
+        "mile-high-turkey-trot-2021",
+        "mile-high-turkey-trot-2023",
+        "mile-high-turkey-trot-2025"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 0,
+      "routeCount": 3,
+      "distanceHistory": [
+        {
+          "label": "4 miles",
+          "count": 3
+        }
+      ],
+      "resultRecoveryIds": [
+        "mile-high-turkey-trot-2021",
+        "mile-high-turkey-trot-2023",
+        "mile-high-turkey-trot-2025"
+      ],
+      "routeRecoveryIds": []
+    },
+    {
+      "id": "river-to-river-relay-series",
+      "name": "River to River Relay",
+      "adventureId": "river-to-river-relay-series-story",
+      "storyPresent": true,
+      "appearanceCount": 3,
+      "years": [
+        2006,
+        2008,
+        2010
+      ],
+      "memberIds": [
+        "river-to-river-relay-2006",
+        "river-to-river-relay-2008",
+        "river-to-river-relay-2010"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 0,
+      "routeCount": 0,
+      "distanceHistory": [
+        {
+          "label": "unknown",
+          "count": 3
+        }
+      ],
+      "resultRecoveryIds": [
+        "river-to-river-relay-2006",
+        "river-to-river-relay-2008",
+        "river-to-river-relay-2010"
+      ],
+      "routeRecoveryIds": [
+        "river-to-river-relay-2006",
+        "river-to-river-relay-2008",
+        "river-to-river-relay-2010"
+      ]
+    },
+    {
+      "id": "rundenver-2021-2022",
+      "name": "RunDenver Series",
+      "adventureId": "rundenver-series-story",
+      "storyPresent": true,
+      "appearanceCount": 5,
+      "years": [
+        2021,
+        2022
+      ],
+      "memberIds": [
+        "rudolph-ramble-5k-2021",
+        "polar-bear-5k-2022",
+        "super-bowl-5k-2022",
+        "valentines-day-4m-2022",
+        "that-dam-run-10k-2022"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 0,
+      "routeCount": 5,
+      "distanceHistory": [
+        {
+          "label": "5K",
+          "count": 3
+        },
+        {
+          "label": "4 miles",
+          "count": 1
+        },
+        {
+          "label": "10K",
+          "count": 1
+        }
+      ],
+      "resultRecoveryIds": [
+        "rudolph-ramble-5k-2021",
+        "polar-bear-5k-2022",
+        "super-bowl-5k-2022",
+        "valentines-day-4m-2022",
+        "that-dam-run-10k-2022"
+      ],
+      "routeRecoveryIds": []
+    },
+    {
+      "id": "snowman-shuffle-series",
+      "name": "Snowman Shuffle",
+      "adventureId": "snowman-shuffle-series",
+      "storyPresent": true,
+      "appearanceCount": 5,
+      "years": [
+        2006,
+        2007,
+        2008,
+        2009,
+        2021
+      ],
+      "memberIds": [
+        "snowman-shuffle-2006",
+        "snowman-shuffle-2007",
+        "snowman-shuffle-2008",
+        "snowman-shuffle-2009",
+        "snowman-shuffle-2021-virtual"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 4,
+      "routeCount": 5,
+      "distanceHistory": [
+        {
+          "label": "5K",
+          "count": 5
+        }
+      ],
+      "resultRecoveryIds": [
+        "snowman-shuffle-2021-virtual"
+      ],
+      "routeRecoveryIds": []
+    }
+  ],
+  "candidateFamilies": [],
+  "representedFamilies": [
+    {
+      "key": "bolderboulder",
+      "displayName": "BOLDERBoulder",
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "memberIds": [
+        "bolderboulder-2022",
+        "bolderboulder-2023",
+        "bolderboulder-2024",
+        "bolderboulder-2025"
+      ],
+      "representedMemberIds": [
+        "bolderboulder-2022",
+        "bolderboulder-2023",
+        "bolderboulder-2024",
+        "bolderboulder-2025"
+      ],
+      "unrepresentedMemberIds": [],
+      "relatedSeriesIds": [
+        "bolderboulder-series-2022-2025"
+      ]
+    },
+    {
+      "key": "chicago marathon",
+      "displayName": "Chicago Marathon",
+      "years": [
+        2020,
+        2021
+      ],
+      "memberIds": [
+        "chicago-marathon-2021",
+        "chicago-marathon-virtual-2020"
+      ],
+      "representedMemberIds": [
+        "chicago-marathon-2021",
+        "chicago-marathon-virtual-2020"
+      ],
+      "unrepresentedMemberIds": [],
+      "relatedSeriesIds": [
+        "chicago-marathon-series"
+      ]
+    },
+    {
+      "key": "colderbolder",
+      "displayName": "COLDERBolder 5K",
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "memberIds": [
+        "colderbolder-2022",
+        "colderbolder-2023",
+        "colderbolder-2024",
+        "colderbolder-2025"
+      ],
+      "representedMemberIds": [
+        "colderbolder-2022",
+        "colderbolder-2023",
+        "colderbolder-2024",
+        "colderbolder-2025"
+      ],
+      "unrepresentedMemberIds": [],
+      "relatedSeriesIds": [
+        "colderbolder-series-2022-2025"
+      ]
+    },
+    {
+      "key": "denver colfax",
+      "displayName": "Denver Colfax 5K",
+      "years": [
+        2024,
+        2026
+      ],
+      "memberIds": [
+        "colfax-5k-2024",
+        "colfax-5k-2026"
+      ],
+      "representedMemberIds": [
+        "colfax-5k-2024",
+        "colfax-5k-2026"
+      ],
+      "unrepresentedMemberIds": [],
+      "relatedSeriesIds": [
+        "colfax-marathon-weekend-series"
+      ]
+    },
+    {
+      "key": "denver colfax marathon",
+      "displayName": "Denver Colfax Marathon",
+      "years": [
+        2024,
+        2025
+      ],
+      "memberIds": [
+        "colfax-marathon-2025",
+        "colfax-urban-10-2024"
+      ],
+      "representedMemberIds": [
+        "colfax-marathon-2025",
+        "colfax-urban-10-2024"
+      ],
+      "unrepresentedMemberIds": [],
+      "relatedSeriesIds": [
+        "colfax-marathon-weekend-series"
+      ]
+    },
+    {
+      "key": "mile high united way turkey trot",
+      "displayName": "Mile High United Way Turkey Trot",
+      "years": [
+        2021,
+        2023,
+        2025
+      ],
+      "memberIds": [
+        "mile-high-turkey-trot-2021",
+        "mile-high-turkey-trot-2023",
+        "mile-high-turkey-trot-2025"
+      ],
+      "representedMemberIds": [
+        "mile-high-turkey-trot-2021",
+        "mile-high-turkey-trot-2023",
+        "mile-high-turkey-trot-2025"
+      ],
+      "unrepresentedMemberIds": [],
+      "relatedSeriesIds": [
+        "mile-high-united-way-turkey-trot-series"
+      ]
+    },
+    {
+      "key": "river to river relay",
+      "displayName": "River to River Relay",
+      "years": [
+        2006,
+        2008,
+        2010
+      ],
+      "memberIds": [
+        "river-to-river-relay-2006",
+        "river-to-river-relay-2008",
+        "river-to-river-relay-2010"
+      ],
+      "representedMemberIds": [
+        "river-to-river-relay-2006",
+        "river-to-river-relay-2008",
+        "river-to-river-relay-2010"
+      ],
+      "unrepresentedMemberIds": [],
+      "relatedSeriesIds": [
+        "river-to-river-relay-series"
+      ]
+    },
+    {
+      "key": "rundenver series",
+      "displayName": "RunDenver Series",
+      "years": [
+        2021,
+        2022
+      ],
+      "memberIds": [
+        "polar-bear-5k-2022",
+        "rudolph-ramble-5k-2021",
+        "super-bowl-5k-2022",
+        "that-dam-run-10k-2022",
+        "valentines-day-4m-2022"
+      ],
+      "representedMemberIds": [
+        "polar-bear-5k-2022",
+        "rudolph-ramble-5k-2021",
+        "super-bowl-5k-2022",
+        "that-dam-run-10k-2022",
+        "valentines-day-4m-2022"
+      ],
+      "unrepresentedMemberIds": [],
+      "relatedSeriesIds": [
+        "rundenver-2021-2022"
+      ]
+    },
+    {
+      "key": "snowman shuffle",
+      "displayName": "Snowman Shuffle 5K",
+      "years": [
+        2006,
+        2007,
+        2008,
+        2009,
+        2021
+      ],
+      "memberIds": [
+        "snowman-shuffle-2006",
+        "snowman-shuffle-2007",
+        "snowman-shuffle-2008",
+        "snowman-shuffle-2009",
+        "snowman-shuffle-2021-virtual"
+      ],
+      "representedMemberIds": [
+        "snowman-shuffle-2006",
+        "snowman-shuffle-2007",
+        "snowman-shuffle-2008",
+        "snowman-shuffle-2009",
+        "snowman-shuffle-2021-virtual"
+      ],
+      "unrepresentedMemberIds": [],
+      "relatedSeriesIds": [
+        "snowman-shuffle-series"
+      ]
+    }
+  ],
+  "researchQueue": [
+    {
+      "type": "official-result",
+      "seriesId": "bolderboulder-series-2022-2025",
+      "recordId": "bolderboulder-2023"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "bolderboulder-series-2022-2025",
+      "recordId": "bolderboulder-2025"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "chicago-marathon-series",
+      "recordId": "chicago-marathon-virtual-2020"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "colderbolder-series-2022-2025",
+      "recordId": "colderbolder-2022"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "colfax-marathon-weekend-series",
+      "recordId": "colfax-half-2021"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "colfax-marathon-weekend-series",
+      "recordId": "colfax-5k-2024"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "colfax-marathon-weekend-series",
+      "recordId": "colfax-urban-10-2024"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "colfax-marathon-weekend-series",
+      "recordId": "colfax-5k-2025"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "colfax-marathon-weekend-series",
+      "recordId": "colfax-marathon-2025"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "colfax-marathon-weekend-series",
+      "recordId": "colfax-5k-2026"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "colfax-marathon-weekend-series",
+      "recordId": "colfax-urban-10-2026"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "garmin-marathon-land-of-oz-series",
+      "recordId": "garmin-half-2014"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "garmin-marathon-land-of-oz-series",
+      "recordId": "garmin-half-2016"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "illinois-marathon-weekend-series",
+      "recordId": "illinois-5k-2015"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "illinois-marathon-weekend-series",
+      "recordId": "illinois-marathon-2015"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "illinois-marathon-weekend-series",
+      "recordId": "illinois-5k-2016"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "illinois-marathon-weekend-series",
+      "recordId": "illinois-half-2016"
+    },
+    {
+      "type": "route",
+      "seriesId": "illinois-marathon-weekend-series",
+      "recordId": "illinois-5k-2015"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "mile-high-turkey-trot-2021"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "mile-high-turkey-trot-2023"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "mile-high-turkey-trot-2025"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "river-to-river-relay-series",
+      "recordId": "river-to-river-relay-2006"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "river-to-river-relay-series",
+      "recordId": "river-to-river-relay-2008"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "river-to-river-relay-series",
+      "recordId": "river-to-river-relay-2010"
+    },
+    {
+      "type": "route",
+      "seriesId": "river-to-river-relay-series",
+      "recordId": "river-to-river-relay-2006"
+    },
+    {
+      "type": "route",
+      "seriesId": "river-to-river-relay-series",
+      "recordId": "river-to-river-relay-2008"
+    },
+    {
+      "type": "route",
+      "seriesId": "river-to-river-relay-series",
+      "recordId": "river-to-river-relay-2010"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "rundenver-2021-2022",
+      "recordId": "rudolph-ramble-5k-2021"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "rundenver-2021-2022",
+      "recordId": "polar-bear-5k-2022"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "rundenver-2021-2022",
+      "recordId": "super-bowl-5k-2022"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "rundenver-2021-2022",
+      "recordId": "valentines-day-4m-2022"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "rundenver-2021-2022",
+      "recordId": "that-dam-run-10k-2022"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "snowman-shuffle-series",
+      "recordId": "snowman-shuffle-2021-virtual"
+    }
+  ]
+}

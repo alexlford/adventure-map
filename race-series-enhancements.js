@@ -58,10 +58,38 @@
     String(record.routeStatus || '').toLowerCase().includes('source')
   );
 
-  const sameDistance = records => {
-    const values = records.map(distanceMiles);
-    return !values.some(value => !Number.isFinite(value)) && Math.max(...values) - Math.min(...values) <= 0.25;
+  const distanceBucket = record => {
+    const miles = distanceMiles(record);
+    return Number.isFinite(miles) ? Math.round(miles * 4) / 4 : null;
   };
+
+  const cohortFor = (members, source) => {
+    const groups = new Map();
+    for (const record of members) {
+      const time = timeInfo(record);
+      const bucket = distanceBucket(record);
+      if (time.source !== source || !Number.isFinite(time.seconds) || !Number.isFinite(bucket)) continue;
+      const key = bucket.toFixed(2);
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push({ record, time, bucket });
+    }
+    const candidates = [...groups.values()].filter(group => group.length >= 2);
+    if (!candidates.length) return null;
+    candidates.sort((a, b) => b.length - a.length || (b.at(-1)?.record.date || '').localeCompare(a.at(-1)?.record.date || ''));
+    const entries = candidates[0].sort((a, b) => (a.record.date || '').localeCompare(b.record.date || ''));
+    const best = entries.reduce((winner, item) => !winner || item.time.seconds < winner.time.seconds ? item : winner, null);
+    const averageSeconds = entries.reduce((sum, item) => sum + item.time.seconds, 0) / entries.length;
+    return {
+      source,
+      entries,
+      best,
+      averageSeconds,
+      distanceLabel: distanceLabel(entries[0].record),
+      sourceLabel: source === 'official' ? 'official results' : 'GPS elapsed records'
+    };
+  };
+
+  const primaryCohort = members => cohortFor(members, 'official') || cohortFor(members, 'gps');
 
   const deltaLabel = delta => {
     if (!Number.isFinite(delta) || Math.abs(delta) < 1) return 'Even with prior appearance';
@@ -69,24 +97,11 @@
   };
 
   const chartFor = members => {
-    const enriched = members.map(record => ({ record, time: timeInfo(record) }));
-    const official = enriched.filter(item => item.time.source === 'official');
-    const gps = enriched.filter(item => item.time.source === 'gps');
-    let entries;
-    let chartLabel;
-    let fastestLabel;
-
-    if (official.length >= 2 && sameDistance(official.map(item => item.record))) {
-      entries = official;
-      chartLabel = 'Official results';
-      fastestLabel = 'Series PR';
-    } else if (official.length === 0 && gps.length >= 2 && sameDistance(gps.map(item => item.record))) {
-      entries = gps;
-      chartLabel = 'GPS elapsed comparison';
-      fastestLabel = 'Fastest GPS';
-    } else return '';
-
-    entries.sort((a, b) => (a.record.date || '').localeCompare(b.record.date || ''));
+    const cohort = primaryCohort(members);
+    if (!cohort) return '';
+    const entries = cohort.entries;
+    const chartLabel = cohort.source === 'official' ? `${cohort.distanceLabel} official results` : `${cohort.distanceLabel} GPS elapsed comparison`;
+    const fastestLabel = cohort.source === 'official' ? 'Series PR' : 'Fastest GPS';
     const values = entries.map(item => item.time.seconds);
     const fastest = Math.min(...values);
     const slowest = Math.max(...values);
@@ -97,10 +112,28 @@
       const previous = index ? entries[index - 1].time.seconds : null;
       return `<div class="series-chart-row${isFastest ? ' is-fastest' : ''}"><div class="series-chart-label"><strong>${A.esc(String(item.record.year || item.record.date?.slice(0, 4) || '—'))}</strong><span>${A.esc(item.time.label)}</span></div><div class="series-chart-track" aria-hidden="true"><span style="--series-bar:${width.toFixed(1)}%"></span></div><div class="series-chart-meta"><span>${A.esc(index ? deltaLabel(item.time.seconds - previous) : item.time.sourceLabel)}</span>${isFastest ? `<em>${A.esc(fastestLabel)}</em>` : ''}</div></div>`;
     }).join('');
-    const caveat = chartLabel === 'Official results'
-      ? 'Only organizer/timer results are compared here. Lower elapsed time is better.'
-      : 'No organizer times are available for this series, so this comparison uses race-course GPS elapsed time only and does not present it as an official result.';
+    const caveat = cohort.source === 'official'
+      ? `Only organizer/timer results from the comparable ${cohort.distanceLabel} cohort are compared here. Lower elapsed time is better.`
+      : `No comparable organizer-time cohort is available, so this chart uses comparable ${cohort.distanceLabel} race-course GPS elapsed records only and does not present them as official results.`;
     return `<div class="series-performance"><div class="series-performance-head"><div><p class="eyebrow">Year-over-year</p><h3>${A.esc(chartLabel)}</h3></div><p>${A.esc(caveat)}</p></div><div class="series-chart">${rows}</div></div>`;
+  };
+
+  const distanceHistory = members => {
+    const counts = new Map();
+    for (const record of members) {
+      const label = distanceLabel(record);
+      counts.set(label, (counts.get(label) || 0) + 1);
+    }
+    return [...counts.entries()].map(([label, count]) => count > 1 ? `${label} ×${count}` : label).join(' · ');
+  };
+
+  const benchmarkStats = members => {
+    const years = [...new Set(members.map(record => record.year || record.date?.slice(0, 4)).filter(Boolean))];
+    const cohort = primaryCohort(members);
+    const best = cohort ? `${cohort.best.record.year || cohort.best.record.date?.slice(0, 4)} · ${cohort.best.time.label}` : 'Not enough comparable results';
+    const average = cohort ? formatClock(cohort.averageSeconds) : '—';
+    const cohortNote = cohort ? `${cohort.entries.length} ${cohort.distanceLabel} ${cohort.sourceLabel}` : 'Requires at least two timed appearances at the same distance';
+    return `<div class="race-series-stats"><article><small>Years raced</small><strong>${years.length}</strong><span>${A.esc(years.join(' · '))}</span></article><article><small>Distance history</small><strong>${new Set(members.map(distanceLabel)).size}</strong><span>${A.esc(distanceHistory(members))}</span></article><article><small>Best comparable result</small><strong>${A.esc(best)}</strong><span>${A.esc(cohortNote)}</span></article><article><small>Average comparable result</small><strong>${A.esc(average)}</strong><span>${A.esc(cohortNote)}</span></article></div>`;
   };
 
   const cardFor = record => {
@@ -139,7 +172,7 @@
       const section = document.createElement('section');
       section.className = 'race-series-feature';
       section.id = 'raceSeriesHistory';
-      section.innerHTML = `<div class="race-series-head"><div><p class="eyebrow">Recurring race series</p><h2>${A.esc(relationship.name || record.name)}</h2></div><p>${A.esc(relationship.summary || record.note || 'A multi-year race history preserved as one connected series.')}</p></div><div class="race-series-stats"><article><small>Appearances</small><strong>${members.length}</strong><span>${A.esc(span)}</span></article><article><small>Cumulative race distance</small><strong>${A.esc(mileage)}</strong><span>Organizer distance when available</span></article><article><small>Official results</small><strong>${officialCount}</strong><span>${members.length - officialCount} GPS/fallback records</span></article><article><small>Course archive</small><strong>${gpsCount}/${members.length}</strong><span>${gpsCount > 1 ? 'Routes overlay on the map below' : 'GPS routes attached when available'}</span></article></div>${chartFor(members)}<div class="series-year-grid">${members.map(cardFor).join('')}</div>${gpsCount > 1 ? `<div class="series-course-callout"><div><p class="eyebrow">Course evolution</p><h3>${gpsCount} recorded courses, one map.</h3></div><p>The course map below overlays the available personal GPS routes with a separate color for each appearance. Zoom in to compare shared sections, reroutes, start/finish changes, and event-to-event course drift.</p></div>` : ''}`;
+      section.innerHTML = `<div class="race-series-head"><div><p class="eyebrow">Recurring race series</p><h2>${A.esc(relationship.name || record.name)}</h2></div><p>${A.esc(relationship.summary || record.note || 'A multi-year race history preserved as one connected series.')}</p></div><div class="race-series-stats"><article><small>Appearances</small><strong>${members.length}</strong><span>${A.esc(span)}</span></article><article><small>Cumulative race distance</small><strong>${A.esc(mileage)}</strong><span>Organizer distance when available</span></article><article><small>Official results</small><strong>${officialCount}</strong><span>${members.length - officialCount} GPS/fallback records</span></article><article><small>Course archive</small><strong>${gpsCount}/${members.length}</strong><span>${gpsCount > 1 ? 'Routes overlay on the map below' : 'GPS routes attached when available'}</span></article></div>${benchmarkStats(members)}${chartFor(members)}<div class="series-year-grid">${members.map(cardFor).join('')}</div>${gpsCount > 1 ? `<div class="series-course-callout"><div><p class="eyebrow">Course evolution</p><h3>${gpsCount} recorded courses, one map.</h3></div><p>The course map below overlays the available personal GPS routes with a separate color for each appearance. Zoom in to compare shared sections, reroutes, start/finish changes, and event-to-event course drift.</p></div>` : ''}`;
       editorial.insertAdjacentElement('afterend', section);
       page.querySelector('.story-objective-feature.challenge-feature')?.remove();
       document.body.classList.add('story-race-series-page');
