@@ -1,4 +1,5 @@
 name: Materialize hash-verified Mount Jumullong route
+# PR validation passed; this push triggers the clean final materialization.
 
 on:
   push:
