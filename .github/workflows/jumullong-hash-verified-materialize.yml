@@ -106,6 +106,7 @@ jobs:
           rm tmp/jumullong-payload-gz.part*.b64 tmp/jumullong-payload.json.gz
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A .github/workflows/jumullong-hash-verified-materialize.yml tmp data/strava-route-full-resolution-mount-jumullong-manglo.json data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json
+          git add data/strava-route-full-resolution-mount-jumullong-manglo.json data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json
+          git add -u -- .github/workflows/jumullong-hash-verified-materialize.yml tmp
           git commit -m 'Upgrade Mount Jumullong Manglo to full-source GPS'
           git push origin HEAD:${{ github.head_ref }}
