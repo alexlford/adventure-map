@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-19",
+  "updatedOn": "2026-08-22",
   "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
@@ -109,7 +109,8 @@
     "data/strava-route-full-resolution-frisco-brewski-2024.json",
     "data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json",
     "data/strava-route-full-resolution-mile-high-turkey-trot-2021.json",
-    "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json"
+    "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
+    "data/strava-route-full-resolution-midland-hill.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -209,6 +210,11 @@
       {
         "id": "strava-10926255561",
         "minPoints": 8300,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-9635633600",
+        "minPoints": 10280,
         "resolutionPrefix": "full-source-track"
       }
     ],
