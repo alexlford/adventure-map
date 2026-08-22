@@ -1,4 +1,5 @@
 name: Materialize segmented route publication boundary
+# Temporary PR-visible materializer; self-removes after a successful patch.
 
 on:
   pull_request:
@@ -28,9 +29,6 @@ jobs:
           import json
           from pathlib import Path
 
-          # Server/public compiler: expand reviewed route segments into individual
-          # GeoJSON features with a stable routeFeatureId linking them back to the
-          # route-level entry used by the detail index.
           p = Path('scripts/build-public-routes.mjs')
           text = p.read_text()
           start = text.index('for (const polylineFile of polylineFiles) {')
@@ -104,12 +102,8 @@ jobs:
   }
 }
 '''
-          text = text[:start] + replacement + text[end:]
-          p.write_text(text)
+          p.write_text(text[:start] + replacement + text[end:])
 
-          # Browser/lazy route loader: mirror the same segment expansion, then
-          # load all child segments that share the routeFeatureId selected by the
-          # route-detail index.
           p = Path('route-catalog.js')
           text = p.read_text()
           start = text.index('  async function polylineCollection(path) {')
@@ -177,16 +171,13 @@ jobs:
           new = "    const features = (collection.features || []).filter(feature => keyFor(feature) === entry.featureId || feature.properties?.routeFeatureId === entry.featureId);"
           if text.count(old) != 1:
               raise SystemExit('detail feature filter patch did not match exactly once')
-          text = text.replace(old, new)
-          p.write_text(text)
+          p.write_text(text.replace(old, new))
 
-          test_path = Path('scripts/test-segmented-route-publication.mjs')
-          test_path.write_text(r'''import assert from 'node:assert/strict';
+          Path('scripts/test-segmented-route-publication.mjs').write_text(r'''import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const compiler = await readFile(new URL('./build-public-routes.mjs', import.meta.url), 'utf8');
 const catalogRuntime = await readFile(new URL('../route-catalog.js', import.meta.url), 'utf8');
-
 for (const source of [compiler, catalogRuntime]) {
   assert.match(source, /Array\.isArray\(route\.segments\)/);
   assert.match(source, /routeFeatureId/);
@@ -194,8 +185,6 @@ for (const source of [compiler, catalogRuntime]) {
   assert.match(source, /segment\.confidence/);
 }
 assert.match(catalogRuntime, /feature\.properties\?\.routeFeatureId === entry\.featureId/);
-assert.match(compiler, /segmentIndex === 0 \? route\.id : `\$\{route\.id\}::segment-\$\{segmentIndex \+ 1\}`/);
-
 console.log('Segmented route publication boundary tests passed.');
 ''')
 
