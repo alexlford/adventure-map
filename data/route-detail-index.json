@@ -699,10 +699,11 @@
       "quality": "full-source"
     },
     "san-gabriel-peak": {
-      "file": "data/strava-route-rdp3-17.json",
+      "file": "data/strava-route-reviewed-san-gabriel-peak.json",
       "featureId": "strava-9552205777",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source",
+      "geometryClass": "mixed"
     },
     "shamrock-shuffle-10k-2015": {
       "file": "data/mined-routes.geojson",
