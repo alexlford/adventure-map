@@ -1,0 +1,113 @@
+name: Materialize hash-verified Old Rag Mountain route
+# Temporary PR-visible validation + cleanup workflow for one GPS route.
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: ${{ github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PR head branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Reconstruct and verify exact payload
+        shell: bash
+        run: |
+          cat tmp/old-rag-payload-gz.part*.b64 | base64 --decode > tmp/old-rag-payload.json.gz
+          echo '8074d44b1772fc542a569d1ef09fabc4bde52cf1c9950a02b44a24a62d0381cf  tmp/old-rag-payload.json.gz' | sha256sum -c -
+          gzip -dc tmp/old-rag-payload.json.gz > data/strava-route-full-resolution-old-rag-mountain.json
+          echo 'c1acdd397aa3873ed84cf5bc9a2693041abacceb7e39c3295eccfb5d4e4d0096  data/strava-route-full-resolution-old-rag-mountain.json' | sha256sum -c -
+          actual_blob="$(git hash-object data/strava-route-full-resolution-old-rag-mountain.json)"
+          test "$actual_blob" = '7406d117c463370d093128618322a41359b198fa'
+          echo "Verified final Git blob $actual_blob"
+
+      - name: Verify decoded point count
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const payload = JSON.parse(fs.readFileSync('data/strava-route-full-resolution-old-rag-mountain.json', 'utf8'));
+          const route = payload.routes?.[0];
+          if (!route || route.id !== 'strava-4312103411') throw new Error('Unexpected Old Rag route payload');
+          if (route.sourcePointCount !== 10685 || route.retainedPointCount !== 10685) throw new Error('Unexpected Old Rag metadata count');
+          if (!Array.isArray(route.lines) || route.lines.length !== 1) throw new Error('Expected exactly one Old Rag polyline segment');
+          const count = line => {
+            let index = 0;
+            let points = 0;
+            while (index < line.length) {
+              for (let coordinate = 0; coordinate < 2; coordinate += 1) {
+                let byte;
+                do {
+                  if (index >= line.length) throw new Error('Truncated polyline');
+                  byte = line.charCodeAt(index++) - 63;
+                } while (byte >= 0x20);
+              }
+              points += 1;
+            }
+            return points;
+          };
+          const decoded = count(route.lines[0]);
+          if (decoded !== 10685) throw new Error(`Decoded ${decoded} points; expected 10685`);
+          console.log(`Decoded ${decoded} Old Rag points`);
+          NODE
+
+      - name: Register route and advance only Old Rag floor
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const routeFile = 'data/strava-route-full-resolution-old-rag-mountain.json';
+          const routeId = 'strava-4312103411';
+          const catalogPath = 'data/route-catalog.json';
+          const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+          if (!catalog.polylineFiles.includes(routeFile)) catalog.polylineFiles.push(routeFile);
+          const dense = catalog.qualityExpectations.denseRoutes;
+          const expected = { id: routeId, minPoints: 10650, resolutionPrefix: 'full-source-track' };
+          const index = dense.findIndex(item => item.id === routeId);
+          if (index >= 0) dense[index] = expected; else dense.push(expected);
+          fs.writeFileSync(catalogPath, JSON.stringify(catalog, null, 2) + '\n');
+
+          const floorPath = 'data/route-detail-quality-floor.json';
+          const floor = JSON.parse(fs.readFileSync(floorPath, 'utf8'));
+          if (floor.records['old-rag-mountain'] !== 'rdp-3m') {
+            throw new Error(`Unexpected existing Old Rag floor: ${floor.records['old-rag-mountain']}`);
+          }
+          floor.records['old-rag-mountain'] = 'full-source';
+          fs.writeFileSync(floorPath, JSON.stringify(floor, null, 2) + '\n');
+          NODE
+
+      - name: Build route-detail index
+        run: node scripts/build-route-detail-index.mjs --write
+
+      - name: Validate route and repository data
+        run: |
+          node scripts/validate-source-rdp-routes.mjs
+          node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
+          node scripts/validate-public-route-contract.mjs tmp/public-routes.geojson
+          node scripts/audit-route-quality.mjs tmp/public-routes.geojson
+          npm run validate:all
+
+      - name: Commit clean Old Rag change to PR head
+        run: |
+          rm .github/workflows/old-rag-hash-verified-materialize.yml
+          rm tmp/old-rag-payload-gz.part*.b64 tmp/old-rag-payload.json.gz
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -u
+          git add data/strava-route-full-resolution-old-rag-mountain.json
+          git commit -m 'Upgrade Old Rag Mountain to full-source GPS'
+          git push origin HEAD:${{ github.head_ref }}
