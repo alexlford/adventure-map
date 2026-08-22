@@ -110,7 +110,8 @@
     "data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json",
     "data/strava-route-full-resolution-mile-high-turkey-trot-2021.json",
     "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
-    "data/strava-route-full-resolution-stagecoach-classic-15k-2024.json"
+    "data/strava-route-full-resolution-stagecoach-classic-15k-2024.json",
+    "data/strava-route-full-resolution-mount-jumullong-manglo.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -215,6 +216,11 @@
       {
         "id": "strava-10596610840",
         "minPoints": 6900,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-7123707788",
+        "minPoints": 4600,
         "resolutionPrefix": "full-source-track"
       }
     ],

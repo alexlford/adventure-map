@@ -355,10 +355,10 @@
       "quality": "full-source"
     },
     "mount-jumullong-manglo": {
-      "file": "data/strava-route-rdp3-16.json",
+      "file": "data/strava-route-full-resolution-mount-jumullong-manglo.json",
       "featureId": "strava-7123707788",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "mount-lamlam": {
       "file": "data/strava-route-rdp3-17.json",
