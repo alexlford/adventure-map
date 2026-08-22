@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "policyId": "best-defensible-reconstruction-v1",
+  "principle": "Publish the best defensible reconstruction of where the activity actually occurred, rather than automatically preferring the rawest or densest GPS representation.",
+  "sourcePreservation": "Preserve original GPX/FIT evidence internally even when the published geometry is filtered, corrected, or reconstructed.",
+  "distanceReference": "Strava activity distance is a strong sanity check, not a hard optimization target.",
+  "distanceReviewBandsPercent": {
+    "generallyAcceptable": 2,
+    "reviewRequired": 5,
+    "presumeQualityIssue": 10
+  },
+  "selectionRules": [
+    "Prefer spatial and path truth over raw point count.",
+    "Use the least destructive correction that removes implausible GPS behavior while preserving genuine turns and route detail.",
+    "Use distance agreement to validate a candidate, not to choose it mechanically.",
+    "Reconstruct missing geometry from external trail, road, course, timing, photo, or itinerary evidence when a plausible path can be defended.",
+    "When several reconstructions remain plausible, select the most plausible path and mark it as inferred rather than disguising it as recorded GPS.",
+    "Never silently convert inferred geometry into recorded geometry."
+  ],
+  "geometryClasses": [
+    "recorded-clean",
+    "recorded-filtered",
+    "recorded-corrected",
+    "mixed",
+    "reconstructed"
+  ],
+  "evidenceTypes": [
+    "recorded",
+    "inferred"
+  ],
+  "inferredRendering": {
+    "style": "dashed",
+    "readerFacingDetail": "Keep explanatory metadata minimal; the dash itself communicates that the segment is inferred."
+  },
+  "processingAndQualityAreSeparate": true,
+  "legacyCompatibility": "Existing route-detail quality floors continue to protect technical route detail during migration. Geometry class and explicit publication selection determine fidelity independently of point density."
+}

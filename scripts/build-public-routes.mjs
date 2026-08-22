@@ -47,7 +47,11 @@ function geometryPointCount(feature) {
   return 0;
 }
 
-function mergeDenserGpsFeature(existing, candidate) {
+function publicationRank(feature) {
+  return feature?.properties?.publicationSelected === true ? 1 : 0;
+}
+
+function mergePreferredGpsFeature(existing, candidate) {
   const existingProps = existing.properties || {};
   const candidateProps = candidate.properties || {};
   const adventureIds = [...new Set([...(existingProps.adventureIds || []), ...(candidateProps.adventureIds || [])])];
@@ -81,17 +85,18 @@ function addFeature(feature, sourceFile = null) {
   const existing = features[existingIndex];
   const existingPoints = geometryPointCount(existing);
   const candidatePoints = geometryPointCount(normalized);
+  const existingRank = publicationRank(existing);
+  const candidateRank = publicationRank(normalized);
   const bothPersonalGps = existing.properties?.provenance === 'personal-gps' && normalized.properties?.provenance === 'personal-gps';
 
-  // The repository contains legacy coarse route approximations plus later GPS
-  // backfills for some of the same Strava feature IDs. Prefer the denser
-  // personal-GPS geometry instead of whichever file happened to be read first.
-  // Preserve record/category linkage from the older feature when a source-complete
-  // geometry shard intentionally supplies only route identity and source activity.
-  if (bothPersonalGps && candidatePoints > existingPoints) {
-    features[existingIndex] = mergeDenserGpsFeature(existing, normalized);
+  // Reviewed publication geometry wins before density. Point count remains a
+  // compatibility fallback for legacy personal-GPS duplicates that have not yet
+  // been reviewed under the reconstruction policy.
+  if (bothPersonalGps && (candidateRank > existingRank || (candidateRank === existingRank && candidatePoints > existingPoints))) {
+    features[existingIndex] = mergePreferredGpsFeature(existing, normalized);
     duplicateSelections.push({
       id,
+      reason: candidateRank > existingRank ? 'reviewed-publication' : 'denser-legacy-gps',
       replacedPointCount: existingPoints,
       selectedPointCount: candidatePoints,
       selectedSourceFile: sourceFile,
@@ -179,6 +184,9 @@ for (const polylineFile of polylineFiles) {
         stravaActivityIds: sourceActivityIds,
         routeResolution: route.sampling || payload.sampling || null,
         sourcePointCount: route.sourcePointCount || null,
+        geometryClass: route.geometryClass || payload.geometryClass || null,
+        geometryEvidence: route.geometryEvidence || 'recorded',
+        publicationSelected: route.publicationSelected === true,
       },
       geometry: lines.length === 1
         ? { type: 'LineString', coordinates: lines[0] }
@@ -206,7 +214,7 @@ await fs.mkdir(path.dirname(output), { recursive: true });
 await fs.writeFile(output, `${JSON.stringify(payload)}\n`);
 console.log(`Compiled ${features.length} public route features.`);
 console.log(`Recovered ${repairs.length} incomplete encoded-polyline tails.`);
-console.log(`Selected ${duplicateSelections.length} denser duplicate GPS geometries.`);
+console.log(`Selected ${duplicateSelections.length} preferred duplicate GPS geometries.`);
 for (const repair of repairs) console.log(`REPAIR ${repair.routeId} line ${repair.lineIndex}: trim ${repair.trimEnd} (${repair.reason})`);
-for (const selection of duplicateSelections) console.log(`DENSER ${selection.id}: ${selection.replacedPointCount} -> ${selection.selectedPointCount} points (${selection.selectedSourceFile})`);
+for (const selection of duplicateSelections) console.log(`SELECT ${selection.id}: ${selection.reason}, ${selection.replacedPointCount} -> ${selection.selectedPointCount} points (${selection.selectedSourceFile})`);
 console.log(`Public routes: ${path.relative(root, output)}`);
