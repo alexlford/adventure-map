@@ -1,0 +1,65 @@
+name: Publish Stagecoach Classic full-source route
+
+on:
+  push:
+    branches:
+      - gps/full-source-stagecoach-2026-08-22
+    paths:
+      - '.github/workflows/materialize-stagecoach-full-source.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v6
+        with:
+          ref: gps/full-source-stagecoach-2026-08-22
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+      - name: Register full-source route
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('data/route-catalog.json')
+          data = json.loads(p.read_text())
+          data['updatedOn'] = '2026-08-22'
+          route_file = 'data/strava-route-full-resolution-stagecoach-classic-15k-2024.json'
+          if route_file not in data['polylineFiles']:
+              data['polylineFiles'].append(route_file)
+          dense = data.setdefault('qualityExpectations', {}).setdefault('denseRoutes', [])
+          rid = 'strava-10596610840'
+          entry = {'id': rid, 'minPoints': 6900, 'resolutionPrefix': 'full-source-track'}
+          for i, item in enumerate(dense):
+              if item.get('id') == rid:
+                  dense[i] = entry
+                  break
+          else:
+              dense.append(entry)
+          p.write_text(json.dumps(data, indent=2) + '\n')
+          PY
+      - name: Build publication artifacts
+        run: npm run build:publish
+      - name: Advance route quality floor
+        run: node scripts/update-route-detail-quality-floor.mjs
+      - name: Validate publication
+        run: npm run validate:all
+      - name: Commit validated publication
+        run: |
+          git checkout -- scripts/__pycache__ 2>/dev/null || true
+          git rm .github/workflows/materialize-stagecoach-full-source.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish full-source Stagecoach Classic route"
+          git push origin HEAD:gps/full-source-stagecoach-2026-08-22
