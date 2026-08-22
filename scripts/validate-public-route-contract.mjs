@@ -24,6 +24,7 @@ const pointCount=feature=>feature?.geometry?.type==='LineString'
   : feature?.geometry?.type==='MultiLineString'
     ? (feature.geometry.coordinates||[]).reduce((sum,line)=>sum+(line||[]).length,0)
     : 0;
+const routeFeatures=id=>(payload.features||[]).filter(feature=>featureId(feature)===id||feature.properties?.routeFeatureId===id);
 
 const actualRepairs=payload.metadata?.repairs||[];
 const expectedRepairs=quality.allowedTailRecoveries||[];
@@ -42,11 +43,12 @@ for(const expected of expectedRepairs){
 }
 
 for(const expectation of quality.denseRoutes||[]){
-  const feature=byId.get(expectation.id);
-  if(!feature){errors.push(`${expectation.id}: protected dense route is missing`);continue;}
-  const points=pointCount(feature);
+  const features=routeFeatures(expectation.id);
+  if(!features.length){errors.push(`${expectation.id}: protected dense route is missing`);continue;}
+  const points=features.reduce((sum,feature)=>sum+pointCount(feature),0);
   if(points<Number(expectation.minPoints||0))errors.push(`${expectation.id}: route regressed to ${points} points; expected at least ${expectation.minPoints}`);
-  if(expectation.resolutionPrefix&&!String(feature.properties?.routeResolution||'').startsWith(expectation.resolutionPrefix))errors.push(`${expectation.id}: route resolution ${feature.properties?.routeResolution||'(missing)'} does not start with ${expectation.resolutionPrefix}`);
+  const rootFeature=byId.get(expectation.id)||features[0];
+  if(expectation.resolutionPrefix&&!String(rootFeature.properties?.routeResolution||'').startsWith(expectation.resolutionPrefix))errors.push(`${expectation.id}: route resolution ${rootFeature.properties?.routeResolution||'(missing)'} does not start with ${expectation.resolutionPrefix}`);
 }
 
 const actionsEscape=value=>String(value).replaceAll('%','%25').replaceAll('\r','%0D').replaceAll('\n','%0A');
