@@ -595,10 +595,10 @@
       "quality": "full-source"
     },
     "old-rag-mountain": {
-      "file": "data/strava-route-rdp3-08.json",
+      "file": "data/strava-route-full-resolution-old-rag-mountain.json",
       "featureId": "strava-4312103411",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "pi-day-half-2015": {
       "file": "data/strava-route-source-complete-01.json",
