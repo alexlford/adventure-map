@@ -40,12 +40,12 @@ jobs:
           catalog_path.write_text(json.dumps(catalog, indent=2) + '\n')
           PY
 
-          node scripts/build-route-detail-index.mjs
+          node scripts/build-route-detail-index.mjs --write
 
       - name: Verify reviewed selection and geometry
         run: |
           python - <<'PY'
-          import json, math
+          import json
           from pathlib import Path
 
           route_file = 'data/strava-route-reviewed-midland-hill.json'
