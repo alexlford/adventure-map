@@ -59,41 +59,84 @@ const waitForServer = async () => {
   throw new Error(`Static test server did not become ready at ${baseUrl}: ${lastError?.message || 'unknown error'}`);
 };
 
-const server = spawn('python3', ['-m', 'http.server', port, '--bind', host], {
-  stdio: ['ignore', 'inherit', 'inherit'],
-  shell: false
-});
+let activeServer = null;
 
-let serverExited = false;
-server.on('exit', () => { serverExited = true; });
+const stopServer = async server => {
+  if (!server || server.exitCode !== null) {
+    if (activeServer === server) activeServer = null;
+    return;
+  }
 
-const stopServer = () => {
-  if (!serverExited) server.kill('SIGTERM');
+  await new Promise(resolve => {
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      resolve();
+    };
+    const forceTimer = setTimeout(() => {
+      if (server.exitCode === null) server.kill('SIGKILL');
+    }, 2000);
+    forceTimer.unref();
+    server.once('exit', () => {
+      clearTimeout(forceTimer);
+      finish();
+    });
+    server.kill('SIGTERM');
+  });
+
+  if (activeServer === server) activeServer = null;
 };
 
-process.on('SIGINT', () => {
-  stopServer();
-  process.exit(130);
-});
-process.on('SIGTERM', () => {
-  stopServer();
-  process.exit(143);
-});
+const withServer = async callback => {
+  const server = spawn('python3', ['-m', 'http.server', port, '--bind', host], {
+    stdio: ['ignore', 'inherit', 'inherit'],
+    shell: false
+  });
+  activeServer = server;
 
-try {
-  await waitForServer();
-  if (requestedPlaywrightArgs.length) {
-    await run('npx', ['playwright', 'test', ...requestedPlaywrightArgs], { captureFailure: true });
-  } else {
-    await run('npx', ['playwright', 'test', '--project=chromium'], { captureFailure: true });
-    await run('npx', [
+  try {
+    await waitForServer();
+    return await callback();
+  } finally {
+    await stopServer(server);
+  }
+};
+
+const terminate = code => {
+  void (async () => {
+    await stopServer(activeServer);
+    process.exit(code);
+  })();
+};
+
+process.on('SIGINT', () => terminate(130));
+process.on('SIGTERM', () => terminate(143));
+
+if (requestedPlaywrightArgs.length) {
+  await withServer(() => run(
+    'npx',
+    ['playwright', 'test', ...requestedPlaywrightArgs],
+    { captureFailure: true }
+  ));
+} else {
+  // Keep browser phases isolated. A fresh server prevents one engine's long
+  // session from leaking connection/process state into the next engine while
+  // preserving the exact same static site and Playwright assertions.
+  await withServer(() => run(
+    'npx',
+    ['playwright', 'test', '--project=chromium'],
+    { captureFailure: true }
+  ));
+  await withServer(() => run(
+    'npx',
+    [
       'playwright',
       'test',
       'tests/mobile-layout.spec.mjs',
       'tests/world-majors-layout.spec.mjs',
       '--project=webkit-mobile'
-    ], { captureFailure: true });
-  }
-} finally {
-  stopServer();
+    ],
+    { captureFailure: true }
+  ));
 }
