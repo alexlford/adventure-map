@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - gps/full-source-mount-jumullong-manglo-2026-08-22
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -98,6 +101,7 @@ jobs:
           npm run validate:all
 
       - name: Commit clean Jumullong change
+        if: ${{ github.event_name == 'push' }}
         run: |
           rm .github/workflows/jumullong-hash-verified-materialize.yml
           rm tmp/jumullong-payload-gz.part*.b64 tmp/jumullong-payload.json.gz
