@@ -814,7 +814,7 @@
       "file": "data/event-routes.geojson",
       "featureId": "strava-643102245",
       "format": "geojson",
-      "quality": "full-source"
+      "quality": "catalog-detail"
     },
     "universal-sole-virtual-5k-2020": {
       "file": "data/strava-route-backfill-03.json",
