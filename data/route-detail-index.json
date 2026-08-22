@@ -259,10 +259,10 @@
       "quality": "full-source"
     },
     "hawksbill-mountain": {
-      "file": "data/strava-route-rdp3-10.json",
+      "file": "data/strava-route-full-resolution-hawksbill-mountain.json",
       "featureId": "strava-4469336427",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "illinois-5k-2015": {
       "file": "data/strava-route-source-complete-01.json",
