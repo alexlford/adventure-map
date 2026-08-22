@@ -45,7 +45,7 @@ const fallbackScore = quality => ({
   'full-source': 500,
   'rdp-3m': 400,
   'story-detail': 350,
-  'catalog-detail': 300,
+  'catalog-detail': 200,
   backfill: 250,
   'activity-overview': 150,
 }[quality] ?? 0);
