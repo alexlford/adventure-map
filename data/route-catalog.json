@@ -113,7 +113,8 @@
     "data/strava-route-full-resolution-stagecoach-classic-15k-2024.json",
     "data/strava-route-full-resolution-mount-jumullong-manglo.json",
     "data/strava-route-full-resolution-hawksbill-mountain.json",
-    "data/strava-route-full-resolution-old-rag-mountain.json"
+    "data/strava-route-full-resolution-old-rag-mountain.json",
+    "data/strava-route-full-resolution-mount-wachusett.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -233,6 +234,11 @@
       {
         "id": "strava-4312103411",
         "minPoints": 10650,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-4337907837",
+        "minPoints": 8800,
         "resolutionPrefix": "full-source-track"
       }
     ],

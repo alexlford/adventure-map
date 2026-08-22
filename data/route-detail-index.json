@@ -391,10 +391,10 @@
       "quality": "full-source"
     },
     "mount-wachusett": {
-      "file": "data/strava-route-rdp3-09.json",
+      "file": "data/strava-route-full-resolution-mount-wachusett.json",
       "featureId": "strava-4337907837",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "mtb-day-2022-07-16": {
       "file": "data/strava-route-rdp3-01.json",
