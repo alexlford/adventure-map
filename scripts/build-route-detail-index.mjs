@@ -1,5 +1,10 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import {
+  publicationSelectionScore,
+  routeGeometryClass,
+  technicalDetailQuality,
+} from './lib/route-geometry-quality.mjs';
 
 const ROOT = resolve(new URL('../', import.meta.url).pathname);
 const INDEX_PATH = resolve(ROOT, 'data/route-detail-index.json');
@@ -13,34 +18,18 @@ function geometryPointCount(feature) {
   return 0;
 }
 
-function detailScore(path, route, payload) {
-  const file = path.toLowerCase();
-  const density = String(route.density || route.routeResolution || payload.sampling || '').toLowerCase();
-  if (file.includes('full-resolution') || density.includes('full-source') || density.includes('dense-source')) return 500;
-  if (file.includes('rdp3') || density.includes('rdp-3m')) return 400;
-  if (file.includes('story-route')) return 350;
-  if (file.includes('backfill')) return 250;
-  if (file.includes('activity-route-polylines')) return 150;
-  return 200;
-}
-
-function qualityFor(score) {
-  if (score >= 500) return 'full-source';
-  if (score >= 400) return 'rdp-3m';
-  if (score >= 350) return 'story-detail';
-  if (score >= 250) return 'backfill';
-  if (score <= 150) return 'activity-overview';
-  return 'catalog-detail';
-}
-
 function candidateFor(path, route, payload, format, publishedPointCount = 0) {
-  const score = detailScore(path, route, payload);
+  const score = publicationSelectionScore({ route, payload, filePath: path });
+  const quality = technicalDetailQuality({ route, payload, filePath: path });
+  const geometryClass = routeGeometryClass(route, payload);
   return {
     file: path,
     featureId: route.id || route.featureId,
     format,
     score,
-    quality: qualityFor(score),
+    quality,
+    geometryClass,
+    publicationSelected: route.publicationSelected === true,
     publishedPointCount: Number.isFinite(route.publishedPointCount) ? route.publishedPointCount
       : Number.isFinite(route.retainedPointCount) ? route.retainedPointCount
       : publishedPointCount,
@@ -56,7 +45,13 @@ function compareCandidates(a, b) {
 }
 
 function publicCandidate(candidate) {
-  return { file: candidate.file, featureId: candidate.featureId, format: candidate.format, quality: candidate.quality };
+  return {
+    file: candidate.file,
+    featureId: candidate.featureId,
+    format: candidate.format,
+    quality: candidate.quality,
+    ...(candidate.geometryClass ? { geometryClass: candidate.geometryClass } : {}),
+  };
 }
 
 function publicRecordIds(payload) {
