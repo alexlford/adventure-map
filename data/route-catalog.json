@@ -19,6 +19,7 @@
     "data/strava-route-full-resolution-nordic-day-2024-01-07.json",
     "data/strava-route-full-resolution-nordic-day-2025-03-19.json",
     "data/strava-route-full-resolution-nordic-day-2025-03-27.json",
+    "data/strava-route-full-resolution-nordic-day-2025-03-30.json",
     "data/strava-route-full-resolution-nordic-day-2025-04-01.json",
     "data/strava-route-backfill-01.json",
     "data/strava-route-backfill-02.json",
@@ -283,6 +284,11 @@
       {
         "id": "activity-nordic-day-2025-04-01",
         "minPoints": 4400,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-nordic-day-2025-03-30",
+        "minPoints": 13350,
         "resolutionPrefix": "full-source-track"
       }
     ],
