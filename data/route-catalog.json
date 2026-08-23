@@ -13,6 +13,7 @@
     "data/strava-route-full-resolution-mtb-2025-06-05.json",
     "data/strava-route-full-resolution-mtb-2025-06-06.json",
     "data/strava-route-full-resolution-mtb-2025-06-07.json",
+    "data/strava-route-full-resolution-nordic-day-2021-01-16.json",
     "data/strava-route-full-resolution-nordic-2022-01-02.json",
     "data/strava-route-full-resolution-nordic-2022-01-03.json",
     "data/strava-route-full-resolution-nordic-day-2022-01-22.json",
@@ -325,6 +326,11 @@
       {
         "id": "activity-nordic-day-2022-02-13",
         "minPoints": 1840,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-nordic-day-2021-01-16",
+        "minPoints": 3280,
         "resolutionPrefix": "full-source-track"
       }
     ],
