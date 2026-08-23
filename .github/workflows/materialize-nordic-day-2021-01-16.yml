@@ -1,0 +1,145 @@
+name: Materialize Nordic Day 2021-01-16 full-source route
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.event.pull_request.head.ref == 'gps/full-source-nordic-day-2021-01-16-2026-08-23'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Reconstruct and verify Nordic full-source payload
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, gzip, hashlib, json
+
+          prefix = Path('tmp/nordic-2021-01-16-gz')
+          parts = [Path(f'{prefix}.part{i:02d}.b64') for i in range(5)]
+          encoded = ''.join(path.read_text() for path in parts)
+          compressed = base64.b64decode(encoded)
+          assert hashlib.sha256(compressed).hexdigest() == '9ed2c24972eeeb8518dc43a28535f69490c1fcb20023c021a6f2ba3a736f03c4'
+          raw = gzip.decompress(compressed)
+          assert hashlib.sha256(raw).hexdigest() == '31af96c5fd2b894c07bd82f64584cf0f1b8ff73cc32a8cd1a8f9900ea1d34d86'
+          git_blob = hashlib.sha1(f'blob {len(raw)}\0'.encode() + raw).hexdigest()
+          assert git_blob == '1b9dd40b521c8296bc8a7eb1c063a13313543944'
+
+          payload = json.loads(raw)
+          route = payload['routes'][0]
+          assert route['id'] == 'activity-nordic-day-2021-01-16'
+          assert route['stravaActivityIds'] == ['4632178480']
+          assert route['sourcePointCounts'] == [3321]
+          assert route['sourcePointCount'] == 3321
+          assert route['retainedPointCount'] == 3321
+          assert len(route['lines']) == 1
+
+          def point_count(line):
+              index = 0
+              values = 0
+              while index < len(line):
+                  while True:
+                      value = ord(line[index]) - 63
+                      index += 1
+                      if value < 0x20:
+                          break
+                  values += 1
+              assert values % 2 == 0
+              return values // 2
+
+          assert point_count(route['lines'][0]) == 3321
+          Path('data/strava-route-full-resolution-nordic-day-2021-01-16.json').write_bytes(raw)
+          print('Verified Nordic 2021-01-16 payload: 3321 points')
+          PY
+
+      - name: Register route and rebuild route detail index
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+
+          path = Path('data/route-catalog.json')
+          catalog = json.loads(path.read_text())
+          route_file = 'data/strava-route-full-resolution-nordic-day-2021-01-16.json'
+          if route_file not in catalog['polylineFiles']:
+              before = 'data/strava-route-full-resolution-nordic-2022-01-02.json'
+              index = catalog['polylineFiles'].index(before)
+              catalog['polylineFiles'].insert(index, route_file)
+
+          dense = catalog['qualityExpectations']['denseRoutes']
+          route_id = 'activity-nordic-day-2021-01-16'
+          if not any(item.get('id') == route_id for item in dense):
+              dense.append({
+                  'id': route_id,
+                  'minPoints': 3280,
+                  'resolutionPrefix': 'full-source-track'
+              })
+
+          path.write_text(json.dumps(catalog, indent=2) + '\n')
+          PY
+          node scripts/build-route-detail-index.mjs --write
+          node scripts/update-route-detail-quality-floor.mjs
+
+      - name: Verify full-source selection and exact geometry
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+
+          const route = JSON.parse(fs.readFileSync('data/strava-route-full-resolution-nordic-day-2021-01-16.json', 'utf8')).routes[0];
+          if (route.sourcePointCount !== 3321 || route.retainedPointCount !== 3321 || route.lines.length !== 1) {
+            throw new Error('Unexpected Nordic 2021-01-16 route payload');
+          }
+
+          const index = JSON.parse(fs.readFileSync('data/route-detail-index.json', 'utf8'));
+          const record = index.records['nordic-day-2021-01-16'];
+          if (!record || record.file !== 'data/strava-route-full-resolution-nordic-day-2021-01-16.json' || record.quality !== 'full-source') {
+            throw new Error(`Unexpected route-detail selection: ${JSON.stringify(record)}`);
+          }
+
+          const floor = JSON.parse(fs.readFileSync('data/route-detail-quality-floor.json', 'utf8'));
+          if (floor.records['nordic-day-2021-01-16'] !== 'full-source') {
+            throw new Error('Nordic 2021-01-16 quality floor did not advance');
+          }
+
+          const catalog = JSON.parse(fs.readFileSync('data/route-catalog.json', 'utf8'));
+          const dense = catalog.qualityExpectations.denseRoutes.find(item => item.id === 'activity-nordic-day-2021-01-16');
+          if (!dense || dense.minPoints !== 3280 || dense.resolutionPrefix !== 'full-source-track') {
+            throw new Error(`Unexpected dense-route protection: ${JSON.stringify(dense)}`);
+          }
+          NODE
+
+      - name: Run route validators
+        run: |
+          npm run validate:route-references
+          npm run validate:route-geometry
+          npm run validate:route-detail-index
+          npm run validate:route-detail-audit
+          npm run test:route-quality-floor
+
+      - name: Commit materialized route only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f tmp/nordic-2021-01-16-gz.part*.b64
+          rm -f .github/workflows/materialize-nordic-day-2021-01-16.yml
+          git add data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json data/strava-route-full-resolution-nordic-day-2021-01-16.json
+          git add -u tmp/nordic-2021-01-16-gz.part00.b64 tmp/nordic-2021-01-16-gz.part01.b64 tmp/nordic-2021-01-16-gz.part02.b64 tmp/nordic-2021-01-16-gz.part03.b64 tmp/nordic-2021-01-16-gz.part04.b64 .github/workflows/materialize-nordic-day-2021-01-16.yml
+          git diff --cached --name-only
+          git commit -m "Materialize Nordic Day 2021-01-16 full-source route"
+          git push
