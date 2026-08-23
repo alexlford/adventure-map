@@ -555,10 +555,10 @@
       "quality": "full-source"
     },
     "nordic-day-2023-03-01": {
-      "file": "data/strava-route-rdp3-05.json",
+      "file": "data/strava-route-full-resolution-nordic-day-2023-03-01.json",
       "featureId": "activity-nordic-day-2023-03-01",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "nordic-day-2024-01-07": {
       "file": "data/strava-route-full-resolution-nordic-day-2024-01-07.json",
