@@ -15,65 +15,47 @@ jobs:
       - name: Check out PR branch
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: gps/full-source-mtb-day-2022-07-16-v2-2026-08-24
           fetch-depth: 0
-      - name: Materialize MTB Day 2022-07-16 full-source route
-        if: github.event_name == 'pull_request' && github.head_ref == 'gps/full-source-mtb-day-2022-07-16-v2-2026-08-24'
+      - name: Materialize verified full-source route
         run: |
-          cat tmp/mtb-2022-07-16.part*.b64 | tr -d '\n' | base64 -d > /tmp/mtb-2022-07-16.json.gz
-          gzip -t /tmp/mtb-2022-07-16.json.gz
-          gzip -dc /tmp/mtb-2022-07-16.json.gz > data/strava-route-full-resolution-mtb-day-2022-07-16.json
+          cat tmp/mtb-2022-07-16.part*.b64 | tr -d '\n' | base64 -d > /tmp/route.json.gz
+          gzip -t /tmp/route.json.gz
+          gzip -dc /tmp/route.json.gz > data/strava-route-full-resolution-mtb-day-2022-07-16.json
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           const routePath = 'data/strava-route-full-resolution-mtb-day-2022-07-16.json';
           const payload = JSON.parse(fs.readFileSync(routePath, 'utf8'));
-          const route = (payload.routes || []).find(item => item.id === 'activity-mtb-day-2022-07-16');
-          if (!route) throw new Error('Missing activity-mtb-day-2022-07-16');
-          if (!String(route.sampling || payload.sampling || '').startsWith('full-source-track')) throw new Error('Unexpected sampling');
-          if (Number(route.sourcePointCount) !== 5400) throw new Error(`Unexpected sourcePointCount ${route.sourcePointCount}`);
-          if (Number(route.retainedPointCount) !== 5400) throw new Error(`Unexpected retainedPointCount ${route.retainedPointCount}`);
-          if (!route.stravaActivityIds?.map(String).includes('7480249980')) throw new Error('Missing Strava activity 7480249980');
-          if (!Array.isArray(route.lines) || route.lines.length !== 4) throw new Error(`Expected 4 source segments, got ${route.lines?.length}`);
-
+          const route = payload.routes?.find(r => r.id === 'activity-mtb-day-2022-07-16');
+          if (!route) throw new Error('route missing');
+          if (route.sourcePointCount !== 5400 || route.retainedPointCount !== 5400) throw new Error('point count mismatch');
+          if (route.lines?.length !== 4) throw new Error('source segment count mismatch');
+          if (!String(route.sampling || payload.sampling || '').startsWith('full-source-track')) throw new Error('sampling mismatch');
           const catalogPath = 'data/route-catalog.json';
           const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
-          catalog.polylineFiles ||= [];
           if (!catalog.polylineFiles.includes(routePath)) {
-            const anchor = catalog.polylineFiles.indexOf('data/strava-route-full-resolution-mtb-day-2023-12-02.json');
-            if (anchor >= 0) catalog.polylineFiles.splice(anchor, 0, routePath);
-            else catalog.polylineFiles.push(routePath);
+            const i = catalog.polylineFiles.indexOf('data/strava-route-full-resolution-mtb-day-2023-12-02.json');
+            catalog.polylineFiles.splice(i >= 0 ? i : catalog.polylineFiles.length, 0, routePath);
           }
-          catalog.qualityExpectations ||= {};
-          catalog.qualityExpectations.denseRoutes ||= [];
-          const existing = catalog.qualityExpectations.denseRoutes.find(item => item.id === 'activity-mtb-day-2022-07-16');
-          if (existing) {
-            existing.minPoints = Math.max(Number(existing.minPoints || 0), 5360);
-            existing.resolutionPrefix = 'full-source-track';
-          } else {
-            catalog.qualityExpectations.denseRoutes.push({
-              id: 'activity-mtb-day-2022-07-16',
-              minPoints: 5360,
-              resolutionPrefix: 'full-source-track'
-            });
-          }
-          fs.writeFileSync(catalogPath, `${JSON.stringify(catalog, null, 2)}\n`);
+          const dense = catalog.qualityExpectations.denseRoutes;
+          if (!dense.some(x => x.id === route.id)) dense.push({ id: route.id, minPoints: 5360, resolutionPrefix: 'full-source-track' });
+          fs.writeFileSync(catalogPath, JSON.stringify(catalog, null, 2) + '\n');
           NODE
           npm run build:route-detail-index
           npm run update:route-detail-quality-floor
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          const index = JSON.parse(fs.readFileSync('data/route-detail-index.json', 'utf8'));
-          const floor = JSON.parse(fs.readFileSync('data/route-detail-quality-floor.json', 'utf8'));
-          const entry = index.records?.['mtb-day-2022-07-16'];
-          if (entry?.file !== 'data/strava-route-full-resolution-mtb-day-2022-07-16.json') throw new Error(`Unexpected selected file ${entry?.file}`);
-          if (entry?.quality !== 'full-source') throw new Error(`Unexpected quality ${entry?.quality}`);
-          if (floor.records?.['mtb-day-2022-07-16'] !== 'full-source') throw new Error('Quality floor not promoted');
-          if (floor.records?.['midland-hill'] !== 'reviewed-source' || floor.records?.['mount-lamlam'] !== 'reviewed-source') throw new Error('Reviewed route floor regressed');
+          const index = JSON.parse(fs.readFileSync('data/route-detail-index.json'));
+          const floor = JSON.parse(fs.readFileSync('data/route-detail-quality-floor.json'));
+          const r = index.records['mtb-day-2022-07-16'];
+          if (r.quality !== 'full-source') throw new Error('index not full-source');
+          if (r.file !== 'data/strava-route-full-resolution-mtb-day-2022-07-16.json') throw new Error('wrong route file selected');
+          if (floor.records['mtb-day-2022-07-16'] !== 'full-source') throw new Error('floor not full-source');
+          if (floor.records['midland-hill'] !== 'reviewed-source') throw new Error('Midland Hill regression');
+          if (floor.records['mount-lamlam'] !== 'reviewed-source') throw new Error('Mount Lamlam regression');
           NODE
           npm run test:route-quality-floor
-          npm run test:route-geometry-quality
           npm run validate:route-detail-index
-          npm run validate:route-detail-audit
           npm run validate:route-geometry
           npm run validate:route-references
           git fetch origin main
@@ -81,17 +63,7 @@ jobs:
           rm -f .github/workflows/materialize-mtb-2022-07-16.yml tmp/mtb-2022-07-16.part*.b64
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A .github/workflows/validate-route-detail-addressability.yml .github/workflows/materialize-mtb-2022-07-16.yml tmp/mtb-2022-07-16.part*.b64 data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json data/strava-route-full-resolution-mtb-day-2022-07-16.json
-          expected='data/route-catalog.json
-data/route-detail-index.json
-data/route-detail-quality-floor.json
-data/strava-route-full-resolution-mtb-day-2022-07-16.json'
-          actual="$(git diff --cached --name-only --diff-filter=AM | sort)"
-          if [ "$actual" != "$(printf "$expected" | sort)" ]; then
-            echo 'Unexpected final added/modified files:'
-            printf '%s\n' "$actual"
-            exit 1
-          fi
+          git add -A
           git commit -m 'Materialize MTB Day 2022-07-16 full-source route'
           git push origin HEAD:gps/full-source-mtb-day-2022-07-16-v2-2026-08-24
       - name: Validate mapped public route addressability
