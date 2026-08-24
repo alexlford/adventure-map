@@ -3,12 +3,20 @@
 
 This is intentionally narrow and fail-closed. It only publishes the seven MTB
 activity-day wrappers that are still expected to be legacy rdp-3m geometry on
-2026-08-24. Every route is locked to its reviewed Strava activity ID(s) and to
-the source point count already recorded when the original export was ingested.
+2026-08-24. Every route is locked to its reviewed Strava activity ID(s), the
+source point count already recorded when the original export was ingested, and
+the canonical Strava-derived activity-day distance.
 
 No geometry is synthesized or simplified. The shared source-preserving route
 encoder retains the recorded GPS points and splits only at genuine source gaps
 larger than the configured threshold (180 m by default).
+
+A raw route is eligible for automatic ``full-source`` publication only when its
+geodesic GPS length is no more than 5% above the canonical activity distance.
+That upper-bound review gate catches obvious GPS wander without penalizing real
+recording gaps, which can legitimately make rendered line length shorter than
+Strava's activity distance. Routes that fail the gate require reviewed-source
+handling rather than blind raw publication.
 
 Usage:
   python3 scripts/materialize_remaining_mtb_routes.py /path/to/export.zip --dry-run
@@ -24,8 +32,10 @@ from pathlib import Path
 from typing import Any
 
 from materialize_selected_strava_routes import canonical_feature_specs
-from materialize_strava_routes import DATA, ROOT, Export, encoded_route, read_json
+from materialize_strava_routes import DATA, ROOT, Export, encoded_route, haversine_m, read_json
 
+
+MAX_DISTANCE_INFLATION_PERCENT = 5.0
 
 TARGETS: tuple[dict[str, Any], ...] = (
     {
@@ -77,6 +87,115 @@ def target_map() -> dict[str, dict[str, Any]]:
     return {str(item["featureId"]): dict(item) for item in TARGETS}
 
 
+def decode_polyline(line: str) -> list[tuple[float, float]]:
+    """Decode a Google polyline5 string into latitude/longitude pairs."""
+    points: list[tuple[float, float]] = []
+    index = 0
+    latitude = 0
+    longitude = 0
+    while index < len(line):
+        deltas: list[int] = []
+        for _ in range(2):
+            result = 0
+            shift = 0
+            while True:
+                if index >= len(line):
+                    raise ValueError("Encoded polyline is truncated")
+                value = ord(line[index]) - 63
+                index += 1
+                result |= (value & 0x1F) << shift
+                shift += 5
+                if value < 0x20:
+                    break
+                if shift > 35:
+                    raise ValueError("Encoded polyline value is invalid")
+            deltas.append(~(result >> 1) if result & 1 else result >> 1)
+        latitude += deltas[0]
+        longitude += deltas[1]
+        points.append((latitude / 1e5, longitude / 1e5))
+    return points
+
+
+def route_distance_km(route: dict[str, Any]) -> float:
+    """Measure rendered recorded geometry without bridging source line breaks."""
+    distance_m = 0.0
+    lines = route.get("lines") or []
+    if not isinstance(lines, list) or not lines:
+        raise ValueError(f"{route.get('id', '(missing id)')}: route has no line geometry")
+    for line in lines:
+        if not isinstance(line, str) or not line:
+            raise ValueError(f"{route.get('id', '(missing id)')}: route contains invalid line geometry")
+        points = decode_polyline(line)
+        for previous, point in zip(points, points[1:]):
+            distance_m += haversine_m(previous, point)
+    return distance_m / 1000.0
+
+
+def canonical_activity_distances_km() -> dict[str, float]:
+    """Return canonical Strava-derived activity-day distances keyed by route ID."""
+    payload = read_json(DATA / "activity-days.json")
+    distances: dict[str, float] = {}
+    for record in payload.get("adventures", []):
+        record_id = str(record.get("id") or "").strip()
+        if not record_id:
+            continue
+        raw_distance = record.get("distanceKm")
+        if raw_distance is None:
+            continue
+        distance = float(raw_distance)
+        if distance > 0:
+            distances[f"activity-{record_id}"] = distance
+    return distances
+
+
+def distance_review(route: dict[str, Any], canonical_distance_km: float) -> dict[str, Any]:
+    """Return the fixed upper-bound raw-GPS fidelity review for one route."""
+    if canonical_distance_km <= 0:
+        raise ValueError("Canonical activity distance must be positive")
+    raw_distance_km = route_distance_km(route)
+    delta_percent = ((raw_distance_km / canonical_distance_km) - 1.0) * 100.0
+    return {
+        "rawDistanceKm": raw_distance_km,
+        "canonicalDistanceKm": canonical_distance_km,
+        "distanceDeltaPercent": delta_percent,
+        "maxDistanceInflationPercent": MAX_DISTANCE_INFLATION_PERCENT,
+        "passes": delta_percent <= MAX_DISTANCE_INFLATION_PERCENT,
+    }
+
+
+def route_reviews(routes: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    canonical = canonical_activity_distances_km()
+    reviews: dict[str, dict[str, Any]] = {}
+    for route in routes:
+        feature_id = str(route.get("id") or "")
+        canonical_distance = canonical.get(feature_id)
+        if canonical_distance is None:
+            raise ValueError(f"{feature_id}: missing canonical activity-day distance")
+        reviews[feature_id] = distance_review(route, canonical_distance)
+    return reviews
+
+
+def require_distance_fidelity(routes: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    """Reject raw GPS that needs reviewed-source correction before publication."""
+    reviews = route_reviews(routes)
+    failures = [
+        (feature_id, review)
+        for feature_id, review in reviews.items()
+        if not review["passes"]
+    ]
+    if failures:
+        details = "; ".join(
+            f"{feature_id}: raw {review['rawDistanceKm']:.3f} km vs canonical "
+            f"{review['canonicalDistanceKm']:.3f} km ({review['distanceDeltaPercent']:+.2f}%)"
+            for feature_id, review in failures
+        )
+        raise ValueError(
+            "Raw GPS distance inflation exceeds the fixed 5% full-source publication gate; "
+            f"route requires reviewed-source fidelity review: {details}"
+        )
+    return reviews
+
+
 def build_routes(export: Export, catalog: dict[str, Any], max_gap_m: float) -> list[dict[str, Any]]:
     specs = canonical_feature_specs(catalog)
     routes: list[dict[str, Any]] = []
@@ -121,6 +240,11 @@ def build_routes(export: Export, catalog: dict[str, Any], max_gap_m: float) -> l
         if sampling != expected_sampling:
             raise ValueError(f"{feature_id}: unexpected sampling {sampling!r}")
         routes.append(route)
+
+    # Point preservation is necessary but not sufficient. Raw GPS that materially
+    # overstates the Strava-derived activity distance requires reviewed-source
+    # correction instead of an automatic full-source promotion.
+    require_distance_fidelity(routes)
     return routes
 
 
@@ -159,6 +283,8 @@ def update_catalog(catalog: dict[str, Any]) -> dict[str, Any]:
 
 
 def write_routes(routes: list[dict[str, Any]], catalog: dict[str, Any], max_gap_m: float, force: bool) -> None:
+    # Re-check immediately before writing so no caller can bypass the fidelity gate.
+    require_distance_fidelity(routes)
     targets = target_map()
     for route in routes:
         target = targets[str(route["id"])]
@@ -182,10 +308,12 @@ def write_routes(routes: list[dict[str, Any]], catalog: dict[str, Any], max_gap_
 
 
 def summary(routes: list[dict[str, Any]]) -> dict[str, Any]:
+    reviews = route_reviews(routes)
     return {
         "routeCount": len(routes),
         "sourcePointCount": sum(int(route["sourcePointCount"]) for route in routes),
         "retainedPointCount": sum(int(route["retainedPointCount"]) for route in routes),
+        "maxDistanceInflationPercent": MAX_DISTANCE_INFLATION_PERCENT,
         "routes": [
             {
                 "featureId": route["id"],
@@ -195,6 +323,10 @@ def summary(routes: list[dict[str, Any]]) -> dict[str, Any]:
                 "retainedPointCount": route["retainedPointCount"],
                 "lineCount": len(route["lines"]),
                 "sampling": route["sampling"],
+                "rawDistanceKm": round(reviews[str(route["id"])]["rawDistanceKm"], 3),
+                "canonicalDistanceKm": round(reviews[str(route["id"])]["canonicalDistanceKm"], 3),
+                "distanceDeltaPercent": round(reviews[str(route["id"])]["distanceDeltaPercent"], 3),
+                "distanceFidelityPass": reviews[str(route["id"])]["passes"],
             }
             for route in routes
         ],
