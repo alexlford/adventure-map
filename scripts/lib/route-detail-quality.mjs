@@ -1,5 +1,6 @@
 export const QUALITY_ORDER = [
   'full-source',
+  'reviewed-source',
   'rdp-3m',
   'story-detail',
   'catalog-detail',
@@ -7,7 +8,7 @@ export const QUALITY_ORDER = [
   'activity-overview',
 ];
 
-export const SOURCE_BACKED_FLOOR_QUALITIES = new Set(['full-source', 'rdp-3m']);
+export const SOURCE_BACKED_FLOOR_QUALITIES = new Set(['full-source', 'reviewed-source', 'rdp-3m']);
 
 const rankByQuality = new Map(QUALITY_ORDER.map((quality, index) => [quality, index]));
 

@@ -25,6 +25,11 @@ export function routeGeometryClass(route = {}, payload = {}) {
 }
 
 export function technicalDetailQuality({ route = {}, payload = {}, filePath = '' } = {}) {
+  const geometryClass = routeGeometryClass(route, payload);
+  const reviewedRecordedGeometry = route.publicationSelected === true
+    && (geometryClass === 'recorded-filtered' || geometryClass === 'recorded-corrected');
+  if (reviewedRecordedGeometry) return 'reviewed-source';
+
   const sampling = routeSampling(route, payload, filePath);
   const file = String(filePath).toLowerCase();
   if (sampling.includes('full-source') || sampling.includes('dense-source') || file.includes('full-resolution')) {
@@ -44,6 +49,7 @@ export function technicalDetailQuality({ route = {}, payload = {}, filePath = ''
 
 const fallbackScore = quality => ({
   'full-source': 500,
+  'reviewed-source': 450,
   'rdp-3m': 400,
   'story-detail': 350,
   'catalog-detail': 200,
