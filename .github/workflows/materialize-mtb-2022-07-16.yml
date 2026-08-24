@@ -1,9 +1,10 @@
 name: Materialize MTB Day 2022-07-16 full-source
 
 on:
-  push:
+  pull_request:
     branches:
-      - gps/full-source-mtb-day-2022-07-16-v2-2026-08-24
+      - main
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
