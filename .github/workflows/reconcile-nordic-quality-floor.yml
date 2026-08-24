@@ -1,0 +1,67 @@
+name: Reconcile Nordic route quality floor
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Reconcile monotonic route-detail floor
+        run: |
+          set -euo pipefail
+          cp data/route-detail-quality-floor.json /tmp/floor-before.json
+          npm run update:route-detail-quality-floor
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const before = JSON.parse(fs.readFileSync('/tmp/floor-before.json', 'utf8'));
+          const after = JSON.parse(fs.readFileSync('data/route-detail-quality-floor.json', 'utf8'));
+          const expected = new Set(['nordic-day-2021-01-16', 'nordic-day-2022-02-13']);
+          const changed = [];
+          const keys = new Set([...Object.keys(before.records), ...Object.keys(after.records)]);
+          for (const key of keys) {
+            if (before.records[key] !== after.records[key]) changed.push([key, before.records[key], after.records[key]]);
+          }
+          if (changed.length !== expected.size) {
+            throw new Error(`Expected exactly ${expected.size} floor changes, got ${JSON.stringify(changed)}`);
+          }
+          for (const [key, oldValue, newValue] of changed) {
+            if (!expected.has(key) || oldValue !== 'rdp-3m' || newValue !== 'full-source') {
+              throw new Error(`Unexpected floor change: ${key}: ${oldValue} -> ${newValue}`);
+            }
+          }
+          const index = JSON.parse(fs.readFileSync('data/route-detail-index.json', 'utf8'));
+          for (const key of expected) {
+            if (index.records[key]?.quality !== 'full-source') {
+              throw new Error(`${key} is not selected as full-source in route-detail-index`);
+            }
+          }
+          console.log('Verified Nordic floor reconciliation:', changed);
+          NODE
+      - name: Validate quality-floor contract
+        run: npm run test:route-quality-floor
+      - name: Commit reconciled floor only
+        run: |
+          set -euo pipefail
+          rm .github/workflows/reconcile-nordic-quality-floor.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/route-detail-quality-floor.json
+          git add -u .github/workflows/reconcile-nordic-quality-floor.yml
+          git diff --cached --name-only
+          test "$(git diff --cached --name-only | sort | tr '\n' ' ')" = ".github/workflows/reconcile-nordic-quality-floor.yml data/route-detail-quality-floor.json "
+          git commit -m 'Reconcile Nordic route-detail quality floor'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
