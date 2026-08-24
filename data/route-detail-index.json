@@ -405,10 +405,10 @@
       "quality": "full-source"
     },
     "mtb-day-2023-09-24": {
-      "file": "data/strava-route-rdp3-01.json",
+      "file": "data/strava-route-full-resolution-mtb-day-2023-09-24.json",
       "featureId": "activity-mtb-day-2023-09-24",
       "format": "polyline",
-      "quality": "rdp-3m"
+      "quality": "full-source"
     },
     "mtb-day-2023-12-02": {
       "file": "data/strava-route-full-resolution-mtb-day-2023-12-02.json",
