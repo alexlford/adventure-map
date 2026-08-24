@@ -19,12 +19,13 @@ const records = buildMonotonicQualityFloor(index.records || {}, existing.records
 const payload = {
   schemaVersion: 1,
   generatedFrom: INDEX_PATH,
-  policy: 'Minimum route-detail quality for source-backed public records. Floors may improve but must not be weakened.',
+  policy: 'Minimum accepted route-detail fidelity for source-backed public records. Floors may improve but must not be weakened.',
   records,
 };
 
 fs.writeFileSync(FLOOR_PATH, `${JSON.stringify(payload, null, 2)}\n`);
 
 const fullSource = Object.values(records).filter(quality => quality === 'full-source').length;
+const reviewedSource = Object.values(records).filter(quality => quality === 'reviewed-source').length;
 const rdp3 = Object.values(records).filter(quality => quality === 'rdp-3m').length;
-console.log(`Route detail quality floor updated: ${records.length || Object.keys(records).length} protected records (${fullSource} full-source, ${rdp3} rdp-3m).`);
+console.log(`Route detail quality floor updated: ${records.length || Object.keys(records).length} protected records (${fullSource} full-source, ${reviewedSource} reviewed-source, ${rdp3} rdp-3m).`);

@@ -310,7 +310,7 @@
       "file": "data/strava-route-reviewed-midland-hill.json",
       "featureId": "strava-9635633600",
       "format": "polyline",
-      "quality": "rdp-3m",
+      "quality": "reviewed-source",
       "geometryClass": "recorded-filtered"
     },
     "mile-high-turkey-trot-2021": {
@@ -365,7 +365,7 @@
       "file": "data/strava-route-reviewed-mount-lamlam.json",
       "featureId": "strava-8684346989",
       "format": "polyline",
-      "quality": "rdp-3m",
+      "quality": "reviewed-source",
       "geometryClass": "recorded-filtered"
     },
     "mount-le-conte": {

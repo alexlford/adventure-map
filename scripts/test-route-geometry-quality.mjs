@@ -15,11 +15,37 @@ assert.equal(
   'rdp-3m',
 );
 assert.equal(
+  technicalDetailQuality({
+    route: {
+      sampling: 'source-rdp-2m',
+      publicationSelected: true,
+      geometryClass: 'recorded-filtered',
+    },
+  }),
+  'reviewed-source',
+);
+assert.equal(
+  technicalDetailQuality({
+    route: {
+      sampling: 'source-rdp-1m',
+      publicationSelected: true,
+      geometryClass: 'recorded-corrected',
+    },
+  }),
+  'reviewed-source',
+);
+assert.equal(
   publicationSelectionScore({ route: { sampling: 'source-rdp-2m' } }),
   400,
 );
 assert.equal(
-  publicationSelectionScore({ route: { sampling: 'source-rdp-2m', publicationSelected: true } }),
+  publicationSelectionScore({
+    route: {
+      sampling: 'source-rdp-2m',
+      publicationSelected: true,
+      geometryClass: 'recorded-filtered',
+    },
+  }),
   1000,
 );
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "generatedFrom": "data/route-detail-index.json",
-  "policy": "Minimum route-detail quality for source-backed public records. Floors may improve but must not be weakened.",
+  "policy": "Minimum accepted route-detail fidelity for source-backed public records. Floors may improve but must not be weakened.",
   "records": {
     "abbott-chicago-5k-2021": "full-source",
     "abes-amble-2014": "full-source",
@@ -48,7 +48,7 @@
     "kansas-city-marathon-2019": "full-source",
     "kokopelli-three-day-2025": "full-source",
     "mauna-kea": "full-source",
-    "midland-hill": "rdp-3m",
+    "midland-hill": "reviewed-source",
     "mile-high-turkey-trot-2021": "full-source",
     "mile-high-turkey-trot-2023": "full-source",
     "mile-high-turkey-trot-2025": "full-source",
@@ -57,7 +57,7 @@
     "mount-democrat": "full-source",
     "mount-evans": "full-source",
     "mount-jumullong-manglo": "full-source",
-    "mount-lamlam": "rdp-3m",
+    "mount-lamlam": "reviewed-source",
     "mount-le-conte": "full-source",
     "mount-lincoln": "full-source",
     "mount-sherman": "full-source",
