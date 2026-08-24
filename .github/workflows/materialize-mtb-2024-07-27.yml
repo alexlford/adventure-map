@@ -96,7 +96,7 @@ jobs:
             throw new Error(`Unexpected dense-route contract: ${JSON.stringify(dense)}`);
           }
           NODE
-          npm run test:remaining-mtb-materializer
+          python3 scripts/test_remaining_mtb_batch.py
           npm run test:route-quality-floor
           npm run validate:route-geometry
       - name: Commit final four-file publication diff
