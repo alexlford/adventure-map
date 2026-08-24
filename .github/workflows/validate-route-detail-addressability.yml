@@ -6,116 +6,13 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate-route-detail-addressability:
     runs-on: ubuntu-24.04
     steps:
-      - name: Check out PR branch for MTB route materialization
+      - name: Check out repository
         uses: actions/checkout@v6
-        with:
-          ref: gps/full-source-mtb-day-2023-09-24-2026-08-24
-          fetch-depth: 0
-      - name: Reconstruct and verify exact MTB route payload
-        run: |
-          cat tmp/mtb-2023-09-24.part*.b64 | tr -d '\n' | base64 -d > /tmp/mtb-2023-09-24.json.gz
-          echo '0537bb9d7fd0f638be6bfdec6a65d9b880e5e58710625bed7b8c2b928915fecd  /tmp/mtb-2023-09-24.json.gz' | sha256sum -c -
-          gzip -t /tmp/mtb-2023-09-24.json.gz
-          gzip -dc /tmp/mtb-2023-09-24.json.gz > data/strava-route-full-resolution-mtb-day-2023-09-24.json
-          echo '44dbfac9a04019f13bb6aadc374a578e3fe70db25375b218c3f43481592f90ea  data/strava-route-full-resolution-mtb-day-2023-09-24.json' | sha256sum -c -
-          test "$(git hash-object data/strava-route-full-resolution-mtb-day-2023-09-24.json)" = 'dc8a3c2ad9f05d0a4f49e5e9c817c2b4dcb02416'
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const routePath = 'data/strava-route-full-resolution-mtb-day-2023-09-24.json';
-          const payload = JSON.parse(fs.readFileSync(routePath, 'utf8'));
-          const route = payload.routes?.find(item => item.id === 'activity-mtb-day-2023-09-24');
-          if (!route) throw new Error('Missing activity-mtb-day-2023-09-24');
-          if (route.sourcePointCount !== 4614 || route.retainedPointCount !== 4614) throw new Error('Point-count contract mismatch');
-          if (JSON.stringify(route.sourcePointCounts) !== JSON.stringify([4614])) throw new Error('Source segment count mismatch');
-          if (route.sampling !== 'full-source-track-gap-split-180m') throw new Error(`Unexpected sampling: ${route.sampling}`);
-          if (route.category !== 'mtb' || route.mtbMode !== 'mixed') throw new Error('MTB metadata mismatch');
-          if (JSON.stringify(route.stravaActivityIds) !== JSON.stringify(['9914293414'])) throw new Error('Strava activity mapping mismatch');
-          if (!Array.isArray(route.lines) || route.lines.length !== 5) throw new Error(`Expected 5 route lines, found ${route.lines?.length}`);
-          function countPoints(line) {
-            let i = 0, count = 0;
-            while (i < line.length) {
-              for (let coordinate = 0; coordinate < 2; coordinate += 1) {
-                let shift = 0;
-                while (true) {
-                  if (i >= line.length) throw new Error('Truncated polyline');
-                  const value = line.charCodeAt(i++) - 63;
-                  shift += 5;
-                  if (value < 0x20) break;
-                  if (shift > 35) throw new Error('Invalid polyline');
-                }
-              }
-              count += 1;
-            }
-            return count;
-          }
-          const decoded = route.lines.reduce((sum, line) => sum + countPoints(line), 0);
-          if (decoded !== 4614) throw new Error(`Decoded point count mismatch: ${decoded}`);
-
-          const catalogPath = 'data/route-catalog.json';
-          const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
-          catalog.polylineFiles ||= [];
-          if (!catalog.polylineFiles.includes(routePath)) {
-            const anchor = catalog.polylineFiles.indexOf('data/strava-route-full-resolution-mtb-day-2023-12-02.json');
-            if (anchor >= 0) catalog.polylineFiles.splice(anchor, 0, routePath);
-            else catalog.polylineFiles.push(routePath);
-          }
-          catalog.qualityExpectations ||= {};
-          catalog.qualityExpectations.denseRoutes ||= [];
-          const dense = catalog.qualityExpectations.denseRoutes.find(item => item.id === 'activity-mtb-day-2023-09-24');
-          if (dense) {
-            dense.minPoints = Math.max(Number(dense.minPoints || 0), 4614);
-            dense.resolutionPrefix = 'full-source-track';
-          } else {
-            catalog.qualityExpectations.denseRoutes.push({ id: 'activity-mtb-day-2023-09-24', minPoints: 4614, resolutionPrefix: 'full-source-track' });
-          }
-          fs.writeFileSync(catalogPath, `${JSON.stringify(catalog, null, 2)}\n`);
-          NODE
-      - name: Rebuild and verify route-quality artifacts
-        run: |
-          npm run build:route-detail-index
-          npm run update:route-detail-quality-floor
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const index = JSON.parse(fs.readFileSync('data/route-detail-index.json', 'utf8'));
-          const floor = JSON.parse(fs.readFileSync('data/route-detail-quality-floor.json', 'utf8'));
-          const entry = index.records?.['mtb-day-2023-09-24'];
-          if (entry?.file !== 'data/strava-route-full-resolution-mtb-day-2023-09-24.json') throw new Error(`Unexpected selected file: ${entry?.file}`);
-          if (entry?.quality !== 'full-source') throw new Error(`Unexpected index quality: ${entry?.quality}`);
-          if (floor.records?.['mtb-day-2023-09-24'] !== 'full-source') throw new Error(`Unexpected floor quality: ${floor.records?.['mtb-day-2023-09-24']}`);
-          NODE
-      - name: Run normal addressability validation and route guards
-        run: |
-          node scripts/validate-route-detail-addressability.mjs
-          npm run test:route-selection
-          npm run test:route-quality-floor
-          npm run test:route-geometry-quality
-          npm run validate:route-detail-index
-          npm run validate:route-detail-audit
-          npm run validate:route-geometry
-          npm run validate:route-references
-      - name: Restore validator and commit only final publication data
-        run: |
-          rm -f tmp/mtb-2023-09-24.part*.b64 tmp/mtb-2023-09-24-materializer-trigger.txt .github/workflows/materialize-mtb-2023-09-24.yml
-          git fetch origin main
-          git checkout origin/main -- .github/workflows/validate-route-detail-addressability.yml
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json data/strava-route-full-resolution-mtb-day-2023-09-24.json tmp/mtb-2023-09-24.part*.b64 tmp/mtb-2023-09-24-materializer-trigger.txt .github/workflows/materialize-mtb-2023-09-24.yml .github/workflows/validate-route-detail-addressability.yml
-          final_expected='data/route-catalog.json
-data/route-detail-index.json
-data/route-detail-quality-floor.json
-data/strava-route-full-resolution-mtb-day-2023-09-24.json'
-          final_actual="$(git diff origin/main --name-only --diff-filter=AM | sort)"
-          if [ "$final_actual" != "$(printf "$final_expected" | sort)" ]; then
-            echo 'Unexpected final PR added/modified files:'
-            printf '%s\n' "$final_actual"
-            exit 1
-          fi
-          git commit -m 'Materialize MTB Day 2023-09-24 full-source route'
-          git push origin HEAD:gps/full-source-mtb-day-2023-09-24-2026-08-24
+      - name: Validate mapped public route addressability
+        run: node scripts/validate-route-detail-addressability.mjs
