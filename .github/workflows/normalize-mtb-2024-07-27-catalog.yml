@@ -1,0 +1,71 @@
+name: Normalize MTB Day 2024-07-27 catalog diff
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Restore base ordering and insert only this route
+        run: |
+          set -euo pipefail
+          git show 0df448eaa1012b29effa85bf30e5cd830f178313:data/route-catalog.json > data/route-catalog.json
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const path = 'data/route-catalog.json';
+          const catalog = JSON.parse(fs.readFileSync(path, 'utf8'));
+          const routePath = 'data/strava-route-full-resolution-mtb-day-2024-07-27.json';
+          const predecessorPath = 'data/strava-route-full-resolution-mtb-day-2023-12-02.json';
+          if (!catalog.polylineFiles.includes(routePath)) {
+            const at = catalog.polylineFiles.indexOf(predecessorPath);
+            if (at < 0) throw new Error(`Missing catalog predecessor ${predecessorPath}`);
+            catalog.polylineFiles.splice(at + 1, 0, routePath);
+          }
+          const dense = catalog.qualityExpectations?.denseRoutes;
+          if (!Array.isArray(dense)) throw new Error('Missing denseRoutes');
+          const routeId = 'activity-mtb-day-2024-07-27';
+          if (!dense.some(item => item.id === routeId)) {
+            const predecessor = dense.findIndex(item => item.id === 'activity-mtb-day-2023-12-02');
+            if (predecessor < 0) throw new Error('Missing dense-route predecessor');
+            dense.splice(predecessor + 1, 0, {
+              id: routeId,
+              minPoints: 10069,
+              resolutionPrefix: 'full-source-track'
+            });
+          }
+          fs.writeFileSync(path, JSON.stringify(catalog, null, 2) + '\n');
+          NODE
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const catalog = JSON.parse(fs.readFileSync('data/route-catalog.json', 'utf8'));
+          const routePath = 'data/strava-route-full-resolution-mtb-day-2024-07-27.json';
+          if (catalog.polylineFiles.filter(x => x === routePath).length !== 1) throw new Error('Route file not registered exactly once');
+          const dense = (catalog.qualityExpectations?.denseRoutes || []).filter(x => x.id === 'activity-mtb-day-2024-07-27');
+          if (dense.length !== 1 || dense[0].minPoints !== 10069 || dense[0].resolutionPrefix !== 'full-source-track') {
+            throw new Error(`Bad dense route contract: ${JSON.stringify(dense)}`);
+          }
+          NODE
+      - name: Commit narrow catalog normalization
+        run: |
+          set -euo pipefail
+          rm .github/workflows/normalize-mtb-2024-07-27-catalog.yml
+          git add data/route-catalog.json
+          git add -u -- .github/workflows/normalize-mtb-2024-07-27-catalog.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Normalize MTB Day 2024-07-27 catalog diff'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
