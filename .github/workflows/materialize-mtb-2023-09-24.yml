@@ -129,3 +129,5 @@ data/strava-route-full-resolution-mtb-day-2023-09-24.json'
           fi
           git commit -m 'Materialize MTB Day 2023-09-24 full-source route'
           git push origin HEAD:gps/full-source-mtb-day-2023-09-24-2026-08-24
+
+# trigger materializer on synchronize
