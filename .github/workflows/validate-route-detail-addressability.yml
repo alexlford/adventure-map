@@ -6,65 +6,13 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate-route-detail-addressability:
     runs-on: ubuntu-24.04
     steps:
-      - name: Check out PR branch
+      - name: Check out repository
         uses: actions/checkout@v6
-        with:
-          ref: gps/full-source-mtb-day-2022-07-16-v2-2026-08-24
-          fetch-depth: 0
-      - name: Materialize verified full-source route
-        run: |
-          cat tmp/mtb-2022-07-16.part*.b64 | tr -d '\n' | base64 -d > /tmp/route.json.gz
-          gzip -t /tmp/route.json.gz
-          gzip -dc /tmp/route.json.gz > data/strava-route-full-resolution-mtb-day-2022-07-16.json
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const routePath = 'data/strava-route-full-resolution-mtb-day-2022-07-16.json';
-          const payload = JSON.parse(fs.readFileSync(routePath, 'utf8'));
-          const route = payload.routes?.find(r => r.id === 'activity-mtb-day-2022-07-16');
-          if (!route) throw new Error('route missing');
-          if (route.sourcePointCount !== 5400 || route.retainedPointCount !== 5400) throw new Error('point count mismatch');
-          if (route.lines?.length !== 4) throw new Error('source segment count mismatch');
-          if (!String(route.sampling || payload.sampling || '').startsWith('full-source-track')) throw new Error('sampling mismatch');
-          const catalogPath = 'data/route-catalog.json';
-          const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
-          if (!catalog.polylineFiles.includes(routePath)) {
-            const i = catalog.polylineFiles.indexOf('data/strava-route-full-resolution-mtb-day-2023-12-02.json');
-            catalog.polylineFiles.splice(i >= 0 ? i : catalog.polylineFiles.length, 0, routePath);
-          }
-          const dense = catalog.qualityExpectations.denseRoutes;
-          if (!dense.some(x => x.id === route.id)) dense.push({ id: route.id, minPoints: 5360, resolutionPrefix: 'full-source-track' });
-          fs.writeFileSync(catalogPath, JSON.stringify(catalog, null, 2) + '\n');
-          NODE
-          npm run build:route-detail-index
-          npm run update:route-detail-quality-floor
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const index = JSON.parse(fs.readFileSync('data/route-detail-index.json'));
-          const floor = JSON.parse(fs.readFileSync('data/route-detail-quality-floor.json'));
-          const r = index.records['mtb-day-2022-07-16'];
-          if (r.quality !== 'full-source') throw new Error('index not full-source');
-          if (r.file !== 'data/strava-route-full-resolution-mtb-day-2022-07-16.json') throw new Error('wrong route file selected');
-          if (floor.records['mtb-day-2022-07-16'] !== 'full-source') throw new Error('floor not full-source');
-          if (floor.records['midland-hill'] !== 'reviewed-source') throw new Error('Midland Hill regression');
-          if (floor.records['mount-lamlam'] !== 'reviewed-source') throw new Error('Mount Lamlam regression');
-          NODE
-          npm run test:route-quality-floor
-          npm run validate:route-detail-index
-          npm run validate:route-geometry
-          npm run validate:route-references
-          git fetch origin main
-          git checkout origin/main -- .github/workflows/validate-route-detail-addressability.yml
-          rm -f .github/workflows/materialize-mtb-2022-07-16.yml tmp/mtb-2022-07-16.part*.b64
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git commit -m 'Materialize MTB Day 2022-07-16 full-source route'
-          git push origin HEAD:gps/full-source-mtb-day-2022-07-16-v2-2026-08-24
       - name: Validate mapped public route addressability
         run: node scripts/validate-route-detail-addressability.mjs
