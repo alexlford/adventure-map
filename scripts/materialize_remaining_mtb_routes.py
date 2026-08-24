@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-"""Materialize the remaining legacy MTB activity-day routes from a Strava export.
+"""Inspect and selectively publish the remaining legacy MTB routes from Strava.
 
-This is intentionally narrow and fail-closed. It only publishes the seven MTB
-activity-day wrappers that are still expected to be legacy rdp-3m geometry on
-2026-08-24. Every route is locked to its reviewed Strava activity ID(s), the
-source point count already recorded when the original export was ingested, and
-the canonical Strava-derived activity-day distance.
+The seven remaining MTB activity-day wrappers are locked to reviewed Strava
+activity IDs and expected source point counts. Every source route is rebuilt
+without simplification and with only genuine source gaps (>180 m by default)
+split into separate rendered lines.
 
-No geometry is synthesized or simplified. The shared source-preserving route
-encoder retains the recorded GPS points and splits only at genuine source gaps
-larger than the configured threshold (180 m by default).
+Point preservation is necessary but not sufficient for automatic publication.
+Each recovered raw route is independently compared with the canonical
+Strava-derived activity-day distance. Raw geometry no more than 5% longer than
+the canonical distance is classified ``full-source-eligible``. Geometry above
+that threshold is classified ``reviewed-source-required`` and is not published
+by this command.
 
-A raw route is eligible for automatic ``full-source`` publication only when its
-geodesic GPS length is no more than 5% above the canonical activity distance.
-That upper-bound review gate catches obvious GPS wander without penalizing real
-recording gaps, which can legitimately make rendered line length shorter than
-Strava's activity distance. Routes that fail the gate require reviewed-source
-handling rather than blind raw publication.
+This per-route classification is deliberate: noisy GPS on one ride must not
+block a different clean ride from being promoted to full-source. Routes that
+need review remain on their existing published geometry until a corrected
+GPS-backed representation is explicitly accepted as reviewed-source.
 
 Usage:
   python3 scripts/materialize_remaining_mtb_routes.py /path/to/export.zip --dry-run
@@ -36,6 +36,8 @@ from materialize_strava_routes import DATA, ROOT, Export, encoded_route, haversi
 
 
 MAX_DISTANCE_INFLATION_PERCENT = 5.0
+FULL_SOURCE_ELIGIBLE = "full-source-eligible"
+REVIEWED_SOURCE_REQUIRED = "reviewed-source-required"
 
 TARGETS: tuple[dict[str, Any], ...] = (
     {
@@ -154,12 +156,14 @@ def distance_review(route: dict[str, Any], canonical_distance_km: float) -> dict
         raise ValueError("Canonical activity distance must be positive")
     raw_distance_km = route_distance_km(route)
     delta_percent = ((raw_distance_km / canonical_distance_km) - 1.0) * 100.0
+    passes = delta_percent <= MAX_DISTANCE_INFLATION_PERCENT
     return {
         "rawDistanceKm": raw_distance_km,
         "canonicalDistanceKm": canonical_distance_km,
         "distanceDeltaPercent": delta_percent,
         "maxDistanceInflationPercent": MAX_DISTANCE_INFLATION_PERCENT,
-        "passes": delta_percent <= MAX_DISTANCE_INFLATION_PERCENT,
+        "passes": passes,
+        "classification": FULL_SOURCE_ELIGIBLE if passes else REVIEWED_SOURCE_REQUIRED,
     }
 
 
@@ -175,28 +179,16 @@ def route_reviews(routes: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     return reviews
 
 
-def require_distance_fidelity(routes: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
-    """Reject raw GPS that needs reviewed-source correction before publication."""
-    reviews = route_reviews(routes)
-    failures = [
-        (feature_id, review)
+def eligible_route_ids(reviews: dict[str, dict[str, Any]]) -> set[str]:
+    return {
+        feature_id
         for feature_id, review in reviews.items()
-        if not review["passes"]
-    ]
-    if failures:
-        details = "; ".join(
-            f"{feature_id}: raw {review['rawDistanceKm']:.3f} km vs canonical "
-            f"{review['canonicalDistanceKm']:.3f} km ({review['distanceDeltaPercent']:+.2f}%)"
-            for feature_id, review in failures
-        )
-        raise ValueError(
-            "Raw GPS distance inflation exceeds the fixed 5% full-source publication gate; "
-            f"route requires reviewed-source fidelity review: {details}"
-        )
-    return reviews
+        if review.get("classification") == FULL_SOURCE_ELIGIBLE
+    }
 
 
 def build_routes(export: Export, catalog: dict[str, Any], max_gap_m: float) -> list[dict[str, Any]]:
+    """Rebuild and source-validate all seven routes without deciding publication."""
     specs = canonical_feature_specs(catalog)
     routes: list[dict[str, Any]] = []
     for target in TARGETS:
@@ -232,7 +224,7 @@ def build_routes(export: Export, catalog: dict[str, Any], max_gap_m: float) -> l
             )
         if retained_points != expected_points:
             raise ValueError(
-                f"{feature_id}: full-source publication would drop points; "
+                f"{feature_id}: source-preserving reconstruction would drop points; "
                 f"expected {expected_points} retained, found {retained_points}"
             )
         sampling = str(route.get("sampling") or "")
@@ -240,19 +232,20 @@ def build_routes(export: Export, catalog: dict[str, Any], max_gap_m: float) -> l
         if sampling != expected_sampling:
             raise ValueError(f"{feature_id}: unexpected sampling {sampling!r}")
         routes.append(route)
-
-    # Point preservation is necessary but not sufficient. Raw GPS that materially
-    # overstates the Strava-derived activity distance requires reviewed-source
-    # correction instead of an automatic full-source promotion.
-    require_distance_fidelity(routes)
     return routes
 
 
-def update_catalog(catalog: dict[str, Any]) -> dict[str, Any]:
+def update_catalog(catalog: dict[str, Any], published_feature_ids: set[str]) -> dict[str, Any]:
+    """Register only routes actually accepted for full-source publication."""
+    targets = target_map()
+    unknown = sorted(published_feature_ids - set(targets))
+    if unknown:
+        raise ValueError(f"Unknown remaining-MTB publication target(s): {', '.join(unknown)}")
+
     updated = copy.deepcopy(catalog)
     polyline_files = list(updated.get("polylineFiles") or [])
-    for target in TARGETS:
-        output = str(target["output"])
+    for feature_id in sorted(published_feature_ids):
+        output = str(targets[feature_id]["output"])
         if output not in polyline_files:
             polyline_files.append(output)
     updated["polylineFiles"] = polyline_files
@@ -260,9 +253,8 @@ def update_catalog(catalog: dict[str, Any]) -> dict[str, Any]:
     quality = updated.setdefault("qualityExpectations", {})
     dense_routes = list(quality.get("denseRoutes") or [])
     by_id = {str(item.get("id")): item for item in dense_routes if item.get("id")}
-    for target in TARGETS:
-        feature_id = str(target["featureId"])
-        expected_points = int(target["sourcePointCount"])
+    for feature_id in sorted(published_feature_ids):
+        expected_points = int(targets[feature_id]["sourcePointCount"])
         item = by_id.get(feature_id)
         if item is None:
             item = {"id": feature_id}
@@ -272,23 +264,39 @@ def update_catalog(catalog: dict[str, Any]) -> dict[str, Any]:
         item["resolutionPrefix"] = "full-source-track"
     quality["denseRoutes"] = dense_routes
 
-    # The legacy 3 m shard for 2026-05-24 required an encoded-tail recovery.
-    # A newly encoded full-source route must not depend on that compatibility exception.
-    quality["allowedTailRecoveries"] = [
-        item
-        for item in list(quality.get("allowedTailRecoveries") or [])
-        if str(item.get("routeId")) != "activity-mtb-day-2026-05-24"
-    ]
+    if "activity-mtb-day-2026-05-24" in published_feature_ids:
+        quality["allowedTailRecoveries"] = [
+            item
+            for item in list(quality.get("allowedTailRecoveries") or [])
+            if str(item.get("routeId")) != "activity-mtb-day-2026-05-24"
+        ]
     return updated
 
 
-def write_routes(routes: list[dict[str, Any]], catalog: dict[str, Any], max_gap_m: float, force: bool) -> None:
-    # Re-check immediately before writing so no caller can bypass the fidelity gate.
-    require_distance_fidelity(routes)
+def write_routes(
+    routes: list[dict[str, Any]],
+    catalog: dict[str, Any],
+    max_gap_m: float,
+    force: bool,
+) -> dict[str, Any]:
+    """Publish only independently eligible routes; leave review-required routes untouched."""
+    reviews = route_reviews(routes)
+    publish_ids = eligible_route_ids(reviews)
     targets = target_map()
+
     for route in routes:
-        target = targets[str(route["id"])]
-        output = ROOT / str(target["output"])
+        feature_id = str(route["id"])
+        review = reviews[feature_id]
+        if feature_id not in publish_ids:
+            print(
+                f"SKIP {feature_id}: {REVIEWED_SOURCE_REQUIRED}; raw "
+                f"{review['rawDistanceKm']:.3f} km vs canonical "
+                f"{review['canonicalDistanceKm']:.3f} km "
+                f"({review['distanceDeltaPercent']:+.2f}%)."
+            )
+            continue
+
+        output = ROOT / str(targets[feature_id]["output"])
         if output.exists() and not force:
             raise ValueError(f"Output already exists: {output}; pass --force to replace it")
         output.parent.mkdir(parents=True, exist_ok=True)
@@ -301,19 +309,33 @@ def write_routes(routes: list[dict[str, Any]], catalog: dict[str, Any], max_gap_
         output.write_text(json.dumps(payload, separators=(",", ":")) + "\n", encoding="utf-8")
         print(f"Wrote {output.relative_to(ROOT)}")
 
-    updated_catalog = update_catalog(catalog)
-    (DATA / "route-catalog.json").write_text(json.dumps(updated_catalog, indent=2) + "\n", encoding="utf-8")
-    print("Updated data/route-catalog.json with full-source route registrations and density contracts.")
-    print("Removed the obsolete activity-mtb-day-2026-05-24 encoded-tail recovery allowance.")
+    if publish_ids:
+        updated_catalog = update_catalog(catalog, publish_ids)
+        (DATA / "route-catalog.json").write_text(json.dumps(updated_catalog, indent=2) + "\n", encoding="utf-8")
+        print(
+            f"Registered {len(publish_ids)} independently accepted full-source route(s) "
+            "with exact density contracts."
+        )
+    else:
+        print("No recovered raw routes passed the full-source distance-fidelity gate; catalog unchanged.")
+
+    review_required = set(reviews) - publish_ids
+    return {
+        "publishedFeatureIds": sorted(publish_ids),
+        "reviewedSourceRequiredFeatureIds": sorted(review_required),
+    }
 
 
 def summary(routes: list[dict[str, Any]]) -> dict[str, Any]:
     reviews = route_reviews(routes)
+    publish_ids = eligible_route_ids(reviews)
     return {
         "routeCount": len(routes),
         "sourcePointCount": sum(int(route["sourcePointCount"]) for route in routes),
         "retainedPointCount": sum(int(route["retainedPointCount"]) for route in routes),
         "maxDistanceInflationPercent": MAX_DISTANCE_INFLATION_PERCENT,
+        "fullSourceEligibleCount": len(publish_ids),
+        "reviewedSourceRequiredCount": len(routes) - len(publish_ids),
         "routes": [
             {
                 "featureId": route["id"],
@@ -326,7 +348,7 @@ def summary(routes: list[dict[str, Any]]) -> dict[str, Any]:
                 "rawDistanceKm": round(reviews[str(route["id"])]["rawDistanceKm"], 3),
                 "canonicalDistanceKm": round(reviews[str(route["id"])]["canonicalDistanceKm"], 3),
                 "distanceDeltaPercent": round(reviews[str(route["id"])]["distanceDeltaPercent"], 3),
-                "distanceFidelityPass": reviews[str(route["id"])]["passes"],
+                "classification": reviews[str(route["id"])]["classification"],
             }
             for route in routes
         ],
@@ -334,12 +356,16 @@ def summary(routes: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Materialize the remaining seven MTB full-source routes.")
+    parser = argparse.ArgumentParser(description="Inspect and selectively publish the remaining MTB source routes.")
     parser.add_argument("source", help="Strava export ZIP or extracted export directory")
     mode = parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--dry-run", action="store_true", help="Verify all seven routes without writing files")
-    mode.add_argument("--write", action="store_true", help="Write all seven route files and update the route catalog")
-    parser.add_argument("--force", action="store_true", help="Allow replacing existing output files")
+    mode.add_argument("--dry-run", action="store_true", help="Rebuild and classify all seven routes without writing files")
+    mode.add_argument(
+        "--write",
+        action="store_true",
+        help="Publish only routes classified full-source-eligible; leave review-required routes untouched",
+    )
+    parser.add_argument("--force", action="store_true", help="Allow replacing existing eligible output files")
     parser.add_argument(
         "--max-gap-m",
         type=float,
@@ -356,17 +382,19 @@ def main() -> None:
     export = Export(Path(args.source).expanduser())
     try:
         routes = build_routes(export, catalog, args.max_gap_m)
+        report = summary(routes)
     except ValueError as exc:
         raise SystemExit(str(exc)) from exc
 
-    print(json.dumps(summary(routes), indent=2))
+    print(json.dumps(report, indent=2))
     if args.dry_run:
         return
 
     try:
-        write_routes(routes, catalog, args.max_gap_m, args.force)
+        result = write_routes(routes, catalog, args.max_gap_m, args.force)
     except ValueError as exc:
         raise SystemExit(str(exc)) from exc
+    print(json.dumps(result, indent=2))
     print("Next: npm run build:route-detail-index && npm run update:route-detail-quality-floor && npm run check")
 
 
