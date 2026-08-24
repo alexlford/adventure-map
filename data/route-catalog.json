@@ -10,16 +10,77 @@
   ],
   "polylineFiles": [
     "data/activity-route-polylines.json",
+    "data/ski-the-sky-runs.json",
+    "data/story-route-kokopelli-2025-06-05.json",
+    "data/story-route-kokopelli-2025-06-06.json",
+    "data/story-route-kokopelli-2025-06-07.json",
+    "data/story-route-tennessee-pass-2022-01-02.json",
+    "data/story-route-tennessee-pass-2022-01-03.json",
+    "data/strava-route-backfill-01.json",
+    "data/strava-route-backfill-02.json",
+    "data/strava-route-backfill-03.json",
+    "data/strava-route-backfill-04.json",
+    "data/strava-route-backfill-05.json",
+    "data/strava-route-backfill-06.json",
+    "data/strava-route-decalibron-2023.json",
+    "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
+    "data/strava-route-full-resolution-baltimore-5k-2018.json",
+    "data/strava-route-full-resolution-baltimore-half-2018.json",
+    "data/strava-route-full-resolution-baltimore-shamrock-5k-2020-deferred-virtual.json",
+    "data/strava-route-full-resolution-beerfit-kansas-city-5k-2016.json",
+    "data/strava-route-full-resolution-beerfit-kansas-city-brew-mile-2016.json",
+    "data/strava-route-full-resolution-big-ten-10k-2016.json",
+    "data/strava-route-full-resolution-bolderboulder-2022.json",
+    "data/strava-route-full-resolution-bolderboulder-2023.json",
+    "data/strava-route-full-resolution-bolderboulder-2024.json",
+    "data/strava-route-full-resolution-bolderboulder-2025.json",
+    "data/strava-route-full-resolution-boulderthon-2024.json",
+    "data/strava-route-full-resolution-breckenridge-nordic-2023-01-08.json",
+    "data/strava-route-full-resolution-breckenridge-nordic-2023-01-11.json",
+    "data/strava-route-full-resolution-breckenridge-nordic-2023-01-21.json",
+    "data/strava-route-full-resolution-brew-to-brew-2013.json",
+    "data/strava-route-full-resolution-chicago-marathon-2021.json",
+    "data/strava-route-full-resolution-chicago-marathon-virtual-2020.json",
+    "data/strava-route-full-resolution-clingmans-dome.json",
+    "data/strava-route-full-resolution-colderbolder-2022.json",
+    "data/strava-route-full-resolution-colderbolder-2024.json",
+    "data/strava-route-full-resolution-colderbolder-2025.json",
+    "data/strava-route-full-resolution-colfax-5k-2024.json",
+    "data/strava-route-full-resolution-colfax-5k-2026.json",
+    "data/strava-route-full-resolution-colfax-half-2021.json",
+    "data/strava-route-full-resolution-colfax-marathon-2025.json",
+    "data/strava-route-full-resolution-colfax-urban-10-2024.json",
+    "data/strava-route-full-resolution-colorado-triathlon-ski-2023.json",
+    "data/strava-route-full-resolution-decalibron-2023.json",
+    "data/strava-route-full-resolution-disney-princess-half-2018.json",
+    "data/strava-route-full-resolution-estes-park-half-2021.json",
+    "data/strava-route-full-resolution-flying-pig-2025.json",
+    "data/strava-route-full-resolution-free-state-tri-100-relay-2015.json",
+    "data/strava-route-full-resolution-frisco-brewski-2024.json",
+    "data/strava-route-full-resolution-frisco-nordic-2023-01-28.json",
+    "data/strava-route-full-resolution-haleakala.json",
+    "data/strava-route-full-resolution-hawksbill-mountain.json",
+    "data/strava-route-full-resolution-illinois-marathon-2015.json",
+    "data/strava-route-full-resolution-kansas-city-marathon-2019.json",
+    "data/strava-route-full-resolution-mauna-kea.json",
+    "data/strava-route-full-resolution-mile-high-turkey-trot-2021.json",
+    "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
+    "data/strava-route-full-resolution-mount-evans-spalding.json",
+    "data/strava-route-full-resolution-mount-jumullong-manglo.json",
+    "data/strava-route-full-resolution-mount-le-conte.json",
+    "data/strava-route-full-resolution-mount-sherman.json",
+    "data/strava-route-full-resolution-mount-wachusett.json",
     "data/strava-route-full-resolution-mtb-2025-06-05.json",
     "data/strava-route-full-resolution-mtb-2025-06-06.json",
     "data/strava-route-full-resolution-mtb-2025-06-07.json",
     "data/strava-route-full-resolution-mtb-day-2022-07-16.json",
     "data/strava-route-full-resolution-mtb-day-2023-09-24.json",
     "data/strava-route-full-resolution-mtb-day-2023-12-02.json",
+    "data/strava-route-full-resolution-mtb-day-2024-07-27.json",
     "data/strava-route-full-resolution-mtb-day-2025-07-11.json",
-    "data/strava-route-full-resolution-nordic-day-2021-01-16.json",
     "data/strava-route-full-resolution-nordic-2022-01-02.json",
     "data/strava-route-full-resolution-nordic-2022-01-03.json",
+    "data/strava-route-full-resolution-nordic-day-2021-01-16.json",
     "data/strava-route-full-resolution-nordic-day-2022-01-22.json",
     "data/strava-route-full-resolution-nordic-day-2022-02-03.json",
     "data/strava-route-full-resolution-nordic-day-2022-02-05.json",
@@ -32,23 +93,27 @@
     "data/strava-route-full-resolution-nordic-day-2025-03-27.json",
     "data/strava-route-full-resolution-nordic-day-2025-03-30.json",
     "data/strava-route-full-resolution-nordic-day-2025-04-01.json",
-    "data/strava-route-backfill-01.json",
-    "data/strava-route-backfill-02.json",
-    "data/strava-route-backfill-03.json",
-    "data/strava-route-backfill-04.json",
-    "data/strava-route-backfill-05.json",
-    "data/strava-route-backfill-06.json",
-    "data/ski-the-sky-runs.json",
-    "data/strava-route-full-resolution-ranch-hand-skate-2022.json",
+    "data/strava-route-full-resolution-north-star-mountain.json",
+    "data/strava-route-full-resolution-old-rag-mountain.json",
+    "data/strava-route-full-resolution-polar-bear-5k-2022.json",
     "data/strava-route-full-resolution-ranch-hand-classic-2022.json",
-    "data/strava-route-decalibron-2023.json",
-    "data/strava-route-full-resolution-flying-pig-2025.json",
-    "data/strava-route-full-resolution-bolderboulder-2022.json",
-    "data/strava-route-full-resolution-bolderboulder-2023.json",
-    "data/strava-route-full-resolution-bolderboulder-2024.json",
-    "data/strava-route-full-resolution-colorado-triathlon-ski-2023.json",
-    "data/strava-route-source-complete-01.json",
-    "data/strava-route-source-complete-02.json",
+    "data/strava-route-full-resolution-ranch-hand-skate-2022.json",
+    "data/strava-route-full-resolution-rippetoe-rucksack-2025.json",
+    "data/strava-route-full-resolution-rocky-mountain-5k-2025.json",
+    "data/strava-route-full-resolution-rocky-mountain-half-2025.json",
+    "data/strava-route-full-resolution-royal-gorge-groove-5k-2024.json",
+    "data/strava-route-full-resolution-royal-gorge-groove-mtb-2024.json",
+    "data/strava-route-full-resolution-run-snetterton-10k-2026.json",
+    "data/strava-route-full-resolution-ski-the-sky-loop-2026.json",
+    "data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json",
+    "data/strava-route-full-resolution-st-louis-turkey-trot-8k-2018.json",
+    "data/strava-route-full-resolution-stagecoach-classic-15k-2024.json",
+    "data/strava-route-full-resolution-staunton-rocks-half-2022.json",
+    "data/strava-route-full-resolution-super-bowl-5k-2022.json",
+    "data/strava-route-full-resolution-that-dam-run-10k-2022.json",
+    "data/strava-route-full-resolution-twin-cities-2015.json",
+    "data/strava-route-full-resolution-valentines-day-4m-2022.json",
+    "data/strava-route-full-resolution-west-maroon-pass-2026.json",
     "data/strava-route-rdp3-01.json",
     "data/strava-route-rdp3-02.json",
     "data/strava-route-rdp3-03.json",
@@ -66,76 +131,12 @@
     "data/strava-route-rdp3-15.json",
     "data/strava-route-rdp3-16.json",
     "data/strava-route-rdp3-17.json",
-    "data/strava-route-reviewed-mount-lamlam.json",
-    "data/strava-route-reviewed-san-gabriel-peak.json",
     "data/strava-route-rdp3-18.json",
     "data/strava-route-reviewed-midland-hill.json",
-    "data/story-route-kokopelli-2025-06-05.json",
-    "data/story-route-kokopelli-2025-06-06.json",
-    "data/story-route-kokopelli-2025-06-07.json",
-    "data/story-route-tennessee-pass-2022-01-02.json",
-    "data/story-route-tennessee-pass-2022-01-03.json",
-    "data/strava-route-full-resolution-twin-cities-2015.json",
-    "data/strava-route-full-resolution-clingmans-dome.json",
-    "data/strava-route-full-resolution-frisco-nordic-2023-01-28.json",
-    "data/strava-route-full-resolution-breckenridge-nordic-2023-01-08.json",
-    "data/strava-route-full-resolution-breckenridge-nordic-2023-01-11.json",
-    "data/strava-route-full-resolution-breckenridge-nordic-2023-01-21.json",
-    "data/strava-route-full-resolution-haleakala.json",
-    "data/strava-route-full-resolution-colfax-marathon-2025.json",
-    "data/strava-route-full-resolution-boulderthon-2024.json",
-    "data/strava-route-full-resolution-chicago-marathon-2021.json",
-    "data/strava-route-full-resolution-kansas-city-marathon-2019.json",
-    "data/strava-route-full-resolution-mauna-kea.json",
-    "data/strava-route-full-resolution-decalibron-2023.json",
-    "data/strava-route-full-resolution-mount-le-conte.json",
-    "data/strava-route-full-resolution-mount-evans-spalding.json",
-    "data/strava-route-full-resolution-mount-sherman.json",
-    "data/strava-route-full-resolution-west-maroon-pass-2026.json",
-    "data/strava-route-full-resolution-north-star-mountain.json",
-    "data/strava-route-full-resolution-royal-gorge-groove-mtb-2024.json",
-    "data/strava-route-full-resolution-ski-the-sky-loop-2026.json",
-    "data/strava-route-full-resolution-chicago-marathon-virtual-2020.json",
-    "data/strava-route-full-resolution-big-ten-10k-2016.json",
-    "data/strava-route-full-resolution-staunton-rocks-half-2022.json",
-    "data/strava-route-full-resolution-disney-princess-half-2018.json",
-    "data/strava-route-full-resolution-baltimore-half-2018.json",
-    "data/strava-route-full-resolution-colfax-5k-2024.json",
-    "data/strava-route-full-resolution-colfax-half-2021.json",
-    "data/strava-route-full-resolution-colfax-urban-10-2024.json",
-    "data/strava-route-full-resolution-estes-park-half-2021.json",
-    "data/strava-route-full-resolution-rocky-mountain-half-2025.json",
-    "data/strava-route-full-resolution-bolderboulder-2025.json",
-    "data/strava-route-full-resolution-that-dam-run-10k-2022.json",
-    "data/strava-route-full-resolution-rippetoe-rucksack-2025.json",
-    "data/strava-route-full-resolution-run-snetterton-10k-2026.json",
-    "data/strava-route-full-resolution-st-louis-turkey-trot-8k-2018.json",
-    "data/strava-route-full-resolution-valentines-day-4m-2022.json",
-    "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
-    "data/strava-route-full-resolution-baltimore-5k-2018.json",
-    "data/strava-route-full-resolution-baltimore-shamrock-5k-2020-deferred-virtual.json",
-    "data/strava-route-full-resolution-beerfit-kansas-city-5k-2016.json",
-    "data/strava-route-full-resolution-colderbolder-2022.json",
-    "data/strava-route-full-resolution-colfax-5k-2026.json",
-    "data/strava-route-full-resolution-colderbolder-2025.json",
-    "data/strava-route-full-resolution-rocky-mountain-5k-2025.json",
-    "data/strava-route-full-resolution-colderbolder-2024.json",
-    "data/strava-route-full-resolution-royal-gorge-groove-5k-2024.json",
-    "data/strava-route-full-resolution-super-bowl-5k-2022.json",
-    "data/strava-route-full-resolution-polar-bear-5k-2022.json",
-    "data/strava-route-full-resolution-beerfit-kansas-city-brew-mile-2016.json",
-    "data/strava-route-full-resolution-brew-to-brew-2013.json",
-    "data/strava-route-full-resolution-illinois-marathon-2015.json",
-    "data/strava-route-full-resolution-frisco-brewski-2024.json",
-    "data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json",
-    "data/strava-route-full-resolution-mile-high-turkey-trot-2021.json",
-    "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
-    "data/strava-route-full-resolution-stagecoach-classic-15k-2024.json",
-    "data/strava-route-full-resolution-mount-jumullong-manglo.json",
-    "data/strava-route-full-resolution-hawksbill-mountain.json",
-    "data/strava-route-full-resolution-old-rag-mountain.json",
-    "data/strava-route-full-resolution-mount-wachusett.json",
-    "data/strava-route-full-resolution-free-state-tri-100-relay-2015.json"
+    "data/strava-route-reviewed-mount-lamlam.json",
+    "data/strava-route-reviewed-san-gabriel-peak.json",
+    "data/strava-route-source-complete-01.json",
+    "data/strava-route-source-complete-02.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -158,33 +159,23 @@
     ],
     "denseRoutes": [
       {
-        "id": "strava-6814188054",
-        "minPoints": 1500,
-        "resolutionPrefix": "dense-source-track"
-      },
-      {
-        "id": "strava-6819611723",
-        "minPoints": 900,
-        "resolutionPrefix": "dense-source-track"
-      },
-      {
-        "id": "strava-9642214422",
-        "minPoints": 20755,
+        "id": "activity-mtb-day-2022-07-16",
+        "minPoints": 5360,
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "strava-14364821809",
-        "minPoints": 350,
+        "id": "activity-mtb-day-2023-09-24",
+        "minPoints": 4614,
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "strava-14377032125",
-        "minPoints": 3800,
+        "id": "activity-mtb-day-2023-12-02",
+        "minPoints": 5400,
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "strava-641964287",
-        "minPoints": 1900,
+        "id": "activity-mtb-day-2024-07-27",
+        "minPoints": 10069,
         "resolutionPrefix": "full-source-track"
       },
       {
@@ -203,6 +194,16 @@
         "resolutionPrefix": "full-source-track"
       },
       {
+        "id": "activity-mtb-day-2025-07-11",
+        "minPoints": 2860,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-nordic-day-2021-01-16",
+        "minPoints": 3280,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
         "id": "activity-nordic-day-2022-01-02",
         "minPoints": 7700,
         "resolutionPrefix": "full-source-track"
@@ -213,98 +214,23 @@
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "strava-7226710306",
-        "minPoints": 860,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-9163211220",
-        "minPoints": 865,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-11509394019",
-        "minPoints": 880,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-641962098",
-        "minPoints": 150,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-10926255561",
-        "minPoints": 8300,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-10596610840",
-        "minPoints": 6900,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-7123707788",
-        "minPoints": 4600,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-4469336427",
-        "minPoints": 18800,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-4312103411",
-        "minPoints": 10650,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-4337907837",
-        "minPoints": 8800,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-641965501",
-        "minPoints": 2550,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "strava-9552205777",
-        "minPoints": 5350,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "activity-nordic-day-2025-03-27",
-        "minPoints": 5950,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "activity-nordic-day-2024-01-07",
-        "minPoints": 11800,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "activity-nordic-day-2023-03-01",
-        "minPoints": 4550,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "activity-nordic-day-2025-03-19",
-        "minPoints": 5030,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "activity-nordic-day-2025-04-01",
-        "minPoints": 4400,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
-        "id": "activity-nordic-day-2025-03-30",
-        "minPoints": 13350,
-        "resolutionPrefix": "full-source-track"
-      },
-      {
         "id": "activity-nordic-day-2022-01-22",
         "minPoints": 2200,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-nordic-day-2022-02-03",
+        "minPoints": 1200,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-nordic-day-2022-02-05",
+        "minPoints": 3620,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-nordic-day-2022-02-13",
+        "minPoints": 1840,
         "resolutionPrefix": "full-source-track"
       },
       {
@@ -318,43 +244,123 @@
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "activity-nordic-day-2022-02-05",
-        "minPoints": 3620,
+        "id": "activity-nordic-day-2023-03-01",
+        "minPoints": 4550,
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "activity-nordic-day-2022-02-03",
-        "minPoints": 1200,
+        "id": "activity-nordic-day-2024-01-07",
+        "minPoints": 11800,
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "activity-nordic-day-2022-02-13",
-        "minPoints": 1840,
+        "id": "activity-nordic-day-2025-03-19",
+        "minPoints": 5030,
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "activity-nordic-day-2021-01-16",
-        "minPoints": 3280,
+        "id": "activity-nordic-day-2025-03-27",
+        "minPoints": 5950,
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "activity-mtb-day-2023-12-02",
-        "minPoints": 5400,
+        "id": "activity-nordic-day-2025-03-30",
+        "minPoints": 13350,
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "activity-mtb-day-2025-07-11",
-        "minPoints": 2860,
+        "id": "activity-nordic-day-2025-04-01",
+        "minPoints": 4400,
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "activity-mtb-day-2022-07-16",
-        "minPoints": 5360,
+        "id": "strava-10596610840",
+        "minPoints": 6900,
         "resolutionPrefix": "full-source-track"
       },
       {
-        "id": "activity-mtb-day-2023-09-24",
-        "minPoints": 4614,
+        "id": "strava-10926255561",
+        "minPoints": 8300,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-11509394019",
+        "minPoints": 880,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-14364821809",
+        "minPoints": 350,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-14377032125",
+        "minPoints": 3800,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-4312103411",
+        "minPoints": 10650,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-4337907837",
+        "minPoints": 8800,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-4469336427",
+        "minPoints": 18800,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-641962098",
+        "minPoints": 150,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-641964287",
+        "minPoints": 1900,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-641965501",
+        "minPoints": 2550,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-6814188054",
+        "minPoints": 1500,
+        "resolutionPrefix": "dense-source-track"
+      },
+      {
+        "id": "strava-6819611723",
+        "minPoints": 900,
+        "resolutionPrefix": "dense-source-track"
+      },
+      {
+        "id": "strava-7123707788",
+        "minPoints": 4600,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-7226710306",
+        "minPoints": 860,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-9163211220",
+        "minPoints": 865,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-9552205777",
+        "minPoints": 5350,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-9642214422",
+        "minPoints": 20755,
         "resolutionPrefix": "full-source-track"
       }
     ],
