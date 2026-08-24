@@ -4,11 +4,14 @@
 from __future__ import annotations
 
 from materialize_remaining_mtb_routes import (
+    FULL_SOURCE_ELIGIBLE,
     MAX_DISTANCE_INFLATION_PERCENT,
+    REVIEWED_SOURCE_REQUIRED,
     TARGETS,
     canonical_activity_distances_km,
     decode_polyline,
     distance_review,
+    eligible_route_ids,
     route_distance_km,
     target_map,
     update_catalog,
@@ -36,6 +39,8 @@ expected_distances_km = {
 }
 
 assert MAX_DISTANCE_INFLATION_PERCENT == 5.0
+assert FULL_SOURCE_ELIGIBLE == "full-source-eligible"
+assert REVIEWED_SOURCE_REQUIRED == "reviewed-source-required"
 assert len(TARGETS) == 7
 assert len(target_map()) == 7
 assert sum(int(item["sourcePointCount"]) for item in TARGETS) == 47071
@@ -64,14 +69,20 @@ synthetic_route = {"id": "synthetic", "lines": [first_line, second_line]}
 raw_distance = route_distance_km(synthetic_route)
 assert 1.10 < raw_distance < 1.12, raw_distance
 
-# A route below the fixed 5% upper inflation boundary is eligible for raw
-# full-source publication; one above it must be diverted to reviewed-source.
+# Classification is per route. A noisy route must not block a clean route.
 passes = distance_review(synthetic_route, raw_distance / 1.04)
 assert 3.99 < passes["distanceDeltaPercent"] < 4.01
 assert passes["passes"] is True
+assert passes["classification"] == FULL_SOURCE_ELIGIBLE
 fails = distance_review(synthetic_route, raw_distance / 1.06)
 assert 5.99 < fails["distanceDeltaPercent"] < 6.01
 assert fails["passes"] is False
+assert fails["classification"] == REVIEWED_SOURCE_REQUIRED
+reviews = {
+    "clean": passes,
+    "noisy": fails,
+}
+assert eligible_route_ids(reviews) == {"clean"}
 
 catalog = {
     "polylineFiles": ["data/existing.json"],
@@ -86,22 +97,43 @@ catalog = {
         ],
     },
 }
-updated = update_catalog(catalog)
 
+# Publishing one clean route must register only that route, not the five routes
+# known to require review or any other still-unclassified route.
+updated = update_catalog(catalog, {"activity-mtb-day-2024-07-27"})
 assert catalog["polylineFiles"] == ["data/existing.json"], "update_catalog must not mutate its input"
-assert len(updated["polylineFiles"]) == 8
-assert len(set(updated["polylineFiles"])) == 8
-
+assert updated["polylineFiles"] == [
+    "data/existing.json",
+    "data/strava-route-full-resolution-mtb-day-2024-07-27.json",
+]
 dense = {item["id"]: item for item in updated["qualityExpectations"]["denseRoutes"]}
 assert dense["existing"]["minPoints"] == 10
-for feature_id, (_, source_points) in expected.items():
-    assert dense[feature_id] == {
-        "id": feature_id,
-        "minPoints": source_points,
-        "resolutionPrefix": "full-source-track",
-    }
+assert dense["activity-mtb-day-2023-09-24"] == {
+    "id": "activity-mtb-day-2023-09-24",
+    "minPoints": 1,
+    "resolutionPrefix": "legacy",
+}
+assert dense["activity-mtb-day-2024-07-27"] == {
+    "id": "activity-mtb-day-2024-07-27",
+    "minPoints": 10069,
+    "resolutionPrefix": "full-source-track",
+}
+# 2026-05-24's legacy recovery must remain until that route itself is replaced.
+assert updated["qualityExpectations"]["allowedTailRecoveries"] == catalog["qualityExpectations"]["allowedTailRecoveries"]
 
-recoveries = updated["qualityExpectations"]["allowedTailRecoveries"]
-assert recoveries == [{"routeId": "unrelated-route", "lineIndex": 0, "maxTrimEnd": 2}]
+# If 2026-05-24 independently passes its raw-source gate, its new encoding no
+# longer needs the legacy tail-recovery exception.
+updated_2026 = update_catalog(catalog, {"activity-mtb-day-2026-05-24"})
+assert updated_2026["qualityExpectations"]["allowedTailRecoveries"] == [
+    {"routeId": "unrelated-route", "lineIndex": 0, "maxTrimEnd": 2}
+]
+assert "data/strava-route-full-resolution-mtb-day-2026-05-24.json" in updated_2026["polylineFiles"]
+
+try:
+    update_catalog(catalog, {"activity-mtb-day-does-not-exist"})
+except ValueError as exc:
+    assert "Unknown remaining-MTB publication target" in str(exc)
+else:
+    raise AssertionError("Unknown publication targets must fail closed")
 
 print("Remaining MTB batch materializer tests passed.")
