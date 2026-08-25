@@ -127,10 +127,10 @@
       "quality": "full-source"
     },
     "colderbolder-2023": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-full-resolution-colderbolder-2023.json",
       "featureId": "strava-10317055162",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "colderbolder-2024": {
       "file": "data/strava-route-full-resolution-colderbolder-2024.json",
@@ -187,10 +187,10 @@
       "quality": "full-source"
     },
     "colorado-triathlon-2023": {
-      "file": "data/strava-route-backfill-01.json",
+      "file": "data/strava-route-full-resolution-colderbolder-2023.json",
       "featureId": "strava-10317055162",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "decalibron-2023": {
       "file": "data/strava-route-full-resolution-decalibron-2023.json",
@@ -247,10 +247,10 @@
       "quality": "full-source"
     },
     "gobble-cobble-2019": {
-      "file": "data/strava-route-backfill-04.json",
+      "file": "data/strava-route-full-resolution-gobble-cobble-2019.json",
       "featureId": "strava-4312787170",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "haleakala": {
       "file": "data/strava-route-full-resolution-haleakala.json",
@@ -609,10 +609,10 @@
       "quality": "full-source"
     },
     "pi-miler-2015": {
-      "file": "data/strava-route-backfill-04.json",
+      "file": "data/strava-route-full-resolution-pi-miler-2015.json",
       "featureId": "strava-641966398",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "polar-bear-5k-2022": {
       "file": "data/strava-route-full-resolution-polar-bear-5k-2022.json",
@@ -681,10 +681,10 @@
       "quality": "full-source"
     },
     "rudolph-ramble-5k-2021": {
-      "file": "data/strava-route-backfill-03.json",
+      "file": "data/strava-route-full-resolution-rudolph-ramble-5k-2021.json",
       "featureId": "strava-6347969246",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "run-snetterton-10k-2026": {
       "file": "data/strava-route-full-resolution-run-snetterton-10k-2026.json",
@@ -820,10 +820,10 @@
       "quality": "full-source"
     },
     "universal-sole-virtual-5k-2020": {
-      "file": "data/strava-route-backfill-03.json",
+      "file": "data/strava-route-full-resolution-universal-sole-virtual-5k-2020.json",
       "featureId": "strava-4312783900",
       "format": "polyline",
-      "quality": "backfill"
+      "quality": "full-source"
     },
     "valentines-day-4m-2022": {
       "file": "data/strava-route-full-resolution-valentines-day-4m-2022.json",

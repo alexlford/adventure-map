@@ -141,7 +141,12 @@
     "data/strava-route-full-resolution-mtb-day-2025-09-28.json",
     "data/strava-route-full-resolution-mtb-day-2025-10-05.json",
     "data/strava-route-full-resolution-mtb-day-2026-05-24.json",
-    "data/strava-route-full-resolution-mtb-day-2026-08-05.json"
+    "data/strava-route-full-resolution-mtb-day-2026-08-05.json",
+    "data/strava-route-full-resolution-colderbolder-2023.json",
+    "data/strava-route-full-resolution-rudolph-ramble-5k-2021.json",
+    "data/strava-route-full-resolution-universal-sole-virtual-5k-2020.json",
+    "data/strava-route-full-resolution-gobble-cobble-2019.json",
+    "data/strava-route-full-resolution-pi-miler-2015.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -391,6 +396,31 @@
       {
         "id": "activity-mtb-day-2026-08-05",
         "minPoints": 7981,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-10317055162",
+        "minPoints": 431,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-6347969246",
+        "minPoints": 438,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-4312783900",
+        "minPoints": 422,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-4312787170",
+        "minPoints": 419,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-641966398",
+        "minPoints": 452,
         "resolutionPrefix": "full-source-track"
       }
     ],
