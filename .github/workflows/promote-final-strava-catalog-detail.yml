@@ -1,0 +1,203 @@
+name: Promote final Strava catalog-detail routes
+
+on:
+  push:
+    branches:
+      - gps/full-source-final-catalog-detail-2026-08-25
+    paths:
+      - .github/workflows/promote-final-strava-catalog-detail.yml
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Verify exact full-source payloads and register them
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          targets = [
+              {
+                  'recordId': 'illinois-5k-2016',
+                  'featureId': 'strava-641962419',
+                  'file': 'data/strava-route-full-resolution-illinois-5k-2016.json',
+                  'points': 127,
+                  'sha256': 'ea55cb30f749231043a7c29e93d3230963a02c4b466c00d618903d7bf4500be2',
+              },
+              {
+                  'recordId': 'big-12-run-12k-2016',
+                  'featureId': 'strava-641962927',
+                  'file': 'data/strava-route-full-resolution-big-12-run-12k-2016.json',
+                  'points': 376,
+                  'sha256': '1b962779e23cbd140a80e073b4dcd6a7413d5301310750bdde3d11d857a9d222',
+              },
+              {
+                  'recordId': 'shamrock-shuffle-10k-2015',
+                  'featureId': 'strava-641966512',
+                  'file': 'data/strava-route-full-resolution-shamrock-shuffle-10k-2015.json',
+                  'points': 890,
+                  'sha256': '92cdb2d4cd583372bca1498b15251fdd629b1a9f9637ecf25895c784f75788cf',
+              },
+          ]
+
+          for target in targets:
+              path = Path(target['file'])
+              raw = path.read_bytes()
+              actual_sha = hashlib.sha256(raw).hexdigest()
+              if actual_sha != target['sha256']:
+                  raise SystemExit(f"{target['recordId']}: SHA-256 mismatch {actual_sha}")
+              payload = json.loads(raw)
+              if payload.get('encoding') != 'google-polyline5':
+                  raise SystemExit(f"{target['recordId']}: unexpected encoding")
+              if payload.get('sampling') != 'full-source-track-gap-split-180m':
+                  raise SystemExit(f"{target['recordId']}: unexpected payload sampling")
+              routes = payload.get('routes') or []
+              if len(routes) != 1:
+                  raise SystemExit(f"{target['recordId']}: expected one route")
+              route = routes[0]
+              checks = {
+                  'id': target['featureId'],
+                  'adventureIds': [target['recordId']],
+                  'sourcePointCount': target['points'],
+                  'retainedPointCount': target['points'],
+                  'sourcePointCounts': [target['points']],
+                  'sampling': 'full-source-track-gap-split-180m',
+              }
+              for key, expected in checks.items():
+                  if route.get(key) != expected:
+                      raise SystemExit(
+                          f"{target['recordId']}: {key} expected {expected!r}, found {route.get(key)!r}"
+                      )
+              if len(route.get('lines') or []) != 1:
+                  raise SystemExit(f"{target['recordId']}: expected one continuous recorded line")
+              print(f"Verified {target['recordId']}: {target['points']} source points")
+
+          catalog_path = Path('data/route-catalog.json')
+          catalog = json.loads(catalog_path.read_text())
+          polyline_files = list(catalog.get('polylineFiles') or [])
+          for target in targets:
+              if target['file'] not in polyline_files:
+                  polyline_files.append(target['file'])
+          catalog['polylineFiles'] = polyline_files
+
+          quality = catalog.setdefault('qualityExpectations', {})
+          dense_routes = list(quality.get('denseRoutes') or [])
+          by_id = {str(item.get('id')): item for item in dense_routes if item.get('id')}
+          for target in targets:
+              item = by_id.get(target['featureId'])
+              if item is None:
+                  item = {'id': target['featureId']}
+                  dense_routes.append(item)
+                  by_id[target['featureId']] = item
+              item['minPoints'] = target['points']
+              item['resolutionPrefix'] = 'full-source-track'
+          quality['denseRoutes'] = dense_routes
+          catalog_path.write_text(json.dumps(catalog, indent=2) + '\n')
+          print('Registered all three final source-backed catalog-detail routes.')
+          PY
+
+      - name: Rebuild route detail publication metadata
+        run: |
+          npm run build:route-detail-index
+          npm run update:route-detail-quality-floor
+
+      - name: Verify route selections and historical-only catalog detail remainder
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          expected = {
+              'illinois-5k-2016': ('data/strava-route-full-resolution-illinois-5k-2016.json', 'strava-641962419', 127),
+              'big-12-run-12k-2016': ('data/strava-route-full-resolution-big-12-run-12k-2016.json', 'strava-641962927', 376),
+              'shamrock-shuffle-10k-2015': ('data/strava-route-full-resolution-shamrock-shuffle-10k-2015.json', 'strava-641966512', 890),
+          }
+          historical_catalog_detail = {
+              'river-to-river-relay-2006',
+              'river-to-river-relay-2008',
+              'river-to-river-relay-2010',
+              'snowman-shuffle-2006',
+              'snowman-shuffle-2007',
+              'snowman-shuffle-2008',
+              'snowman-shuffle-2009',
+              'snowman-shuffle-series',
+          }
+
+          index = json.loads(Path('data/route-detail-index.json').read_text())
+          floor = json.loads(Path('data/route-detail-quality-floor.json').read_text())
+          catalog = json.loads(Path('data/route-catalog.json').read_text())
+          records = index.get('records') or {}
+          floor_records = floor.get('records') or {}
+          dense = {
+              str(item.get('id')): item
+              for item in catalog.get('qualityExpectations', {}).get('denseRoutes', [])
+          }
+
+          for record_id, (file_name, feature_id, points) in expected.items():
+              selected = records.get(record_id) or {}
+              if selected.get('file') != file_name or selected.get('featureId') != feature_id or selected.get('quality') != 'full-source':
+                  raise SystemExit(f'{record_id}: incorrect detail selection: {selected}')
+              if floor_records.get(record_id) != 'full-source':
+                  raise SystemExit(f'{record_id}: quality floor did not advance to full-source')
+              contract = dense.get(feature_id) or {}
+              if contract.get('minPoints') != points or contract.get('resolutionPrefix') != 'full-source-track':
+                  raise SystemExit(f'{feature_id}: dense route contract is incorrect: {contract}')
+
+          remaining = {
+              record_id
+              for record_id, selected in records.items()
+              if selected.get('quality') == 'catalog-detail'
+          }
+          if remaining != historical_catalog_detail:
+              raise SystemExit(
+                  f'catalog-detail remainder must be historical proxies only; found {sorted(remaining)}'
+              )
+          if any((records.get(record_id) or {}).get('quality') == 'backfill' for record_id in records):
+              raise SystemExit('backfill route detail unexpectedly remains')
+          if any((records.get(record_id) or {}).get('quality') == 'rdp-3m' for record_id in records):
+              raise SystemExit('rdp-3m route detail unexpectedly remains')
+          print('All source-backed routes are promoted; only eight explicit historical proxies remain catalog-detail.')
+          PY
+
+      - name: Run route, data, and compiled publication contracts
+        run: |
+          npm run validate:route-detail-index
+          npm run validate:route-detail-audit
+          npm run validate:route-geometry
+          npm run validate:route-references
+          npm run validate:data
+          node scripts/validate-source-rdp-routes.mjs
+          node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
+          node scripts/validate-public-route-contract.mjs tmp/public-routes.geojson
+          npm run test:route-quality-floor
+          npm run test:route-selection
+
+      - name: Commit final publication metadata and remove one-use workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/promote-final-strava-catalog-detail.yml
+          git add data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json
+          echo "Final staged paths:"
+          git diff --cached --name-only
+          git commit -m "Promote final source-backed catalog routes"
+          git push
