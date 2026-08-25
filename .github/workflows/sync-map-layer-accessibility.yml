@@ -1,0 +1,187 @@
+name: Synchronize map layer accessibility state
+
+on:
+  push:
+    branches:
+      - accessibility/map-layer-toggle-state-2026-08-25
+    paths:
+      - .github/workflows/sync-map-layer-accessibility.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Synchronize visual and accessible layer state
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          # Make the initial static state accessible before JavaScript runs.
+          map_path = Path('map.html')
+          text = map_path.read_text()
+          replacements = {
+              '<button class="filter-button is-active" type="button" data-filter="all">All</button>': '<button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">All</button>',
+              '<button class="filter-button" type="button" data-filter="mtb">MTB</button>': '<button class="filter-button" type="button" data-filter="mtb" aria-pressed="false">MTB</button>',
+              '<button class="filter-button" type="button" data-filter="nordic">Nordic skiing</button>': '<button class="filter-button" type="button" data-filter="nordic" aria-pressed="false">Nordic skiing</button>',
+              '<button class="filter-button" type="button" data-filter="road-races">Road races</button>': '<button class="filter-button" type="button" data-filter="road-races" aria-pressed="false">Road races</button>',
+              '<button class="filter-button" type="button" data-filter="trail-races">Trail races</button>': '<button class="filter-button" type="button" data-filter="trail-races" aria-pressed="false">Trail races</button>',
+              '<button class="filter-button" type="button" data-filter="skiing">Alpine skiing</button>': '<button class="filter-button" type="button" data-filter="skiing" aria-pressed="false">Alpine skiing</button>',
+              '<button class="filter-button" type="button" data-filter="summits">Summits</button>': '<button class="filter-button" type="button" data-filter="summits" aria-pressed="false">Summits</button>',
+              '<button class="filter-button" type="button" data-filter="adventures">Adventures</button>': '<button class="filter-button" type="button" data-filter="adventures" aria-pressed="false">Adventures</button>',
+          }
+          for old, new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f'Could not locate map layer button markup: {old}')
+              text = text.replace(old, new, 1)
+          map_path.write_text(text)
+
+          # Centralize filter-button reflection in the map core so clicks and renders
+          # cannot update the visual class without updating aria-pressed.
+          app_path = Path('app.js')
+          text = app_path.read_text()
+          old = "function render(){const pinned=state.pinnedFocusId,items=filteredAdventures();renderRoutes(items);renderMarkers(items);renderList(items);if(pinned&&items.some(a=>a.id===pinned))state.focusId=pinned;else if(pinned)state.pinnedFocusId=null;requestAnimationFrame(()=>applyFocusStyles())}"
+          new = "function reflectFilterControls(){document.querySelectorAll('[data-filter]').forEach(button=>{const active=button.dataset.filter===state.filter;button.classList.toggle('is-active',active);button.setAttribute('aria-pressed',String(active))})}\nfunction render(){reflectFilterControls();const pinned=state.pinnedFocusId,items=filteredAdventures();renderRoutes(items);renderMarkers(items);renderList(items);if(pinned&&items.some(a=>a.id===pinned))state.focusId=pinned;else if(pinned)state.pinnedFocusId=null;requestAnimationFrame(()=>applyFocusStyles())}"
+          if old not in text:
+              raise SystemExit('Could not locate app.js render function')
+          text = text.replace(old, new, 1)
+
+          old = "document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>{state.filter=button.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('is-active',x===button));applyAndFit()}));"
+          new = "document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>{state.filter=button.dataset.filter;reflectFilterControls();applyAndFit()}));"
+          if old not in text:
+              raise SystemExit('Could not locate app.js filter click handler')
+          text = text.replace(old, new, 1)
+
+          old = "renderArchiveState('loading','Loading map archive','Preparing routes and locations.');resultCount.textContent='Loading';resultsSection?.setAttribute('aria-busy','true');"
+          new = "reflectFilterControls();renderArchiveState('loading','Loading map archive','Preparing routes and locations.');resultCount.textContent='Loading';resultsSection?.setAttribute('aria-busy','true');"
+          if old not in text:
+              raise SystemExit('Could not locate app.js initial archive state')
+          text = text.replace(old, new, 1)
+          app_path.write_text(text)
+
+          # Programmatic setViewState(..., { renderNow: false }) must still reflect
+          # the new selected layer to assistive technology.
+          api_path = Path('adventure-map-api.js')
+          text = api_path.read_text()
+          old = "      if (Object.hasOwn(next, 'yearTo')) state.yearTo = Number.isFinite(next.yearTo) ? next.yearTo : null;\n      if (renderNow && typeof render === 'function') render();"
+          new = "      if (Object.hasOwn(next, 'yearTo')) state.yearTo = Number.isFinite(next.yearTo) ? next.yearTo : null;\n      if (typeof reflectFilterControls === 'function') reflectFilterControls();\n      if (renderNow && typeof render === 'function') render();"
+          if old not in text:
+              raise SystemExit('Could not locate setViewState state-update block')
+          text = text.replace(old, new, 1)
+          api_path.write_text(text)
+
+          # Keep the URL-state reflector independently correct as a defensive boundary.
+          url_path = Path('map-url-state.js')
+          text = url_path.read_text()
+          old = "    document.querySelectorAll('[data-filter]').forEach(button => {\n      button.classList.toggle('is-active', button.dataset.filter === current || (current === 'all' && button.dataset.filter === 'all'));\n    });"
+          new = "    document.querySelectorAll('[data-filter]').forEach(button => {\n      const active = button.dataset.filter === current || (current === 'all' && button.dataset.filter === 'all');\n      button.classList.toggle('is-active', active);\n      button.setAttribute('aria-pressed', String(active));\n    });"
+          if old not in text:
+              raise SystemExit('Could not locate map-url-state layer reflection')
+          text = text.replace(old, new, 1)
+          url_path.write_text(text)
+
+          # Add browser coverage for initial, click, programmatic, and URL-restored state.
+          test_path = Path('tests/map-current-contracts.spec.mjs')
+          text = test_path.read_text()
+          anchor = "test('Map presents recovered official race context through AdventureMap', async ({ page }) => {"
+          test_block = r'''test('Map layer toggles keep visual and aria-pressed state synchronized', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/map.html?layer=summits', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+
+  const all = page.locator('[data-filter="all"]');
+  const summits = page.locator('[data-filter="summits"]');
+  const mtb = page.locator('[data-filter="mtb"]');
+  const nordic = page.locator('[data-filter="nordic"]');
+
+  await expect(summits).toHaveClass(/is-active/);
+  await expect(summits).toHaveAttribute('aria-pressed', 'true');
+  await expect(all).not.toHaveClass(/is-active/);
+  await expect(all).toHaveAttribute('aria-pressed', 'false');
+
+  await mtb.click();
+  await expect(mtb).toHaveClass(/is-active/);
+  await expect(mtb).toHaveAttribute('aria-pressed', 'true');
+  await expect(summits).not.toHaveClass(/is-active/);
+  await expect(summits).toHaveAttribute('aria-pressed', 'false');
+  expect(await page.evaluate(() => window.AdventureMap.state().filter)).toBe('mtb');
+
+  await page.evaluate(() => window.AdventureMap.setViewState({ filter: 'nordic' }, { renderNow: false }));
+  await expect(nordic).toHaveClass(/is-active/);
+  await expect(nordic).toHaveAttribute('aria-pressed', 'true');
+  await expect(mtb).not.toHaveClass(/is-active/);
+  await expect(mtb).toHaveAttribute('aria-pressed', 'false');
+  expect(await page.evaluate(() => window.AdventureMap.state().filter)).toBe('nordic');
+
+  const pressed = await page.locator('[data-filter][aria-pressed="true"]').count();
+  expect(pressed).toBe(1);
+  expect(errors).toEqual([]);
+});
+
+test('Map static layer markup exposes one selected toggle before runtime enhancement', async ({ page }) => {
+  await page.route('**/app.js', route => route.abort());
+  await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('[data-filter="all"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('[data-filter="all"]')).toHaveClass(/is-active/);
+  await expect(page.locator('[data-filter]:not([data-filter="all"])')).toHaveCount(7);
+  expect(await page.locator('[data-filter="all"][aria-pressed="true"]').count()).toBe(1);
+  expect(await page.locator('[data-filter]:not([data-filter="all"])[aria-pressed="false"]').count()).toBe(7);
+});
+
+'''
+          if anchor not in text:
+              raise SystemExit('Could not locate map-current-contracts insertion anchor')
+          text = text.replace(anchor, test_block + anchor, 1)
+          test_path.write_text(text)
+
+          print('Synchronized map layer visual and accessible state across static markup, clicks, API state, and URL restoration.')
+          PY
+
+      - name: Run focused browser contract
+        run: |
+          npx playwright install --with-deps chromium webkit
+          npx playwright test tests/map-current-contracts.spec.mjs --project=chromium
+          npx playwright test tests/map-current-contracts.spec.mjs --project=webkit-mobile
+
+      - name: Run full validation
+        run: |
+          npm run build:publish
+          npm run validate:all
+          npm run test:update-pipeline
+          npm run test:browser
+
+      - name: Verify generated publication artifacts are current
+        shell: bash
+        run: |
+          CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/catalog-layers/records.json data/public-records.json data/route-detail-index.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
+          if [ -n "$CHANGES" ]; then
+            echo "$CHANGES"
+            echo "Generated publication artifacts are not current."
+            exit 1
+          fi
+
+      - name: Commit permanent accessibility contract only
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/sync-map-layer-accessibility.yml
+          git add map.html app.js adventure-map-api.js map-url-state.js tests/map-current-contracts.spec.mjs
+          echo "Final staged paths:"
+          git diff --cached --name-only
+          git commit -m "Synchronize accessible map layer toggle state"
+          git push
