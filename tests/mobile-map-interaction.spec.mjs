@@ -90,19 +90,33 @@ test('mobile map layer controls remain usable and the archive list scrolls indep
     const sidebar = document.querySelector('.sidebar');
     const brand = document.querySelector('.brand-block');
     const panel = document.querySelector('.map-panel');
+    const rect = panel?.getBoundingClientRect();
     return {
       panelInSidebar: panel?.parentElement === sidebar,
       panelFollowsBrand: brand?.nextElementSibling === panel,
+      panelRect: rect ? { left: rect.left, right: rect.right, width: rect.width, height: rect.height } : null,
+      viewportWidth: window.innerWidth,
     };
   });
   expect(placement.panelInSidebar).toBeTruthy();
   expect(placement.panelFollowsBrand).toBeTruthy();
+  expect(placement.panelRect).toBeTruthy();
+  expect(placement.panelRect.left).toBeGreaterThanOrEqual(-2);
+  expect(placement.panelRect.right).toBeLessThanOrEqual(placement.viewportWidth + 2);
+  expect(placement.panelRect.width).toBeGreaterThan(300);
+  expect(placement.panelRect.height).toBeGreaterThanOrEqual(350);
+  expect(placement.panelRect.height).toBeLessThanOrEqual(520);
 
   const allCount = await page.evaluate(() => window.AdventureMap?.filteredRecords?.().length || 0);
   expect(allCount).toBeGreaterThan(0);
 
   const mtbFilter = page.locator('[data-filter="mtb"]');
   await mtbFilter.scrollIntoViewIfNeeded();
+  await expect(mtbFilter).toBeVisible();
+  const filterRect = await mtbFilter.boundingBox();
+  expect(filterRect).toBeTruthy();
+  expect(filterRect.x).toBeGreaterThanOrEqual(0);
+  expect(filterRect.x + filterRect.width).toBeLessThanOrEqual(placement.viewportWidth + 2);
   await mtbFilter.click();
   await expect(mtbFilter).toHaveClass(/is-active/);
   await expect.poll(() => page.evaluate(() => window.AdventureMap?.filteredRecords?.().length || 0)).toBeGreaterThan(0);
