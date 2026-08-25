@@ -7,6 +7,7 @@ const readJson = path => JSON.parse(fs.readFileSync(path, 'utf8'));
 
 const index = readJson('data/route-detail-index.json');
 const qualityFloor = readJson('data/route-detail-quality-floor.json');
+const routeCatalog = readJson('data/route-catalog.json');
 const recordsPayload = readJson('data/public-records.json');
 const records = recordsPayload.records || recordsPayload;
 const recordsById = new Map(records.map(record => [String(record.id), record]));
@@ -17,6 +18,38 @@ const problems = [];
 const orphanEntries = [];
 const byQuality = Object.fromEntries(QUALITY_ORDER.map(quality => [quality, 0]));
 const selectedFeatures = new Set();
+const historicalCatalogDetailList = (routeCatalog.qualityExpectations?.historicalCatalogDetailRecords || []).map(String);
+const historicalCatalogDetailRecords = new Set(historicalCatalogDetailList);
+const catalogDetailRecords = new Set(
+  entries
+    .filter(([recordId, entry]) => recordsById.has(recordId) && entry?.quality === 'catalog-detail')
+    .map(([recordId]) => recordId),
+);
+const catalogDetailPolicyProblems = [];
+
+if (historicalCatalogDetailList.length !== historicalCatalogDetailRecords.size) {
+  catalogDetailPolicyProblems.push('historical catalog-detail registry contains duplicate record IDs');
+}
+for (const recordId of catalogDetailRecords) {
+  if (!historicalCatalogDetailRecords.has(recordId)) {
+    catalogDetailPolicyProblems.push(`${recordId}: catalog-detail is not registered as an intentional historical proxy`);
+  }
+}
+for (const recordId of historicalCatalogDetailRecords) {
+  if (!recordsById.has(recordId)) {
+    catalogDetailPolicyProblems.push(`${recordId}: historical catalog-detail registry entry is not a public record`);
+    continue;
+  }
+  const selected = index.records?.[recordId];
+  if (!selected) {
+    catalogDetailPolicyProblems.push(`${recordId}: historical catalog-detail registry entry has no route-detail selection`);
+  } else if (selected.quality !== 'catalog-detail') {
+    catalogDetailPolicyProblems.push(
+      `${recordId}: historical catalog-detail registry entry is stale; selected quality is ${selected.quality}`,
+    );
+  }
+}
+problems.push(...catalogDetailPolicyProblems);
 
 if (qualityFloor.schemaVersion !== 1) {
   problems.push(`route detail quality floor schemaVersion is ${qualityFloor.schemaVersion}; expected 1`);
@@ -64,6 +97,8 @@ const summary = {
   detailGradeRecords,
   qualityFloorRecords: Object.keys(qualityFloor.records || {}).length,
   qualityFloorViolations: floorAudit.violations.length,
+  historicalCatalogDetailRecords: historicalCatalogDetailRecords.size,
+  catalogDetailPolicyViolations: catalogDetailPolicyProblems.length,
   quality: byQuality,
 };
 
@@ -87,6 +122,11 @@ for (const record of backfill) {
 if (floorAudit.violations.length) {
   console.log('\nQUALITY_FLOOR_VIOLATIONS');
   for (const violation of floorAudit.violations) console.log(JSON.stringify(violation));
+}
+
+if (catalogDetailPolicyProblems.length) {
+  console.log('\nCATALOG_DETAIL_POLICY_VIOLATIONS');
+  for (const problem of catalogDetailPolicyProblems) console.log(JSON.stringify({ problem }));
 }
 
 if (orphanEntries.length) {
