@@ -53,73 +53,77 @@ jobs:
           audit_path = Path('scripts/audit-route-detail-coverage.mjs')
           text = audit_path.read_text()
 
-          old = "const qualityFloor = readJson('data/route-detail-quality-floor.json');\nconst recordsPayload = readJson('data/public-records.json');"
-          new = "const qualityFloor = readJson('data/route-detail-quality-floor.json');\nconst routeCatalog = readJson('data/route-catalog.json');\nconst recordsPayload = readJson('data/public-records.json');"
-          if old not in text:
+          input_old = "const qualityFloor = readJson('data/route-detail-quality-floor.json');\nconst recordsPayload = readJson('data/public-records.json');"
+          input_new = "const qualityFloor = readJson('data/route-detail-quality-floor.json');\nconst routeCatalog = readJson('data/route-catalog.json');\nconst recordsPayload = readJson('data/public-records.json');"
+          if input_old not in text:
               raise SystemExit('Could not locate route-detail audit input block')
-          text = text.replace(old, new, 1)
+          text = text.replace(input_old, input_new, 1)
 
-          old = "const selectedFeatures = new Set();\n\nif (qualityFloor.schemaVersion !== 1) {"
-          new = """const selectedFeatures = new Set();
-const historicalCatalogDetailList = (routeCatalog.qualityExpectations?.historicalCatalogDetailRecords || []).map(String);
-const historicalCatalogDetailRecords = new Set(historicalCatalogDetailList);
-const catalogDetailRecords = new Set(
-  entries
-    .filter(([recordId, entry]) => recordsById.has(recordId) && entry?.quality === 'catalog-detail')
-    .map(([recordId]) => recordId),
-);
-const catalogDetailPolicyProblems = [];
-
-if (historicalCatalogDetailList.length !== historicalCatalogDetailRecords.size) {
-  catalogDetailPolicyProblems.push('historical catalog-detail registry contains duplicate record IDs');
-}
-for (const recordId of catalogDetailRecords) {
-  if (!historicalCatalogDetailRecords.has(recordId)) {
-    catalogDetailPolicyProblems.push(`${recordId}: catalog-detail is not registered as an intentional historical proxy`);
-  }
-}
-for (const recordId of historicalCatalogDetailRecords) {
-  if (!recordsById.has(recordId)) {
-    catalogDetailPolicyProblems.push(`${recordId}: historical catalog-detail registry entry is not a public record`);
-    continue;
-  }
-  const selected = index.records?.[recordId];
-  if (!selected) {
-    catalogDetailPolicyProblems.push(`${recordId}: historical catalog-detail registry entry has no route-detail selection`);
-  } else if (selected.quality !== 'catalog-detail') {
-    catalogDetailPolicyProblems.push(
-      `${recordId}: historical catalog-detail registry entry is stale; selected quality is ${selected.quality}`,
-    );
-  }
-}
-problems.push(...catalogDetailPolicyProblems);
-
-if (qualityFloor.schemaVersion !== 1) {"""
-          if old not in text:
+          policy_anchor = "const selectedFeatures = new Set();\n\nif (qualityFloor.schemaVersion !== 1) {"
+          policy_lines = [
+              "const selectedFeatures = new Set();",
+              "const historicalCatalogDetailList = (routeCatalog.qualityExpectations?.historicalCatalogDetailRecords || []).map(String);",
+              "const historicalCatalogDetailRecords = new Set(historicalCatalogDetailList);",
+              "const catalogDetailRecords = new Set(",
+              "  entries",
+              "    .filter(([recordId, entry]) => recordsById.has(recordId) && entry?.quality === 'catalog-detail')",
+              "    .map(([recordId]) => recordId),",
+              ");",
+              "const catalogDetailPolicyProblems = [];",
+              "",
+              "if (historicalCatalogDetailList.length !== historicalCatalogDetailRecords.size) {",
+              "  catalogDetailPolicyProblems.push('historical catalog-detail registry contains duplicate record IDs');",
+              "}",
+              "for (const recordId of catalogDetailRecords) {",
+              "  if (!historicalCatalogDetailRecords.has(recordId)) {",
+              "    catalogDetailPolicyProblems.push(`${recordId}: catalog-detail is not registered as an intentional historical proxy`);",
+              "  }",
+              "}",
+              "for (const recordId of historicalCatalogDetailRecords) {",
+              "  if (!recordsById.has(recordId)) {",
+              "    catalogDetailPolicyProblems.push(`${recordId}: historical catalog-detail registry entry is not a public record`);",
+              "    continue;",
+              "  }",
+              "  const selected = index.records?.[recordId];",
+              "  if (!selected) {",
+              "    catalogDetailPolicyProblems.push(`${recordId}: historical catalog-detail registry entry has no route-detail selection`);",
+              "  } else if (selected.quality !== 'catalog-detail') {",
+              "    catalogDetailPolicyProblems.push(",
+              "      `${recordId}: historical catalog-detail registry entry is stale; selected quality is ${selected.quality}`,",
+              "    );",
+              "  }",
+              "}",
+              "problems.push(...catalogDetailPolicyProblems);",
+          ]
+          policy_block = '\n'.join(policy_lines) + "\n\nif (qualityFloor.schemaVersion !== 1) {"
+          if policy_anchor not in text:
               raise SystemExit('Could not locate route-detail audit policy insertion point')
-          text = text.replace(old, new, 1)
+          text = text.replace(policy_anchor, policy_block, 1)
 
-          old = "  qualityFloorViolations: floorAudit.violations.length,\n  quality: byQuality,"
-          new = "  qualityFloorViolations: floorAudit.violations.length,\n  historicalCatalogDetailRecords: historicalCatalogDetailRecords.size,\n  catalogDetailPolicyViolations: catalogDetailPolicyProblems.length,\n  quality: byQuality,"
-          if old not in text:
+          summary_old = "  qualityFloorViolations: floorAudit.violations.length,\n  quality: byQuality,"
+          summary_new = "  qualityFloorViolations: floorAudit.violations.length,\n  historicalCatalogDetailRecords: historicalCatalogDetailRecords.size,\n  catalogDetailPolicyViolations: catalogDetailPolicyProblems.length,\n  quality: byQuality,"
+          if summary_old not in text:
               raise SystemExit('Could not locate route-detail audit summary block')
-          text = text.replace(old, new, 1)
+          text = text.replace(summary_old, summary_new, 1)
 
-          old = "if (floorAudit.violations.length) {\n  console.log('\\nQUALITY_FLOOR_VIOLATIONS');\n  for (const violation of floorAudit.violations) console.log(JSON.stringify(violation));\n}\n\nif (orphanEntries.length) {"
-          new = """if (floorAudit.violations.length) {
-  console.log('\nQUALITY_FLOOR_VIOLATIONS');
-  for (const violation of floorAudit.violations) console.log(JSON.stringify(violation));
-}
-
-if (catalogDetailPolicyProblems.length) {
-  console.log('\nCATALOG_DETAIL_POLICY_VIOLATIONS');
-  for (const problem of catalogDetailPolicyProblems) console.log(JSON.stringify({ problem }));
-}
-
-if (orphanEntries.length) {"""
-          if old not in text:
+          diagnostics_anchor = "if (floorAudit.violations.length) {\n  console.log('\\nQUALITY_FLOOR_VIOLATIONS');\n  for (const violation of floorAudit.violations) console.log(JSON.stringify(violation));\n}\n\nif (orphanEntries.length) {"
+          diagnostics_lines = [
+              "if (floorAudit.violations.length) {",
+              "  console.log('\\nQUALITY_FLOOR_VIOLATIONS');",
+              "  for (const violation of floorAudit.violations) console.log(JSON.stringify(violation));",
+              "}",
+              "",
+              "if (catalogDetailPolicyProblems.length) {",
+              "  console.log('\\nCATALOG_DETAIL_POLICY_VIOLATIONS');",
+              "  for (const problem of catalogDetailPolicyProblems) console.log(JSON.stringify({ problem }));",
+              "}",
+              "",
+              "if (orphanEntries.length) {",
+          ]
+          diagnostics_block = '\n'.join(diagnostics_lines)
+          if diagnostics_anchor not in text:
               raise SystemExit('Could not locate route-detail audit diagnostics block')
-          text = text.replace(old, new, 1)
+          text = text.replace(diagnostics_anchor, diagnostics_block, 1)
 
           audit_path.write_text(text)
           print(f'Registered {len(historical)} historical catalog-detail proxies and updated permanent audit enforcement.')
