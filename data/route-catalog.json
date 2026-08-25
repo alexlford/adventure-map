@@ -152,6 +152,11 @@
   "qualityExpectations": {
     "allowedTailRecoveries": [
       {
+        "routeId": "activity-mtb-day-2026-05-24",
+        "lineIndex": 1,
+        "maxTrimEnd": 8
+      },
+      {
         "routeId": "activity-nordic-day-2023-01-28",
         "lineIndex": 0,
         "maxTrimEnd": 8
