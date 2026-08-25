@@ -1,0 +1,62 @@
+name: Synchronize map layer accessibility v2
+
+on:
+  push:
+    branches:
+      - accessibility/map-layer-toggle-state-2026-08-25
+    paths:
+      - .github/workflows/sync-map-layer-accessibility-v2.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-test-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Apply accessibility and WebKit coverage changes
+        run: python3 .github/transfer/apply_map_layer_accessibility.py
+
+      - name: Build and validate publication
+        run: |
+          npm run build:publish
+          npm run validate:all
+          npm run test:update-pipeline
+
+      - name: Run permanent Chromium and WebKit browser harness
+        run: |
+          npx playwright install --with-deps chromium webkit
+          npm run test:browser
+
+      - name: Commit only validated permanent changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/sync-map-layer-accessibility.yml \
+                 .github/workflows/sync-map-layer-accessibility-v2.yml \
+                 .github/transfer/apply_map_layer_accessibility.py
+          git add map.html app.js adventure-map-api.js map-url-state.js \
+                  scripts/run-browser-tests.mjs tests/map-current-contracts.spec.mjs map
+          echo "Final staged paths:"
+          git diff --cached --name-only
+          echo "Unstaged paths after deterministic build:"
+          git status --porcelain
+          if [ -n "$(git status --porcelain --untracked-files=all | grep -vE '^D  \.github/(workflows/sync-map-layer-accessibility(-v2)?\.yml|transfer/apply_map_layer_accessibility\.py)$' | grep -vE '^[MADRCU?]{1,2} (map\.html|app\.js|adventure-map-api\.js|map-url-state\.js|scripts/run-browser-tests\.mjs|tests/map-current-contracts\.spec\.mjs|map/)')" ]; then
+            echo "Unexpected generated or unstaged files remain after accessibility build."
+            git status --porcelain
+            exit 1
+          fi
+          git commit -m "Synchronize accessible map layer state"
+          git push
