@@ -449,7 +449,17 @@
       "simplificationToleranceMeters": 3,
       "splitGapMeters": 180,
       "shardCount": 18
-    }
+    },
+    "historicalCatalogDetailRecords": [
+      "river-to-river-relay-2006",
+      "river-to-river-relay-2008",
+      "river-to-river-relay-2010",
+      "snowman-shuffle-2006",
+      "snowman-shuffle-2007",
+      "snowman-shuffle-2008",
+      "snowman-shuffle-2009",
+      "snowman-shuffle-series"
+    ]
   },
   "featureOverrides": {
     "strava-6814188054": {
