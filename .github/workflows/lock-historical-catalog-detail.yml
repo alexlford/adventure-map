@@ -45,7 +45,6 @@ jobs:
 
           catalog_path = Path('data/route-catalog.json')
           catalog = json.loads(catalog_path.read_text())
-          catalog['updatedOn'] = '2026-08-25'
           quality = catalog.setdefault('qualityExpectations', {})
           quality['historicalCatalogDetailRecords'] = historical
           catalog_path.write_text(json.dumps(catalog, indent=2) + '\n')
