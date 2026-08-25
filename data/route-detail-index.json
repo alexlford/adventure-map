@@ -49,10 +49,10 @@
       "quality": "full-source"
     },
     "big-12-run-12k-2016": {
-      "file": "data/mined-routes.geojson",
+      "file": "data/strava-route-full-resolution-big-12-run-12k-2016.json",
       "featureId": "strava-641962927",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "big-ten-10k-2016": {
       "file": "data/strava-route-full-resolution-big-ten-10k-2016.json",
@@ -271,10 +271,10 @@
       "quality": "full-source"
     },
     "illinois-5k-2016": {
-      "file": "data/historical-routes-v2.geojson",
+      "file": "data/strava-route-full-resolution-illinois-5k-2016.json",
       "featureId": "strava-641962419",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "illinois-half-2016": {
       "file": "data/strava-route-source-complete-01.json",
@@ -706,10 +706,10 @@
       "geometryClass": "mixed"
     },
     "shamrock-shuffle-10k-2015": {
-      "file": "data/mined-routes.geojson",
+      "file": "data/strava-route-full-resolution-shamrock-shuffle-10k-2015.json",
       "featureId": "strava-641966512",
-      "format": "geojson",
-      "quality": "catalog-detail"
+      "format": "polyline",
+      "quality": "full-source"
     },
     "ski-colorado-triathlon-leg": {
       "file": "data/strava-route-full-resolution-colorado-triathlon-ski-2023.json",

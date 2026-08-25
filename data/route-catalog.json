@@ -146,7 +146,10 @@
     "data/strava-route-full-resolution-rudolph-ramble-5k-2021.json",
     "data/strava-route-full-resolution-universal-sole-virtual-5k-2020.json",
     "data/strava-route-full-resolution-gobble-cobble-2019.json",
-    "data/strava-route-full-resolution-pi-miler-2015.json"
+    "data/strava-route-full-resolution-pi-miler-2015.json",
+    "data/strava-route-full-resolution-illinois-5k-2016.json",
+    "data/strava-route-full-resolution-big-12-run-12k-2016.json",
+    "data/strava-route-full-resolution-shamrock-shuffle-10k-2015.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -421,6 +424,21 @@
       {
         "id": "strava-641966398",
         "minPoints": 452,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-641962419",
+        "minPoints": 127,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-641962927",
+        "minPoints": 376,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "strava-641966512",
+        "minPoints": 890,
         "resolutionPrefix": "full-source-track"
       }
     ],
