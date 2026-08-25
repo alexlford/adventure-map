@@ -1,0 +1,156 @@
+name: Materialize backfill races to full-source GPS
+
+on:
+  push:
+    branches:
+      - gps/full-source-backfill-races-2026-08-25
+    paths:
+      - .github/transfer/backfill-*.b64
+      - .github/workflows/materialize-backfill-races.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Decode and verify exact source payloads
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import base64, gzip, hashlib, json
+          from pathlib import Path
+
+          targets = [
+            {'name':'colderbolder-2023','featureId':'strava-10317055162','adventureIds':['colderbolder-2023','colorado-triathlon-2023'],'points':431,'source':'activities/11045527406.fit.gz','sha256':'82fec13dbed0d292a4c8f49a0c88c87858d1e4586ac8315fb64ba67735d4a85b'},
+            {'name':'rudolph-ramble-5k-2021','featureId':'strava-6347969246','adventureIds':['rudolph-ramble-5k-2021'],'points':438,'source':'activities/6747321959.fit.gz','sha256':'2e4681bd0d278e3183aa30df525488504f8b55538b0d3af7ffbe9ca55d306bcf'},
+            {'name':'universal-sole-virtual-5k-2020','featureId':'strava-4312783900','adventureIds':['universal-sole-virtual-5k-2020'],'points':422,'source':'activities/4610348856.fit.gz','sha256':'77ff33e33b6c85ea8d9c99f58d69060e4e8a41cc1233ca7a840e6734b7ac8e11'},
+            {'name':'gobble-cobble-2019','featureId':'strava-4312787170','adventureIds':['gobble-cobble-2019'],'points':419,'source':'activities/4610352347.fit.gz','sha256':'c8bcd5691b2a9d5c50d59736f09a0871a0a5fd078c4d3b60b147e0be98120d26'},
+            {'name':'pi-miler-2015','featureId':'strava-641966398','adventureIds':['pi-miler-2015'],'points':452,'source':'activities/708169307.gpx.gz','sha256':'b1317359bde8eccc7bffbda62735641e24f2533c7442f402ec06885fda2ef1e6'},
+          ]
+          for t in targets:
+              transfer = Path('.github/transfer') / f"backfill-{t['name']}.b64"
+              raw = gzip.decompress(base64.b64decode(transfer.read_text().strip()))
+              actual = hashlib.sha256(raw).hexdigest()
+              if actual != t['sha256']:
+                  raise SystemExit(f"{t['name']}: SHA mismatch {actual}")
+              payload = json.loads(raw)
+              routes = payload.get('routes') or []
+              if len(routes) != 1:
+                  raise SystemExit(f"{t['name']}: expected one route")
+              route = routes[0]
+              checks = {
+                'id': t['featureId'], 'adventureIds': t['adventureIds'],
+                'category': 'run', 'sourceFiles': [t['source']],
+                'sourcePointCount': t['points'], 'sourcePointCounts': [t['points']],
+                'retainedPointCount': t['points'], 'sampling': 'full-source-track-gap-split-180m',
+              }
+              for key, expected in checks.items():
+                  if route.get(key) != expected:
+                      raise SystemExit(f"{t['name']}: {key} expected {expected!r}, got {route.get(key)!r}")
+              if len(route.get('lines') or []) != 1:
+                  raise SystemExit(f"{t['name']}: expected one continuous line")
+              out = Path('data') / f"strava-route-full-resolution-{t['name']}.json"
+              out.write_bytes(raw)
+              print(f"Verified {t['name']}: {t['points']} source points")
+
+          catalog_path = Path('data/route-catalog.json')
+          catalog = json.loads(catalog_path.read_text())
+          files = list(catalog.get('polylineFiles') or [])
+          for t in targets:
+              rel = f"data/strava-route-full-resolution-{t['name']}.json"
+              if rel not in files:
+                  files.append(rel)
+          catalog['polylineFiles'] = files
+          quality = catalog.setdefault('qualityExpectations', {})
+          dense = list(quality.get('denseRoutes') or [])
+          by_id = {str(x.get('id')): x for x in dense if x.get('id')}
+          for t in targets:
+              item = by_id.get(t['featureId'])
+              if item is None:
+                  item = {'id':t['featureId']}
+                  dense.append(item)
+                  by_id[t['featureId']] = item
+              item['minPoints'] = t['points']
+              item['resolutionPrefix'] = 'full-source-track'
+          quality['denseRoutes'] = dense
+          catalog_path.write_text(json.dumps(catalog, indent=2) + '\n')
+          PY
+
+      - name: Rebuild detail metadata
+        run: |
+          npm run build:route-detail-index
+          npm run update:route-detail-quality-floor
+
+      - name: Verify all six backfill records are full-source
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          index = json.loads(Path('data/route-detail-index.json').read_text()).get('records', {})
+          floor = json.loads(Path('data/route-detail-quality-floor.json').read_text()).get('records', {})
+          expected = {
+            'colderbolder-2023': ('data/strava-route-full-resolution-colderbolder-2023.json','strava-10317055162'),
+            'colorado-triathlon-2023': ('data/strava-route-full-resolution-colderbolder-2023.json','strava-10317055162'),
+            'rudolph-ramble-5k-2021': ('data/strava-route-full-resolution-rudolph-ramble-5k-2021.json','strava-6347969246'),
+            'universal-sole-virtual-5k-2020': ('data/strava-route-full-resolution-universal-sole-virtual-5k-2020.json','strava-4312783900'),
+            'gobble-cobble-2019': ('data/strava-route-full-resolution-gobble-cobble-2019.json','strava-4312787170'),
+            'pi-miler-2015': ('data/strava-route-full-resolution-pi-miler-2015.json','strava-641966398'),
+          }
+          for record, (file, feature) in expected.items():
+              selected = index.get(record) or {}
+              if selected.get('file') != file or selected.get('featureId') != feature or selected.get('quality') != 'full-source':
+                  raise SystemExit(f"{record}: unexpected detail selection {selected}")
+              if floor.get(record) != 'full-source':
+                  raise SystemExit(f"{record}: quality floor not full-source")
+          remaining = [k for k,v in index.items() if v.get('quality') == 'backfill']
+          if remaining:
+              raise SystemExit(f"Backfill records remain: {remaining}")
+          print('All six former backfill records now select full-source geometry; zero backfill records remain.')
+          PY
+
+      - name: Run full route contracts
+        run: |
+          npm run validate:route-detail-index
+          npm run validate:route-detail-audit
+          npm run validate:route-geometry
+          npm run validate:route-references
+          npm run validate:data
+          node scripts/validate-source-rdp-routes.mjs
+          node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
+          node scripts/validate-public-route-contract.mjs tmp/public-routes.geojson
+          npm run test:route-quality-floor
+          npm run test:route-selection
+
+      - name: Commit only final publication files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/transfer/backfill-colderbolder-2023.b64 \
+                 .github/transfer/backfill-rudolph-ramble-5k-2021.b64 \
+                 .github/transfer/backfill-universal-sole-virtual-5k-2020.b64 \
+                 .github/transfer/backfill-gobble-cobble-2019.b64 \
+                 .github/transfer/backfill-pi-miler-2015.b64 \
+                 .github/workflows/materialize-backfill-races.yml
+          git add data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json \
+                  data/strava-route-full-resolution-colderbolder-2023.json \
+                  data/strava-route-full-resolution-rudolph-ramble-5k-2021.json \
+                  data/strava-route-full-resolution-universal-sole-virtual-5k-2020.json \
+                  data/strava-route-full-resolution-gobble-cobble-2019.json \
+                  data/strava-route-full-resolution-pi-miler-2015.json
+          git commit -m "Upgrade remaining backfill races to full-source GPS"
+          git push
