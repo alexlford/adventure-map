@@ -136,7 +136,12 @@
     "data/strava-route-full-resolution-hawksbill-mountain.json",
     "data/strava-route-full-resolution-old-rag-mountain.json",
     "data/strava-route-full-resolution-mount-wachusett.json",
-    "data/strava-route-full-resolution-free-state-tri-100-relay-2015.json"
+    "data/strava-route-full-resolution-free-state-tri-100-relay-2015.json",
+    "data/strava-route-full-resolution-mtb-day-2024-08-31.json",
+    "data/strava-route-full-resolution-mtb-day-2025-09-28.json",
+    "data/strava-route-full-resolution-mtb-day-2025-10-05.json",
+    "data/strava-route-full-resolution-mtb-day-2026-05-24.json",
+    "data/strava-route-full-resolution-mtb-day-2026-08-05.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
@@ -361,6 +366,31 @@
       {
         "id": "activity-mtb-day-2023-09-24",
         "minPoints": 4614,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-mtb-day-2024-08-31",
+        "minPoints": 6104,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-mtb-day-2025-09-28",
+        "minPoints": 7095,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-mtb-day-2025-10-05",
+        "minPoints": 5687,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-mtb-day-2026-05-24",
+        "minPoints": 5521,
+        "resolutionPrefix": "full-source-track"
+      },
+      {
+        "id": "activity-mtb-day-2026-08-05",
+        "minPoints": 7981,
         "resolutionPrefix": "full-source-track"
       }
     ],
