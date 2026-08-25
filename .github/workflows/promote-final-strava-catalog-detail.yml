@@ -25,6 +25,18 @@ jobs:
 
       - run: npm ci
 
+      - name: Restore exact Shamrock Shuffle payload
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import base64
+          from pathlib import Path
+          transfer = Path('.github/transfer/shamrock-shuffle-10k-2015.b64')
+          output = Path('data/strava-route-full-resolution-shamrock-shuffle-10k-2015.json')
+          output.write_bytes(base64.b64decode(transfer.read_text().strip()))
+          print(f'Restored exact source payload to {output}')
+          PY
+
       - name: Verify exact full-source payloads and register them
         shell: bash
         run: |
@@ -195,8 +207,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm .github/workflows/promote-final-strava-catalog-detail.yml
-          git add data/route-catalog.json data/route-detail-index.json data/route-detail-quality-floor.json
+          git rm .github/workflows/promote-final-strava-catalog-detail.yml .github/transfer/shamrock-shuffle-10k-2015.b64
+          git add data/route-catalog.json \
+                  data/route-detail-index.json \
+                  data/route-detail-quality-floor.json \
+                  data/strava-route-full-resolution-shamrock-shuffle-10k-2015.json
           echo "Final staged paths:"
           git diff --cached --name-only
           git commit -m "Promote final source-backed catalog routes"
