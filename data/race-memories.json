@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "records": {
+    "chicago-marathon-2021": {
+      "headline": "The day I broke four hours in Chicago.",
+      "goal": {
+        "label": "Break 4 hours",
+        "status": "Achieved"
+      },
+      "memoryTitle": "What I remember",
+      "memory": [
+        "The year before Chicago, I ran the virtual marathon in 2020, and I remember how hard it was. By the time I finally got to run Chicago in person in 2021, a lot had changed. I had moved to Denver, and I did the peak of my training at altitude.",
+        "My sister was still living in Chicago, so I stayed with her for the weekend. Ryan rode his bike around the city during the race and found different spots along the course to cheer me on.",
+        "Breaking four hours was my goal, and I was so happy to do it. It was very cool to be part of a major marathon and experience the scale and energy of Chicago.",
+        "I especially remember finishing in Grant Park. I already had a lot of memories there, and it is such a beautiful spot on Lake Michigan. After I finished, I walked around the park, got a beer, and just soaked in the experience."
+      ],
+      "photos": [
+        {
+          "src": "media/races/chicago-2021-pilsen.jpg",
+          "alt": "Alex Ford running the 2021 Chicago Marathon through Pilsen near West 18th Street and Loomis Street.",
+          "caption": "Ryan caught me running through Pilsen near 18th and Loomis. He biked around Chicago during the race so he could cheer me on at several different points."
+        }
+      ]
+    }
+  }
+}
