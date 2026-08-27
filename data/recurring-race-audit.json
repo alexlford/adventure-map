@@ -122,7 +122,7 @@
         "colfax-urban-10-2026"
       ],
       "missingMemberIds": [],
-      "officialResultCount": 0,
+      "officialResultCount": 1,
       "routeCount": 7,
       "distanceHistory": [
         {
@@ -147,7 +147,6 @@
         "colfax-5k-2024",
         "colfax-urban-10-2024",
         "colfax-5k-2025",
-        "colfax-marathon-2025",
         "colfax-5k-2026",
         "colfax-urban-10-2026"
       ],
@@ -627,11 +626,6 @@
       "type": "official-result",
       "seriesId": "colfax-marathon-weekend-series",
       "recordId": "colfax-5k-2025"
-    },
-    {
-      "type": "official-result",
-      "seriesId": "colfax-marathon-weekend-series",
-      "recordId": "colfax-marathon-2025"
     },
     {
       "type": "official-result",
