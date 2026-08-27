@@ -79,7 +79,7 @@ test('mobile map preserves page scrolling until Explore map is enabled', async (
   expect(errors).toEqual([]);
 });
 
-test('mobile map layer controls remain usable and the archive list scrolls independently', async ({ page }, testInfo) => {
+test('mobile map layer controls remain usable and the archive follows page scrolling', async ({ page }, testInfo) => {
   skipUnlessMobileWebKit(testInfo);
   const errors = collectRuntimeErrors(page);
 
@@ -130,16 +130,13 @@ test('mobile map layer controls remain usable and the archive list scrolls indep
 
   const archive = page.locator('.results-section');
   await archive.scrollIntoViewIfNeeded();
-  const metrics = await archive.evaluate(element => ({
-    overflowY: getComputedStyle(element).overflowY,
-    scrollHeight: element.scrollHeight,
-    clientHeight: element.clientHeight,
-  }));
-  expect(metrics.overflowY).toBe('auto');
-  expect(metrics.scrollHeight).toBeGreaterThan(metrics.clientHeight);
+  await expect.poll(() => archive.evaluate(element => getComputedStyle(element).overflowY)).toBe('visible');
+  await archive.evaluate(element => { element.scrollTop = 100; });
+  expect(await archive.evaluate(element => element.scrollTop)).toBe(0);
 
-  await archive.evaluate(element => { element.scrollTop = element.scrollHeight; });
-  await expect.poll(() => archive.evaluate(element => element.scrollTop)).toBeGreaterThan(0);
+  const beforeScrollY = await page.evaluate(() => window.scrollY);
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(beforeScrollY);
   await expect(page.locator('#adventureList .adventure-item').last()).toBeVisible();
   expect(errors).toEqual([]);
 });
