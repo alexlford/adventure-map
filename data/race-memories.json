@@ -2,16 +2,17 @@
   "schemaVersion": 1,
   "records": {
     "chicago-marathon-2021": {
-      "headline": "The day I broke four hours in Chicago.",
-      "goal": {
-        "label": "Break 4 hours",
-        "status": "Achieved"
+      "headline": "My first World Marathon Major.",
+      "milestone": {
+        "label": "Milestone",
+        "value": "First World Major",
+        "note": "Chicago 2021"
       },
       "memoryTitle": "What I remember",
       "memory": [
         "The year before Chicago, I ran the virtual marathon in 2020, and I remember how hard it was. By the time I finally got to run Chicago in person in 2021, a lot had changed. I had moved to Denver, and I did the peak of my training at altitude.",
         "My sister was still living in Chicago, so I stayed with her for the weekend. Ryan rode his bike around the city during the race and found different spots along the course to cheer me on.",
-        "Breaking four hours was my goal, and I was so happy to do it. It was very cool to be part of a major marathon and experience the scale and energy of Chicago.",
+        "Chicago was my first World Marathon Major, and that is the biggest thing I remember about the day. Breaking four hours was my goal, and I was very proud to do it, but what mattered even more was finally being part of a major marathon and experiencing the scale and energy of Chicago.",
         "I especially remember finishing in Grant Park. I already had a lot of memories there, and it is such a beautiful spot on Lake Michigan. After I finished, I walked around the park, got a beer, and just soaked in the experience."
       ],
       "photos": [
@@ -21,6 +22,21 @@
           "caption": "Ryan caught me running through Pilsen near 18th and Loomis. He biked around Chicago during the race so he could cheer me on at several different points."
         }
       ]
+    },
+    "colfax-half-2021": {
+      "headline": "Running my new home with Leah.",
+      "milestone": {
+        "label": "Together",
+        "value": "With Leah",
+        "note": "We ran the entire half together"
+      },
+      "memoryTitle": "What I remember",
+      "memory": [
+        "The Colfax Half had been canceled in 2020, so getting to run it in 2021 felt great. By then Denver was my new home, and I got to run the whole race with my best friend Leah.",
+        "One of the things I remember most is that the half marathon course runs through the Denver Zoo. It is such a distinctive part of the race and made the day feel very connected to the city.",
+        "Leah and I stayed together for the entire race and finished in City Park. Afterward, we walked to Leah's home for brunch. It was a great way to finish the morning."
+      ],
+      "photos": []
     }
   }
 }
