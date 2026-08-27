@@ -37,7 +37,10 @@
 
   const finishTime = record => String(record.officialTime || record.result || '—').replace(/^0(?=\d:)/, '');
 
-  const photoFigure = (photo, className = '') => `<figure class="race-memory-photo ${className}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async">${photo.caption ? `<figcaption>${A.esc(photo.caption)}</figcaption>` : ''}</figure>`;
+  const photoFigure = (photo, className = '') => {
+    const layoutClass = photo.layout === 'four-three' ? ' race-memory-photo-four-three' : '';
+    return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async">${photo.caption ? `<figcaption>${A.esc(photo.caption)}</figcaption>` : ''}</figure>`;
+  };
 
   function memoryMarkup(record, memory) {
     const photos = Array.isArray(memory.photos) ? memory.photos.filter(photo => photo?.src) : [];
