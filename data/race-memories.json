@@ -51,7 +51,14 @@
         "At one point on a downhill, I caught a root and went straight into a somersault. Somehow I popped right back up and kept running. It is still one of the funniest things I remember from the race.",
         "We stayed together all the way through the finish. For me, the memory of Staunton is really the beautiful day and getting to run the whole race with Frankie."
       ],
-      "photos": []
+      "photos": [
+        {
+          "src": "media/races/staunton-2022-frankie.webp",
+          "alt": "Frankie and Alex running together on the Staunton Rocks Half Marathon trail.",
+          "caption": "Frankie and I ran the entire Staunton Rocks Half together on a beautiful day in Staunton State Park.",
+          "aspect": "4:3"
+        }
+      ]
     }
   }
 }
