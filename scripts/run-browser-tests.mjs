@@ -86,6 +86,7 @@ try {
     'playwright',
     'test',
     'tests/mobile-layout.spec.mjs',
+    'tests/mobile-map-interaction.spec.mjs',
     'tests/world-majors-layout.spec.mjs',
     '--project=webkit-mobile'
   ], { captureFailure: true });
