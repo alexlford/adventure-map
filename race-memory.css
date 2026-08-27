@@ -1,0 +1,47 @@
+body.race-memory-page .page{max-width:1120px;padding-top:54px}
+.race-memory-hero{max-width:980px;padding-bottom:18px}
+.race-memory-hero h1{max-width:940px;margin:0;font-size:clamp(3.15rem,7.4vw,6.75rem);line-height:.9;letter-spacing:-.065em}
+.race-memory-meta{margin:20px 0 0;color:var(--muted);font-size:1rem;font-weight:700}
+.race-memory-deck{max-width:760px;margin:16px 0 0;font-size:clamp(1.3rem,2.6vw,2rem);line-height:1.25;letter-spacing:-.025em}
+.race-memory-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:34px}
+.race-memory-stat{min-width:0;padding:18px 19px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.74)}
+.race-memory-stat small,.race-memory-stat span{display:block;color:var(--muted)}
+.race-memory-stat small{font-size:.68rem;font-weight:850;letter-spacing:.1em;text-transform:uppercase}
+.race-memory-stat strong{display:block;margin-top:5px;font-size:clamp(1.45rem,3vw,2.25rem);line-height:1;letter-spacing:-.03em;overflow-wrap:anywhere}
+.race-memory-stat span{margin-top:7px;font-size:.72rem;line-height:1.35}
+.race-memory-finish{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:inset 4px 0 0 var(--accent)}
+.race-memory-goal strong{font-size:clamp(1.15rem,2.4vw,1.65rem)}
+.race-memory-goal span{color:var(--green);font-weight:850}
+.race-memory-source{display:inline-block;margin-top:14px;color:var(--muted);font-size:.74rem;font-weight:750;text-underline-offset:3px}
+.race-memory-photo{margin:32px 0 0}
+.race-memory-photo img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:24px;background:#e8e4dc}
+.race-memory-photo figcaption{max-width:820px;margin:11px 4px 0;color:var(--muted);font-size:.76rem;line-height:1.5}
+.race-memory-photo-hero img{aspect-ratio:16/9;object-fit:cover}
+.race-memory-story{display:grid;grid-template-columns:minmax(240px,.72fr) minmax(0,1.28fr);gap:clamp(34px,6vw,76px);align-items:start;margin-top:72px;padding-top:26px;border-top:1px solid var(--line)}
+.race-memory-story header{position:sticky;top:96px}
+.race-memory-story h2{max-width:420px;margin:0;font-size:clamp(2.05rem,4vw,3.5rem);line-height:.98;letter-spacing:-.05em}
+.race-memory-story-copy{max-width:680px}
+.race-memory-story-copy p{margin:0 0 20px;font-size:clamp(1.03rem,1.65vw,1.18rem);line-height:1.72}
+.race-memory-story-copy p:first-child{font-size:clamp(1.12rem,1.8vw,1.3rem);line-height:1.66}
+.race-memory-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:48px}
+.race-memory-gallery .race-memory-photo{margin:0}
+.race-memory-route{margin-top:72px}
+.race-memory-route h2{margin-bottom:8px}
+.race-memory-route .card-meta{margin-bottom:16px}
+body.race-memory-page .chronology-nav{margin-top:54px}
+@media(max-width:760px){
+  body.race-memory-page .page{padding-top:40px}
+  .race-memory-results{grid-template-columns:1fr 1fr}
+  .race-memory-finish{grid-column:1/-1}
+  .race-memory-story{grid-template-columns:1fr;gap:22px;margin-top:54px}
+  .race-memory-story header{position:static}
+  .race-memory-story h2{max-width:620px}
+}
+@media(max-width:520px){
+  .race-memory-hero h1{font-size:clamp(2.65rem,15vw,4.45rem)}
+  .race-memory-deck{font-size:1.28rem}
+  .race-memory-results{grid-template-columns:1fr}
+  .race-memory-finish{grid-column:auto}
+  .race-memory-photo img{border-radius:18px}
+  .race-memory-gallery{grid-template-columns:1fr}
+}
