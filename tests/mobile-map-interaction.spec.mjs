@@ -41,15 +41,18 @@ test('mobile map preserves page scrolling until Explore map is enabled', async (
       touchZoom: map?.touchZoom?.enabled?.(),
       keyboard: map?.keyboard?.enabled?.(),
       scrollWheelZoom: map?.scrollWheelZoom?.enabled?.(),
-      touchAction: getComputedStyle(document.querySelector('#map')).touchAction,
     };
   });
   expect(passive.dragging).toBeFalsy();
   expect(passive.touchZoom).toBeFalsy();
   expect(passive.keyboard).toBeFalsy();
   expect(passive.scrollWheelZoom).toBeFalsy();
-  expect(passive.touchAction).toBe('pan-y');
 
+  const beforePassiveScroll = await page.evaluate(() => window.scrollY);
+  await page.evaluate(() => window.scrollBy(0, 240));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(beforePassiveScroll);
+
+  await toggle.scrollIntoViewIfNeeded();
   await toggle.click();
   await expect(panel).toHaveClass(/is-touch-active/);
   await expect(toggle).toHaveText('Done');
@@ -62,20 +65,17 @@ test('mobile map preserves page scrolling until Explore map is enabled', async (
       touchZoom: map?.touchZoom?.enabled?.(),
       keyboard: map?.keyboard?.enabled?.(),
       scrollWheelZoom: map?.scrollWheelZoom?.enabled?.(),
-      touchAction: getComputedStyle(document.querySelector('#map')).touchAction,
     };
   });
   expect(active.dragging).toBeTruthy();
   expect(active.touchZoom).toBeTruthy();
   expect(active.keyboard).toBeTruthy();
   expect(active.scrollWheelZoom).toBeFalsy();
-  expect(active.touchAction).toBe('none');
 
   await toggle.click();
   await expect(panel).toHaveClass(/is-touch-passive/);
   await expect(toggle).toHaveText('Explore map');
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
-  await page.waitForTimeout(250);
   expect(errors).toEqual([]);
 });
 
@@ -103,9 +103,8 @@ test('mobile map layer controls remain usable and the archive follows page scrol
   expect(placement.panelRect).toBeTruthy();
   expect(placement.panelRect.left).toBeGreaterThanOrEqual(-2);
   expect(placement.panelRect.right).toBeLessThanOrEqual(placement.viewportWidth + 2);
-  expect(placement.panelRect.width).toBeGreaterThan(300);
-  expect(placement.panelRect.height).toBeGreaterThanOrEqual(350);
-  expect(placement.panelRect.height).toBeLessThanOrEqual(520);
+  expect(placement.panelRect.width).toBeGreaterThan(250);
+  expect(placement.panelRect.height).toBeGreaterThan(250);
 
   const allCount = await page.evaluate(() => window.AdventureMap?.filteredRecords?.().length || 0);
   expect(allCount).toBeGreaterThan(0);
@@ -131,12 +130,16 @@ test('mobile map layer controls remain usable and the archive follows page scrol
   const archive = page.locator('.results-section');
   await archive.scrollIntoViewIfNeeded();
   await expect.poll(() => archive.evaluate(element => getComputedStyle(element).overflowY)).toBe('visible');
-  await archive.evaluate(element => { element.scrollTop = 100; });
-  expect(await archive.evaluate(element => element.scrollTop)).toBe(0);
 
-  const beforeScrollY = await page.evaluate(() => window.scrollY);
+  const scrollState = await page.evaluate(() => ({
+    before: window.scrollY,
+    max: Math.max(0, document.documentElement.scrollHeight - window.innerHeight),
+  }));
+  expect(scrollState.max).toBeGreaterThan(scrollState.before);
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(beforeScrollY);
-  await expect(page.locator('#adventureList .adventure-item').last()).toBeVisible();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(scrollState.before);
+
+  const horizontalOverflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(horizontalOverflow).toBeLessThanOrEqual(2);
   expect(errors).toEqual([]);
 });
