@@ -59,6 +59,21 @@
           "aspect": "4:3"
         }
       ]
+    },
+    "colderbolder-2022": {
+      "headline": "A really cool event with great energy.",
+      "milestone": {
+        "label": "What stood out",
+        "value": "The event itself",
+        "note": "A day to enjoy, not chase a time"
+      },
+      "memoryTitle": "What I remember",
+      "memory": [
+        "I thought the COLDERBolder was a really cool event. The format stood out to me because there were a bunch of different races based on runners' finish times from a previous BOLDERBoulder or COLDERBolder. It gave the morning a different feel from a normal 5K.",
+        "I also remember thinking the Fieldhouse at CU Boulder was a very cool spot for the event. The whole atmosphere felt energetic and positive.",
+        "I was there by myself and was not chasing a particular time. I was really just there to enjoy the event, and that is what I remember most about it."
+      ],
+      "photos": []
     }
   }
 }
