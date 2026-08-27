@@ -6901,6 +6901,13 @@
         "10319011561"
       ],
       "elevationGainM": 318.2,
+      "companions": [
+        {
+          "name": "Frankie",
+          "relationship": "friend"
+        }
+      ],
+      "note": "Frankie joined me for the final leg at North Table Mountain on my new mountain bike. The initial climb was incredibly steep and I was not prepared for it, so I walked most of the way up. Once we were up, we had a great time on an epic trail, and light snow started falling toward the end. It was a great finish to the Colorado Triathlon.",
       "_catalogSource": "data/activity-days.json",
       "slug": "2023-12-02-north-table-mountain-mtb-day",
       "recordClass": "outing",
