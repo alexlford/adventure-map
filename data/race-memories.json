@@ -149,6 +149,33 @@
         "I really enjoyed the race, but I also finished it knowing how much room I had to improve. That is probably the biggest thing I remember from the ride: it was fun, it pushed me, and it gave me a very clear picture of the skills I still wanted to build."
       ],
       "photos": []
+    },
+    "colfax-5k-2024": {
+      "headline": "Running Colfax with Olive.",
+      "milestone": {
+        "label": "Together",
+        "value": "Olive + Basil",
+        "note": "A hot 5K with Leah and the dogs"
+      },
+      "memoryTitle": "What I remember",
+      "memory": [
+        "I ran the Colfax 5K with Olive, and Leah ran with Basil, Olive's sister. It was a hot day, but it was a really fun way to do the race together.",
+        "The heat is one of the things I remember most. At the finish they had little pools filled with ice water for the dogs, and Olive and Basil got to cool off right away.",
+        "That is what makes this 5K stand out in my memory: running it with Olive, sharing the day with Leah and Basil, and ending with the dogs cooling off together after the race."
+      ],
+      "photos": [
+        {
+          "src": "media/races/colfax-2024-olive-finish.webp",
+          "alt": "Alex and Olive crossing the finish line at the 2024 Denver Colfax 5K.",
+          "caption": "Crossing the Colfax 5K finish with Olive."
+        },
+        {
+          "src": "media/races/colfax-2024-dog-ice-pool.webp",
+          "alt": "Dogs cooling off in ice-water pools after the 2024 Denver Colfax 5K.",
+          "caption": "Olive and Basil cooling off in the ice-water pools after the hot 5K.",
+          "aspect": "4:3"
+        }
+      ]
     }
   }
 }
