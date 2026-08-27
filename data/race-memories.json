@@ -206,6 +206,21 @@
         "That is enough to define the 2024 race for me. Not every year needs a single big moment; sometimes the memory is simply how much I enjoyed being there again."
       ],
       "photos": []
+    },
+    "boulderthon-2024": {
+      "headline": "The hilly marathon where I hurt my Achilles and still finished.",
+      "milestone": {
+        "label": "Turning point",
+        "value": "Mile 18–19",
+        "note": "The pace slowed and never came back"
+      },
+      "memoryTitle": "What I remember",
+      "memory": [
+        "The first thing I remember about Boulderthon is how hilly the course was. It was a very demanding marathon, and the hills kept making themselves felt throughout the day.",
+        "Late in the race I injured my Achilles. Looking back at the GPS data, the change is visible around miles 18 to 19: the pace slows and, unlike the earlier hill-related slow patches, it never really comes back.",
+        "I still finished. That is the part of the race I want to remember most. The course was hard, my Achilles became a real problem late in the marathon, and I kept going all the way to the finish."
+      ],
+      "photos": []
     }
   }
 }
