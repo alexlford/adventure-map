@@ -11,6 +11,8 @@ on:
       - 'shared.template.js'
       - 'data/**'
       - 'detail.html'
+      - 'race-memory.js'
+      - 'race-memory.css'
       - 'index.html'
       - 'activities.html'
       - 'map.html'
