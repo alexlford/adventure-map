@@ -44,10 +44,17 @@
     const heroPhoto = photos[0];
     const gallery = photos.slice(1);
     const paragraphs = (memory.memory || []).filter(Boolean).map(text => `<p>${A.esc(text)}</p>`).join('');
+    const milestone = memory.milestone?.value ? `<div class="race-memory-stat race-memory-milestone"><small>${A.esc(memory.milestone.label || 'Milestone')}</small><strong>${A.esc(memory.milestone.value)}</strong><span>${A.esc(memory.milestone.note || '')}</span></div>` : '';
+    const finish = finishTime(record);
+    const finishCard = finish !== '—' ? `<div class="race-memory-stat race-memory-finish"><small>Official finish</small><strong>${A.esc(finish)}</strong><span>Official race result</span></div>` : '';
+    const distance = officialDistance(record);
+    const distanceCard = distance !== '—' ? `<div class="race-memory-stat"><small>Distance</small><strong>${A.esc(distance)}</strong><span>Official race distance</span></div>` : '';
     const goal = memory.goal?.label ? `<div class="race-memory-stat race-memory-goal"><small>Goal</small><strong>${A.esc(memory.goal.label)}</strong><span>${A.esc(memory.goal.status || '')}${memory.goal.status === 'Achieved' ? ' ✓' : ''}</span></div>` : '';
+    const resultCards = `${milestone}${finishCard}${distanceCard}${goal}`;
+    const results = resultCards ? `<div class="race-memory-results">${resultCards}</div>` : '';
     const resultLink = record.resultUrl ? `<a class="race-memory-source" href="${A.esc(record.resultUrl)}" target="_blank" rel="noopener">Official result ↗</a>` : '';
 
-    return `<section class="race-memory-hero"><p class="eyebrow">Race memory · ${A.esc(String(record.year || record.date?.slice(0, 4) || ''))}</p><h1>${A.esc(record.name)}</h1><p class="race-memory-meta">${A.esc(record.date ? A.formatDate(record.date) : '')}${record.location ? ` · ${A.esc(record.location)}` : ''}</p><p class="race-memory-deck">${A.esc(memory.headline || '')}</p><div class="race-memory-results"><div class="race-memory-stat race-memory-finish"><small>Official finish</small><strong>${A.esc(finishTime(record))}</strong><span>One result. The one that counted.</span></div><div class="race-memory-stat"><small>Distance</small><strong>${A.esc(officialDistance(record))}</strong><span>Official race distance</span></div>${goal}</div>${resultLink}</section>${heroPhoto ? photoFigure(heroPhoto, 'race-memory-photo-hero') : ''}<section class="race-memory-story"><header><p class="eyebrow">${A.esc(memory.memoryTitle || 'What I remember')}</p><h2>${A.esc(memory.headline || record.name)}</h2></header><div class="race-memory-story-copy">${paragraphs}</div></section>${gallery.length ? `<section class="race-memory-gallery" aria-label="Race photos">${gallery.map(photo => photoFigure(photo)).join('')}</section>` : ''}`;
+    return `<section class="race-memory-hero"><p class="eyebrow">Race memory · ${A.esc(String(record.year || record.date?.slice(0, 4) || ''))}</p><h1>${A.esc(record.name)}</h1><p class="race-memory-meta">${A.esc(record.date ? A.formatDate(record.date) : '')}${record.location ? ` · ${A.esc(record.location)}` : ''}</p><p class="race-memory-deck">${A.esc(memory.headline || '')}</p>${results}${resultLink}</section>${heroPhoto ? photoFigure(heroPhoto, 'race-memory-photo-hero') : ''}<section class="race-memory-story"><header><p class="eyebrow">${A.esc(memory.memoryTitle || 'What I remember')}</p><h2>${A.esc(memory.headline || record.name)}</h2></header><div class="race-memory-story-copy">${paragraphs}</div></section>${gallery.length ? `<section class="race-memory-gallery" aria-label="Race photos">${gallery.map(photo => photoFigure(photo)).join('')}</section>` : ''}`;
   }
 
   async function enhance() {
@@ -89,7 +96,8 @@
     }
     if (chronology) page.append(chronology);
 
-    const description = `${record.name} · ${finishTime(record)} · ${memory.headline || record.location || ''}`;
+    const finish = finishTime(record);
+    const description = `${record.name}${finish !== '—' ? ` · ${finish}` : ''} · ${memory.headline || record.location || ''}`;
     A.refreshMeta(description);
 
     requestAnimationFrame(() => {
