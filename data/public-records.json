@@ -4620,7 +4620,7 @@
       "routeStatus": "multi-activity-match",
       "matchSource": "Strava export",
       "matchConfidence": "high",
-      "note": "Self-described three-leg Colorado Triathlon: COLDERBolder 5K, alpine skiing, then a mountain-bike ride, all on the same day.",
+      "note": "I had just bought my first mountain bike and wanted to take it out before winter really hit. Since I was already running the COLDERBolder and planning to ride afterward, I figured I might as well get a quick ski in too. The result was my Colorado Triathlon: a 5K in Boulder, skiing at Eldora with Frankie, then mountain biking North Table Mountain with Frankie.",
       "_catalogSource": "data/notable-adventures.json",
       "slug": "2023-12-02-colorado-triathlon",
       "recordClass": "adventure",
@@ -4670,7 +4670,13 @@
       "routeStatus": "gps",
       "matchSource": "Strava export + user-confirmed Colorado Triathlon context",
       "matchConfidence": "confirmed",
-      "note": "Leg 2 of the self-described Colorado Triathlon: alpine skiing at Eldora between the COLDERBolder 5K and the North Table Mountain MTB leg.",
+      "companions": [
+        {
+          "name": "Frankie",
+          "relationship": "friend"
+        }
+      ],
+      "note": "Frankie joined me for leg two at Eldora. It was a typical December ski day, but one chairlift ride stuck with me: we met a new CU student who had just gotten back from the Yellowstone Club because his roommate had access. It was fascinating to hear about it in the middle of a quick ski leg.",
       "_catalogSource": "data/notable-adventures.json",
       "slug": "2023-12-02-colorado-triathlon-ski-leg",
       "recordClass": "adventure",
