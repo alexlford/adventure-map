@@ -8,6 +8,7 @@
   const MEMORY_SOURCES = [
     'data/race-memories.json',
     'data/race-memories-archive.json',
+    'data/race-memories-turkey-trots.json',
   ];
 
   const fetchJson = async path => {
