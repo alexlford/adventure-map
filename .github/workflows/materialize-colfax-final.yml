@@ -30,7 +30,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p media/races
-          base64 --decode tmp/colfax-direct-finish.b64 > media/races/colfax-2024-olive-finish.webp
+          cat tmp/colfax-finish-00.b64 tmp/colfax-finish-01.b64 tmp/colfax-finish-02.b64 tmp/colfax-finish-03.b64 tmp/colfax-finish-04.b64 | base64 --decode > media/races/colfax-2024-olive-finish.webp
           base64 --decode tmp/colfax-direct-pool2024.b64 > media/races/colfax-2024-dog-ice-pool.webp
           base64 --decode tmp/colfax-direct-pool2026.b64 > media/races/colfax-2026-olive-pool.webp
 
@@ -106,6 +106,8 @@ jobs:
         run: |
           set -euo pipefail
           rm -f tmp/colfax-direct-finish.b64 tmp/colfax-direct-pool2024.b64 tmp/colfax-direct-pool2026.b64
+          rm -f tmp/colfax-finish-00.b64 tmp/colfax-finish-01.b64 tmp/colfax-finish-02.b64 tmp/colfax-finish-03.b64 tmp/colfax-finish-04.b64
+          rm -f tmp/colfax-materialize.trigger
           rm -f .github/workflows/materialize-colfax-final.yml
 
           git config user.name "github-actions[bot]"
