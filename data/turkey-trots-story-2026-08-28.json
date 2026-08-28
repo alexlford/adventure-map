@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "source": "Existing verified Turkey Trot race records + Strava export + user confirmation",
+    "updatedOn": "2026-08-28",
+    "policy": "Preserve each Turkey Trot edition as an independently browsable event while grouping the full Thanksgiving tradition into one recurring Story."
+  },
+  "adventures": [
+    {
+      "id": "baltimore-virtual-turkey-trot-2020",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Gobble Cobble 2020 (Virtual)",
+      "year": 2020,
+      "date": "2020-11-26",
+      "distance": "5.48 km recorded",
+      "distanceKm": 5.4799,
+      "distanceMi": 3.40,
+      "location": "Baltimore, Maryland",
+      "region": "Maryland",
+      "participationMode": "virtual",
+      "stravaActivityId": "4395204902",
+      "stravaActivityName": "Thursday Afternoon Run",
+      "stravaDistanceKm": 5.4799,
+      "stravaDistanceMi": 3.40,
+      "stravaElapsedSeconds": 2166,
+      "stravaMovingSeconds": 1737,
+      "elevationGainM": 28.4,
+      "routeStatus": "gps",
+      "matchSource": "User confirmation + Thanksgiving Day Strava export",
+      "matchConfidence": "confirmed",
+      "note": "A brief virtual Gobble Cobble entry in Baltimore for Thanksgiving 2020. The matched Thanksgiving Day Strava activity records 5.48 km; no organizer distance or official finish time is asserted."
+    },
+    {
+      "id": "mile-high-turkey-trot-2021",
+      "note": "A sunny Thanksgiving morning at Washington Park with my wife and mom. I remember running well, but what stands out most is having fun together at my first Denver Turkey Trot."
+    },
+    {
+      "id": "mile-high-turkey-trot-2023",
+      "note": "Back at Washington Park with Olive. I arrived late and ran from the parking area to the start, so the full outing ended up longer than the nominal four-mile race."
+    },
+    {
+      "id": "springfield-turkey-trot-2024",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Springfield Turkey Trot",
+      "year": 2024,
+      "date": "2024-11-28",
+      "distance": "5.76 km recorded",
+      "distanceKm": 5.7591,
+      "distanceMi": 3.58,
+      "location": "University of Illinois Springfield, Springfield, Illinois",
+      "region": "Illinois",
+      "lat": 39.727932,
+      "lon": -89.619366,
+      "coordinatePrecision": "gps-start",
+      "participationMode": "in-person",
+      "activityType": "Walk",
+      "stravaActivityId": "13002340446",
+      "stravaActivityName": "Alex took Olive for a walk with her Fi Smart Collar",
+      "stravaDistanceKm": 5.7591,
+      "stravaDistanceMi": 3.58,
+      "stravaElapsedSeconds": 2341,
+      "stravaMovingSeconds": 2092,
+      "elevationGainM": 2.1,
+      "routeStatus": "gps",
+      "matchSource": "User confirmation + Thanksgiving morning Strava export and GPS",
+      "matchConfidence": "confirmed",
+      "note": "A fun Thanksgiving outing with Olive through the University of Illinois Springfield campus. The source activity is recorded as a Walk and covers 5.76 km; no organizer distance or official finish time is asserted."
+    },
+    {
+      "id": "mile-high-turkey-trot-2025",
+      "note": "Another great Thanksgiving at Washington Park with Olive. By 2025, the Turkey Trot had become a recurring part of the holiday tradition."
+    },
+    {
+      "id": "mile-high-united-way-turkey-trot-series",
+      "slug": "mile-high-united-way-turkey-trot-series",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Turkey Trots",
+      "year": 2018,
+      "date": "2018-11-22",
+      "endDate": "2025-11-27",
+      "distance": "Seven Thanksgiving editions · 2018–2025",
+      "location": "St. Louis · Baltimore · Denver · Springfield, Illinois",
+      "region": "Missouri / Maryland / Colorado / Illinois",
+      "routeStatus": "multi-event-gps",
+      "matchSource": "Official race records + Strava export + user confirmation",
+      "matchConfidence": "confirmed",
+      "note": "Seven Thanksgiving editions became one tradition that followed me from St. Louis to Baltimore, Denver, and Springfield. The individual race and event records keep their own names, results, GPS evidence, and memories while this Story connects the full 2018–2025 chronology."
+    }
+  ]
+}
