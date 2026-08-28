@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "updatedOn": "2026-08-28",
+  "source": "User-supplied Strava account export (export_16347985.zip)",
+  "description": "Audit evidence for legacy GPS recordings whose original exported GPX files were sampled at a fixed 10-second cadence. These routes are source-limited rather than over-simplified; published geometry must preserve essentially all source points and must not be synthetically densified.",
+  "records": [
+    {"id":"illinois-5k-2016","stravaActivityId":"641962419","sourceFile":"activities/708165062.gpx.gz","sourcePointCount":127,"sampleIntervalSeconds":10,"sourceDistanceKm":5.013},
+    {"id":"garmin-half-2016","stravaActivityId":"641962559","sourceFile":"activities/708165207.gpx.gz","sourcePointCount":621,"sampleIntervalSeconds":10,"sourceDistanceKm":21.147},
+    {"id":"rock-parkway-half-2016","stravaActivityId":"641962666","sourceFile":"activities/708165310.gpx.gz","sourcePointCount":649,"sampleIntervalSeconds":10,"sourceDistanceKm":21.213},
+    {"id":"big-12-run-12k-2016","stravaActivityId":"641962927","sourceFile":"activities/708165601.gpx.gz","sourcePointCount":376,"sampleIntervalSeconds":10,"sourceDistanceKm":12.072},
+    {"id":"illinois-half-2016","stravaActivityId":"641962439","sourceFile":"activities/708165072.gpx.gz","sourcePointCount":661,"sampleIntervalSeconds":10,"sourceDistanceKm":21.159},
+    {"id":"twin-cities-marathon-2015","stravaActivityId":"641964287","sourceFile":"activities/708167013.gpx.gz","sourcePointCount":1908,"sampleIntervalSeconds":10,"sourceDistanceKm":43.190}
+  ]
+}
