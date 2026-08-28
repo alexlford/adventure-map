@@ -38,7 +38,7 @@
   const finishTime = record => String(record.officialTime || record.result || '—').replace(/^0(?=\d:)/, '');
 
   const photoFigure = (photo, className = '') => {
-    const layoutClass = photo.layout === 'four-three' ? ' race-memory-photo-four-three' : '';
+    const layoutClass = photo.layout === 'four-three' || photo.aspect === '4:3' ? ' race-memory-photo-four-three' : '';
     return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async">${photo.caption ? `<figcaption>${A.esc(photo.caption)}</figcaption>` : ''}</figure>`;
   };
 
