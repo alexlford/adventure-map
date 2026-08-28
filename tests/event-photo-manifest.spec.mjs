@@ -26,7 +26,10 @@ test('event photo manifest enriches canonical records and renders on detail page
   await page.goto(`/detail.html?record=${encodeURIComponent(chicago.slug || chicago.id)}`, { waitUntil: 'domcontentloaded' });
   const photo = page.locator('#recordMedia img[src*="assets/event-photos/races/chicago-marathon-2021/"]').first();
   await expect(photo).toBeVisible();
-  await expect(photo).toHaveJSProperty('complete', true);
+  await photo.scrollIntoViewIfNeeded();
+  await expect.poll(() => photo.evaluate(node => ({ complete: node.complete, naturalWidth: node.naturalWidth })), {
+    message: 'lazy event photo should finish loading after it enters the viewport'
+  }).toMatchObject({ complete: true });
   expect(await photo.evaluate(node => node.naturalWidth)).toBeGreaterThan(0);
 });
 
