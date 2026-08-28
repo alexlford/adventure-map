@@ -1,1 +1,0 @@
-Audit scope: all race/adventure narratives added or completed on 2026-08-28. Verification is enforced by tests/narratives-2026-08-28.spec.mjs.
