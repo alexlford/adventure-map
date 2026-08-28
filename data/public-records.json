@@ -471,7 +471,7 @@
       "lat": 39.37667,
       "lon": -106.12112,
       "coordinatePrecision": "summit",
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "_catalogSource": "data/adventures.json",
       "date": "2020-09-12",
       "stravaActivityId": "4312782595",
@@ -509,9 +509,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4312782595"
+      ]
     },
     {
       "id": "haleakala",
@@ -1999,7 +2002,7 @@
       "elapsedSeconds": 7068,
       "movingSeconds": 7033,
       "elevationGainM": 92.1,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava export",
       "matchConfidence": "high",
       "_catalogSource": "data/discovered-races.json",
@@ -2028,9 +2031,12 @@
         "confidence": "high"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641968887"
+      ]
     },
     {
       "id": "abes-amble-2014",
@@ -2052,7 +2058,7 @@
       "elapsedSeconds": 3789,
       "movingSeconds": 3754,
       "elevationGainM": 44.4,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Exact 2014 event date + exact 7:30 AM local Strava start + 10.101 km GPS recording beginning at the Illinois State Fairgrounds + SRRC historical race listing",
       "matchConfidence": "verified",
       "_catalogSource": "data/strava-mining-2026-08-11k.json",
@@ -2091,9 +2097,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641968068"
+      ]
     },
     {
       "id": "pi-day-half-2015",
@@ -2116,7 +2125,7 @@
       "elapsedSeconds": 6629,
       "movingSeconds": 6610,
       "elevationGainM": 0,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava export + user confirmation of trail race",
       "matchConfidence": "confirmed",
       "note": "User confirms the Pi Day River Rotation Half Marathon was a trail race in Lawrence.",
@@ -2146,9 +2155,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641966412"
+      ]
     },
     {
       "id": "illinois-5k-2015",
@@ -2169,7 +2181,7 @@
       "distanceMi": 1.13,
       "elapsedSeconds": 1398,
       "movingSeconds": 1355,
-      "routeStatus": "partial-recording",
+      "routeStatus": "gps",
       "matchSource": "Strava export",
       "matchConfidence": "confirmed",
       "note": "2015 Illinois 5K. The Strava file is only a partial recording; event distance is the official 5K distance.",
@@ -2206,9 +2218,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "partial-recording",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641965799"
+      ]
     },
     {
       "id": "rock-parkway-half-2016",
@@ -2233,7 +2248,7 @@
       "elevationGainM": 85.4,
       "officialTime": "1:47:58.7",
       "officialPlace": 696,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Official named result + Heartland Series team listing + exact-date Strava GPS",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
@@ -2281,9 +2296,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641962666"
+      ]
     },
     {
       "id": "garmin-half-2016",
@@ -2306,7 +2324,7 @@
       "elapsedSeconds": 6196,
       "movingSeconds": 6196,
       "elevationGainM": 106.2,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Official OnlineRaceResults named result + exact-date Strava GPS + Heartland 39.3 series context",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
@@ -2360,9 +2378,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641962559"
+      ]
     },
     {
       "id": "illinois-5k-2016",
@@ -2385,7 +2406,7 @@
       "elapsedSeconds": 1257,
       "movingSeconds": 1257,
       "elevationGainM": 0,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Official named 5K result + Illinois Half I-Challenge weekend context + exact-date Strava GPS",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
@@ -2427,9 +2448,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641962419"
+      ]
     },
     {
       "id": "illinois-half-2016",
@@ -2452,7 +2476,7 @@
       "elapsedSeconds": 6598,
       "movingSeconds": 6538,
       "elevationGainM": 26.7,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Official named Half Marathon result + Illinois Half I-Challenge weekend context + exact-date Strava GPS",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
@@ -2494,9 +2518,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641962439"
+      ]
     },
     {
       "id": "running-with-cows-half-2016",
@@ -2519,7 +2546,7 @@
       "elapsedSeconds": 6224,
       "movingSeconds": 6166,
       "elevationGainM": 113,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Official named result + Heartland 39.3 team listing + exact-date Strava GPS",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
@@ -2563,9 +2590,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641962333"
+      ]
     },
     {
       "id": "big-ten-10k-2016",
@@ -2586,7 +2616,7 @@
       "stravaActivityName": "Running 8/6/16 7:00 am",
       "elapsedSeconds": 2978,
       "movingSeconds": 2946,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "User confirmation + Strava exact event date/time/distance + historical Chicago event schedule",
       "matchConfidence": "verified",
       "note": "Previously rejected as a Red Dog Run candidate; user confirmation and the exact 2016 BTN Big 10K race date resolve the activity.",
@@ -2616,9 +2646,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4312806997"
+      ]
     },
     {
       "id": "disney-princess-half-2018",
@@ -2638,7 +2671,7 @@
       "stravaActivityId": "4312794804",
       "stravaActivityName": "Sunday Morning Run",
       "elapsedSeconds": 11262,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "User confirmation + Strava exact event date/distance + runDisney historical schedule",
       "matchConfidence": "verified",
       "note": "Strava records a 21.22 km run on the exact date of the 2018 Disney Princess Half Marathon.",
@@ -2668,9 +2701,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4312794804"
+      ]
     },
     {
       "id": "colfax-half-2021",
@@ -2692,7 +2728,7 @@
       "elapsedSeconds": 8079,
       "movingSeconds": 8005,
       "elevationGainM": 106.2,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava export",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11c.json",
@@ -2728,9 +2764,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-6123940860"
+      ]
     },
     {
       "id": "staunton-rocks-half-2022",
@@ -2755,7 +2794,7 @@
       "officialTime": "3:12:14",
       "officialPlace": 127,
       "bib": "62",
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Official named result + bib 62 medal/photo evidence + exact-date Strava trail activity",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
@@ -2813,9 +2852,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-7711293400"
+      ]
     },
     {
       "id": "colderbolder-2023",
@@ -2838,7 +2880,7 @@
       "movingSeconds": 1584,
       "elevationGainM": 51,
       "officialTime": "25:49",
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava export + official race results",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides.json",
@@ -2874,9 +2916,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-10317055162"
+      ]
     },
     {
       "id": "colfax-5k-2024",
@@ -2898,7 +2943,7 @@
       "elapsedSeconds": 2171,
       "movingSeconds": 2104,
       "elevationGainM": 15,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava export",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11c.json",
@@ -2934,9 +2979,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-11440407183"
+      ]
     },
     {
       "id": "bolderboulder-2024",
@@ -2958,7 +3006,7 @@
       "elapsedSeconds": 3724,
       "movingSeconds": 3671,
       "elevationGainM": 44,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Official named result + existing exact-date BOLDERBoulder Strava activity",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11h.json",
@@ -3031,9 +3079,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-11509394019"
+      ]
     },
     {
       "id": "rippetoe-rucksack-2025",
@@ -3055,7 +3106,7 @@
       "elapsedSeconds": 3963,
       "movingSeconds": 3952,
       "elevationGainM": 42,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "User medal + official event date/distance + exact-date Strava activity",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11e.json",
@@ -3095,9 +3146,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-16395842302"
+      ]
     },
     {
       "id": "mile-high-turkey-trot-2025",
@@ -3119,7 +3173,7 @@
       "elapsedSeconds": 2516,
       "movingSeconds": 2502,
       "elevationGainM": 32,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Exact Thanksgiving Day date + Strava activity explicitly named Turkey Trot + 6.494 km recording + approximately 10:02 AM local start matching the organizer's 10:00 AM Wave 3 + Washington Park event identity",
       "matchConfidence": "verified",
       "_catalogSource": "data/turkey-trots-story-2026-08-28.json",
@@ -3158,9 +3212,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-16584355003"
+      ]
     },
     {
       "id": "colfax-5k-2026",
@@ -3182,7 +3239,7 @@
       "elapsedSeconds": 1951,
       "movingSeconds": 1915,
       "elevationGainM": 23,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava export",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11c.json",
@@ -3218,9 +3275,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-18531584324"
+      ]
     },
     {
       "id": "colfax-urban-10-2026",
@@ -3242,7 +3302,7 @@
       "elapsedSeconds": 5599,
       "movingSeconds": 5585,
       "elevationGainM": 76,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava export",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11c.json",
@@ -3278,9 +3338,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-18545647595"
+      ]
     },
     {
       "id": "run-snetterton-10k-2026",
@@ -3302,7 +3365,7 @@
       "elapsedSeconds": 3284,
       "movingSeconds": 3281,
       "elevationGainM": 27,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava export",
       "matchConfidence": "high",
       "_catalogSource": "data/discovered-races.json",
@@ -3331,9 +3394,12 @@
         "confidence": "high"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-19519345106"
+      ]
     },
     {
       "id": "rebel-run-5k-2015",
@@ -3357,7 +3423,7 @@
       "elevationGainM": 20,
       "officialTime": "26:40",
       "officialPlace": 17,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Official individual result + exact-date 5K-scale Strava GPS in Lawrence",
       "matchConfidence": "verified",
       "resultUrl": "https://www.runlawrence.org/2015/15Mar28RebelRun5K/2015Results.html",
@@ -3397,9 +3463,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641966162"
+      ]
     },
     {
       "id": "shamrock-shuffle-10k-2015",
@@ -3419,7 +3488,7 @@
       "stravaActivityId": "641966512",
       "stravaActivityName": "Lawrence - Noria",
       "elapsedSeconds": 3293,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Historical calendar lists the Lawrence Shamrock Shuffle 5K/10K on March 7, 2015 + Strava begins at about 8:59 AM local at 38.97689,-95.236176 near Johnny's North, records 10.2937 km, and returns to the same start/finish area; the modern official event preserves the same 9:00 AM Johnny's North start and North Lawrence course identity",
       "matchConfidence": "verified",
       "note": "Enriches the existing stable Shamrock Shuffle record. The historical calendar places the 5K/10K on the exact date; the GPS activity begins one minute before the race's longstanding 9:00 AM start at Johnny's North and follows a 10K-scale North Lawrence route. No indexed 2015 individual timing row has been recovered, so 54:53 is retained only as the Strava elapsed-time fallback.",
@@ -3458,9 +3527,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641966512"
+      ]
     },
     {
       "id": "big-12-run-12k-2016",
@@ -3514,7 +3586,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641962927"
+      ]
     },
     {
       "id": "snowman-shuffle-2006",
@@ -3784,7 +3859,7 @@
       "stravaElapsedSeconds": 1509,
       "stravaMovingSeconds": 1509,
       "elevationGainM": 10.5,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Strava activity description 'Ugly Sweater Run!' + exact December 1, 2012 date + 2:07 PM Watson Park GPS start + contemporary Lawrence event coverage + user confirmation",
       "matchConfidence": "confirmed",
       "note": "User confirms this was a fun run rather than a formal 5K race. The matched Strava activity begins at 2:07 PM from Watson Park and its own description says 'Ugly Sweater Run!'. Strava recorded 3.9461 km in 25:09; those metrics are retained as personal activity evidence without asserting an official race distance or result.",
@@ -3814,9 +3889,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-643102245"
+      ]
     },
     {
       "id": "snowman-shuffle-2021-virtual",
@@ -3840,7 +3918,7 @@
       "stravaElapsedSeconds": 1688,
       "stravaMovingSeconds": 1681,
       "elevationGainM": 23.3,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "User instruction to treat the 2021 virtual Snowman Shuffle as completed + January 10, 2021 Strava 5.06 km activity",
       "matchConfidence": "confirmed",
       "participationMode": "virtual",
@@ -3871,9 +3949,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4676340941"
+      ]
     },
     {
       "id": "colderbolder-2022",
@@ -3892,7 +3973,7 @@
       "elapsedSeconds": 1702,
       "movingSeconds": 1696,
       "elevationGainM": 44,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava export + user confirmation",
       "matchConfidence": "confirmed",
       "note": "User medal and Strava agree with the organizer's contemporaneous December 10, 2022 event date. A later historical archive page labels the event December 3; that later metadata discrepancy is retained as provenance, not used to overwrite the contemporaneous date.",
@@ -3930,9 +4011,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-8232311338"
+      ]
     },
     {
       "id": "royal-gorge-groove-5k-2024",
@@ -3954,7 +4038,7 @@
       "stravaActivityName": "Nike Run Club: Saturday Morning Run",
       "elapsedSeconds": 2483,
       "elevationGainM": 127,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava exact date/distance + user memory + historical Royal Gorge Groove schedule",
       "matchConfidence": "verified",
       "note": "Saturday trail-running leg of a back-to-back Royal Gorge Groove weekend. Strava recorded 5.66 km with 127 m of gain.",
@@ -3984,9 +4068,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-11224486648"
+      ]
     },
     {
       "id": "royal-gorge-groove-mtb-2024",
@@ -4008,7 +4095,7 @@
       "stravaActivityName": "Morning Mountain Bike Ride",
       "elapsedSeconds": 10611,
       "elevationGainM": 415,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Strava export + user confirmation + historical event schedule",
       "matchConfidence": "confirmed",
       "note": "Sunday mountain-bike race of the Royal Gorge Groove weekend.",
@@ -4038,9 +4125,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-11234156794"
+      ]
     },
     {
       "id": "colfax-5k-2025",
@@ -4069,7 +4159,7 @@
       "routeFeatureIds": [
         "strava-14509902400"
       ],
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "User confirmation + exact-date 5.12 km Strava GPS + Denver Colfax 5K schedule and City Park start",
       "matchConfidence": "confirmed",
       "resultUrl": "https://www.runcolfax.org/races/race-results/",
@@ -4100,7 +4190,7 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
       }
     },
@@ -4542,7 +4632,7 @@
         "activity-nordic-day-2022-01-02",
         "activity-nordic-day-2022-01-03"
       ],
-      "routeStatus": "multi-activity-gps",
+      "routeStatus": "gps",
       "matchSource": "Strava GPS export + GPS location reconstruction",
       "matchConfidence": "high",
       "note": "A two-day cross-country ski weekend at Tennessee Pass Nordic Center outside Leadville. Back-to-back outings on January 2–3 totaled 15.00 miles and about 811 feet of climbing, turning the individual ski logs into one winter weekend story.",
@@ -4572,7 +4662,7 @@
         "confidence": "high"
       },
       "routeInfo": {
-        "status": "multi-activity-gps",
+        "status": "gps",
         "provenance": null
       }
     },
@@ -4696,7 +4786,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-9642214422"
+      ]
     },
     {
       "id": "colorado-triathlon-2023",
@@ -4707,7 +4800,7 @@
       "date": "2023-12-02",
       "location": "Colorado Front Range",
       "region": "Colorado",
-      "routeStatus": "multi-activity-match",
+      "routeStatus": "gps",
       "matchSource": "Strava export",
       "matchConfidence": "high",
       "note": "I had just bought my first mountain bike and wanted to take it out before winter really hit. Since I was already running the COLDERBolder and planning to ride afterward, I figured I might as well get a quick ski in too. The result was my Colorado Triathlon: a 5K in Boulder, skiing at Eldora with Frankie, then mountain biking North Table Mountain with Frankie.",
@@ -4737,9 +4830,12 @@
         "confidence": "high"
       },
       "routeInfo": {
-        "status": "multi-activity-match",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-10317055162"
+      ]
     },
     {
       "id": "ski-colorado-triathlon-leg",
@@ -4871,7 +4967,7 @@
         "activity-mtb-day-2025-06-06",
         "activity-mtb-day-2025-06-07"
       ],
-      "routeStatus": "multi-activity-gps",
+      "routeStatus": "gps",
       "matchSource": "Strava export + MTB archive",
       "matchConfidence": "confirmed",
       "note": "A long weekend built around three consecutive pedal-powered mountain-bike days on the Kokopelli trail system near Loma and Fruita. Across June 5–7, the rides totaled 27.51 miles and about 2,181 feet of climbing, turning three individual activity logs into one memorable Western Colorado trip.",
@@ -4901,7 +4997,7 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "multi-activity-gps",
+        "status": "gps",
         "provenance": null
       }
     },
@@ -4921,7 +5017,7 @@
       "distanceMi": 20.48,
       "descentM": 5326,
       "runs": 14,
-      "routeStatus": "strava-record",
+      "routeStatus": "gps",
       "matchSource": "Strava export + Slopes reconciliation",
       "matchConfidence": "high",
       "note": "A stand-alone Big Sky ski objective around Lone Mountain: 14 recorded runs, 32.96 km, and 5,326 m of recorded descent.",
@@ -4951,9 +5047,12 @@
         "confidence": "high"
       },
       "routeInfo": {
-        "status": "strava-record",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-17688751938"
+      ]
     },
     {
       "id": "west-maroon-pass-2026",
@@ -4965,7 +5064,7 @@
       "endDate": "2026-06-30",
       "location": "Elk Mountains, Colorado",
       "region": "Colorado",
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Strava export / summitbag annotation",
       "matchConfidence": "high",
       "distanceKm": 36.04,
@@ -4998,9 +5097,12 @@
         "confidence": "high"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-19122155622"
+      ]
     },
     {
       "id": "chicago-marathon-series",
@@ -5124,7 +5226,7 @@
         "brew-to-brew-historical-course",
         "strava-643096101"
       ],
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "User confirmation + exact-date Strava FIT + Copart Auto Auctions GPS start + historical Brew to Brew team-relay date/course documentation",
       "matchConfidence": "confirmed",
       "sourceUrl": "https://universityextras.com/letsgorun.com/upcoming-events/2013-race-calendar",
@@ -5156,7 +5258,7 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
       }
     },
@@ -5175,7 +5277,7 @@
       "lat": 39.048164,
       "lon": -94.48818,
       "coordinatePrecision": "gps-start",
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "User BeerFit 5K Classic finisher medal + exact June 4, 2016 Strava 5K-scale run + GPX start at Arrowhead Stadium",
       "matchConfidence": "verified",
       "note": "The previously medal-confirmed BeerFit entry is now tied to Strava activity 641962129. The GPX starts at 39.048164,-94.488180 at the Arrowhead complex and records 4.9865 km. No indexed individual official timing record was recovered, so 22:43 is shown only as Strava elapsed time.",
@@ -5215,9 +5317,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641962129"
+      ]
     },
     {
       "id": "smr-stampede-ranch-hand-skate-2022",
@@ -5236,7 +5341,7 @@
       "lon": -105.9408,
       "coordinatePrecision": "gps-course",
       "elapsedSeconds": 14011,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Strava export + user confirmation",
       "matchConfidence": "confirmed",
       "note": "Saturday freestyle/skate leg of the two-day Ranch Hand challenge.",
@@ -5266,9 +5371,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-6814188054"
+      ]
     },
     {
       "id": "smr-stampede-ranch-hand-classic-2022",
@@ -5287,7 +5395,7 @@
       "lon": -105.9408,
       "coordinatePrecision": "gps-course",
       "elapsedSeconds": 11541,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Strava export + user confirmation",
       "matchConfidence": "confirmed",
       "note": "Sunday 25K Classic leg of the Ranch Hand challenge. User confirms the Snow Mountain Ranch 1st Place Age Class award belongs to this race.",
@@ -5326,9 +5434,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-6819611723"
+      ]
     },
     {
       "id": "frisco-brewski-2024",
@@ -5380,7 +5491,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-10926255561"
+      ]
     },
     {
       "id": "bolderboulder-2022",
@@ -5404,7 +5518,7 @@
       "elevationGainM": 66.3,
       "officialTime": "54:10",
       "officialPlace": 3824,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava exact date/distance/location + published BOLDERBoulder result",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11h.json",
@@ -5474,9 +5588,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-7226710306"
+      ]
     },
     {
       "id": "bolderboulder-2023",
@@ -5498,7 +5615,7 @@
       "elapsedSeconds": 3512,
       "movingSeconds": 3505,
       "elevationGainM": 65.8,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava exact Memorial Day date/distance/Folsom Stadium location + BOLDERBoulder event archive",
       "matchConfidence": "high",
       "_catalogSource": "data/medal-recovered.json",
@@ -5527,9 +5644,12 @@
         "confidence": "high"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-9163211220"
+      ]
     },
     {
       "id": "baltimore-5k-2018",
@@ -5552,7 +5672,7 @@
       "elapsedSeconds": 1721,
       "movingSeconds": 1659,
       "elevationGainM": 17,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Medal photo + paired Strava activity + Baltimore Running Festival results/schedule",
       "matchConfidence": "verified",
       "_catalogSource": "data/medal-recovered.json",
@@ -5581,9 +5701,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4312792085"
+      ]
     },
     {
       "id": "baltimore-half-2018",
@@ -5606,7 +5729,7 @@
       "elapsedSeconds": 8104,
       "movingSeconds": 7287,
       "elevationGainM": 189.9,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Official individual result + same-day BaltiMORON medal evidence + exact-date Strava half-marathon recording",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides-2026-08-11i.json",
@@ -5651,9 +5774,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4312792178"
+      ]
     },
     {
       "id": "baltimoron-2018",
@@ -5722,7 +5848,7 @@
       "elapsedSeconds": 1568,
       "movingSeconds": 1527,
       "elevationGainM": 4.3,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Medal photo + Strava exact race-weekend date/distance/location + Abbott Chicago 5K archive",
       "matchConfidence": "verified",
       "_catalogSource": "data/medal-recovered.json",
@@ -5751,9 +5877,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-6088254839"
+      ]
     },
     {
       "id": "colderbolder-2024",
@@ -5777,7 +5906,7 @@
       "elevationGainM": 52,
       "officialTime": "30:37",
       "bib": "1844",
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Strava exact date/distance + official BOLDERBoulder result under Alex Ford",
       "matchConfidence": "verified",
       "_catalogSource": "data/official-results-overrides.json",
@@ -5817,9 +5946,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-13066323551"
+      ]
     },
     {
       "id": "flying-pig-5k-2025",
@@ -5841,7 +5973,7 @@
       "elapsedSeconds": 1892,
       "movingSeconds": 1870,
       "elevationGainM": 46,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "Medal photo + Strava exact date/distance + official Flying Pig weekend schedule",
       "matchConfidence": "confirmed",
       "_catalogSource": "data/official-results-overrides-2026-08-11b.json",
@@ -5878,9 +6010,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-14364821809"
+      ]
     },
     {
       "id": "bolderboulder-2025",
@@ -5962,7 +6097,7 @@
       "stravaDistanceKm": 5,
       "stravaDistanceMi": 3.11,
       "stravaElapsedSeconds": 1651,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "User medal dated June 3, 2020 + exact-date 5.00 km Strava run",
       "matchConfidence": "confirmed",
       "note": "The medal is branded Universal Sole Virtual 5K/10K; the exact-date Strava activity is 5.00 km, resolving this entry as the 5K distance.",
@@ -5992,9 +6127,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4312783900"
+      ]
     },
     {
       "id": "rudolph-ramble-5k-2021",
@@ -6022,7 +6160,7 @@
       "stravaDistanceKm": 4.92,
       "stravaDistanceMi": 3.06,
       "stravaElapsedSeconds": 1819,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "resultSource": "RunDenver/HAL Sports historical event archive",
       "matchSource": "User finisher medal + exact-date Strava 5K-scale run + organizer archive",
       "matchConfidence": "verified",
@@ -6052,9 +6190,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-6347969246"
+      ]
     },
     {
       "id": "polar-bear-5k-2022",
@@ -6082,7 +6223,7 @@
       "stravaDistanceKm": 5.14,
       "stravaDistanceMi": 3.19,
       "stravaElapsedSeconds": 1861,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "resultSource": "RunDenver/HAL Sports historical event archive",
       "matchSource": "User finisher medal + exact-date Strava 5K-scale run + organizer archive",
       "matchConfidence": "verified",
@@ -6112,9 +6253,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-6535048864"
+      ]
     },
     {
       "id": "super-bowl-5k-2022",
@@ -6140,7 +6284,7 @@
       "stravaDistanceKm": 5.093,
       "stravaDistanceMi": 3.16,
       "stravaElapsedSeconds": 2274,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "RunDenver 2022 Super Bowl 5K result archive",
       "matchSource": "User finisher medal + RunDenver 2022 archive + virtual-completion Strava activity within the organizer's one-week reporting window",
       "matchConfidence": "high",
@@ -6171,9 +6315,12 @@
         "confidence": "high"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-6674072473"
+      ]
     },
     {
       "id": "valentines-day-4m-2022",
@@ -6199,7 +6346,7 @@
       "stravaDistanceKm": 6.524,
       "stravaDistanceMi": 4.05,
       "stravaElapsedSeconds": 2425,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "RunDenver/HAL Sports February 13, 2022 event archive",
       "matchSource": "User finisher medal + official event date/distance + virtual-completion Strava activity within the organizer's one-week reporting window",
       "matchConfidence": "verified",
@@ -6230,9 +6377,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-6713570022"
+      ]
     },
     {
       "id": "that-dam-run-10k-2022",
@@ -6259,7 +6409,7 @@
       "stravaDistanceKm": 10.03,
       "stravaDistanceMi": 6.23,
       "stravaElapsedSeconds": 3602,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "RunDenver/HAL Sports That Dam Run 2022 event and virtual-results rules",
       "resultUrl": "https://www.rundenverseries.com/thatdamrun",
       "matchSource": "User That Dam Run medal + official March 19 event date + exact 10K-scale Strava completion on March 23 within RunDenver's virtual-results window",
@@ -6291,9 +6441,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-6872397933"
+      ]
     },
     {
       "id": "illinois-i-challenge-2015",
@@ -6491,7 +6644,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2022-07-16"
+      ]
     },
     {
       "id": "mtb-day-2024-07-27",
@@ -6539,7 +6695,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2024-07-27"
+      ]
     },
     {
       "id": "mtb-day-2024-08-31",
@@ -6587,7 +6746,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2024-08-31"
+      ]
     },
     {
       "id": "mtb-day-2026-08-05",
@@ -6635,7 +6797,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2026-08-05"
+      ]
     },
     {
       "id": "mtb-day-2025-06-05",
@@ -6684,7 +6849,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2025-06-05"
+      ]
     },
     {
       "id": "mtb-day-2025-06-06",
@@ -6733,7 +6901,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2025-06-06"
+      ]
     },
     {
       "id": "mtb-day-2025-06-07",
@@ -6782,7 +6953,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2025-06-07"
+      ]
     },
     {
       "id": "mtb-day-2025-10-05",
@@ -6830,7 +7004,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2025-10-05"
+      ]
     },
     {
       "id": "mtb-day-2025-09-28",
@@ -6878,7 +7055,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2025-09-28"
+      ]
     },
     {
       "id": "mtb-day-2025-07-11",
@@ -6927,7 +7107,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2025-07-11"
+      ]
     },
     {
       "id": "mtb-day-2023-09-24",
@@ -6975,7 +7158,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2023-09-24"
+      ]
     },
     {
       "id": "mtb-day-2023-12-02",
@@ -7031,7 +7217,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2023-12-02"
+      ]
     },
     {
       "id": "mtb-day-2026-05-24",
@@ -7081,7 +7270,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-mtb-day-2026-05-24"
+      ]
     },
     {
       "id": "nordic-day-2022-02-03",
@@ -7129,7 +7321,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2022-02-03"
+      ]
     },
     {
       "id": "nordic-day-2022-02-05",
@@ -7177,7 +7372,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2022-02-05"
+      ]
     },
     {
       "id": "nordic-day-2025-03-19",
@@ -7225,7 +7423,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2025-03-19"
+      ]
     },
     {
       "id": "nordic-day-2025-03-27",
@@ -7273,7 +7474,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2025-03-27"
+      ]
     },
     {
       "id": "nordic-day-2025-04-01",
@@ -7321,7 +7525,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2025-04-01"
+      ]
     },
     {
       "id": "nordic-day-2025-03-30",
@@ -7371,7 +7578,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2025-03-30"
+      ]
     },
     {
       "id": "nordic-day-2023-01-28",
@@ -7419,7 +7629,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2023-01-28"
+      ]
     },
     {
       "id": "nordic-day-2024-01-07",
@@ -7467,7 +7680,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2024-01-07"
+      ]
     },
     {
       "id": "nordic-day-2023-01-08",
@@ -7515,7 +7731,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2023-01-08"
+      ]
     },
     {
       "id": "nordic-day-2023-01-11",
@@ -7563,7 +7782,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2023-01-11"
+      ]
     },
     {
       "id": "nordic-day-2023-01-21",
@@ -7611,7 +7833,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2023-01-21"
+      ]
     },
     {
       "id": "nordic-day-2022-01-22",
@@ -7659,7 +7884,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2022-01-22"
+      ]
     },
     {
       "id": "nordic-day-2022-01-02",
@@ -7708,7 +7936,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2022-01-02"
+      ]
     },
     {
       "id": "nordic-day-2022-01-03",
@@ -7757,7 +7988,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2022-01-03"
+      ]
     },
     {
       "id": "nordic-day-2021-01-16",
@@ -7805,7 +8039,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2021-01-16"
+      ]
     },
     {
       "id": "nordic-day-2022-02-16",
@@ -7853,7 +8090,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2022-02-16"
+      ]
     },
     {
       "id": "nordic-day-2022-02-13",
@@ -7902,7 +8142,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2022-02-13"
+      ]
     },
     {
       "id": "nordic-day-2022-02-19",
@@ -7950,7 +8193,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2022-02-19"
+      ]
     },
     {
       "id": "nordic-day-2023-03-01",
@@ -7998,7 +8244,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "activity-nordic-day-2023-03-01"
+      ]
     },
     {
       "id": "colfax-urban-10-2024",
@@ -8027,7 +8276,7 @@
       "stravaDistanceKm": 16.1732,
       "stravaDistanceMi": 10.05,
       "stravaElapsedSeconds": 6272,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "User 2024 Urban 10 medal + Strava GPS/date/distance + Denver Colfax official 2024 medal and race sources",
       "matchConfidence": "verified",
       "resultSource": "Denver Colfax official Urban 10 race/medal archive; individual chip result pending machine recovery",
@@ -8058,9 +8307,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-11449222885"
+      ]
     },
     {
       "id": "estes-park-half-2021",
@@ -8086,7 +8338,7 @@
       "stravaElapsedSeconds": 8833,
       "stravaMovingSeconds": 8663,
       "elevationGainM": 66.5,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "User medal + Strava exact event date/location + official results archive",
       "matchConfidence": "verified",
       "resultSource": "Estes Park Marathon official results archive + user medal",
@@ -8120,9 +8372,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-5503854364"
+      ]
     },
     {
       "id": "baltimore-shamrock-5k-2020-deferred-virtual",
@@ -8147,7 +8402,7 @@
       "stravaDistanceMi": 3.12,
       "stravaElapsedSeconds": 1550,
       "stravaMovingSeconds": 1546,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "2020 cancellation/deferment announcement + 2021 Baltimore Shamrock virtual participation instructions",
       "resultUrl": "https://patch.com/maryland/baltimore/baltimore-cancels-st-patricks-day-parade",
       "matchSource": "User 2020 B3 registration/medal evidence + official deferment + organizer instructions to 2020 registrants + exact 5.02 km Strava completion on the final permitted virtual day",
@@ -8179,9 +8434,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-5115941734"
+      ]
     },
     {
       "id": "rocky-mountain-5k-2025",
@@ -8205,7 +8463,7 @@
       "stravaDistanceKm": 5.08,
       "stravaDistanceMi": 3.16,
       "stravaElapsedSeconds": 1751,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "Vacation Races / official-linked RunSignup results archive",
       "resultUrl": "https://runsignup.com/Race/Results/39582?resultSetId=395048",
       "matchSource": "User medal + official results portal + Strava",
@@ -8240,9 +8498,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-15313567459"
+      ]
     },
     {
       "id": "rocky-mountain-half-2025",
@@ -8266,7 +8527,7 @@
       "stravaDistanceKm": 21.12,
       "stravaDistanceMi": 13.12,
       "stravaElapsedSeconds": 8889,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "Vacation Races / official-linked RunSignup results archive",
       "resultUrl": "https://runsignup.com/Race/Results/39582?resultSetId=395048",
       "matchSource": "User medal + official results portal + Strava",
@@ -8301,9 +8562,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-15319820628"
+      ]
     },
     {
       "id": "mile-high-turkey-trot-2021",
@@ -8328,7 +8592,7 @@
       "stravaElapsedSeconds": 1872,
       "stravaMovingSeconds": 1868,
       "elevationGainM": 20.4,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "resultSource": "HAL Sports 2021 event-results archive + Mile High United Way event identity",
       "resultUrl": "https://halsports.acclarodev.com/results/",
       "matchSource": "Exact Thanksgiving Day date + 4.03-mile GPS recording + Washington Park start/finish + near-identical route geometry to the independently verified 2025 Mile High United Way Turkey Trot course",
@@ -8360,9 +8624,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-6311007412"
+      ]
     },
     {
       "id": "mile-high-turkey-trot-2023",
@@ -8390,7 +8657,7 @@
       "gpsRaceSegmentDistanceMi": 4.08,
       "gpsRaceSegmentElapsedSeconds": 2297,
       "elevationGainM": 29,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "resultSource": "Mile High United Way official 2023 Turkey Trot event archive",
       "resultUrl": "https://unitedwaydenver.org/event/2023-turkey-trot/",
       "matchSource": "Exact Thanksgiving Day date + official four-mile Washington Park event + source GPS contains the complete repeated Turkey Trot course after an approximately 1.60 km approach/warmup",
@@ -8422,9 +8689,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-10269813911-turkey-trot-segment"
+      ]
     },
     {
       "id": "mile-high-united-way-turkey-trot-series",
@@ -8495,7 +8765,7 @@
       "stravaElapsedSeconds": 572,
       "stravaMovingSeconds": 545,
       "elevationGainM": 0,
-      "routeStatus": "gps-source-available",
+      "routeStatus": "gps",
       "matchSource": "Exact June 4, 2016 post-5K Strava run + Arrowhead Stadium GPX + contemporary BeerFit Kansas City 5K/Brew Mile event documentation + user confirmation",
       "matchConfidence": "verified",
       "note": "Strava activity 641962098 was recorded at Arrowhead Stadium about an hour after the BeerFit 5K Classic. It records 1.7042 km (1.06 mi), matching the event's Brew Mile format. The race is published independently so the two BeerFit races can later be grouped into one multi-event Story without collapsing their identities.",
@@ -8525,9 +8795,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "gps-source-available",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641962098"
+      ]
     },
     {
       "id": "beerfit-kansas-city-2016",
@@ -8631,7 +8904,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4395204902"
+      ]
     },
     {
       "id": "springfield-turkey-trot-2024",
@@ -8689,7 +8965,10 @@
       "routeInfo": {
         "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-13002340446"
+      ]
     },
     {
       "id": "pi-miler-2015",
@@ -8718,7 +8997,7 @@
       "stravaElapsedSeconds": 1651,
       "award": "3rd Place Men",
       "genderPlace": 3,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "Lawrence Trail Hawks event record + user award medal",
       "matchSource": "User award medal + Strava + organizer event record + user confirmation of trail course",
       "matchConfidence": "confirmed",
@@ -8749,9 +9028,12 @@
         "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-641966398"
+      ]
     },
     {
       "id": "colderbolder-2025",
@@ -8782,7 +9064,7 @@
       "stravaDistanceKm": 5,
       "stravaDistanceMi": 3.11,
       "stravaElapsedSeconds": 1851,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "BOLDERBoulder official 2025 results",
       "resultUrl": "https://www.bolderboulder.com/races/2025-colderbolder/?current_page=57",
       "matchSource": "Official result + user medal + Strava",
@@ -8813,9 +9095,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-16667231280"
+      ]
     },
     {
       "id": "gobble-cobble-2019",
@@ -8839,7 +9124,7 @@
       "distanceMi": 3.06,
       "stravaDistanceKm": 4.92,
       "stravaDistanceMi": 3.06,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "Maryland Timing 2019 race calendar/results archive",
       "resultUrl": "https://www.mdtiming.com/2019races.html",
       "matchSource": "User Gobble Cobble Turkey Trot 5K medal + official Nov. 28, 2019 Baltimore Inner Harbor event archive + exact-date Strava activity named Marriott Baltimore Waterfront",
@@ -8874,9 +9159,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4312787170"
+      ]
     },
     {
       "id": "st-louis-turkey-trot-8k-2018",
@@ -8902,7 +9190,7 @@
       "stravaDistanceMi": 5.1,
       "stravaElapsedSeconds": 2636,
       "stravaElapsed": "43:56",
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "2018 St. Louis Turkey Trot official Online Race Results archive",
       "resultUrl": "https://onlineraceresults.com/race/view_race.php?race_id=67017",
       "matchSource": "Official event archive + exact Thanksgiving date + 8K-scale Strava activity + Tower Grove Park GPS start/end + user photo metadata from Tower Grove Park on race morning",
@@ -8934,9 +9222,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4312791961"
+      ]
     },
     {
       "id": "charles-street-12-2019",
@@ -8960,7 +9251,7 @@
       "stravaDistanceKm": 18,
       "stravaDistanceMi": 11.18,
       "stravaElapsedSeconds": 6408,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "resultSource": "RunSignup individual result, user-supplied screenshot",
       "resultUrl": "https://runsignup.com/Race/Results/24911/",
       "matchSource": "Official RunSignup result screenshot + exact-date Towson-to-Baltimore Strava GPS + user finish-line photo dated August 31, 2019",
@@ -8992,9 +9283,12 @@
         "confidence": "verified"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
-      }
+      },
+      "routeFeatureIds": [
+        "strava-4312788726"
+      ]
     }
   ]
 }

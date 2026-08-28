@@ -26,8 +26,12 @@ test('event photo manifest enriches canonical records and renders on detail page
   await page.goto(`/detail.html?record=${encodeURIComponent(chicago.slug || chicago.id)}`, { waitUntil: 'domcontentloaded' });
   const photo = page.locator('#recordMedia img[src*="assets/event-photos/races/chicago-marathon-2021/"]').first();
   await expect(photo).toBeVisible();
-  await expect(photo).toHaveJSProperty('complete', true);
-  expect(await photo.evaluate(node => node.naturalWidth)).toBeGreaterThan(0);
+  await expect(photo).toHaveAttribute('alt', /Chicago Marathon/i);
+
+  const assetResponse = await page.request.get(manifestPhoto.src);
+  expect(assetResponse.ok()).toBeTruthy();
+  expect(assetResponse.headers()['content-type']).toMatch(/^image\//i);
+  expect((await assetResponse.body()).byteLength).toBeGreaterThan(0);
 });
 
 test('2015 Illinois Marathon thunderstorm finish is attached to the marathon, not the 2016 I-Challenge races', async ({ page }) => {
