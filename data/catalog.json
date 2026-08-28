@@ -42,6 +42,25 @@
       "resultUrl": "https://www.runcolfax.org/races/race-results/",
       "matchSource": "Original alexlford.com marathon inventory + user Colfax Marathon medal + official 2025 marathon weekend archive + exact-date Strava GPS",
       "matchConfidence": "verified"
+    },
+    "bolderboulder-2025": {
+      "location": "Denver, Colorado",
+      "region": "Colorado",
+      "lat": 39.7377,
+      "lon": -104.9293,
+      "coordinatePrecision": "gps-start",
+      "participationMode": "virtual",
+      "routeFeatureIds": ["strava-14604711518"],
+      "routeStatus": "gps",
+      "matchSource": "Strava export + user confirmation that the 2025 BOLDERBoulder was completed virtually in Denver after rain changed the in-person plan",
+      "matchConfidence": "confirmed",
+      "note": "Rain on the morning of the 2025 BOLDERBoulder changed the plan. Alex slept in and completed the 10K virtually later that day in Denver; the published route is the actual 887-point Denver GPS track, not the Boulder race course."
+    },
+    "bolderboulder-series-story": {
+      "location": "Boulder & Denver, Colorado",
+      "matchSource": "Official BOLDERBoulder results + Strava GPS + user confirmation",
+      "matchConfidence": "confirmed",
+      "note": "Four consecutive BOLDERBoulder 10K completions from 2022 through 2025: in person in Boulder from 2022 through 2024, then virtually in Denver in 2025 after rain changed the Memorial Day plan."
     }
   }
 }
