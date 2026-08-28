@@ -4,9 +4,18 @@ window.AdventureCatalog = (() => {
   let relationshipCache = null;
   let relationshipPromise = null;
 
+  const requestLabel = path => {
+    try {
+      const url = new URL(path, location.href);
+      return url.pathname.replace(/^\/+/, '');
+    } catch {
+      return String(path);
+    }
+  };
+
   const fetchJson = async (path) => {
     const response = await fetch(path, { cache: 'no-cache' });
-    if (!response.ok) throw new Error(`Failed to load ${path} (${response.status})`);
+    if (!response.ok) throw new Error(`Failed to load ${requestLabel(path)} (${response.status})`);
     return response.json();
   };
 
