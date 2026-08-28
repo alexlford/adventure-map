@@ -29,5 +29,5 @@ jobs:
         run: node scripts/build-public-routes.mjs --out tmp/public-routes.geojson
       - name: Validate compiled route contract
         run: node scripts/validate-public-route-contract.mjs tmp/public-routes.geojson
-      - name: Audit GPS route point quality
-        run: node scripts/audit-route-quality.mjs
+      - name: Enforce GPS route quality and source fidelity
+        run: node scripts/audit-route-quality.mjs --enforce

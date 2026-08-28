@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "updatedOn": "2026-08-28",
+  "reviewedRoutes": [
+    {"id":"mount-lamlam","outcome":"reviewed-source","action":"preserve-current-reviewed-geometry","reason":"Recorded backtracking is real; reviewed publication removes only dense stationary jitter."},
+    {"id":"midland-hill","outcome":"reviewed-source","action":"preserve-current-reviewed-geometry","reason":"Full out-and-back source track is retained; small deviations remain source-faithful."}
+  ],
+  "nextQualityAction":"Enforce high-resolution-or-source-complete GPS quality in CI without inventing geometry for legacy source-limited recordings."
+}
