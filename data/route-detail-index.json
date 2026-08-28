@@ -5,6 +5,7 @@
   "routeCatalogUpdatedOn": "2026-08-22",
   "recordCount": 140,
   "featureCount": 126,
+  "browserMaterializedFeatureCount": 13,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
@@ -13,7 +14,8 @@
       "quality": "full-source"
     },
     "abes-amble-2014": {
-      "file": "data/strava-route-source-complete-01.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641968068",
       "format": "polyline",
       "quality": "full-source"
@@ -103,7 +105,8 @@
       "quality": "full-source"
     },
     "charles-street-12-2019": {
-      "file": "data/strava-route-source-complete-02.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-02.json",
       "featureId": "strava-4312788726",
       "format": "polyline",
       "quality": "full-source"
@@ -187,7 +190,8 @@
       "quality": "full-source"
     },
     "colfax-urban-10-2026": {
-      "file": "data/strava-route-source-complete-02.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-02.json",
       "featureId": "strava-18545647595",
       "format": "polyline",
       "quality": "full-source"
@@ -241,13 +245,15 @@
       "quality": "full-source"
     },
     "garmin-half-2014": {
-      "file": "data/strava-route-source-complete-01.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641968887",
       "format": "polyline",
       "quality": "full-source"
     },
     "garmin-half-2016": {
-      "file": "data/strava-route-source-complete-01.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641962559",
       "format": "polyline",
       "quality": "full-source"
@@ -271,7 +277,8 @@
       "quality": "full-source"
     },
     "illinois-5k-2015": {
-      "file": "data/strava-route-source-complete-01.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641965799",
       "format": "polyline",
       "quality": "full-source"
@@ -283,7 +290,8 @@
       "quality": "full-source"
     },
     "illinois-half-2016": {
-      "file": "data/strava-route-source-complete-01.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641962439",
       "format": "polyline",
       "quality": "full-source"
@@ -332,7 +340,8 @@
       "quality": "full-source"
     },
     "mile-high-turkey-trot-2025": {
-      "file": "data/strava-route-source-complete-02.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-02.json",
       "featureId": "strava-16584355003",
       "format": "polyline",
       "quality": "full-source"
@@ -441,7 +450,8 @@
       "quality": "full-source"
     },
     "mtb-day-2025-06-06": {
-      "file": "data/strava-route-full-resolution-mtb-2025-06-06.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-full-resolution-mtb-2025-06-06.json",
       "featureId": "activity-mtb-day-2025-06-06",
       "format": "polyline",
       "quality": "full-source"
@@ -609,7 +619,8 @@
       "quality": "full-source"
     },
     "pi-day-half-2015": {
-      "file": "data/strava-route-source-complete-01.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641966412",
       "format": "polyline",
       "quality": "full-source"
@@ -627,7 +638,8 @@
       "quality": "full-source"
     },
     "rebel-run-5k-2015": {
-      "file": "data/strava-route-source-complete-02.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-02.json",
       "featureId": "strava-641966162",
       "format": "polyline",
       "quality": "full-source"
@@ -657,7 +669,8 @@
       "quality": "catalog-detail"
     },
     "rock-parkway-half-2016": {
-      "file": "data/strava-route-source-complete-01.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641962666",
       "format": "polyline",
       "quality": "full-source"
@@ -699,7 +712,8 @@
       "quality": "full-source"
     },
     "running-with-cows-half-2016": {
-      "file": "data/strava-route-source-complete-01.json",
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
       "featureId": "strava-641962333",
       "format": "polyline",
       "quality": "full-source"
