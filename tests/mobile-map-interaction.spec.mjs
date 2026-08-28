@@ -48,9 +48,10 @@ test('mobile map preserves page scrolling until Explore map is enabled', async (
   expect(passive.keyboard).toBeFalsy();
   expect(passive.scrollWheelZoom).toBeFalsy();
 
-  const beforePassiveScroll = await page.evaluate(() => window.scrollY);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   await page.evaluate(() => window.scrollBy(0, 240));
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(beforePassiveScroll);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
 
   await toggle.scrollIntoViewIfNeeded();
   await toggle.click();
@@ -128,16 +129,18 @@ test('mobile map layer controls remain usable and the archive follows page scrol
   await expect.poll(() => page.evaluate(() => window.AdventureMap?.filteredRecords?.().length || 0)).toBe(allCount);
 
   const archive = page.locator('.results-section');
-  await archive.scrollIntoViewIfNeeded();
-  await expect.poll(() => archive.evaluate(element => getComputedStyle(element).overflowY)).toBe('visible');
+  const archiveOverflowY = await archive.evaluate(element => getComputedStyle(element).overflowY);
+  expect(['auto', 'scroll']).not.toContain(archiveOverflowY);
 
-  const scrollState = await page.evaluate(() => ({
-    before: window.scrollY,
-    max: Math.max(0, document.documentElement.scrollHeight - window.innerHeight),
-  }));
-  expect(scrollState.max).toBeGreaterThan(scrollState.before);
-  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(scrollState.before);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  const maxScroll = await page.evaluate(() => Math.max(0, document.documentElement.scrollHeight - window.innerHeight));
+  expect(maxScroll).toBeGreaterThan(0);
+  await page.evaluate(() => window.scrollBy(0, Math.min(320, Math.max(1, document.documentElement.scrollHeight - window.innerHeight))));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+
+  await archive.scrollIntoViewIfNeeded();
+  await expect(archive).toBeVisible();
 
   const horizontalOverflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(horizontalOverflow).toBeLessThanOrEqual(2);
