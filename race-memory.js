@@ -38,8 +38,23 @@
   const finishTime = record => String(record.officialTime || record.result || '—').replace(/^0(?=\d:)/, '');
 
   const photoFigure = (photo, className = '') => {
-    const layoutClass = photo.layout === 'four-three' ? ' race-memory-photo-four-three' : '';
+    const aspect = String(photo.aspect || photo.layout || '').toLowerCase();
+    const layoutClass = aspect === '4:3' || aspect === 'four-three' ? ' race-memory-photo-four-three' : '';
     return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async">${photo.caption ? `<figcaption>${A.esc(photo.caption)}</figcaption>` : ''}</figure>`;
+  };
+
+  const settlePhoto = img => {
+    const figure = img.closest('.race-memory-photo');
+    const applyLayout = () => {
+      if (img.naturalHeight > img.naturalWidth * 1.15) figure?.classList.add('race-memory-photo-portrait');
+    };
+    if (img.complete) {
+      if (img.naturalWidth) applyLayout();
+      else figure?.remove();
+      return;
+    }
+    img.addEventListener('load', applyLayout, { once: true });
+    img.addEventListener('error', () => figure?.remove(), { once: true });
   };
 
   function memoryMarkup(record, memory) {
@@ -86,6 +101,7 @@
     chronology?.remove();
 
     page.innerHTML = memoryMarkup(record, memory);
+    page.querySelectorAll('.race-memory-photo img').forEach(settlePhoto);
     document.body.classList.add('race-memory-page');
     page.dataset.raceMemory = 'true';
 
