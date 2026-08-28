@@ -25,7 +25,6 @@
         return null;
       }
     }));
-
     return payloads.reduce((records, payload) => {
       Object.assign(records, payload?.records || {});
       return records;
@@ -64,8 +63,9 @@
   };
 
   const photoFigure = (photo, className = '') => {
-    const fourThree = photo.layout === 'four-three' || photo.aspect === '4:3';
-    const natural = photo.layout === 'natural';
+    const aspect = String(photo.aspect || photo.layout || '').toLowerCase();
+    const fourThree = aspect === '4:3' || aspect === 'four-three';
+    const natural = aspect === 'natural';
     const layoutClass = fourThree
       ? ' race-memory-photo-four-three'
       : natural
@@ -76,15 +76,26 @@
     return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}"${fallbackAttr} alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async">${photo.caption ? `<figcaption>${A.esc(photo.caption)}</figcaption>` : ''}</figure>`;
   };
 
-  const installPhotoFallbacks = () => {
-    page.querySelectorAll('img[data-fallback-src]').forEach(img => {
-      img.addEventListener('error', () => {
-        const fallback = img.dataset.fallbackSrc;
-        if (!fallback || img.dataset.fallbackUsed === 'true') return;
+  const settlePhoto = img => {
+    const figure = img.closest('.race-memory-photo');
+    const applyLayout = () => {
+      if (img.naturalHeight > img.naturalWidth * 1.15) figure?.classList.add('race-memory-photo-portrait');
+    };
+    const handleFailure = () => {
+      const fallback = img.dataset.fallbackSrc;
+      if (fallback && img.dataset.fallbackUsed !== 'true') {
         img.dataset.fallbackUsed = 'true';
         img.src = fallback;
-      });
-    });
+        return;
+      }
+      figure?.remove();
+    };
+    if (img.complete) {
+      if (img.naturalWidth) applyLayout();
+      else handleFailure();
+    }
+    img.addEventListener('load', applyLayout);
+    img.addEventListener('error', handleFailure);
   };
 
   function memoryMarkup(record, memory) {
@@ -126,7 +137,7 @@
     chronology?.remove();
 
     page.innerHTML = memoryMarkup(record, memory);
-    installPhotoFallbacks();
+    page.querySelectorAll('.race-memory-photo img').forEach(settlePhoto);
     document.body.classList.add('race-memory-page');
     page.dataset.raceMemory = 'true';
 
@@ -134,8 +145,8 @@
       routeSection.classList.add('race-memory-route');
       const heading = routeSection.querySelector('h2');
       const meta = routeSection.querySelector('#routeMeta');
-      if (heading) heading.textContent = record.kind === 'race' ? 'The course' : 'The routes';
-      if (meta) meta.textContent = record.kind === 'race' ? 'Personal GPS track from race day.' : 'Routes from this series.';
+      if (heading) heading.textContent = isRaceRecord(record) ? 'The course' : 'The routes';
+      if (meta) meta.textContent = isRaceRecord(record) ? 'Personal GPS track from race day.' : 'Routes from this series.';
       page.append(routeSection);
     }
     if (chronology) page.append(chronology);
@@ -149,6 +160,8 @@
       setTimeout(() => window.dispatchEvent(new Event('resize')), 180);
     });
   }
+
+  const isRaceRecord = record => record.kind === 'race';
 
   enhance().catch(error => console.warn('Race memory enhancement', error));
 })();
