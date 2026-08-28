@@ -58,11 +58,6 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --ignore-scripts
-      - name: Restore staged Staunton race photo
-        run: |
-          cat tmp/photo-stage/staunton-*.txt | tr -d '\n' | base64 --decode > media/races/staunton-2022-frankie.webp
-          test "$(stat -c%s media/races/staunton-2022-frankie.webp)" -eq 44470
-          echo "7e1ac5cc6f7d49ecfb71b85fb24dd622e1c322cf6e3760fca204790261f4a46a  media/races/staunton-2022-frankie.webp" | sha256sum --check
       - name: Generate public records, route index, and static pages
         run: npm run build:publish
       - name: Validate generated structure
@@ -85,15 +80,12 @@ jobs:
               echo "Publication branch advanced from $HEAD_SHA to $REMOTE_SHA; rebuilding from the latest head (attempt $attempt)."
               git reset --hard "$REMOTE_SHA"
               npm ci --ignore-scripts
-              cat tmp/photo-stage/staunton-*.txt | tr -d '\n' | base64 --decode > media/races/staunton-2022-frankie.webp
-              test "$(stat -c%s media/races/staunton-2022-frankie.webp)" -eq 44470
-              echo "7e1ac5cc6f7d49ecfb71b85fb24dd622e1c322cf6e3760fca204790261f4a46a  media/races/staunton-2022-frankie.webp" | sha256sum --check
               npm run build:publish
               npm run validate:static
               node scripts/audit-strava-route-coverage.mjs
             fi
 
-            git add media/races/staunton-2022-frankie.webp package-lock.json shared.js data/catalog-layers/records.json data/public-records.json data/recurring-race-audit.json data/route-detail-index.json sitemap.xml robots.txt vendor/leaflet record map explore timeline stories races summits skiing nordic mtb
+            git add package-lock.json shared.js data/catalog-layers/records.json data/public-records.json data/recurring-race-audit.json data/route-detail-index.json sitemap.xml robots.txt vendor/leaflet record map explore timeline stories races summits skiing nordic mtb
             if git diff --cached --quiet; then
               echo "Publication artifacts are already current."
               exit 0
