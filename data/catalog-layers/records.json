@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "sourceCount": 36,
   "recordCount": 159,
-  "layeredMergeCount": 42,
+  "layeredMergeCount": 47,
   "adventures": [
     {
       "id": "mount-lincoln",
@@ -827,26 +827,30 @@
       "movingSeconds": 6450,
       "elevationGainM": 85.4,
       "officialTime": "1:47:58.7",
-      "officialPlace": 695,
+      "officialPlace": 696,
       "routeStatus": "gps-source-available",
-      "matchSource": "Detailed individual historical result + exact-date half-marathon-scale Strava GPS",
+      "matchSource": "Official named result + Heartland Series team listing + exact-date Strava GPS",
       "matchConfidence": "verified",
-      "_catalogSource": "data/strava-mining-2026-08-11f.json",
+      "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
       "officialDistance": "Half marathon",
-      "officialDistanceKm": 21.0975,
+      "officialDistanceKm": 21.08,
       "officialDistanceMi": 13.1,
       "officialChipSeconds": 6478.7,
       "officialPace": "8:15/mi",
-      "bib": 1001,
+      "bib": "1001",
       "age": 28,
       "ageGroup": "M25-29",
       "ageGroupPlace": 70,
       "stravaDistanceKm": 21.2319,
       "stravaDistanceMi": 13.19,
       "stravaElapsedSeconds": 6480,
-      "resultSource": "runLawrence detailed 2016 Rock the Parkway results archive",
+      "resultSource": "User-supplied official Rock the Parkway 2016 Half Marathon result screenshot",
       "resultUrl": "https://runlawrence.org/2016/16Apr9RocktheParkway/2016Results.html",
-      "note": "Recovered from a generic Strava activity title. The detailed result archive lists Alex Ford of Lawrence, KS, bib 1001, age 28, 695th overall, 70th M25-29, with a 1:47:58.7 chip time."
+      "note": "Official result lists Alex Ford, bib 1001, age 28, 696th overall and 70th in M 25-29, with a 1:47:58.7 chip time, 1:51:57.6 clock time, and 8:15/mi pace. The result explicitly lists Team Name: Heartland Series.",
+      "officialClockTime": "1:51:57.6",
+      "divisionPlace": 70,
+      "division": "M 25-29",
+      "teamName": "Heartland Series"
     },
     {
       "id": "garmin-half-2016",
@@ -870,9 +874,34 @@
       "movingSeconds": 6196,
       "elevationGainM": 106.2,
       "routeStatus": "matched-no-public-route",
-      "matchSource": "Strava date + distance + GPS matched to official event",
-      "matchConfidence": "high",
-      "_catalogSource": "data/discovered-races.json"
+      "matchSource": "Official OnlineRaceResults named result + exact-date Strava GPS + Heartland 39.3 series context",
+      "matchConfidence": "verified",
+      "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
+      "officialDistance": "Half marathon",
+      "officialDistanceMi": 13.1,
+      "officialDistanceKm": 21.08,
+      "officialTime": "1:43:16",
+      "officialPace": "7:54/mi",
+      "officialPlace": 120,
+      "officialSplits": [
+        {
+          "label": "10K",
+          "time": "50:52",
+          "pace": "8:13/mi"
+        },
+        {
+          "label": "11.5 miles",
+          "time": "1:30:12",
+          "pace": "7:51/mi"
+        },
+        {
+          "label": "Finish",
+          "time": "1:43:16",
+          "pace": "7:54/mi"
+        }
+      ],
+      "resultSource": "OnlineRaceResults official 2016 Garmin Marathon in the Land of Oz Half Marathon result, user-supplied PDF",
+      "note": "OnlineRaceResults lists Alex Ford 120th overall in the 2016 Garmin Marathon in the Land of Oz Half Marathon, finishing in 1:43:16 at 7:54/mi. Published splits are 50:52 at 10K and 1:30:12 at 11.5 miles."
     },
     {
       "id": "illinois-5k-2016",
@@ -896,17 +925,22 @@
       "movingSeconds": 1257,
       "elevationGainM": 0,
       "routeStatus": "matched-no-public-route",
-      "matchSource": "Strava timestamp adjusted to local time + event schedule + GPS",
-      "matchConfidence": "confirmed",
-      "_catalogSource": "data/official-results-overrides-2026-08-11b.json",
+      "matchSource": "Official named 5K result + Illinois Half I-Challenge weekend context + exact-date Strava GPS",
+      "matchConfidence": "verified",
+      "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
       "officialDistance": "5K",
       "officialDistanceKm": 5,
       "officialDistanceMi": 3.11,
       "stravaDistanceKm": 5.02,
       "stravaDistanceMi": 3.12,
       "stravaElapsedSeconds": 1257,
-      "resultSource": "Christie Clinic Illinois Marathon 2016 event archive + user Presence Health 5K medal",
-      "note": "Presence Health was the named 5K on the 2016 Illinois Marathon weekend. Official event distance is 5K; the Strava recording is retained only as GPS/fallback timing."
+      "resultSource": "User-supplied official 2016 Christie Clinic Illinois race-results screenshot",
+      "note": "Official Illinois race-results page lists Alex Ford, bib 19229, M/28, with a 21:02 net time and 21:09 clock time in the 5K.",
+      "officialTime": "21:02",
+      "officialClockTime": "21:09",
+      "bib": "19229",
+      "gender": "Male",
+      "age": 28
     },
     {
       "id": "illinois-half-2016",
@@ -930,16 +964,22 @@
       "movingSeconds": 6538,
       "elevationGainM": 26.7,
       "routeStatus": "matched-no-public-route",
-      "matchSource": "Strava date + distance + Memorial Stadium GPS matched to Illinois race weekend",
-      "matchConfidence": "confirmed",
-      "_catalogSource": "data/official-results-overrides-2026-08-11b.json",
+      "matchSource": "Official named Half Marathon result + Illinois Half I-Challenge weekend context + exact-date Strava GPS",
+      "matchConfidence": "verified",
+      "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
       "officialDistance": "Half marathon",
       "officialDistanceMi": 13.1,
       "officialDistanceKm": 21.08,
       "stravaDistanceKm": 21.18,
       "stravaDistanceMi": 13.16,
       "stravaElapsedSeconds": 6598,
-      "resultSource": "Christie Clinic Illinois Marathon 2016 event archive + user half-marathon medal"
+      "resultSource": "User-supplied official 2016 Christie Clinic Illinois race-results screenshot",
+      "officialTime": "1:48:13",
+      "officialClockTime": "1:50:03",
+      "bib": "7899",
+      "gender": "Male",
+      "age": 28,
+      "note": "Official Illinois race-results page lists Alex Ford, bib 7899, M/28, with a 1:48:13 net time and 1:50:03 clock time in the Half Marathon."
     },
     {
       "id": "running-with-cows-half-2016",
@@ -963,9 +1003,24 @@
       "movingSeconds": 6166,
       "elevationGainM": 113,
       "routeStatus": "matched-no-public-route",
-      "matchSource": "Strava date + distance + GPS matched to official event",
-      "matchConfidence": "high",
-      "_catalogSource": "data/discovered-races.json"
+      "matchSource": "Official named result + Heartland 39.3 team listing + exact-date Strava GPS",
+      "matchConfidence": "verified",
+      "_catalogSource": "data/official-results-overrides-2026-08-11j.json",
+      "officialDistance": "Half marathon",
+      "officialDistanceMi": 13.1,
+      "officialDistanceKm": 21.08,
+      "officialTime": "1:43:29.6",
+      "officialClockTime": "1:44:12.3",
+      "officialPace": "7:54/mi",
+      "bib": "418",
+      "officialPlace": 116,
+      "divisionPlace": 17,
+      "division": "M 25-29",
+      "age": 28,
+      "agePercentage": 56.4,
+      "teamName": "Heartland 39.3",
+      "resultSource": "User-supplied official 2016 Heartland 39.3 member-race result screenshot",
+      "note": "Official result lists Alex Ford, bib 418, age 28, 116th overall and 17th in M 25-29, with a 1:43:29.6 chip time, 1:44:12.3 clock time, and 7:54/mi pace. The result explicitly lists Team Name: Heartland 39.3."
     },
     {
       "id": "big-ten-10k-2016",
@@ -4226,21 +4281,26 @@
     ],
     "rock-parkway-half-2016": [
       "data/discovered-races.json",
-      "data/strava-mining-2026-08-11f.json"
+      "data/strava-mining-2026-08-11f.json",
+      "data/official-results-overrides-2026-08-11j.json"
     ],
     "garmin-half-2016": [
-      "data/discovered-races.json"
+      "data/discovered-races.json",
+      "data/official-results-overrides-2026-08-11j.json"
     ],
     "illinois-5k-2016": [
       "data/discovered-races.json",
-      "data/official-results-overrides-2026-08-11b.json"
+      "data/official-results-overrides-2026-08-11b.json",
+      "data/official-results-overrides-2026-08-11j.json"
     ],
     "illinois-half-2016": [
       "data/discovered-races.json",
-      "data/official-results-overrides-2026-08-11b.json"
+      "data/official-results-overrides-2026-08-11b.json",
+      "data/official-results-overrides-2026-08-11j.json"
     ],
     "running-with-cows-half-2016": [
-      "data/discovered-races.json"
+      "data/discovered-races.json",
+      "data/official-results-overrides-2026-08-11j.json"
     ],
     "big-ten-10k-2016": [
       "data/discovered-races.json"
@@ -4705,6 +4765,11 @@
       "bolderboulder-2024: data/discovered-races.json → data/official-results-overrides-2026-08-11h.json",
       "baltimore-half-2018: data/medal-recovered.json → data/official-results-overrides-2026-08-11i.json",
       "staunton-rocks-half-2022: data/strava-mining-2026-08-11g.json → data/official-results-overrides-2026-08-11j.json",
+      "rock-parkway-half-2016: data/strava-mining-2026-08-11f.json → data/official-results-overrides-2026-08-11j.json",
+      "garmin-half-2016: data/discovered-races.json → data/official-results-overrides-2026-08-11j.json",
+      "running-with-cows-half-2016: data/discovered-races.json → data/official-results-overrides-2026-08-11j.json",
+      "illinois-5k-2016: data/official-results-overrides-2026-08-11b.json → data/official-results-overrides-2026-08-11j.json",
+      "illinois-half-2016: data/official-results-overrides-2026-08-11b.json → data/official-results-overrides-2026-08-11j.json",
       "chicago-marathon-2021: data/adventures.json → data/chicago-marathon-2021-official.json"
     ]
   }

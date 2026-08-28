@@ -167,7 +167,7 @@
         "garmin-half-2016"
       ],
       "missingMemberIds": [],
-      "officialResultCount": 0,
+      "officialResultCount": 1,
       "routeCount": 2,
       "distanceHistory": [
         {
@@ -176,8 +176,7 @@
         }
       ],
       "resultRecoveryIds": [
-        "garmin-half-2014",
-        "garmin-half-2016"
+        "garmin-half-2014"
       ],
       "routeRecoveryIds": []
     },
@@ -198,7 +197,7 @@
         "illinois-half-2016"
       ],
       "missingMemberIds": [],
-      "officialResultCount": 0,
+      "officialResultCount": 2,
       "routeCount": 3,
       "distanceHistory": [
         {
@@ -216,9 +215,7 @@
       ],
       "resultRecoveryIds": [
         "illinois-5k-2015",
-        "illinois-marathon-2015",
-        "illinois-5k-2016",
-        "illinois-half-2016"
+        "illinois-marathon-2015"
       ],
       "routeRecoveryIds": [
         "illinois-5k-2015"
@@ -644,11 +641,6 @@
     },
     {
       "type": "official-result",
-      "seriesId": "garmin-marathon-land-of-oz-series",
-      "recordId": "garmin-half-2016"
-    },
-    {
-      "type": "official-result",
       "seriesId": "illinois-marathon-weekend-series",
       "recordId": "illinois-5k-2015"
     },
@@ -656,16 +648,6 @@
       "type": "official-result",
       "seriesId": "illinois-marathon-weekend-series",
       "recordId": "illinois-marathon-2015"
-    },
-    {
-      "type": "official-result",
-      "seriesId": "illinois-marathon-weekend-series",
-      "recordId": "illinois-5k-2016"
-    },
-    {
-      "type": "official-result",
-      "seriesId": "illinois-marathon-weekend-series",
-      "recordId": "illinois-half-2016"
     },
     {
       "type": "route",
