@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "raceCount": 77,
-  "seriesCount": 10,
+  "seriesCount": 11,
   "series": [
     {
       "id": "bolderboulder-series-2022-2025",
@@ -178,6 +178,32 @@
       "resultRecoveryIds": [
         "garmin-half-2014"
       ],
+      "routeRecoveryIds": []
+    },
+    {
+      "id": "heartland-39-3-series-2016",
+      "name": "Heartland 39.3",
+      "adventureId": "heartland-39-3-2016",
+      "storyPresent": true,
+      "appearanceCount": 3,
+      "years": [
+        2016
+      ],
+      "memberIds": [
+        "rock-parkway-half-2016",
+        "garmin-half-2016",
+        "running-with-cows-half-2016"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 3,
+      "routeCount": 3,
+      "distanceHistory": [
+        {
+          "label": "Half marathon",
+          "count": 3
+        }
+      ],
+      "resultRecoveryIds": [],
       "routeRecoveryIds": []
     },
     {
