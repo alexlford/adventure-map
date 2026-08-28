@@ -25,10 +25,13 @@ test('event photo manifest enriches canonical records and renders on detail page
 
   await page.goto(`/detail.html?record=${encodeURIComponent(chicago.slug || chicago.id)}`, { waitUntil: 'domcontentloaded' });
   const photo = page.locator('#recordMedia img').first();
+  await photo.scrollIntoViewIfNeeded();
   await expect(photo).toBeVisible();
   await expect(photo).toHaveAttribute('src', /assets\/event-photos\/races\/chicago-marathon-2021\//);
-  await expect(photo).toHaveJSProperty('complete', true);
-  expect(await photo.evaluate(node => node.naturalWidth)).toBeGreaterThan(0);
+  await expect.poll(
+    () => photo.evaluate(node => node.complete && node.naturalWidth > 0),
+    { message: 'lazy-loaded event photo should finish loading' }
+  ).toBe(true);
 });
 
 test('I-Challenge weekend photo is shared with both canonical race records', async ({ page }) => {
