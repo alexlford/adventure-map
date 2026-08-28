@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 156,
+  "recordCount": 158,
   "records": [
     {
       "id": "mount-lincoln",
@@ -8431,41 +8431,41 @@
       "slug": "mile-high-united-way-turkey-trot-series",
       "kind": "adventure",
       "discipline": "challenge",
-      "name": "Mile High United Way Turkey Trot",
-      "year": 2021,
-      "date": "2021-11-25",
+      "name": "Turkey Trots",
+      "year": 2018,
+      "date": "2018-11-22",
       "endDate": "2025-11-27",
-      "distance": "Three 4-mile editions",
+      "distance": "Seven Thanksgiving editions · 2018–2025",
       "distanceMi": 12,
-      "location": "Washington Park, Denver, Colorado",
-      "region": "Colorado",
+      "location": "St. Louis · Baltimore · Denver · Springfield, Illinois",
+      "region": "Missouri / Maryland / Colorado / Illinois",
       "routeStatus": "multi-event-gps",
-      "matchSource": "Mile High United Way event archives + HAL Sports + repeated Strava GPS course matching",
-      "matchConfidence": "verified",
-      "note": "Three Thanksgiving four-mile appearances at Washington Park in 2021, 2023, and 2025. The 2021 and 2025 activities are near-identical full-course GPS recordings. The 2023 source activity contains an approach/warmup before joining the same race course, so only its race-course segment is published.",
-      "_catalogSource": "data/strava-mining-2026-08-11l.json",
+      "matchSource": "Official race records + Strava export + user confirmation",
+      "matchConfidence": "confirmed",
+      "note": "A Thanksgiving tradition across seven editions and four places: St. Louis in 2018; Baltimore in 2019 and virtually in 2020; Denver in 2021, 2023, and 2025; and Springfield, Illinois in 2024. The individual race and event records retain their own names, results, activity evidence, and deep links while this Story preserves the full tradition.",
+      "_catalogSource": "data/turkey-trots-story-2026-08-28.json",
       "recordClass": "adventure",
       "sport": "adventure",
-      "startDate": "2021-11-25",
+      "startDate": "2018-11-22",
       "finishDate": "2025-11-27",
       "distanceInfo": {
         "km": null,
         "mi": 12,
-        "label": "Three 4-mile editions",
+        "label": "Seven Thanksgiving editions · 2018–2025",
         "source": "recorded"
       },
       "locationInfo": {
-        "label": "Washington Park, Denver, Colorado",
-        "region": "Colorado",
+        "label": "St. Louis · Baltimore · Denver · Springfield, Illinois",
+        "region": "Missouri / Maryland / Colorado / Illinois",
         "lat": null,
         "lon": null,
         "precision": null
       },
       "evidence": {
-        "source": "Mile High United Way event archives + HAL Sports + repeated Strava GPS course matching",
-        "matchSource": "Mile High United Way event archives + HAL Sports + repeated Strava GPS course matching",
+        "source": "Official race records + Strava export + user confirmation",
+        "matchSource": "Official race records + Strava export + user confirmation",
         "resultSource": null,
-        "confidence": "verified"
+        "confidence": "confirmed"
       },
       "routeInfo": {
         "status": "multi-event-gps",
@@ -8576,6 +8576,118 @@
       },
       "routeInfo": {
         "status": "multi-event-match",
+        "provenance": null
+      }
+    },
+    {
+      "id": "baltimore-virtual-turkey-trot-2020",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Virtual Baltimore Turkey Trot",
+      "year": 2020,
+      "date": "2020-11-26",
+      "distance": "5.48 km recorded",
+      "distanceKm": 5.4799,
+      "distanceMi": 3.4,
+      "location": "Baltimore, Maryland",
+      "region": "Maryland",
+      "participationMode": "virtual",
+      "stravaActivityId": "4395204902",
+      "stravaActivityName": "Thursday Afternoon Run",
+      "stravaDistanceKm": 5.4799,
+      "stravaDistanceMi": 3.4,
+      "stravaElapsedSeconds": 2166,
+      "stravaMovingSeconds": 1737,
+      "elevationGainM": 28.4,
+      "routeStatus": "gps",
+      "matchSource": "User confirmation + Thanksgiving Day Strava export",
+      "matchConfidence": "confirmed",
+      "note": "The 2020 Turkey Trot tradition continued virtually in Baltimore. The matched Thanksgiving Day Strava activity records 5.48 km; no organizer distance or official finish time is asserted.",
+      "_catalogSource": "data/turkey-trots-story-2026-08-28.json",
+      "slug": "2020-11-26-virtual-baltimore-turkey-trot",
+      "recordClass": "race",
+      "sport": "running",
+      "startDate": "2020-11-26",
+      "finishDate": "2020-11-26",
+      "distanceInfo": {
+        "km": 5.4799,
+        "mi": 3.4,
+        "label": "5.48 km recorded",
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Baltimore, Maryland",
+        "region": "Maryland",
+        "lat": null,
+        "lon": null,
+        "precision": null
+      },
+      "evidence": {
+        "source": "User confirmation + Thanksgiving Day Strava export",
+        "matchSource": "User confirmation + Thanksgiving Day Strava export",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "gps",
+        "provenance": null
+      }
+    },
+    {
+      "id": "springfield-turkey-trot-2024",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Springfield Turkey Trot",
+      "year": 2024,
+      "date": "2024-11-28",
+      "distance": "5.76 km recorded",
+      "distanceKm": 5.7591,
+      "distanceMi": 3.58,
+      "location": "University of Illinois Springfield, Springfield, Illinois",
+      "region": "Illinois",
+      "lat": 39.727932,
+      "lon": -89.619366,
+      "coordinatePrecision": "gps-start",
+      "participationMode": "in-person",
+      "activityType": "Walk",
+      "stravaActivityId": "13002340446",
+      "stravaActivityName": "Alex took Olive for a walk with her Fi Smart Collar",
+      "stravaDistanceKm": 5.7591,
+      "stravaDistanceMi": 3.58,
+      "stravaElapsedSeconds": 2341,
+      "stravaMovingSeconds": 2092,
+      "elevationGainM": 2.1,
+      "routeStatus": "gps",
+      "matchSource": "User confirmation + Thanksgiving morning Strava export and GPS",
+      "matchConfidence": "confirmed",
+      "note": "The 2024 Turkey Trot was completed with Olive through the University of Illinois Springfield campus. The source activity is recorded as a Walk and covers 5.76 km; no organizer distance or official finish time is asserted.",
+      "_catalogSource": "data/turkey-trots-story-2026-08-28.json",
+      "slug": "2024-11-28-springfield-turkey-trot",
+      "recordClass": "race",
+      "sport": "running",
+      "startDate": "2024-11-28",
+      "finishDate": "2024-11-28",
+      "distanceInfo": {
+        "km": 5.7591,
+        "mi": 3.58,
+        "label": "5.76 km recorded",
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "University of Illinois Springfield, Springfield, Illinois",
+        "region": "Illinois",
+        "lat": 39.727932,
+        "lon": -89.619366,
+        "precision": "gps-start"
+      },
+      "evidence": {
+        "source": "User confirmation + Thanksgiving morning Strava export and GPS",
+        "matchSource": "User confirmation + Thanksgiving morning Strava export and GPS",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "gps",
         "provenance": null
       }
     },

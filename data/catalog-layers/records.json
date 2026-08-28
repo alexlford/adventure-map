@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "sourceCount": 36,
-  "recordCount": 159,
-  "layeredMergeCount": 47,
+  "sourceCount": 37,
+  "recordCount": 161,
+  "layeredMergeCount": 48,
   "adventures": [
     {
       "id": "mount-lincoln",
@@ -3917,19 +3917,19 @@
       "slug": "mile-high-united-way-turkey-trot-series",
       "kind": "adventure",
       "discipline": "challenge",
-      "name": "Mile High United Way Turkey Trot",
-      "year": 2021,
-      "date": "2021-11-25",
+      "name": "Turkey Trots",
+      "year": 2018,
+      "date": "2018-11-22",
       "endDate": "2025-11-27",
-      "distance": "Three 4-mile editions",
+      "distance": "Seven Thanksgiving editions · 2018–2025",
       "distanceMi": 12,
-      "location": "Washington Park, Denver, Colorado",
-      "region": "Colorado",
+      "location": "St. Louis · Baltimore · Denver · Springfield, Illinois",
+      "region": "Missouri / Maryland / Colorado / Illinois",
       "routeStatus": "multi-event-gps",
-      "matchSource": "Mile High United Way event archives + HAL Sports + repeated Strava GPS course matching",
-      "matchConfidence": "verified",
-      "note": "Three Thanksgiving four-mile appearances at Washington Park in 2021, 2023, and 2025. The 2021 and 2025 activities are near-identical full-course GPS recordings. The 2023 source activity contains an approach/warmup before joining the same race course, so only its race-course segment is published.",
-      "_catalogSource": "data/strava-mining-2026-08-11l.json"
+      "matchSource": "Official race records + Strava export + user confirmation",
+      "matchConfidence": "confirmed",
+      "note": "A Thanksgiving tradition across seven editions and four places: St. Louis in 2018; Baltimore in 2019 and virtually in 2020; Denver in 2021, 2023, and 2025; and Springfield, Illinois in 2024. The individual race and event records retain their own names, results, activity evidence, and deep links while this Story preserves the full tradition.",
+      "_catalogSource": "data/turkey-trots-story-2026-08-28.json"
     },
     {
       "id": "beerfit-kansas-city-brew-mile-2016",
@@ -3981,6 +3981,62 @@
       "matchConfidence": "confirmed",
       "note": "Same-day BeerFit Kansas City event at Arrowhead Stadium: the 5K Classic followed by the Brew Mile. The Story groups the two completed races while preserving each race as its own public record and displaying both recorded GPS routes together.",
       "_catalogSource": "data/notable-adventures-2026-08-17-beerfit-kansas-city.json"
+    },
+    {
+      "id": "baltimore-virtual-turkey-trot-2020",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Virtual Baltimore Turkey Trot",
+      "year": 2020,
+      "date": "2020-11-26",
+      "distance": "5.48 km recorded",
+      "distanceKm": 5.4799,
+      "distanceMi": 3.4,
+      "location": "Baltimore, Maryland",
+      "region": "Maryland",
+      "participationMode": "virtual",
+      "stravaActivityId": "4395204902",
+      "stravaActivityName": "Thursday Afternoon Run",
+      "stravaDistanceKm": 5.4799,
+      "stravaDistanceMi": 3.4,
+      "stravaElapsedSeconds": 2166,
+      "stravaMovingSeconds": 1737,
+      "elevationGainM": 28.4,
+      "routeStatus": "gps",
+      "matchSource": "User confirmation + Thanksgiving Day Strava export",
+      "matchConfidence": "confirmed",
+      "note": "The 2020 Turkey Trot tradition continued virtually in Baltimore. The matched Thanksgiving Day Strava activity records 5.48 km; no organizer distance or official finish time is asserted.",
+      "_catalogSource": "data/turkey-trots-story-2026-08-28.json"
+    },
+    {
+      "id": "springfield-turkey-trot-2024",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Springfield Turkey Trot",
+      "year": 2024,
+      "date": "2024-11-28",
+      "distance": "5.76 km recorded",
+      "distanceKm": 5.7591,
+      "distanceMi": 3.58,
+      "location": "University of Illinois Springfield, Springfield, Illinois",
+      "region": "Illinois",
+      "lat": 39.727932,
+      "lon": -89.619366,
+      "coordinatePrecision": "gps-start",
+      "participationMode": "in-person",
+      "activityType": "Walk",
+      "stravaActivityId": "13002340446",
+      "stravaActivityName": "Alex took Olive for a walk with her Fi Smart Collar",
+      "stravaDistanceKm": 5.7591,
+      "stravaDistanceMi": 3.58,
+      "stravaElapsedSeconds": 2341,
+      "stravaMovingSeconds": 2092,
+      "elevationGainM": 2.1,
+      "routeStatus": "gps",
+      "matchSource": "User confirmation + Thanksgiving morning Strava export and GPS",
+      "matchConfidence": "confirmed",
+      "note": "The 2024 Turkey Trot was completed with Olive through the University of Illinois Springfield campus. The source activity is recorded as a Walk and covers 5.76 km; no organizer distance or official finish time is asserted.",
+      "_catalogSource": "data/turkey-trots-story-2026-08-28.json"
     },
     {
       "id": "pi-miler-2015",
@@ -4656,13 +4712,20 @@
       "data/strava-mining-2026-08-11l.json"
     ],
     "mile-high-united-way-turkey-trot-series": [
-      "data/strava-mining-2026-08-11l.json"
+      "data/strava-mining-2026-08-11l.json",
+      "data/turkey-trots-story-2026-08-28.json"
     ],
     "beerfit-kansas-city-brew-mile-2016": [
       "data/strava-mining-2026-08-17-beerfit-brew-mile.json"
     ],
     "beerfit-kansas-city-2016": [
       "data/notable-adventures-2026-08-17-beerfit-kansas-city.json"
+    ],
+    "baltimore-virtual-turkey-trot-2020": [
+      "data/turkey-trots-story-2026-08-28.json"
+    ],
+    "springfield-turkey-trot-2024": [
+      "data/turkey-trots-story-2026-08-28.json"
     ],
     "pi-miler-2015": [
       "data/official-results-overrides.json"
@@ -4711,6 +4774,7 @@
       "data/strava-mining-2026-08-11n.json",
       "data/strava-mining-2026-08-17-beerfit-brew-mile.json",
       "data/notable-adventures-2026-08-17-beerfit-kansas-city.json",
+      "data/turkey-trots-story-2026-08-28.json",
       "data/official-results-overrides.json",
       "data/official-results-overrides-2026-08-11b.json",
       "data/official-results-overrides-2026-08-11c.json",
@@ -4733,6 +4797,7 @@
       "mile-high-turkey-trot-2025: data/discovered-races.json → data/strava-mining-2026-08-11l.json",
       "beerfit-kansas-city-5k-2016: data/recovered-events-2026-08.json → data/strava-mining-2026-08-11m.json",
       "shamrock-shuffle-10k-2015: data/mined-races.json → data/strava-mining-2026-08-11n.json",
+      "mile-high-united-way-turkey-trot-series: data/strava-mining-2026-08-11l.json → data/turkey-trots-story-2026-08-28.json",
       "snowman-shuffle-2006: data/user-confirmed-races.json → data/official-results-overrides.json",
       "snowman-shuffle-2007: data/user-confirmed-races.json → data/official-results-overrides.json",
       "snowman-shuffle-2008: data/user-confirmed-races.json → data/official-results-overrides.json",
