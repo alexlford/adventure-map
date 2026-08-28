@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "raceCount": 77,
+  "raceCount": 79,
   "seriesCount": 11,
   "series": [
     {
@@ -248,38 +248,6 @@
       ]
     },
     {
-      "id": "mile-high-united-way-turkey-trot-series",
-      "name": "Mile High United Way Turkey Trot",
-      "adventureId": "mile-high-united-way-turkey-trot-series",
-      "storyPresent": true,
-      "appearanceCount": 3,
-      "years": [
-        2021,
-        2023,
-        2025
-      ],
-      "memberIds": [
-        "mile-high-turkey-trot-2021",
-        "mile-high-turkey-trot-2023",
-        "mile-high-turkey-trot-2025"
-      ],
-      "missingMemberIds": [],
-      "officialResultCount": 0,
-      "routeCount": 3,
-      "distanceHistory": [
-        {
-          "label": "4 miles",
-          "count": 3
-        }
-      ],
-      "resultRecoveryIds": [
-        "mile-high-turkey-trot-2021",
-        "mile-high-turkey-trot-2023",
-        "mile-high-turkey-trot-2025"
-      ],
-      "routeRecoveryIds": []
-    },
-    {
       "id": "river-to-river-relay-series",
       "name": "River to River Relay",
       "adventureId": "river-to-river-relay-series-story",
@@ -389,6 +357,66 @@
       ],
       "resultRecoveryIds": [
         "snowman-shuffle-2021-virtual"
+      ],
+      "routeRecoveryIds": []
+    },
+    {
+      "id": "mile-high-united-way-turkey-trot-series",
+      "name": "Turkey Trots",
+      "adventureId": "mile-high-united-way-turkey-trot-series",
+      "storyPresent": true,
+      "appearanceCount": 7,
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2023,
+        2024,
+        2025
+      ],
+      "memberIds": [
+        "st-louis-turkey-trot-8k-2018",
+        "gobble-cobble-2019",
+        "baltimore-virtual-turkey-trot-2020",
+        "mile-high-turkey-trot-2021",
+        "mile-high-turkey-trot-2023",
+        "springfield-turkey-trot-2024",
+        "mile-high-turkey-trot-2025"
+      ],
+      "missingMemberIds": [],
+      "officialResultCount": 0,
+      "routeCount": 7,
+      "distanceHistory": [
+        {
+          "label": "8K",
+          "count": 1
+        },
+        {
+          "label": "5K",
+          "count": 1
+        },
+        {
+          "label": "5.48 km recorded",
+          "count": 1
+        },
+        {
+          "label": "4 miles",
+          "count": 3
+        },
+        {
+          "label": "5.76 km recorded",
+          "count": 1
+        }
+      ],
+      "resultRecoveryIds": [
+        "st-louis-turkey-trot-8k-2018",
+        "gobble-cobble-2019",
+        "baltimore-virtual-turkey-trot-2020",
+        "mile-high-turkey-trot-2021",
+        "mile-high-turkey-trot-2023",
+        "springfield-turkey-trot-2024",
+        "mile-high-turkey-trot-2025"
       ],
       "routeRecoveryIds": []
     }
@@ -682,21 +710,6 @@
     },
     {
       "type": "official-result",
-      "seriesId": "mile-high-united-way-turkey-trot-series",
-      "recordId": "mile-high-turkey-trot-2021"
-    },
-    {
-      "type": "official-result",
-      "seriesId": "mile-high-united-way-turkey-trot-series",
-      "recordId": "mile-high-turkey-trot-2023"
-    },
-    {
-      "type": "official-result",
-      "seriesId": "mile-high-united-way-turkey-trot-series",
-      "recordId": "mile-high-turkey-trot-2025"
-    },
-    {
-      "type": "official-result",
       "seriesId": "river-to-river-relay-series",
       "recordId": "river-to-river-relay-2006"
     },
@@ -754,6 +767,41 @@
       "type": "official-result",
       "seriesId": "snowman-shuffle-series",
       "recordId": "snowman-shuffle-2021-virtual"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "st-louis-turkey-trot-8k-2018"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "gobble-cobble-2019"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "baltimore-virtual-turkey-trot-2020"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "mile-high-turkey-trot-2021"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "mile-high-turkey-trot-2023"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "springfield-turkey-trot-2024"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "mile-high-turkey-trot-2025"
     }
   ]
 }

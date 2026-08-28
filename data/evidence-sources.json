@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-18",
+  "updatedOn": "2026-08-28",
   "description": "Ordered evidence-source inventory for Alex Ford Adventures. Semantic layers describe provenance; loadOrder alone defines shallow-merge precedence. Official-result sources intentionally remain last so verified organizer/timer fields win without erasing underlying GPS evidence.",
   "layerDefinitions": {
     "base": "Original and foundational record inventories.",
@@ -46,7 +46,8 @@
     {"id":"official-results-2026-08-11j","path":"data/official-results-overrides-2026-08-11j.json","layer":"official","description":"Official Staunton Rocks! Half Marathon checkpoints, finish, placement, bib, and course elevation profile from OpenSplitTime."},
     {"id":"official-chicago-marathon-2021","path":"data/chicago-marathon-2021-official.json","layer":"official","description":"User-supplied official individual result link for the 2021 Chicago Marathon; loaded last so the published result source is canonical."},
     {"id":"recovered-strava-2026-08-17-beerfit-brew-mile","path":"data/strava-mining-2026-08-17-beerfit-brew-mile.json","layer":"recovered","description":"Verified 2016 BeerFit Kansas City Brew Mile recovered from the original Strava GPX, same-day 5K pairing, contemporary event documentation, and user confirmation."},
-    {"id":"editorial-beerfit-kansas-city-2016","path":"data/notable-adventures-2026-08-17-beerfit-kansas-city.json","layer":"editorial","description":"Same-day BeerFit Kansas City 2016 Story grouping the independently published 5K Classic and Brew Mile race records."}
+    {"id":"editorial-beerfit-kansas-city-2016","path":"data/notable-adventures-2026-08-17-beerfit-kansas-city.json","layer":"editorial","description":"Same-day BeerFit Kansas City 2016 Story grouping the independently published 5K Classic and Brew Mile race records."},
+    {"id":"editorial-turkey-trots-2026-08-28","path":"data/turkey-trots-story-2026-08-28.json","layer":"editorial","description":"Complete Turkey Trots Story plus user-confirmed 2020 Baltimore virtual and 2024 Springfield/UIS chapters."}
   ],
   "loadOrder": [
     "base-adventures",
@@ -74,6 +75,7 @@
     "recovered-strava-2026-08-11n",
     "recovered-strava-2026-08-17-beerfit-brew-mile",
     "editorial-beerfit-kansas-city-2016",
+    "editorial-turkey-trots-2026-08-28",
     "official-results-base",
     "official-results-2026-08-11b",
     "official-results-2026-08-11c",
