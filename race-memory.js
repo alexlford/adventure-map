@@ -64,18 +64,38 @@
     return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async">${photo.caption ? `<figcaption>${A.esc(photo.caption)}</figcaption>` : ''}</figure>`;
   };
 
+  const fallbackPhotoSrc = img => {
+    const src = String(img.getAttribute('src') || '');
+    return /\.webp$/i.test(src) ? src.replace(/\.webp$/i, '.svg') : '';
+  };
+
   const settlePhoto = img => {
     const figure = img.closest('.race-memory-photo');
     const applyLayout = () => {
       if (img.naturalHeight > img.naturalWidth * 1.15) figure?.classList.add('race-memory-photo-portrait');
     };
+    const attachFallbackOutcome = () => {
+      img.addEventListener('load', applyLayout, { once: true });
+      img.addEventListener('error', () => figure?.remove(), { once: true });
+    };
+    const tryFallback = () => {
+      const fallback = fallbackPhotoSrc(img);
+      if (!fallback || img.dataset.fallbackUsed === 'true') return false;
+      img.dataset.fallbackUsed = 'true';
+      img.src = fallback;
+      attachFallbackOutcome();
+      return true;
+    };
+    const handleError = () => {
+      if (!tryFallback()) figure?.remove();
+    };
     if (img.complete) {
       if (img.naturalWidth) applyLayout();
-      else figure?.remove();
+      else handleError();
       return;
     }
     img.addEventListener('load', applyLayout, { once: true });
-    img.addEventListener('error', () => figure?.remove(), { once: true });
+    img.addEventListener('error', handleError, { once: true });
   };
 
   function memoryMarkup(record, memory) {
