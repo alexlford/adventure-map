@@ -3,8 +3,8 @@
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
   "routeCatalogUpdatedOn": "2026-08-22",
-  "recordCount": 138,
-  "featureCount": 124,
+  "recordCount": 140,
+  "featureCount": 126,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
@@ -33,6 +33,12 @@
     "baltimore-shamrock-5k-2020-deferred-virtual": {
       "file": "data/strava-route-full-resolution-baltimore-shamrock-5k-2020-deferred-virtual.json",
       "featureId": "strava-5115941734",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "baltimore-virtual-turkey-trot-2020": {
+      "file": "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
+      "featureId": "strava-4395204902",
       "format": "polyline",
       "quality": "full-source"
     },
@@ -770,6 +776,12 @@
       "featureId": "snowman-shuffle-jalc-course-proxy",
       "format": "geojson",
       "quality": "catalog-detail"
+    },
+    "springfield-turkey-trot-2024": {
+      "file": "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
+      "featureId": "strava-13002340446",
+      "format": "polyline",
+      "quality": "full-source"
     },
     "st-louis-turkey-trot-8k-2018": {
       "file": "data/strava-route-full-resolution-st-louis-turkey-trot-8k-2018.json",
