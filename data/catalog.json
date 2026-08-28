@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "updatedOn": "2026-08-12",
+  "updatedOn": "2026-08-28",
   "description": "Canonical public-record resolver configuration for Alex Ford Adventures. Evidence-source inventory and precedence live in a dedicated evidence manifest and compile into one stable record layer before matches, tombstones and explicit overrides are applied. Official race-result fields remain authoritative when verified; Strava remains GPS evidence and fallback.",
   "evidenceManifest": "data/evidence-sources.json",
   "compiledRecordLayer": "data/catalog-layers/records.json",
