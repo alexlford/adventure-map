@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "sourceCount": 37,
   "recordCount": 161,
-  "layeredMergeCount": 48,
+  "layeredMergeCount": 51,
   "adventures": [
     {
       "id": "mount-lincoln",
@@ -1353,7 +1353,7 @@
       "routeStatus": "gps-source-available",
       "matchSource": "Exact Thanksgiving Day date + Strava activity explicitly named Turkey Trot + 6.494 km recording + approximately 10:02 AM local start matching the organizer's 10:00 AM Wave 3 + Washington Park event identity",
       "matchConfidence": "verified",
-      "_catalogSource": "data/strava-mining-2026-08-11l.json",
+      "_catalogSource": "data/turkey-trots-story-2026-08-28.json",
       "officialDistance": "4 miles",
       "officialDistanceMi": 4,
       "officialDistanceKm": 6.437,
@@ -1363,7 +1363,7 @@
       "stravaMovingSeconds": 2502,
       "resultSource": "Mile High United Way official 2025 Turkey Trot event archive",
       "resultUrl": "https://unitedwaydenver.org/event/mile-high-united-way-turkey-trot-2025/",
-      "note": "Mile High United Way identifies the Nov. 27, 2025 event as its 52nd annual Turkey Trot at Washington Park and describes the course as a 4-mile walk/run. The organizer's schedule lists a 10:00 AM Wave 3; the Strava recording begins about 10:02 AM local and measures 4.03 miles. No indexed individual timing row has yet been recovered, so 41:56 is retained only as the Strava elapsed-time fallback."
+      "note": "Another great Thanksgiving at Washington Park with Olive. By 2025, the Turkey Trot had become a recurring part of the holiday tradition."
     },
     {
       "id": "colfax-5k-2026",
@@ -3875,8 +3875,8 @@
       "resultUrl": "https://halsports.acclarodev.com/results/",
       "matchSource": "Exact Thanksgiving Day date + 4.03-mile GPS recording + Washington Park start/finish + near-identical route geometry to the independently verified 2025 Mile High United Way Turkey Trot course",
       "matchConfidence": "verified",
-      "note": "Recovered despite the generic Strava name. HAL Sports lists the Mile High United Way Turkey Trot at Washington Park on November 25, 2021, and contemporary event coverage identifies it as a four-mile run/walk. The personal GPS track starts and finishes within meters of the verified 2025 Turkey Trot track and follows essentially the same Washington Park course. No indexed individual timing row has been recovered, so 31:12 is retained only as the Strava elapsed-time fallback.",
-      "_catalogSource": "data/strava-mining-2026-08-11l.json"
+      "note": "A sunny Thanksgiving morning at Washington Park with my wife and mom. I remember running well, but what stands out most is having fun together at my first Denver Turkey Trot.",
+      "_catalogSource": "data/turkey-trots-story-2026-08-28.json"
     },
     {
       "id": "mile-high-turkey-trot-2023",
@@ -3909,8 +3909,8 @@
       "resultUrl": "https://unitedwaydenver.org/event/2023-turkey-trot/",
       "matchSource": "Exact Thanksgiving Day date + official four-mile Washington Park event + source GPS contains the complete repeated Turkey Trot course after an approximately 1.60 km approach/warmup",
       "matchConfidence": "verified",
-      "note": "The generic 8.186 km Strava activity includes approximately 1.60 km of approach/warmup before reaching the Turkey Trot start. The published route is intentionally cropped to the 566-point race-course segment: about 6.57 km / 4.08 miles, starting and finishing within meters of the 2021 and 2025 course and matching the repeated route throughout. The race-course segment spans 38:17 in the GPS source, but no indexed individual timing row has been recovered, so that value is route-context evidence rather than an official result.",
-      "_catalogSource": "data/strava-mining-2026-08-11l.json"
+      "note": "Back at Washington Park with Olive. I arrived late and ran from the parking area to the start, so the full outing ended up longer than the nominal four-mile race.",
+      "_catalogSource": "data/turkey-trots-story-2026-08-28.json"
     },
     {
       "id": "mile-high-united-way-turkey-trot-series",
@@ -3928,7 +3928,7 @@
       "routeStatus": "multi-event-gps",
       "matchSource": "Official race records + Strava export + user confirmation",
       "matchConfidence": "confirmed",
-      "note": "A Thanksgiving tradition across seven editions and four places: St. Louis in 2018; Baltimore in 2019 and virtually in 2020; Denver in 2021, 2023, and 2025; and Springfield, Illinois in 2024. The individual race and event records retain their own names, results, activity evidence, and deep links while this Story preserves the full tradition.",
+      "note": "Seven Thanksgiving editions became one tradition that followed me from St. Louis to Baltimore, Denver, and Springfield. The individual race and event records keep their own names, results, GPS evidence, and memories while this Story connects the full 2018–2025 chronology.",
       "_catalogSource": "data/turkey-trots-story-2026-08-28.json"
     },
     {
@@ -3986,7 +3986,7 @@
       "id": "baltimore-virtual-turkey-trot-2020",
       "kind": "race",
       "discipline": "road",
-      "name": "Virtual Baltimore Turkey Trot",
+      "name": "Gobble Cobble 2020 (Virtual)",
       "year": 2020,
       "date": "2020-11-26",
       "distance": "5.48 km recorded",
@@ -4005,7 +4005,7 @@
       "routeStatus": "gps",
       "matchSource": "User confirmation + Thanksgiving Day Strava export",
       "matchConfidence": "confirmed",
-      "note": "The 2020 Turkey Trot tradition continued virtually in Baltimore. The matched Thanksgiving Day Strava activity records 5.48 km; no organizer distance or official finish time is asserted.",
+      "note": "A brief virtual Gobble Cobble entry in Baltimore for Thanksgiving 2020. The matched Thanksgiving Day Strava activity records 5.48 km; no organizer distance or official finish time is asserted.",
       "_catalogSource": "data/turkey-trots-story-2026-08-28.json"
     },
     {
@@ -4035,7 +4035,7 @@
       "routeStatus": "gps",
       "matchSource": "User confirmation + Thanksgiving morning Strava export and GPS",
       "matchConfidence": "confirmed",
-      "note": "The 2024 Turkey Trot was completed with Olive through the University of Illinois Springfield campus. The source activity is recorded as a Walk and covers 5.76 km; no organizer distance or official finish time is asserted.",
+      "note": "A fun Thanksgiving outing with Olive through the University of Illinois Springfield campus. The source activity is recorded as a Walk and covers 5.76 km; no organizer distance or official finish time is asserted.",
       "_catalogSource": "data/turkey-trots-story-2026-08-28.json"
     },
     {
@@ -4391,7 +4391,8 @@
     ],
     "mile-high-turkey-trot-2025": [
       "data/discovered-races.json",
-      "data/strava-mining-2026-08-11l.json"
+      "data/strava-mining-2026-08-11l.json",
+      "data/turkey-trots-story-2026-08-28.json"
     ],
     "colfax-5k-2026": [
       "data/discovered-races.json",
@@ -4706,10 +4707,12 @@
       "data/official-results-overrides.json"
     ],
     "mile-high-turkey-trot-2021": [
-      "data/strava-mining-2026-08-11l.json"
+      "data/strava-mining-2026-08-11l.json",
+      "data/turkey-trots-story-2026-08-28.json"
     ],
     "mile-high-turkey-trot-2023": [
-      "data/strava-mining-2026-08-11l.json"
+      "data/strava-mining-2026-08-11l.json",
+      "data/turkey-trots-story-2026-08-28.json"
     ],
     "mile-high-united-way-turkey-trot-series": [
       "data/strava-mining-2026-08-11l.json",
@@ -4797,6 +4800,9 @@
       "mile-high-turkey-trot-2025: data/discovered-races.json → data/strava-mining-2026-08-11l.json",
       "beerfit-kansas-city-5k-2016: data/recovered-events-2026-08.json → data/strava-mining-2026-08-11m.json",
       "shamrock-shuffle-10k-2015: data/mined-races.json → data/strava-mining-2026-08-11n.json",
+      "mile-high-turkey-trot-2021: data/strava-mining-2026-08-11l.json → data/turkey-trots-story-2026-08-28.json",
+      "mile-high-turkey-trot-2023: data/strava-mining-2026-08-11l.json → data/turkey-trots-story-2026-08-28.json",
+      "mile-high-turkey-trot-2025: data/strava-mining-2026-08-11l.json → data/turkey-trots-story-2026-08-28.json",
       "mile-high-united-way-turkey-trot-series: data/strava-mining-2026-08-11l.json → data/turkey-trots-story-2026-08-28.json",
       "snowman-shuffle-2006: data/user-confirmed-races.json → data/official-results-overrides.json",
       "snowman-shuffle-2007: data/user-confirmed-races.json → data/official-results-overrides.json",
