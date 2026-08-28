@@ -143,9 +143,11 @@
     return `<a class="series-year-card" href="${A.recordHref(record)}"><div class="series-year-top"><span>${A.esc(String(year))}</span><em>${hasGpsRoute(record) ? 'GPS course' : 'Location only'}</em></div><small>${A.esc(distanceLabel(record))}</small><strong>${A.esc(result)}</strong><p>${A.esc(time.sourceLabel)}</p><footer><span>${A.esc(record.name)}</span><b>Open record →</b></footer></a>`;
   };
 
+  const seriesAnchor = () => page.querySelector('.race-memory-story') || page.querySelector('.story-record-editorial');
+
   async function enhance() {
     const key = currentKey();
-    if (!key || page.dataset.raceSeriesEnhanced === 'true') return;
+    if (!key || (page.dataset.raceSeriesEnhanced === 'true' && page.querySelector('#raceSeriesHistory'))) return;
     page.dataset.raceSeriesEnhanced = 'pending';
     try {
       const [recordPayload, relationshipPayload] = await Promise.all([fetchJson('data/public-records.json'), fetchJson('data/relationships.json')]);
@@ -158,8 +160,8 @@
       const byId = new Map(records.map(item => [item.id, item]));
       const members = relationship.memberIds.map(id => byId.get(id)).filter(item => item?.kind === 'race').sort((a, b) => (a.date || '').localeCompare(b.date || ''));
       if (members.length < 2) return;
-      const editorial = page.querySelector('.story-record-editorial');
-      if (!editorial || page.querySelector('#raceSeriesHistory')) return;
+      const anchor = seriesAnchor();
+      if (!anchor || page.querySelector('#raceSeriesHistory')) return;
 
       const firstYear = members[0].year || members[0].date?.slice(0, 4);
       const lastYear = members.at(-1).year || members.at(-1).date?.slice(0, 4);
@@ -173,7 +175,7 @@
       section.className = 'race-series-feature';
       section.id = 'raceSeriesHistory';
       section.innerHTML = `<div class="race-series-head"><div><p class="eyebrow">Recurring race series</p><h2>${A.esc(relationship.name || record.name)}</h2></div><p>${A.esc(relationship.summary || record.note || 'A multi-year race history preserved as one connected series.')}</p></div><div class="race-series-stats"><article><small>Appearances</small><strong>${members.length}</strong><span>${A.esc(span)}</span></article><article><small>Cumulative race distance</small><strong>${A.esc(mileage)}</strong><span>Organizer distance when available</span></article><article><small>Official results</small><strong>${officialCount}</strong><span>${members.length - officialCount} GPS/fallback records</span></article><article><small>Course archive</small><strong>${gpsCount}/${members.length}</strong><span>${gpsCount > 1 ? 'Routes overlay on the map below' : 'GPS routes attached when available'}</span></article></div>${benchmarkStats(members)}${chartFor(members)}<div class="series-year-grid">${members.map(cardFor).join('')}</div>${gpsCount > 1 ? `<div class="series-course-callout"><div><p class="eyebrow">Course evolution</p><h3>${gpsCount} recorded courses, one map.</h3></div><p>The course map below overlays the available personal GPS routes with a separate color for each appearance. Zoom in to compare shared sections, reroutes, start/finish changes, and event-to-event course drift.</p></div>` : ''}`;
-      editorial.insertAdjacentElement('afterend', section);
+      anchor.insertAdjacentElement('afterend', section);
       page.querySelector('.story-objective-feature.challenge-feature')?.remove();
       document.body.classList.add('story-race-series-page');
       page.dataset.raceSeriesEnhanced = 'true';
@@ -184,11 +186,12 @@
 
   let attempts = 0;
   const waitForStory = () => {
-    if (document.body.classList.contains('story-record-page') && page.querySelector('.story-record-editorial')) {
+    const anchor = seriesAnchor();
+    if (anchor && !page.querySelector('#raceSeriesHistory') && page.dataset.raceSeriesEnhanced !== 'pending') {
       enhance().catch(error => console.warn('Race series enhancement', error));
-      return;
     }
-    if (!page.querySelector('.empty') || attempts++ >= 120) return;
+    if (page.querySelector('.race-memory-story') && page.querySelector('#raceSeriesHistory')) return;
+    if (attempts++ >= 120) return;
     setTimeout(waitForStory, 50);
   };
   waitForStory();
