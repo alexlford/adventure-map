@@ -54,6 +54,27 @@ for (const path of recordPages) {
   });
 }
 
+test('mobile map keeps every layer control reachable and operational', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+
+  const filters = ['all', 'mtb', 'nordic', 'road-races', 'trail-races', 'skiing', 'summits', 'adventures'];
+  const buttons = page.locator('.filter-row [data-filter]');
+  await expect(buttons).toHaveCount(filters.length);
+
+  for (const filter of filters) {
+    const button = page.locator(`[data-filter="${filter}"]`);
+    await button.scrollIntoViewIfNeeded();
+    await expect(button).toBeVisible();
+    await button.click();
+    await expect(button).toHaveClass(/is-active/);
+    await expect.poll(() => page.evaluate(() => window.AdventureMap?.state?.().filter)).toBe(filter);
+    await expect(page.locator('#resultCount')).toContainText('shown');
+    await expectNoHorizontalOverflow(page);
+  }
+});
+
 test('shared pages expose a keyboard skip link', async ({ page }) => {
   await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
   const skip = page.locator('.skip-link');
