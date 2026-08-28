@@ -9,7 +9,7 @@
       "id": "baltimore-virtual-turkey-trot-2020",
       "kind": "race",
       "discipline": "road",
-      "name": "Virtual Baltimore Turkey Trot",
+      "name": "Gobble Cobble 2020 (Virtual)",
       "year": 2020,
       "date": "2020-11-26",
       "distance": "5.48 km recorded",
@@ -28,7 +28,15 @@
       "routeStatus": "gps",
       "matchSource": "User confirmation + Thanksgiving Day Strava export",
       "matchConfidence": "confirmed",
-      "note": "The 2020 Turkey Trot tradition continued virtually in Baltimore. The matched Thanksgiving Day Strava activity records 5.48 km; no organizer distance or official finish time is asserted."
+      "note": "A brief virtual Gobble Cobble entry in Baltimore for Thanksgiving 2020. The matched Thanksgiving Day Strava activity records 5.48 km; no organizer distance or official finish time is asserted."
+    },
+    {
+      "id": "mile-high-turkey-trot-2021",
+      "note": "A sunny Thanksgiving morning at Washington Park with my wife and mom. I remember running well, but what stands out most is having fun together at my first Denver Turkey Trot."
+    },
+    {
+      "id": "mile-high-turkey-trot-2023",
+      "note": "Back at Washington Park with Olive. I arrived late and ran from the parking area to the start, so the full outing ended up longer than the nominal four-mile race."
     },
     {
       "id": "springfield-turkey-trot-2024",
@@ -57,7 +65,11 @@
       "routeStatus": "gps",
       "matchSource": "User confirmation + Thanksgiving morning Strava export and GPS",
       "matchConfidence": "confirmed",
-      "note": "The 2024 Turkey Trot was completed with Olive through the University of Illinois Springfield campus. The source activity is recorded as a Walk and covers 5.76 km; no organizer distance or official finish time is asserted."
+      "note": "A fun Thanksgiving outing with Olive through the University of Illinois Springfield campus. The source activity is recorded as a Walk and covers 5.76 km; no organizer distance or official finish time is asserted."
+    },
+    {
+      "id": "mile-high-turkey-trot-2025",
+      "note": "Another great Thanksgiving at Washington Park with Olive. By 2025, the Turkey Trot had become a recurring part of the holiday tradition."
     },
     {
       "id": "mile-high-united-way-turkey-trot-series",
@@ -74,7 +86,7 @@
       "routeStatus": "multi-event-gps",
       "matchSource": "Official race records + Strava export + user confirmation",
       "matchConfidence": "confirmed",
-      "note": "A Thanksgiving tradition across seven editions and four places: St. Louis in 2018; Baltimore in 2019 and virtually in 2020; Denver in 2021, 2023, and 2025; and Springfield, Illinois in 2024. The individual race and event records retain their own names, results, activity evidence, and deep links while this Story preserves the full tradition."
+      "note": "Seven Thanksgiving editions became one tradition that followed me from St. Louis to Baltimore, Denver, and Springfield. The individual race and event records keep their own names, results, GPS evidence, and memories while this Story connects the full 2018–2025 chronology."
     }
   ]
 }
