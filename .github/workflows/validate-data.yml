@@ -36,14 +36,6 @@ jobs:
         run: npx playwright install --with-deps chromium webkit
       - name: Run browser regression suite
         run: npm run test:browser
-      - name: Upload browser failure traces
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: browser-failure-traces
-          path: test-results/
-          if-no-files-found: ignore
-          retention-days: 1
       - name: Verify publication artifacts are committed
         run: |
           CHANGES="$(git status --porcelain --untracked-files=all -- shared.js data/catalog-layers/records.json data/public-records.json data/route-detail-index.json sitemap.xml robots.txt record map explore timeline stories races summits skiing nordic mtb)"
