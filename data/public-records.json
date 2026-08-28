@@ -4242,12 +4242,12 @@
       "date": "2022-05-30",
       "endDate": "2025-05-26",
       "distance": "Four consecutive 10K editions",
-      "location": "Boulder, Colorado",
+      "location": "Boulder & Denver, Colorado",
       "region": "Colorado",
       "routeStatus": "multi-event-gps",
-      "matchSource": "Official BOLDERBoulder results + Strava GPS",
-      "matchConfidence": "verified",
-      "note": "Four consecutive Memorial Day BOLDERBoulder 10Ks from 2022 through 2025, collected as one recurring race series while retaining each year's official result and personal GPS route.",
+      "matchSource": "Official BOLDERBoulder results + Strava GPS + user confirmation",
+      "matchConfidence": "confirmed",
+      "note": "Four consecutive BOLDERBoulder 10K completions from 2022 through 2025: in person in Boulder from 2022 through 2024, then virtually in Denver in 2025 after rain changed the Memorial Day plan.",
       "_catalogSource": "data/notable-adventures.json",
       "recordClass": "adventure",
       "sport": "adventure",
@@ -4260,17 +4260,17 @@
         "source": "recorded"
       },
       "locationInfo": {
-        "label": "Boulder, Colorado",
+        "label": "Boulder & Denver, Colorado",
         "region": "Colorado",
         "lat": null,
         "lon": null,
         "precision": null
       },
       "evidence": {
-        "source": "Official BOLDERBoulder results + Strava GPS",
-        "matchSource": "Official BOLDERBoulder results + Strava GPS",
+        "source": "Official BOLDERBoulder results + Strava GPS + user confirmation",
+        "matchSource": "Official BOLDERBoulder results + Strava GPS + user confirmation",
         "resultSource": null,
-        "confidence": "verified"
+        "confidence": "confirmed"
       },
       "routeInfo": {
         "status": "multi-event-gps",
@@ -5835,20 +5835,25 @@
       "distance": "10K",
       "distanceKm": 10.02,
       "distanceMi": 6.23,
-      "location": "Boulder, Colorado",
+      "location": "Denver, Colorado",
       "region": "Colorado",
-      "lat": 40.0093,
-      "lon": -105.2669,
-      "coordinatePrecision": "event-area",
+      "lat": 39.7377,
+      "lon": -104.9293,
+      "coordinatePrecision": "gps-start",
       "stravaActivityId": "14604711518",
       "stravaActivityName": "Nike Run Club: Monday Afternoon Run",
       "elapsedSeconds": 3697,
       "movingSeconds": 3609,
       "elevationGainM": 51,
-      "routeStatus": "matched-no-public-route",
-      "matchSource": "Strava exact Memorial Day date/10K distance/Boulder location + official 2025 BOLDERBoulder archive",
-      "matchConfidence": "high",
+      "routeStatus": "gps",
+      "matchSource": "Strava export + user confirmation that the 2025 BOLDERBoulder was completed virtually in Denver after rain changed the in-person plan",
+      "matchConfidence": "confirmed",
       "_catalogSource": "data/medal-recovered.json",
+      "participationMode": "virtual",
+      "routeFeatureIds": [
+        "strava-14604711518"
+      ],
+      "note": "Rain on the morning of the 2025 BOLDERBoulder changed the plan. Alex slept in and completed the 10K virtually later that day in Denver; the published route is the actual 887-point Denver GPS track, not the Boulder race course.",
       "slug": "2025-05-26-bolderboulder",
       "recordClass": "race",
       "sport": "running",
@@ -5861,20 +5866,20 @@
         "source": "recorded"
       },
       "locationInfo": {
-        "label": "Boulder, Colorado",
+        "label": "Denver, Colorado",
         "region": "Colorado",
-        "lat": 40.0093,
-        "lon": -105.2669,
-        "precision": "event-area"
+        "lat": 39.7377,
+        "lon": -104.9293,
+        "precision": "gps-start"
       },
       "evidence": {
-        "source": "Strava exact Memorial Day date/10K distance/Boulder location + official 2025 BOLDERBoulder archive",
-        "matchSource": "Strava exact Memorial Day date/10K distance/Boulder location + official 2025 BOLDERBoulder archive",
+        "source": "Strava export + user confirmation that the 2025 BOLDERBoulder was completed virtually in Denver after rain changed the in-person plan",
+        "matchSource": "Strava export + user confirmation that the 2025 BOLDERBoulder was completed virtually in Denver after rain changed the in-person plan",
         "resultSource": null,
-        "confidence": "high"
+        "confidence": "confirmed"
       },
       "routeInfo": {
-        "status": "matched-no-public-route",
+        "status": "gps",
         "provenance": null
       }
     },
