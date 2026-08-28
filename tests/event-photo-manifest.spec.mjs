@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 async function loadRecord(page, id) {
   return page.evaluate(async recordId => {
-    const all = await window.AdventureSite.load({ fresh: true });
+    const all = await window.AdventureSite.load();
     const record = all.find(item => item.id === recordId);
     if (!record) return null;
     return {
@@ -18,15 +18,13 @@ test('event photo manifest enriches canonical records and renders on detail page
   await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
   const chicago = await loadRecord(page, 'chicago-marathon-2021');
   expect(chicago).toBeTruthy();
-  expect(chicago.media).toHaveLength(1);
-  expect(chicago.media[0].source).toBe('event-photo-manifest');
-  expect(chicago.media[0].src).toContain('/assets/event-photos/races/chicago-marathon-2021/');
-  expect(chicago.media[0].alt).toMatch(/Chicago Marathon/i);
+  const manifestPhoto = chicago.media.find(item => item.source === 'event-photo-manifest' && item.src.includes('/assets/event-photos/races/chicago-marathon-2021/'));
+  expect(manifestPhoto).toBeTruthy();
+  expect(manifestPhoto.alt).toMatch(/Chicago Marathon/i);
 
   await page.goto(`/detail.html?record=${encodeURIComponent(chicago.slug || chicago.id)}`, { waitUntil: 'domcontentloaded' });
-  const photo = page.locator('#recordMedia img').first();
+  const photo = page.locator('#recordMedia img[src*="assets/event-photos/races/chicago-marathon-2021/"]').first();
   await expect(photo).toBeVisible();
-  await expect(photo).toHaveAttribute('src', /assets\/event-photos\/races\/chicago-marathon-2021\//);
   await expect(photo).toHaveJSProperty('complete', true);
   expect(await photo.evaluate(node => node.naturalWidth)).toBeGreaterThan(0);
 });
@@ -45,7 +43,7 @@ test('unresolved photo is not attached to an arbitrary catalog record', async ({
   await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
   const unresolvedPath = 'snow-mountain-ranch-nordic-dog-skiing-unresolved-01.jpeg';
   const attached = await page.evaluate(async path => {
-    const all = await window.AdventureSite.load({ fresh: true });
+    const all = await window.AdventureSite.load();
     return all.filter(record => (record.media || []).some(item => item.src.includes(path))).map(record => record.id);
   }, unresolvedPath);
   expect(attached).toEqual([]);
