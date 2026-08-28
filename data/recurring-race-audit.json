@@ -224,7 +224,7 @@
       ],
       "missingMemberIds": [],
       "officialResultCount": 2,
-      "routeCount": 3,
+      "routeCount": 4,
       "distanceHistory": [
         {
           "label": "5K",
@@ -243,9 +243,7 @@
         "illinois-5k-2015",
         "illinois-marathon-2015"
       ],
-      "routeRecoveryIds": [
-        "illinois-5k-2015"
-      ]
+      "routeRecoveryIds": []
     },
     {
       "id": "river-to-river-relay-series",
@@ -702,11 +700,6 @@
       "type": "official-result",
       "seriesId": "illinois-marathon-weekend-series",
       "recordId": "illinois-marathon-2015"
-    },
-    {
-      "type": "route",
-      "seriesId": "illinois-marathon-weekend-series",
-      "recordId": "illinois-5k-2015"
     },
     {
       "type": "official-result",
