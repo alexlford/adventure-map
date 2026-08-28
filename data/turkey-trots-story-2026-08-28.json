@@ -25,7 +25,7 @@
       "stravaElapsedSeconds": 2166,
       "stravaMovingSeconds": 1737,
       "elevationGainM": 28.4,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "User confirmation + Thanksgiving Day Strava export",
       "matchConfidence": "confirmed",
       "note": "The 2020 Turkey Trot tradition continued virtually in Baltimore. The matched Thanksgiving Day Strava activity records 5.48 km; no organizer distance or official finish time is asserted."
@@ -54,7 +54,7 @@
       "stravaElapsedSeconds": 2341,
       "stravaMovingSeconds": 2092,
       "elevationGainM": 2.1,
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "gps",
       "matchSource": "User confirmation + Thanksgiving morning Strava export and GPS",
       "matchConfidence": "confirmed",
       "note": "The 2024 Turkey Trot was completed with Olive through the University of Illinois Springfield campus. The source activity is recorded as a Walk and covers 5.76 km; no organizer distance or official finish time is asserted."
