@@ -1,0 +1,43 @@
+name: Materialize Colfax race photos
+
+on:
+  push:
+    branches:
+      - fix/colfax-photo-years-final-20260828
+    paths:
+      - '.github/workflows/materialize-colfax-photos.yml'
+      - 'tmp/colfax-photo-stage/**'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - name: Reconstruct Colfax photo assets
+        run: |
+          set -euo pipefail
+          mkdir -p media/races
+          cat tmp/colfax-photo-stage/colfax-2024-olive-finish-00.txt tmp/colfax-photo-stage/colfax-2024-olive-finish-01.txt | tr -d '\n' | base64 --decode > media/races/colfax-2024-olive-finish.webp
+          cat tmp/colfax-photo-stage/colfax-2024-dog-ice-pool-00.txt tmp/colfax-photo-stage/colfax-2024-dog-ice-pool-01.txt | tr -d '\n' | base64 --decode > media/races/colfax-2024-dog-ice-pool.webp
+          cat tmp/colfax-photo-stage/colfax-2026-olive-pool-00.txt tmp/colfax-photo-stage/colfax-2026-olive-pool-01.txt | tr -d '\n' | base64 --decode > media/races/colfax-2026-olive-pool.webp
+          for file in media/races/colfax-2024-olive-finish.webp media/races/colfax-2024-dog-ice-pool.webp media/races/colfax-2026-olive-pool.webp; do
+            test -s "$file"
+            test "$(xxd -p -l 4 "$file")" = "52494646"
+          done
+      - name: Commit permanent assets and remove staging
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -r tmp/colfax-photo-stage
+          git rm .github/workflows/materialize-colfax-photos.yml
+          git add media/races/colfax-2024-olive-finish.webp media/races/colfax-2024-dog-ice-pool.webp media/races/colfax-2026-olive-pool.webp
+          git commit -m "Restore Colfax race photos"
+          git push origin "HEAD:${{ github.ref_name }}"
