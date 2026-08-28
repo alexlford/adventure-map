@@ -18,6 +18,8 @@ body.race-memory-page .page{max-width:1120px;padding-top:54px}
 .race-memory-photo figcaption{max-width:820px;margin:11px 4px 0;color:var(--muted);font-size:.76rem;line-height:1.5}
 .race-memory-photo-hero img{aspect-ratio:16/9;object-fit:cover}
 .race-memory-photo-hero.race-memory-photo-four-three img{aspect-ratio:4/3}
+.race-memory-photo-hero.race-memory-photo-natural{max-width:760px;margin:32px auto 0}
+.race-memory-photo-hero.race-memory-photo-natural img{width:auto;max-width:100%;height:auto;max-height:900px;margin:0 auto;aspect-ratio:auto;object-fit:contain}
 .race-memory-story{display:grid;grid-template-columns:minmax(240px,.72fr) minmax(0,1.28fr);gap:clamp(34px,6vw,76px);align-items:start;margin-top:72px;padding-top:26px;border-top:1px solid var(--line)}
 .race-memory-story header{position:sticky;top:96px}
 .race-memory-story h2{max-width:420px;margin:0;font-size:clamp(2.05rem,4vw,3.5rem);line-height:.98;letter-spacing:-.05em}
