@@ -365,8 +365,9 @@
       "name": "Turkey Trots",
       "adventureId": "mile-high-united-way-turkey-trot-series",
       "storyPresent": true,
-      "appearanceCount": 6,
+      "appearanceCount": 7,
       "years": [
+        2018,
         2019,
         2020,
         2021,
@@ -375,6 +376,7 @@
         2025
       ],
       "memberIds": [
+        "st-louis-turkey-trot-8k-2018",
         "gobble-cobble-2019",
         "baltimore-virtual-turkey-trot-2020",
         "mile-high-turkey-trot-2021",
@@ -382,12 +384,14 @@
         "springfield-turkey-trot-2024",
         "mile-high-turkey-trot-2025"
       ],
-      "missingMemberIds": [
-        "turkey-trot-st-louis-2018"
-      ],
+      "missingMemberIds": [],
       "officialResultCount": 0,
-      "routeCount": 6,
+      "routeCount": 7,
       "distanceHistory": [
+        {
+          "label": "8K",
+          "count": 1
+        },
         {
           "label": "5K",
           "count": 1
@@ -406,6 +410,7 @@
         }
       ],
       "resultRecoveryIds": [
+        "st-louis-turkey-trot-8k-2018",
         "gobble-cobble-2019",
         "baltimore-virtual-turkey-trot-2020",
         "mile-high-turkey-trot-2021",
@@ -762,6 +767,11 @@
       "type": "official-result",
       "seriesId": "snowman-shuffle-series",
       "recordId": "snowman-shuffle-2021-virtual"
+    },
+    {
+      "type": "official-result",
+      "seriesId": "mile-high-united-way-turkey-trot-series",
+      "recordId": "st-louis-turkey-trot-8k-2018"
     },
     {
       "type": "official-result",
