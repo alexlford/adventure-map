@@ -11,7 +11,7 @@ Split features that belong to one recorded route are audited together as one rou
 
 A route is a CI failure only when it is neither high-resolution nor source-complete. This makes the quality gate strict about preventable simplification while remaining faithful to legacy recordings whose original sampling cadence cannot be improved without fabricating geometry.
 
-Full-source route archives may store Google polyline5 lines as Brotli-compressed base64 payloads. The publication build decodes selected compressed routes with Node and materializes the exact polyline5 strings into a browser-readable route-detail cache. Browsers therefore render the full source geometry without depending on native Brotli stream support and without downgrading to a lower-detail fallback.
+Full-source route archives may store Google polyline5 lines as Brotli-compressed base64 payloads. The publication build decodes selected compressed routes with Node and materializes the exact polyline5 strings into a browser-readable route-detail cache. Browsers therefore render the full source geometry without depending on native Brotli stream support and without downgrading to a lower-detail fallback. The generated browser cache is committed as a publication artifact and checked for staleness alongside the route-detail index.
 
 ## Public route-status invariant
 
