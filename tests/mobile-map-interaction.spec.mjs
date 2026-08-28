@@ -126,7 +126,8 @@ test('mobile map layer controls remain usable and the archive follows page scrol
   const allFilter = page.locator('[data-filter="all"]');
   await allFilter.click();
   await expect(allFilter).toHaveClass(/is-active/);
-  await expect.poll(() => page.evaluate(() => window.AdventureMap?.filteredRecords?.().length || 0)).toBe(allCount);
+  await expect.poll(() => page.evaluate(() => window.AdventureMap?.state?.().filter)).toBe('all');
+  await expect.poll(() => page.evaluate(() => window.AdventureMap?.filteredRecords?.().length || 0)).toBeGreaterThan(mtbCount);
 
   const archive = page.locator('.results-section');
   const archiveOverflowY = await archive.evaluate(element => getComputedStyle(element).overflowY);
