@@ -58,6 +58,11 @@
 
   const finishTime = record => String(record.officialTime || record.result || '—').replace(/^0(?=\d:)/, '');
 
+  const fallbackPhotoSrc = src => {
+    const value = String(src || '');
+    return /\.webp$/i.test(value) ? value.replace(/\.webp$/i, '.svg') : '';
+  };
+
   const photoFigure = (photo, className = '') => {
     const fourThree = photo.layout === 'four-three' || photo.aspect === '4:3';
     const natural = photo.layout === 'natural';
@@ -66,7 +71,20 @@
       : natural
         ? ' race-memory-photo-natural'
         : '';
-    return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async">${photo.caption ? `<figcaption>${A.esc(photo.caption)}</figcaption>` : ''}</figure>`;
+    const fallback = fallbackPhotoSrc(photo.src);
+    const fallbackAttr = fallback ? ` data-fallback-src="${A.esc(fallback)}"` : '';
+    return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}"${fallbackAttr} alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async">${photo.caption ? `<figcaption>${A.esc(photo.caption)}</figcaption>` : ''}</figure>`;
+  };
+
+  const installPhotoFallbacks = () => {
+    page.querySelectorAll('img[data-fallback-src]').forEach(img => {
+      img.addEventListener('error', () => {
+        const fallback = img.dataset.fallbackSrc;
+        if (!fallback || img.dataset.fallbackUsed === 'true') return;
+        img.dataset.fallbackUsed = 'true';
+        img.src = fallback;
+      });
+    });
   };
 
   function memoryMarkup(record, memory) {
@@ -108,6 +126,7 @@
     chronology?.remove();
 
     page.innerHTML = memoryMarkup(record, memory);
+    installPhotoFallbacks();
     document.body.classList.add('race-memory-page');
     page.dataset.raceMemory = 'true';
 
