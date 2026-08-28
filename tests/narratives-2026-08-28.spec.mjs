@@ -6,7 +6,11 @@ const publicRecords = readJson('data/public-records.json').records;
 const currentMemories = readJson('data/race-memories.json').records;
 const archiveMemories = readJson('data/race-memories-archive.json').records;
 const turkeyMemories = readJson('data/race-memories-turkey-trots.json').records;
-const recordsById = new Map(publicRecords.map(record => [record.id, record]));
+const recordsByKey = new Map();
+for (const record of publicRecords) {
+  if (record.id) recordsByKey.set(record.id, record);
+  if (record.slug) recordsByKey.set(record.slug, record);
+}
 
 const narrativeCases = [
   ['garmin-half-2014', archiveMemories, 'first half marathon', 'under two hours'],
@@ -33,16 +37,16 @@ const narrativeCases = [
   ['mile-high-united-way-turkey-trot-series', turkeyMemories, 'Seven Thanksgiving editions that became one tradition.', 'Thanksgiving mornings, family, friends, Olive'],
 ];
 
-test('every narrative added on 2026-08-28 remains wired to a public record', async () => {
-  for (const [recordId, source] of narrativeCases) {
-    expect(source[recordId], `${recordId} narrative source`).toBeTruthy();
-    expect(recordsById.get(recordId), `${recordId} public record`).toBeTruthy();
+test('every narrative added on 2026-08-28 remains wired to a public record or stable slug', async () => {
+  for (const [recordKey, source] of narrativeCases) {
+    expect(source[recordKey], `${recordKey} narrative source`).toBeTruthy();
+    expect(recordsByKey.get(recordKey), `${recordKey} public record or slug`).toBeTruthy();
   }
 });
 
-for (const [recordId, , firstPhrase, secondPhrase] of narrativeCases) {
-  test(`${recordId} renders its 2026-08-28 narrative`, async ({ page }) => {
-    await page.goto(`/detail.html?record=${recordId}`, { waitUntil: 'domcontentloaded' });
+for (const [recordKey, , firstPhrase, secondPhrase] of narrativeCases) {
+  test(`${recordKey} renders its 2026-08-28 narrative`, async ({ page }) => {
+    await page.goto(`/detail.html?record=${recordKey}`, { waitUntil: 'domcontentloaded' });
     const story = page.locator('.race-memory-story');
     await expect(story).toBeVisible({ timeout: 15000 });
     await expect(story).toContainText(firstPhrase, { ignoreCase: true });
