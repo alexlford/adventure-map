@@ -75,6 +75,26 @@ test('mobile map keeps every layer control reachable and operational', async ({ 
   }
 });
 
+test('mobile activity pages use Explore instead of a second navigation scroller', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/races.html', { waitUntil: 'domcontentloaded' });
+
+  const primary = page.locator('nav[aria-label="Primary navigation"]');
+  const explore = primary.getByRole('link', { name: 'Explore', exact: true });
+  const secondary = page.locator('.activity-subnav-wrap');
+
+  await expect(primary).toBeVisible();
+  await expect(explore).toBeVisible();
+  await expect(explore).toHaveAttribute('aria-current', 'page');
+  await expect(secondary).toHaveCount(1);
+  await expect(secondary).toBeHidden();
+
+  const box = await explore.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box.height).toBeGreaterThanOrEqual(44);
+  await expectNoHorizontalOverflow(page);
+});
+
 test('shared pages expose a keyboard skip link', async ({ page }) => {
   await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
   const skip = page.locator('.skip-link');
