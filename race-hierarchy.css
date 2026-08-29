@@ -70,7 +70,7 @@ body[data-page="races"] #seriesGrid .card-value {
 body[data-page="races"] #seriesGrid .card-value a {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 44px;
 }
 
 @media (max-width: 560px) {
