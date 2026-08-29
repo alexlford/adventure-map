@@ -1,0 +1,24 @@
+/* DS-06: establish the cross-site Alex Ford parent/subsite lockup.
+   The existing ALEX FORD link remains the parent-site affordance; the
+   subsite label is contextual, so no navigation behavior changes. */
+
+body .site-header .brand {
+  display: inline-grid;
+  gap: 3px;
+  align-items: start;
+  line-height: 1;
+}
+
+body .site-header .brand::after {
+  content: "ADVENTURES";
+  color: var(--muted);
+  font-size: .58rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: .14em;
+}
+
+body .site-header .brand:hover::after,
+body .site-header .brand:focus-visible::after {
+  color: var(--ink);
+}
