@@ -1,0 +1,13 @@
+/* DS-14: one navigation row on tablet/phone widths.
+   Explore remains the activity-switcher; the desktop chapter row returns above 850px. */
+@media (max-width: 850px) {
+  .activity-subnav-wrap {
+    display: none;
+  }
+
+  .nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
