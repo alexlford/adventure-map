@@ -1,0 +1,90 @@
+/* DS-12: expose the existing race information architecture without changing data.
+   Pursuit = World Marathon Majors; Events = individual race records;
+   Collections & Series = relationship umbrellas around those records. */
+
+body[data-page="races"] #worldMajorsFeature:not(:empty) {
+  position: relative;
+  margin: 60px 0 70px;
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+}
+
+body[data-page="races"] #worldMajorsFeature:not(:empty)::before {
+  content: "PURSUIT · WORLD MARATHON MAJORS";
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--activity-road-races);
+  font-size: .66rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+body[data-page="races"] .section-title:has(+ .filters),
+body[data-page="races"] .section-title:has(+ #seriesGrid) {
+  position: relative;
+  padding-top: 46px;
+}
+
+body[data-page="races"] .section-title:has(+ .filters)::before,
+body[data-page="races"] .section-title:has(+ #seriesGrid)::before {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  color: var(--muted);
+  font-size: .64rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+body[data-page="races"] .section-title:has(+ .filters)::before {
+  content: "Events · individual race records";
+}
+
+body[data-page="races"] .section-title:has(+ #seriesGrid)::before {
+  content: "Collections & series · umbrella records";
+  color: var(--activity-road-races);
+}
+
+body[data-page="races"] #timeline {
+  padding-left: 18px;
+  border-left: 2px solid color-mix(in srgb, var(--activity-road-races) 18%, var(--line));
+}
+
+body[data-page="races"] #seriesGrid .card {
+  min-height: 240px;
+  border-top: 4px solid color-mix(in srgb, var(--activity-road-races) 70%, white);
+  background: linear-gradient(155deg, rgba(255,255,255,.96), color-mix(in srgb, var(--activity-road-races) 5%, white));
+}
+
+body[data-page="races"] #seriesGrid .card-kicker {
+  color: var(--activity-road-races);
+}
+
+body[data-page="races"] #seriesGrid .card-value {
+  font-size: .82rem;
+  letter-spacing: .02em;
+}
+
+body[data-page="races"] #seriesGrid .card-value a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+@media (max-width: 560px) {
+  body[data-page="races"] #worldMajorsFeature:not(:empty) {
+    margin-top: 48px;
+    margin-bottom: 54px;
+  }
+
+  body[data-page="races"] #timeline {
+    padding-left: 12px;
+  }
+
+  body[data-page="races"] .section-title:has(+ .filters),
+  body[data-page="races"] .section-title:has(+ #seriesGrid) {
+    padding-top: 44px;
+  }
+}
