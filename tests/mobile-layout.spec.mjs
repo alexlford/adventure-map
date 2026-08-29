@@ -85,7 +85,7 @@ test('mobile activity pages use Explore instead of a second navigation scroller'
 
   await expect(primary).toBeVisible();
   await expect(explore).toBeVisible();
-  await expect(explore).toHaveAttribute('aria-current', 'page');
+  await expect(explore).toHaveAttribute('data-nav', 'activities');
   await expect(secondary).toHaveCount(1);
   await expect(secondary).toBeHidden();
 
