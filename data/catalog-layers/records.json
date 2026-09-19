@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceCount": 37,
-  "recordCount": 161,
+  "recordCount": 162,
   "layeredMergeCount": 51,
   "adventures": [
     {
@@ -1550,6 +1550,34 @@
       "matchConfidence": "high",
       "note": "The Strava activity starts at the published downtown 12th & Grand event location on the exact race date and records 12.08 km.",
       "_catalogSource": "data/mined-races.json"
+    },
+    {
+      "id": "air-force-marathon-2026",
+      "kind": "race",
+      "discipline": "marathon",
+      "name": "U.S. Air Force Marathon",
+      "year": 2026,
+      "date": "2026-09-19",
+      "distance": "Marathon",
+      "officialDistance": "Marathon",
+      "officialDistanceKm": 42.195,
+      "officialDistanceMi": 26.2,
+      "location": "Wright-Patterson Air Force Base & Fairborn, Ohio",
+      "region": "Ohio",
+      "lat": 39.78345,
+      "lon": -84.10895,
+      "coordinatePrecision": "venue",
+      "participationMode": "in-person",
+      "routeFeatureIds": [
+        "air-force-marathon-2026-official-course"
+      ],
+      "routeStatus": "historical-course",
+      "matchSource": "User confirmation + 2026 Air Force Marathon official course map and turn-by-turn directions",
+      "matchConfidence": "confirmed",
+      "sourceUrl": "https://www.usafmarathon.com/course-maps/",
+      "routeSourceUrl": "https://www.usafmarathon.com/wp-content/uploads/2026/06/Full-Marathon-Course-Map.pdf",
+      "note": "Alex completed the 2026 U.S. Air Force Marathon. His watch stopped during the race, so the published route is a complete reconstruction of the organizer's official 2026 course from the PDF's native vector line, official turn-by-turn directions, and public road intersections. It is intentionally labeled as an official-course reconstruction rather than a personal GPS recording.",
+      "_catalogSource": "data/user-confirmed-races.json"
     },
     {
       "id": "snowman-shuffle-2006",
@@ -4415,6 +4443,9 @@
     ],
     "big-12-run-12k-2016": [
       "data/mined-races.json"
+    ],
+    "air-force-marathon-2026": [
+      "data/user-confirmed-races.json"
     ],
     "snowman-shuffle-2006": [
       "data/user-confirmed-races.json",

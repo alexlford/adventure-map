@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-08-22",
+  "updatedOn": "2026-09-19",
   "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
@@ -458,7 +458,8 @@
       "snowman-shuffle-2007",
       "snowman-shuffle-2008",
       "snowman-shuffle-2009",
-      "snowman-shuffle-series"
+      "snowman-shuffle-series",
+      "air-force-marathon-2026"
     ]
   },
   "featureOverrides": {
@@ -499,6 +500,11 @@
       "provenance": "historical-course",
       "sourceLabel": "Official River to River course description + public historical GPS reference",
       "note": "Shared historical full relay course for the 2006, 2008, and 2010 entries; not a personal GPS recording."
+    },
+    "air-force-marathon-2026-official-course": {
+      "provenance": "historical-course",
+      "sourceLabel": "Official 2026 Air Force Marathon vector course map + turn-by-turn directions",
+      "note": "Complete organizer-course reconstruction used because Alex's watch stopped during the race; not represented as a personal GPS recording."
     }
   },
   "recordOverrides": {

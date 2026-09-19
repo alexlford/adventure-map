@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 158,
+  "recordCount": 159,
   "records": [
     {
       "id": "mount-lincoln",
@@ -3590,6 +3590,62 @@
       "routeFeatureIds": [
         "strava-641962927"
       ]
+    },
+    {
+      "id": "air-force-marathon-2026",
+      "kind": "race",
+      "discipline": "marathon",
+      "name": "U.S. Air Force Marathon",
+      "year": 2026,
+      "date": "2026-09-19",
+      "distance": "Marathon",
+      "officialDistance": "Marathon",
+      "officialDistanceKm": 42.195,
+      "officialDistanceMi": 26.2,
+      "location": "Wright-Patterson Air Force Base & Fairborn, Ohio",
+      "region": "Ohio",
+      "lat": 39.78345,
+      "lon": -84.10895,
+      "coordinatePrecision": "venue",
+      "participationMode": "in-person",
+      "routeFeatureIds": [
+        "air-force-marathon-2026-official-course"
+      ],
+      "routeStatus": "historical-course",
+      "matchSource": "User confirmation + 2026 Air Force Marathon official course map and turn-by-turn directions",
+      "matchConfidence": "confirmed",
+      "sourceUrl": "https://www.usafmarathon.com/course-maps/",
+      "routeSourceUrl": "https://www.usafmarathon.com/wp-content/uploads/2026/06/Full-Marathon-Course-Map.pdf",
+      "note": "Alex completed the 2026 U.S. Air Force Marathon. His watch stopped during the race, so the published route is a complete reconstruction of the organizer's official 2026 course from the PDF's native vector line, official turn-by-turn directions, and public road intersections. It is intentionally labeled as an official-course reconstruction rather than a personal GPS recording.",
+      "_catalogSource": "data/user-confirmed-races.json",
+      "slug": "2026-09-19-u-s-air-force-marathon",
+      "recordClass": "race",
+      "sport": "running",
+      "startDate": "2026-09-19",
+      "finishDate": "2026-09-19",
+      "distanceInfo": {
+        "km": 42.195,
+        "mi": 26.2,
+        "label": "Marathon",
+        "source": "official"
+      },
+      "locationInfo": {
+        "label": "Wright-Patterson Air Force Base & Fairborn, Ohio",
+        "region": "Ohio",
+        "lat": 39.78345,
+        "lon": -84.10895,
+        "precision": "venue"
+      },
+      "evidence": {
+        "source": "User confirmation + 2026 Air Force Marathon official course map and turn-by-turn directions",
+        "matchSource": "User confirmation + 2026 Air Force Marathon official course map and turn-by-turn directions",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "historical-course",
+        "provenance": null
+      }
     },
     {
       "id": "snowman-shuffle-2006",
