@@ -98,7 +98,7 @@
   }
 
   function officialRaceResult(record) {
-    const hasOfficialResult = record.kind === 'race' && Boolean(record.officialTime || record.officialGunTime || record.officialPlace || record.divisionPlace || record.genderPlace || record.officialPace || record.award || record.ageGroupPlace || (record.officialSplits || []).length);
+    const hasOfficialResult = (record.kind === 'race' || record.discipline === 'challenge') && Boolean(record.officialTime || record.officialGunTime || record.officialPlace || record.divisionPlace || record.genderPlace || record.officialPace || record.award || record.ageGroupPlace || (record.officialSplits || []).length);
     if (!hasOfficialResult) return '';
     const facts = [
       ['Official time', record.officialTime],
@@ -110,12 +110,13 @@
       ['Gun time', record.officialGunTime],
       ['Bib', record.bib],
       ['Award', record.award],
-      ['Age-group place', placementText(record.ageGroupPlace, record.ageGroupFieldSize)],
+      ['Age-group place', record.ageGroupPlace ? `${record.ageGroup ? `${record.ageGroup} · ` : ''}${placementText(record.ageGroupPlace, record.ageGroupFieldSize)}` : record.ageGroup],
       ['Participation', record.participationMode],
       ['Completion date', record.completionDate ? A.formatDate(record.completionDate) : null]
     ].filter(([, value]) => value !== undefined && value !== null && value !== '');
     const splits = (record.officialSplits || []).filter(split => split && split.time);
-    return `<section class="race-result-section"><div class="race-result-head"><div><p class="eyebrow">Published result</p><h2>Official race result</h2></div><p>${A.esc(record.resultSource || 'Verified organizer or timing result.')} Official result fields take precedence over GPS timing; the activity recording remains route evidence.</p></div><div class="result-grid">${facts.map(([k, v]) => `<div class="result-stat"><small>${A.esc(k)}</small><strong>${A.esc(String(v))}</strong></div>`).join('')}</div>${splits.length ? `<p class="split-title">Published splits</p><div class="split-grid">${splits.map(split => `<div class="split"><small>${A.esc(split.label || 'Split')}</small><strong>${A.esc(String(split.time))}</strong></div>`).join('')}</div>` : ''}</section>`;
+    const resultLabel = record.discipline === 'challenge' ? 'Official challenge result' : 'Official race result';
+    return `<section class="race-result-section"><div class="race-result-head"><div><p class="eyebrow">Published result</p><h2>${resultLabel}</h2></div><p>${A.esc(record.resultSource || 'Verified organizer or timing result.')} Official result fields take precedence over GPS timing; the activity recording remains route evidence.</p></div><div class="result-grid">${facts.map(([k, v]) => `<div class="result-stat"><small>${A.esc(k)}</small><strong>${A.esc(String(v))}</strong></div>`).join('')}</div>${splits.length ? `<p class="split-title">Published splits</p><div class="split-grid">${splits.map(split => `<div class="split"><small>${A.esc(split.label || 'Split')}</small><strong>${A.esc(String(split.time))}</strong></div>`).join('')}</div>` : ''}</section>`;
   }
 
   function relatedSection(record, rels, byId) {

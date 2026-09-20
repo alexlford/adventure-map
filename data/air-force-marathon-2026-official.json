@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "source": "User-supplied official 2026 Air Force Marathon participant result screenshot",
+    "updatedOn": "2026-09-20",
+    "status": "Preliminary finish and challenge results published; detailed marathon splits pending"
+  },
+  "adventures": [
+    {
+      "id": "air-force-5k-2026",
+      "officialTime": "25:54.51",
+      "bib": "3053",
+      "resultSource": "Air Force Marathon participant result supplied by Alex. The finish time is published; no 5K splits were shown.",
+      "matchConfidence": "verified"
+    },
+    {
+      "id": "air-force-marathon-2026",
+      "officialTime": "4:54:34.40",
+      "bib": "3053",
+      "age": 38,
+      "ageGroup": "M35–39",
+      "resultSource": "Preliminary Air Force Marathon participant result supplied by Alex. Detailed marathon splits have not yet been released.",
+      "matchConfidence": "verified"
+    },
+    {
+      "id": "air-force-aim-high-challenge-2026",
+      "officialTime": "5:20:29.0",
+      "officialPace": "10:56/mi",
+      "officialPlace": 134,
+      "officialFieldSize": 313,
+      "gender": "Male",
+      "genderPlace": 110,
+      "genderFieldSize": 216,
+      "division": "Open",
+      "divisionPlace": 55,
+      "divisionFieldSize": 132,
+      "ageGroup": "M35–39",
+      "ageGroupPlace": 5,
+      "ageGroupFieldSize": 14,
+      "bib": "3053",
+      "resultSource": "Air Force Marathon participant result supplied by Alex, combining the 25:54.51 5K and 4:54:34.40 marathon finishes.",
+      "matchConfidence": "verified"
+    }
+  ]
+}

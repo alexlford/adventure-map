@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 159,
+  "recordCount": 161,
   "records": [
     {
       "id": "mount-lincoln",
@@ -3592,6 +3592,62 @@
       ]
     },
     {
+      "id": "air-force-5k-2026",
+      "kind": "race",
+      "discipline": "road",
+      "name": "U.S. Air Force Marathon 5K",
+      "eventSeries": "U.S. Air Force Marathon",
+      "year": 2026,
+      "date": "2026-09-18",
+      "distance": "5K",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5,
+      "officialDistanceMi": 3.11,
+      "location": "Wright State University Nutter Center, Fairborn, Ohio",
+      "region": "Ohio",
+      "lat": 39.78194,
+      "lon": -84.0525,
+      "coordinatePrecision": "venue",
+      "participationMode": "in-person",
+      "routeStatus": "matched-no-public-route",
+      "matchSource": "User-supplied 2026 Aim High Challenge result + Air Force Marathon official schedule",
+      "matchConfidence": "verified",
+      "sourceUrl": "https://www.usafmarathon.com/air-force-marathon/",
+      "note": "Alex completed the Friday-evening 5K as the first leg of the 2026 Aim High Challenge, then completed the full marathon Saturday morning. The published challenge result confirms a 25:54.51 5K finish. No personal GPS route has been supplied for this leg.",
+      "_catalogSource": "data/air-force-marathon-2026-official.json",
+      "officialTime": "25:54.51",
+      "bib": "3053",
+      "resultSource": "Air Force Marathon participant result supplied by Alex. The finish time is published; no 5K splits were shown.",
+      "slug": "2026-09-18-u-s-air-force-marathon-5k",
+      "recordClass": "race",
+      "sport": "running",
+      "startDate": "2026-09-18",
+      "finishDate": "2026-09-18",
+      "distanceInfo": {
+        "km": 5,
+        "mi": 3.11,
+        "label": "5K",
+        "source": "official"
+      },
+      "locationInfo": {
+        "label": "Wright State University Nutter Center, Fairborn, Ohio",
+        "region": "Ohio",
+        "lat": 39.78194,
+        "lon": -84.0525,
+        "precision": "venue"
+      },
+      "evidence": {
+        "source": "Air Force Marathon participant result supplied by Alex. The finish time is published; no 5K splits were shown.",
+        "matchSource": "User-supplied 2026 Aim High Challenge result + Air Force Marathon official schedule",
+        "resultSource": "Air Force Marathon participant result supplied by Alex. The finish time is published; no 5K splits were shown.",
+        "confidence": "verified"
+      },
+      "routeInfo": {
+        "status": "matched-no-public-route",
+        "provenance": null
+      }
+    },
+    {
       "id": "air-force-marathon-2026",
       "kind": "race",
       "discipline": "marathon",
@@ -3613,11 +3669,16 @@
       ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + 2026 Air Force Marathon official course map and turn-by-turn directions",
-      "matchConfidence": "confirmed",
+      "matchConfidence": "verified",
       "sourceUrl": "https://www.usafmarathon.com/course-maps/",
       "routeSourceUrl": "https://www.usafmarathon.com/wp-content/uploads/2026/06/Full-Marathon-Course-Map.pdf",
       "note": "Alex completed the 2026 U.S. Air Force Marathon. His watch stopped during the race, so the published route is a complete reconstruction of the organizer's official 2026 course from the PDF's native vector line, official turn-by-turn directions, and public road intersections. It is intentionally labeled as an official-course reconstruction rather than a personal GPS recording.",
-      "_catalogSource": "data/user-confirmed-races.json",
+      "_catalogSource": "data/air-force-marathon-2026-official.json",
+      "officialTime": "4:54:34.40",
+      "bib": "3053",
+      "age": 38,
+      "ageGroup": "M35–39",
+      "resultSource": "Preliminary Air Force Marathon participant result supplied by Alex. Detailed marathon splits have not yet been released.",
       "slug": "2026-09-19-u-s-air-force-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -3637,10 +3698,10 @@
         "precision": "venue"
       },
       "evidence": {
-        "source": "User confirmation + 2026 Air Force Marathon official course map and turn-by-turn directions",
+        "source": "Preliminary Air Force Marathon participant result supplied by Alex. Detailed marathon splits have not yet been released.",
         "matchSource": "User confirmation + 2026 Air Force Marathon official course map and turn-by-turn directions",
-        "resultSource": null,
-        "confidence": "confirmed"
+        "resultSource": "Preliminary Air Force Marathon participant result supplied by Alex. Detailed marathon splits have not yet been released.",
+        "confidence": "verified"
       },
       "routeInfo": {
         "status": "historical-course",
@@ -6503,6 +6564,74 @@
       "routeFeatureIds": [
         "strava-6872397933"
       ]
+    },
+    {
+      "id": "air-force-aim-high-challenge-2026",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Air Force Aim High Challenge",
+      "year": 2026,
+      "date": "2026-09-18",
+      "endDate": "2026-09-19",
+      "distance": "5K + Marathon",
+      "officialDistance": "5K + 26.2 miles",
+      "officialDistanceMi": 29.31,
+      "officialDistanceKm": 47.2,
+      "location": "Fairborn & Wright-Patterson Air Force Base, Ohio",
+      "region": "Ohio",
+      "lat": 39.78345,
+      "lon": -84.10895,
+      "coordinatePrecision": "event-area",
+      "participationMode": "in-person",
+      "routeStatus": "multi-event-match",
+      "matchSource": "User-supplied official challenge result + finisher medals + Air Force Marathon official schedule",
+      "matchConfidence": "verified",
+      "sourceUrl": "https://www.usafmarathon.com/air-force-marathon/",
+      "note": "The 2026 full-marathon Aim High Challenge paired Friday evening's Air Force Marathon 5K with Saturday morning's full marathon. Alex completed both legs in 5:20:29.0 combined.",
+      "_catalogSource": "data/air-force-marathon-2026-official.json",
+      "officialTime": "5:20:29.0",
+      "officialPace": "10:56/mi",
+      "officialPlace": 134,
+      "officialFieldSize": 313,
+      "gender": "Male",
+      "genderPlace": 110,
+      "genderFieldSize": 216,
+      "division": "Open",
+      "divisionPlace": 55,
+      "divisionFieldSize": 132,
+      "ageGroup": "M35–39",
+      "ageGroupPlace": 5,
+      "ageGroupFieldSize": 14,
+      "bib": "3053",
+      "resultSource": "Air Force Marathon participant result supplied by Alex, combining the 25:54.51 5K and 4:54:34.40 marathon finishes.",
+      "slug": "2026-09-18-air-force-aim-high-challenge",
+      "recordClass": "adventure",
+      "sport": "adventure",
+      "startDate": "2026-09-18",
+      "finishDate": "2026-09-19",
+      "distanceInfo": {
+        "km": 47.2,
+        "mi": 29.31,
+        "label": "5K + 26.2 miles",
+        "source": "official"
+      },
+      "locationInfo": {
+        "label": "Fairborn & Wright-Patterson Air Force Base, Ohio",
+        "region": "Ohio",
+        "lat": 39.78345,
+        "lon": -84.10895,
+        "precision": "event-area"
+      },
+      "evidence": {
+        "source": "Air Force Marathon participant result supplied by Alex, combining the 25:54.51 5K and 4:54:34.40 marathon finishes.",
+        "matchSource": "User-supplied official challenge result + finisher medals + Air Force Marathon official schedule",
+        "resultSource": "Air Force Marathon participant result supplied by Alex, combining the 25:54.51 5K and 4:54:34.40 marathon finishes.",
+        "confidence": "verified"
+      },
+      "routeInfo": {
+        "status": "multi-event-match",
+        "provenance": null
+      }
     },
     {
       "id": "illinois-i-challenge-2015",

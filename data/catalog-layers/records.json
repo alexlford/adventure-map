@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "sourceCount": 37,
-  "recordCount": 162,
-  "layeredMergeCount": 51,
+  "sourceCount": 38,
+  "recordCount": 164,
+  "layeredMergeCount": 54,
   "adventures": [
     {
       "id": "mount-lincoln",
@@ -1552,6 +1552,34 @@
       "_catalogSource": "data/mined-races.json"
     },
     {
+      "id": "air-force-5k-2026",
+      "kind": "race",
+      "discipline": "road",
+      "name": "U.S. Air Force Marathon 5K",
+      "eventSeries": "U.S. Air Force Marathon",
+      "year": 2026,
+      "date": "2026-09-18",
+      "distance": "5K",
+      "officialDistance": "5K",
+      "officialDistanceKm": 5,
+      "officialDistanceMi": 3.11,
+      "location": "Wright State University Nutter Center, Fairborn, Ohio",
+      "region": "Ohio",
+      "lat": 39.78194,
+      "lon": -84.0525,
+      "coordinatePrecision": "venue",
+      "participationMode": "in-person",
+      "routeStatus": "matched-no-public-route",
+      "matchSource": "User-supplied 2026 Aim High Challenge result + Air Force Marathon official schedule",
+      "matchConfidence": "verified",
+      "sourceUrl": "https://www.usafmarathon.com/air-force-marathon/",
+      "note": "Alex completed the Friday-evening 5K as the first leg of the 2026 Aim High Challenge, then completed the full marathon Saturday morning. The published challenge result confirms a 25:54.51 5K finish. No personal GPS route has been supplied for this leg.",
+      "_catalogSource": "data/air-force-marathon-2026-official.json",
+      "officialTime": "25:54.51",
+      "bib": "3053",
+      "resultSource": "Air Force Marathon participant result supplied by Alex. The finish time is published; no 5K splits were shown."
+    },
+    {
       "id": "air-force-marathon-2026",
       "kind": "race",
       "discipline": "marathon",
@@ -1573,11 +1601,16 @@
       ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + 2026 Air Force Marathon official course map and turn-by-turn directions",
-      "matchConfidence": "confirmed",
+      "matchConfidence": "verified",
       "sourceUrl": "https://www.usafmarathon.com/course-maps/",
       "routeSourceUrl": "https://www.usafmarathon.com/wp-content/uploads/2026/06/Full-Marathon-Course-Map.pdf",
       "note": "Alex completed the 2026 U.S. Air Force Marathon. His watch stopped during the race, so the published route is a complete reconstruction of the organizer's official 2026 course from the PDF's native vector line, official turn-by-turn directions, and public road intersections. It is intentionally labeled as an official-course reconstruction rather than a personal GPS recording.",
-      "_catalogSource": "data/user-confirmed-races.json"
+      "_catalogSource": "data/air-force-marathon-2026-official.json",
+      "officialTime": "4:54:34.40",
+      "bib": "3053",
+      "age": 38,
+      "ageGroup": "M35–39",
+      "resultSource": "Preliminary Air Force Marathon participant result supplied by Alex. Detailed marathon splits have not yet been released."
     },
     {
       "id": "snowman-shuffle-2006",
@@ -2984,6 +3017,46 @@
       "matchConfidence": "verified",
       "note": "HAL Sports lists That Dam Run 2022 on March 19 with 13.1M, 10K, and 5K options. RunDenver allows virtual results from event day through the following Sunday. The 10.03 km Strava run on March 23 resolves the medal to the 10K virtual distance.",
       "_catalogSource": "data/medal-recovered-2026-08-11b.json"
+    },
+    {
+      "id": "air-force-aim-high-challenge-2026",
+      "kind": "adventure",
+      "discipline": "challenge",
+      "name": "Air Force Aim High Challenge",
+      "year": 2026,
+      "date": "2026-09-18",
+      "endDate": "2026-09-19",
+      "distance": "5K + Marathon",
+      "officialDistance": "5K + 26.2 miles",
+      "officialDistanceMi": 29.31,
+      "officialDistanceKm": 47.2,
+      "location": "Fairborn & Wright-Patterson Air Force Base, Ohio",
+      "region": "Ohio",
+      "lat": 39.78345,
+      "lon": -84.10895,
+      "coordinatePrecision": "event-area",
+      "participationMode": "in-person",
+      "routeStatus": "multi-event-match",
+      "matchSource": "User-supplied official challenge result + finisher medals + Air Force Marathon official schedule",
+      "matchConfidence": "verified",
+      "sourceUrl": "https://www.usafmarathon.com/air-force-marathon/",
+      "note": "The 2026 full-marathon Aim High Challenge paired Friday evening's Air Force Marathon 5K with Saturday morning's full marathon. Alex completed both legs in 5:20:29.0 combined.",
+      "_catalogSource": "data/air-force-marathon-2026-official.json",
+      "officialTime": "5:20:29.0",
+      "officialPace": "10:56/mi",
+      "officialPlace": 134,
+      "officialFieldSize": 313,
+      "gender": "Male",
+      "genderPlace": 110,
+      "genderFieldSize": 216,
+      "division": "Open",
+      "divisionPlace": 55,
+      "divisionFieldSize": 132,
+      "ageGroup": "M35–39",
+      "ageGroupPlace": 5,
+      "ageGroupFieldSize": 14,
+      "bib": "3053",
+      "resultSource": "Air Force Marathon participant result supplied by Alex, combining the 25:54.51 5K and 4:54:34.40 marathon finishes."
     },
     {
       "id": "illinois-i-challenge-2015",
@@ -4444,8 +4517,13 @@
     "big-12-run-12k-2016": [
       "data/mined-races.json"
     ],
+    "air-force-5k-2026": [
+      "data/user-confirmed-races.json",
+      "data/air-force-marathon-2026-official.json"
+    ],
     "air-force-marathon-2026": [
-      "data/user-confirmed-races.json"
+      "data/user-confirmed-races.json",
+      "data/air-force-marathon-2026-official.json"
     ],
     "snowman-shuffle-2006": [
       "data/user-confirmed-races.json",
@@ -4612,6 +4690,10 @@
     ],
     "that-dam-run-10k-2022": [
       "data/medal-recovered-2026-08-11b.json"
+    ],
+    "air-force-aim-high-challenge-2026": [
+      "data/medal-challenges.json",
+      "data/air-force-marathon-2026-official.json"
     ],
     "illinois-i-challenge-2015": [
       "data/medal-challenges.json"
@@ -4819,7 +4901,8 @@
       "data/official-results-overrides-2026-08-11h.json",
       "data/official-results-overrides-2026-08-11i.json",
       "data/official-results-overrides-2026-08-11j.json",
-      "data/chicago-marathon-2021-official.json"
+      "data/chicago-marathon-2021-official.json",
+      "data/air-force-marathon-2026-official.json"
     ],
     "layeredMerges": [
       "royal-gorge-groove-mtb-2024: data/user-confirmed-races.json → data/recovered-events-2026-08.json",
@@ -4872,7 +4955,10 @@
       "running-with-cows-half-2016: data/discovered-races.json → data/official-results-overrides-2026-08-11j.json",
       "illinois-5k-2016: data/official-results-overrides-2026-08-11b.json → data/official-results-overrides-2026-08-11j.json",
       "illinois-half-2016: data/official-results-overrides-2026-08-11b.json → data/official-results-overrides-2026-08-11j.json",
-      "chicago-marathon-2021: data/adventures.json → data/chicago-marathon-2021-official.json"
+      "chicago-marathon-2021: data/adventures.json → data/chicago-marathon-2021-official.json",
+      "air-force-5k-2026: data/user-confirmed-races.json → data/air-force-marathon-2026-official.json",
+      "air-force-marathon-2026: data/user-confirmed-races.json → data/air-force-marathon-2026-official.json",
+      "air-force-aim-high-challenge-2026: data/medal-challenges.json → data/air-force-marathon-2026-official.json"
     ]
   }
 }
