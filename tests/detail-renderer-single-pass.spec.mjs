@@ -47,10 +47,14 @@ test('Story detail composes once without generic profile or duplicate Story modu
   await expect(page.locator('.sport-detail').filter({ hasText: 'Adventure story' })).toHaveCount(0);
 });
 
-test('completed Major has one passport dossier and one route section', async ({ page }) => {
+test('completed Major leads with memories and keeps splits optional', async ({ page }) => {
   await page.goto('/detail.html?record=chicago-marathon-2021', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('h1')).toContainText(/Chicago/i);
-  await expect(page.locator('#majorPassportDetail')).toHaveCount(1);
+  await expect(page.locator('.race-memory-story')).toBeVisible();
+  await expect(page.locator('#majorPassportDetail')).toHaveCount(0);
   await expect(page.locator('.detail-route-section')).toHaveCount(1);
-  await expect(page.locator('.race-result-section')).toHaveCount(1);
+  await expect(page.locator('.race-result-section')).toHaveCount(0);
+  await expect(page.locator('.marathon-details')).not.toHaveAttribute('open', '');
+  await page.locator('.marathon-details summary').click();
+  await expect(page.locator('.marathon-splits')).toBeVisible();
 });

@@ -33,16 +33,16 @@ async function openRepresentative(page, predicateSource) {
 test('race detail renders race-specific context', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await openRepresentative(page, "record => record.kind === 'race' && record.officialTime");
-  await expect(page.locator('body')).toContainText(/Race dossier|Official result/i);
+  await expect(page.locator('body')).toContainText(/Race dossier|Official result|Finish time/i);
   await expect(page.locator('.detail-route-section')).toBeVisible();
   await page.waitForTimeout(700);
   expect(errors).toEqual([]);
 });
 
-test('completed World Major detail renders passport context', async ({ page }) => {
+test('completed World Major detail renders personal race memories', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await openRepresentative(page, "record => record.id === 'chicago-marathon-2021'");
-  await expect(page.locator('body')).toContainText(/World Marathon Majors passport|Official race dossier/i);
+  await expect(page.locator('.race-memory-story')).toContainText('first World Marathon Major');
   await expect(page.locator('.detail-route-section')).toBeVisible();
   await page.waitForTimeout(700);
   expect(errors).toEqual([]);

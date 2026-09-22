@@ -57,7 +57,22 @@
     return record.distance || '—';
   };
 
-  const finishTime = record => String(record.officialTime || record.result || '—').replace(/^0(?=\d:)/, '');
+  const finishTime = record => {
+    const value = String(record.officialTime || record.result || '—').replace(/^0(?=\d:)/, '');
+    return record.discipline === 'marathon' ? value.replace(/\.\d+$/, '') : value;
+  };
+
+  function marathonDetails(record) {
+    const facts = [
+      record.officialPace ? ['Average pace', record.officialPace] : null,
+      record.bib ? ['Bib', record.bib] : null,
+      record.officialPlace ? ['Overall place', String(record.officialPlace)] : null,
+      record.ageGroupPlace ? ['Age-group place', String(record.ageGroupPlace)] : null
+    ].filter(Boolean);
+    const splits = (record.officialSplits || []).filter(s => s.time && s.label !== 'Start');
+    if (!facts.length && !splits.length) return '';
+    return `<details class="marathon-details"><summary>Race details${splits.length ? ' & splits' : ''}</summary><dl>${facts.map(([k,v]) => `<div><dt>${A.esc(k)}</dt><dd>${A.esc(v)}</dd></div>`).join('')}</dl>${splits.length ? `<div class="marathon-splits"><table><thead><tr><th>Checkpoint</th><th>Time</th><th>Pace / mile</th></tr></thead><tbody>${splits.map(s => `<tr><th scope="row">${A.esc(s.label)}</th><td>${A.esc(s.time.replace(/\.\d+$/, ''))}</td><td>${A.esc((s.pace || '').replace('/mi', ''))}</td></tr>`).join('')}</tbody></table></div>` : ''}</details>`;
+  }
 
   const photoFigure = (photo, className = '') => {
     const aspect = String(photo.aspect || photo.layout || '').toLowerCase();
@@ -127,17 +142,37 @@
     const records = await A.load();
     const record = records.find(item => item.id === key || item.slug === key);
     if (!record || (record.kind !== 'race' && record.kind !== 'adventure')) return;
-    const memory = memories[record.id] || memories[record.slug] || memories[key];
+    const marathon = record.kind === 'race' && record.discipline === 'marathon';
+    let memory = memories[record.id] || memories[record.slug] || memories[key];
+    if (marathon) {
+      memory = { ...memory, photos: [...(memory?.photos || [])] };
+      if (memory.milestone?.label === 'Official time') delete memory.milestone;
+      for (const photo of record.media || []) {
+        if (photo.src && !memory.photos.some(p => p.src === photo.src)) memory.photos.push(photo);
+      }
+    }
     if (!memory) return;
 
     await waitForLegacyDetail();
 
     const routeSection = page.querySelector('.detail-route-section');
     const chronology = page.querySelector('.chronology-nav');
+    const related = marathon ? page.querySelector('.grid')?.closest('section') : null;
     routeSection?.remove();
     chronology?.remove();
 
     page.innerHTML = memoryMarkup(record, memory);
+    if (marathon) {
+      document.body.classList.add('marathon-memory-page');
+      if (!memory.memory?.length) page.querySelector('.race-memory-story')?.remove();
+      if (!memory.headline) page.querySelector('.race-memory-deck')?.remove();
+      page.querySelectorAll('.race-memory-stat span').forEach(el => {
+        if (['Official race result', 'Official race distance'].includes(el.textContent)) el.remove();
+      });
+      const finishLabel = page.querySelector('.race-memory-finish small');
+      if (finishLabel) finishLabel.textContent = 'Finish time';
+      page.insertAdjacentHTML('beforeend', marathonDetails(record));
+    }
     page.querySelectorAll('.race-memory-photo img').forEach(settlePhoto);
     document.body.classList.add('race-memory-page');
     page.dataset.raceMemory = 'true';
@@ -147,9 +182,12 @@
       const heading = routeSection.querySelector('h2');
       const meta = routeSection.querySelector('#routeMeta');
       if (heading) heading.textContent = record.kind === 'race' ? 'The course' : 'The routes';
-      if (meta) meta.textContent = record.kind === 'race' ? 'Personal GPS track from race day.' : 'Routes from this series.';
+      if (meta) meta.textContent = marathon
+        ? (record.routeStatus === 'historical-course' ? 'Race course.' : record.stravaActivityId ? 'My route on race day.' : 'Where I ran.')
+        : record.kind === 'race' ? 'Personal GPS track from race day.' : 'Routes from this series.';
       page.append(routeSection);
     }
+    if (related) page.append(related);
     if (chronology) page.append(chronology);
 
     const finish = finishTime(record);

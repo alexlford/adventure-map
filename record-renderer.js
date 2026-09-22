@@ -335,6 +335,9 @@
 
   function compose(ctx) {
     const { record, all, relationships, related, byId, majorsData } = ctx;
+    if (record.kind === 'race' && record.discipline === 'marathon') {
+      return heroSection(ctx) + routeSection(ctx) + relatedSection(record, related, byId) + chronologySection(ctx);
+    }
     const story = record.kind === 'adventure';
     const major = majorModule(record, majorsData);
     const genericMedia = !story && !major ? mediaSection(record) : '';
