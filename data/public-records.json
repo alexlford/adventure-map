@@ -3675,10 +3675,78 @@
       "note": "Alex completed the 2026 U.S. Air Force Marathon. His watch stopped during the race, so the published route is a complete reconstruction of the organizer's official 2026 course from the PDF's native vector line, official turn-by-turn directions, and public road intersections. It is intentionally labeled as an official-course reconstruction rather than a personal GPS recording.",
       "_catalogSource": "data/air-force-marathon-2026-official.json",
       "officialTime": "4:54:34.40",
+      "officialPace": "11:15/mi",
+      "officialSplits": [
+        {
+          "label": "Start",
+          "time": "00:00:00",
+          "timeOfDay": "6:33:58 am"
+        },
+        {
+          "label": "Mile 1",
+          "time": "00:09:18",
+          "timeOfDay": "6:43:16 am",
+          "pace": "09:18/mi"
+        },
+        {
+          "label": "Mile 2",
+          "time": "00:18:02",
+          "timeOfDay": "6:51:59 am",
+          "pace": "08:44/mi"
+        },
+        {
+          "label": "Mile 4.8",
+          "time": "00:43:50",
+          "timeOfDay": "7:17:48 am",
+          "pace": "09:08/mi"
+        },
+        {
+          "label": "Mile 9",
+          "time": "01:22:43",
+          "timeOfDay": "7:56:41 am",
+          "pace": "09:20/mi"
+        },
+        {
+          "label": "Half Marathon (13.1)",
+          "time": "02:03:20",
+          "timeOfDay": "8:37:17 am",
+          "pace": "09:55/mi"
+        },
+        {
+          "label": "Fairborn Fly Zone (14.7)",
+          "time": "02:20:33",
+          "timeOfDay": "8:54:30 am",
+          "pace": "10:46/mi"
+        },
+        {
+          "label": "Mile 15.1",
+          "time": "02:26:06",
+          "timeOfDay": "9:00:03 am",
+          "pace": "13:53/mi"
+        },
+        {
+          "label": "Mile 19",
+          "time": "03:15:26",
+          "timeOfDay": "9:49:23 am",
+          "pace": "12:40/mi"
+        },
+        {
+          "label": "Mile 24",
+          "time": "04:24:02",
+          "timeOfDay": "10:57:59 am",
+          "pace": "13:44/mi"
+        },
+        {
+          "label": "Finish",
+          "time": "04:54:35",
+          "timeOfDay": "11:28:32 am",
+          "pace": "13:54/mi"
+        }
+      ],
       "bib": "3053",
       "age": 38,
       "ageGroup": "M35–39",
-      "resultSource": "Preliminary Air Force Marathon participant result supplied by Alex. Detailed marathon splits have not yet been released.",
+      "resultSource": "Air Force Marathon participant result and checkpoint screen supplied by Alex. The participant result gives 4:54:34.40; the checkpoint screen shows 4:54:35. Both source values are preserved. Checkpoint paces are the published segment paces.",
       "slug": "2026-09-19-u-s-air-force-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -3698,9 +3766,9 @@
         "precision": "venue"
       },
       "evidence": {
-        "source": "Preliminary Air Force Marathon participant result supplied by Alex. Detailed marathon splits have not yet been released.",
+        "source": "Air Force Marathon participant result and checkpoint screen supplied by Alex. The participant result gives 4:54:34.40; the checkpoint screen shows 4:54:35. Both source values are preserved. Checkpoint paces are the published segment paces.",
         "matchSource": "User confirmation + 2026 Air Force Marathon official course map and turn-by-turn directions",
-        "resultSource": "Preliminary Air Force Marathon participant result supplied by Alex. Detailed marathon splits have not yet been released.",
+        "resultSource": "Air Force Marathon participant result and checkpoint screen supplied by Alex. The participant result gives 4:54:34.40; the checkpoint screen shows 4:54:35. Both source values are preserved. Checkpoint paces are the published segment paces.",
         "confidence": "verified"
       },
       "routeInfo": {
