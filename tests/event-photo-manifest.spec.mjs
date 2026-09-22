@@ -24,7 +24,7 @@ test('event photo manifest enriches canonical records and renders on detail page
   expect(manifestPhoto.alt).toMatch(/Chicago Marathon/i);
 
   await page.goto(`/detail.html?record=${encodeURIComponent(chicago.slug || chicago.id)}`, { waitUntil: 'domcontentloaded' });
-  const photo = page.locator('#recordMedia img[src*="assets/event-photos/races/chicago-marathon-2021/"]').first();
+  const photo = page.locator('.race-memory-photo img[src*="assets/event-photos/races/chicago-marathon-2021/"]').first();
   await expect(photo).toBeVisible();
   await expect(photo).toHaveAttribute('alt', /Chicago Marathon/i);
 

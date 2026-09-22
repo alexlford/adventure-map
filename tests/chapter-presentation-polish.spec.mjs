@@ -45,16 +45,14 @@ test('Timeline introduces chronology before its filters', async ({ page }) => {
   expect(headingBeforeFilters).toBeTruthy();
 });
 
-test('record dossiers inherit the chapter editorial accent treatment', async ({ page }) => {
+test('marathon milestones retain a compact editorial accent', async ({ page }) => {
   await page.goto('/detail.html?record=chicago-marathon-2021',{waitUntil:'domcontentloaded'});
-  const panel=page.locator('.sport-panel').first();
+  const panel=page.locator('.race-memory-milestone').first();
   await expect(panel).toBeVisible();
   const treatment=await panel.evaluate(node=>({
-    minHeight:getComputedStyle(node).minHeight,
-    accentHeight:getComputedStyle(node,'::before').height,
-    accentBackground:getComputedStyle(node,'::before').backgroundColor
+    accent:getComputedStyle(node).boxShadow,
+    radius:getComputedStyle(node).borderRadius
   }));
-  expect(treatment.minHeight).toBe('165px');
-  expect(treatment.accentHeight).toBe('3px');
-  expect(treatment.accentBackground).not.toBe('rgba(0, 0, 0, 0)');
+  expect(treatment.accent).toContain('inset');
+  expect(treatment.radius).toBe('18px');
 });

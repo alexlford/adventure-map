@@ -88,6 +88,7 @@ try {
     'tests/mobile-layout.spec.mjs',
     'tests/mobile-map-interaction.spec.mjs',
     'tests/world-majors-layout.spec.mjs',
+    'tests/marathon-memories.spec.mjs',
     '--project=webkit-mobile'
   ], { captureFailure: true });
 } finally {

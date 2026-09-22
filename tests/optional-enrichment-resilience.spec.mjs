@@ -40,7 +40,7 @@ test('Record dossier survives relationship enrichment failure', async ({ page })
 
   await page.goto('/detail.html?record=chicago-marathon-2021', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('h1')).toContainText('Chicago Marathon');
-  await expect(page.locator('body')).toContainText(/Race dossier|Official race result/i);
+  await expect(page.locator('.race-memory-finish')).toContainText('3:57:50');
   await expect(page.locator('#page > .empty')).toHaveCount(0);
   await expect(page.locator('.detail-route-section')).toBeVisible();
 });
