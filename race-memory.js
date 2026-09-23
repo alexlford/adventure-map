@@ -78,7 +78,7 @@
   const photoFigure = (photo, className = '') => {
     const aspect = String(photo.aspect || photo.layout || '').toLowerCase();
     const layoutClass = aspect === '4:3' || aspect === 'four-three' ? ' race-memory-photo-four-three' : '';
-    return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async">${photo.caption ? `<figcaption>${A.esc(photo.caption)}</figcaption>` : ''}</figure>`;
+    return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async"><figcaption>${photo.caption ? `${A.esc(photo.caption)} · ` : ''}<a href="${A.esc(photo.src)}" target="_blank" rel="noopener">Open full photo ↗</a></figcaption></figure>`;
   };
 
   const fallbackPhotoSrc = img => {
@@ -100,6 +100,8 @@
       if (!fallback || img.dataset.fallbackUsed === 'true') return false;
       img.dataset.fallbackUsed = 'true';
       img.src = fallback;
+      const fullPhoto = figure?.querySelector('figcaption a');
+      if (fullPhoto) fullPhoto.href = fallback;
       attachFallbackOutcome();
       return true;
     };

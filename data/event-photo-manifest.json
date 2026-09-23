@@ -86,7 +86,11 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/chicago-marathon-2021/2021-10-10-chicago-marathon-course-01.jpeg",
-      "repositoryBlobSha": "b630efb0cfe254a6397d2c87c1e6fcacfe67710b"
+      "repositoryBlobSha": "59d04dda438ad3670eeac10bde7c571928635873",
+      "restoredFrom": "IMG_3856.jpeg",
+      "resolutionRestoredOn": "2026-09-23",
+      "pixelWidth": 1536,
+      "pixelHeight": 874
     },
     {
       "source": "IMG_3972.jpeg",
@@ -102,7 +106,11 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/abes-amble-2014/2014-08-17-abes-amble-10k-finish-01.jpeg",
-      "repositoryBlobSha": "0a68c11e31b500d8094c4bc0f378323ab7491475"
+      "repositoryBlobSha": "3080de1f535462f6802c3251f3e1e6c92f60910b",
+      "restoredFrom": "IMG_3972.jpeg",
+      "resolutionRestoredOn": "2026-09-23",
+      "pixelWidth": 2048,
+      "pixelHeight": 1530
     },
     {
       "source": "IMG_4082.jpeg",
@@ -150,7 +158,11 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/twin-cities-marathon-2015/2015-10-04-twin-cities-marathon-finish-01.jpeg",
-      "repositoryBlobSha": "a526623335d55d5046266eb6a362d9df031ec7b5"
+      "repositoryBlobSha": "988269a0a3ef5aacd2e001891124cafafa46c943",
+      "restoredFrom": "IMG_4965.jpeg",
+      "resolutionRestoredOn": "2026-09-23",
+      "pixelWidth": 1199,
+      "pixelHeight": 1199
     },
     {
       "source": "IMG_5301.jpeg",
@@ -308,7 +320,11 @@
         "User confirmed this is the 2024 Colfax 5K with Olive during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/colfax-5k-2024/2024-05-18-colfax-5k-with-olive-finish-01.jpeg",
-      "repositoryBlobSha": "bd7a11c302f551641b6dbb91d5bee9e172307b4a"
+      "repositoryBlobSha": "f2b5558ba23ae7759a2ba9a4ab4bdafe6f244255",
+      "restoredFrom": "IMG_8266.jpeg",
+      "resolutionRestoredOn": "2026-09-23",
+      "pixelWidth": 2133,
+      "pixelHeight": 3200
     },
     {
       "source": "IMG_9560.jpeg",
@@ -323,7 +339,11 @@
         "User corrected the prior 2024 match and identified this as BOLDERBoulder 2023 during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/bolderboulder-2023/2023-05-29-bolderboulder-10k-course-01.jpeg",
-      "repositoryBlobSha": "8e321e36944f54fe4acbbdf005964b07538a91a7"
+      "repositoryBlobSha": "5cafbdc6b34e77547a211226337ccd106a4ade1b",
+      "restoredFrom": "IMG_9560.jpeg",
+      "resolutionRestoredOn": "2026-09-23",
+      "pixelWidth": 1152,
+      "pixelHeight": 1536
     },
     {
       "source": "RWTC3.jpeg",
@@ -355,7 +375,11 @@
         "User confirmed this is the BeerFit Kansas City 5K at Arrowhead Stadium in June 2016 during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/beerfit-kansas-city-5k-2016/2016-06-04-beerfit-kansas-city-5k-course-01.jpeg",
-      "repositoryBlobSha": "013cf2851fd32dc471222ebdc945e30e802b53fa"
+      "repositoryBlobSha": "27753fb8126312cbd802394461fd09a7bec4bebe",
+      "restoredFrom": "race_3030_photo_37353354.jpeg",
+      "resolutionRestoredOn": "2026-09-23",
+      "pixelWidth": 2500,
+      "pixelHeight": 1666
     }
   ]
 }
