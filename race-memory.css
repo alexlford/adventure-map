@@ -1,4 +1,17 @@
 body.race-memory-page .page{max-width:1120px;padding-top:54px}
+.event-memory-page .page{max-width:1120px}
+.event-memory-page .chapter-index{display:none}
+.event-memory-page .hero h1{line-height:1.02;letter-spacing:-.045em}
+.event-memory-page .memory-metrics{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:24px 0 36px}
+.event-memory-page .memory-metrics .metric{min-width:0;border-radius:18px}
+.event-memory-page .memory-metrics strong{font-size:clamp(1.5rem,5vw,2.25rem);line-height:1.2}
+.event-memory-page .story-record-editorial:empty{display:none}
+.event-memory-page .story-record-editorial{display:block;margin:24px 0;padding:0;border:0}
+.event-memory-page .event-notes{margin:28px 0;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.event-notes summary{cursor:pointer;font-weight:750}
+.event-notes p,.event-memory p{max-width:760px;line-height:1.7;font-size:1rem}
+.event-memory-page .detail-route-section,.event-memory-page .record-related{margin-top:48px}
+.event-memory-page .race-memory-stat small,.event-memory-page .race-memory-stat span,.event-memory-page .race-memory-source,.event-memory-page figcaption{font-size:.875rem}
 .race-memory-hero{max-width:980px;padding-bottom:18px}
 .race-memory-hero h1{max-width:940px;margin:0;font-size:clamp(3.15rem,7.4vw,6.75rem);line-height:.9;letter-spacing:-.065em}
 .race-memory-meta{margin:20px 0 0;color:var(--muted);font-size:1rem;font-weight:700}

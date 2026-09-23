@@ -121,7 +121,7 @@
 
   function relatedSection(record, rels, byId) {
     if (!rels.length) return '';
-    return `<section><div class="section-title"><h2>Part of a larger story</h2><p>Related events and challenges connected across Adventures.</p></div><div class="grid">${rels.map(rel => {
+    return `<section class="record-related"><div class="section-title"><h2>Part of a larger story</h2></div><div class="grid">${rels.map(rel => {
       const links = (rel.memberIds || []).filter(id => id !== record.id).map(id => byId.get(id)).filter(Boolean).map(item => `<a href="${A.recordHref(item)}">${A.esc(item.name)}</a>`);
       if (rel.adventureId && rel.adventureId !== record.id && byId.has(rel.adventureId)) {
         const relatedAdventure = byId.get(rel.adventureId);
@@ -141,12 +141,13 @@
   }
 
   function genericStoryConnections(connected, compositeContext = null) {
+    if (!connected.length) return '';
     const connectedHtml = connected.length ? connected.map(item => {
       const attrs = compositeColorAttrs(item.id, compositeContext);
       return `<a class="story-linked-record${attrs.className}"${attrs.style} href="${A.recordHref(item)}"><small>${A.esc(A.recordType(item))}</small><strong>${A.esc(item.name)}</strong><span>${A.esc(item.date ? A.formatDate(item.date) : (item.year || ''))}</span></a>`;
     }).join('')
       : '<div class="story-linked-empty"><strong>Standalone chapter</strong><p>No separate race or summit records are required to tell this story.</p></div>';
-    return `<section class="story-record-connections"><div><p class="eyebrow">Connected records</p><h3>${connected.length ? `${connected.length} records inside this chapter` : 'One story, one record'}</h3><p>${connected.length ? 'Open the individual races, summits, or outings that make up the larger story.' : 'This chapter stands on its own, with the route and verified activity context carrying the record.'}</p></div><div class="story-linked-grid">${connectedHtml}</div></section>`;
+    return `<section class="story-record-connections"><div><p class="eyebrow">Along the way</p><h3>${connected.length ? `${connected.length} records inside this chapter` : 'One story, one record'}</h3><p>${connected.length ? '' : 'This chapter stands on its own, with the route and verified activity context carrying the record.'}</p></div><div class="story-linked-grid">${connectedHtml}</div></section>`;
   }
 
   const storyStatGrid = stats => `<div class="story-objective-stats">${stats.filter(Boolean).map(([k, v]) => `<article><small>${A.esc(k)}</small><strong>${A.esc(v)}</strong></article>`).join('')}</div>`;
@@ -157,12 +158,12 @@
     const over14 = summits.filter(summit => Number(summit.elevationFt) >= 14000).length;
     const stats = [
       Number.isFinite(record.distanceMi) ? ['Loop distance', `${record.distanceMi} mi`] : null,
-      gainFt ? ['Recorded gain', `${A.fmt.format(gainFt)} ft`] : null,
+      gainFt ? ['Climb', `${A.fmt.format(gainFt)} ft`] : null,
       Number.isFinite(record.elapsedSeconds) ? ['Elapsed', A.formatDuration(record.elapsedSeconds)] : null,
       ['Summits ≥14,000 ft', String(over14)]
     ];
     const chain = summits.map((summit, index) => `<a class="mountain-loop-summit" href="${A.recordHref(summit)}"><span class="mountain-loop-index">${String(index + 1).padStart(2, '0')}</span><span class="mountain-loop-node" aria-hidden="true"></span><small>Summit</small><strong>${A.esc(summit.name)}</strong><em>${Number.isFinite(summit.elevationFt) ? `${A.fmt.format(summit.elevationFt)}′` : 'Elevation not recorded'}</em></a>`).join('');
-    return `<section class="mountain-loop-feature"><div class="mountain-loop-head"><div><p class="eyebrow">Objective anatomy</p><h3>${summits.length} summits. One loop.</h3></div><p>The summit sequence attached to this Adventure is shown as a single connected objective. Each peak remains independently browsable in the Summit archive.</p></div><div class="mountain-loop-stats">${stats.filter(Boolean).map(([k, v]) => `<article><small>${A.esc(k)}</small><strong>${A.esc(v)}</strong></article>`).join('')}</div><div class="mountain-loop-chain" aria-label="Linked summit sequence">${chain}</div></section>`;
+    return `<section class="mountain-loop-feature"><div class="mountain-loop-head"><div><p class="eyebrow">Along the way</p><h3>${summits.length} summits. One loop.</h3></div></div><div class="mountain-loop-stats">${stats.filter(Boolean).map(([k, v]) => `<article><small>${A.esc(k)}</small><strong>${A.esc(v)}</strong></article>`).join('')}</div><div class="mountain-loop-chain" aria-label="Linked summit sequence">${chain}</div></section>`;
   }
 
   function traverseFeature(record) {
@@ -171,23 +172,23 @@
     const gainFt = feet(record.elevationGainM);
     const stats = [
       ['Days', String(days)],
-      Number.isFinite(record.distanceMi) ? ['Recorded distance', `${record.distanceMi} mi`] : null,
-      gainFt ? ['Recorded gain', `${A.fmt.format(gainFt)} ft`] : null,
+      Number.isFinite(record.distanceMi) ? ['Distance', `${record.distanceMi} mi`] : null,
+      gainFt ? ['Climb', `${A.fmt.format(gainFt)} ft`] : null,
       record.region ? ['Range / region', record.region] : null
     ];
-    return `<section class="story-objective-feature traverse-feature"><div class="story-objective-head"><div><p class="eyebrow">Traverse anatomy</p><h3>${days} ${days === 1 ? 'day' : 'days'}. One traverse.</h3></div><p>This chapter emphasizes the documented span and GPS scale of the outing, with the route below carrying the geographic story.</p></div>${storyStatGrid(stats)}</section>`;
+    return `<section class="story-objective-feature traverse-feature"><div class="story-objective-head"><div><p class="eyebrow">The journey</p><h3>${days} ${days === 1 ? 'day' : 'days'}. One traverse.</h3></div></div>${storyStatGrid(stats)}</section>`;
   }
 
   function skiFeature(record) {
     if (record.discipline !== 'ski-objective') return '';
     const descentFt = feet(record.descentM);
     const stats = [
-      Number.isFinite(record.runs) ? ['Recorded runs', String(record.runs)] : null,
-      Number.isFinite(record.distanceMi) ? ['Recorded distance', `${record.distanceMi} mi`] : null,
-      descentFt ? ['Recorded descent', `${A.fmt.format(descentFt)} ft`] : null,
+      Number.isFinite(record.runs) ? ['Runs', String(record.runs)] : null,
+      Number.isFinite(record.distanceMi) ? ['Distance', `${record.distanceMi} mi`] : null,
+      descentFt ? ['Descent', `${A.fmt.format(descentFt)} ft`] : null,
       record.location ? ['Mountain', record.location] : null
     ];
-    return `<section class="story-objective-feature ski-feature"><div class="story-objective-head"><div><p class="eyebrow">Ski objective</p><h3>${Number.isFinite(record.runs) ? `${record.runs} runs. ` : ''}One mountain chapter.</h3></div><p>Runs, distance, and recorded descent define this objective; ordinary resort days remain in the Skiing logbook instead.</p></div>${storyStatGrid(stats)}</section>`;
+    return `<section class="story-objective-feature ski-feature"><div class="story-objective-head"><div><p class="eyebrow">Ski objective</p><h3>${Number.isFinite(record.runs) ? `${record.runs} runs. ` : ''}One mountain chapter.</h3></div></div>${storyStatGrid(stats)}</section>`;
   }
 
   function challengeFeature(record, components, compositeContext = null) {
@@ -201,7 +202,7 @@
       Number.isFinite(record.distanceMi) ? ['Combined distance', `${record.distanceMi} mi`] : null,
       record.region ? ['Region', record.region] : null
     ];
-    return `<section class="story-objective-feature challenge-feature"><div class="story-objective-head"><div><p class="eyebrow">Chapter anatomy</p><h3>${ordered.length} components. One story.</h3></div><p>The individual races or events stay independently browsable while this Story preserves the larger challenge or weekend they formed together.</p></div>${storyStatGrid(stats)}<div class="story-component-chain">${cards}</div></section>`;
+    return `<section class="story-objective-feature challenge-feature"><div class="story-objective-head"><div><p class="eyebrow">The weekend</p><h3>${ordered.length} events. One adventure.</h3></div></div>${storyStatGrid(stats)}<div class="story-component-chain">${cards}</div></section>`;
   }
 
   function storyModules(record, all, relationships, compositeContext = null) {
@@ -226,7 +227,7 @@
 
     const companions = companionsFor(record);
     const companionHtml = companions.length ? `<article class="story-companion-fact"><small>With</small><strong>${companions.map(companion => A.esc(companion.name)).join(' · ')}</strong><span>${companions.map(companion => A.esc(companion.relationship || 'Companion')).join(' · ')}</span></article>` : '';
-    const editorial = `<section class="story-record-editorial"><div class="story-record-folio"><span>Story ${String(chapter).padStart(2, '0')}</span><span>${A.esc(typeForStory(record))}</span><span>${A.esc(record.region || '')}</span></div><div class="story-record-deck"><p class="eyebrow">The chapter</p><h2>${A.esc(record.note || 'A day that earned its own chapter in Adventures.')}</h2></div><div class="story-record-at-a-glance${companions.length ? ' has-companions' : ''}"><article><small>When</small><strong>${A.esc(storySpanFor(record))}</strong></article><article><small>Where</small><strong>${A.esc(record.location || '—')}</strong></article><article><small>Scale</small><strong>${A.esc(storyHeadlineFor(record))}</strong><span>${A.esc(storySecondaryFor(record))}</span></article>${companionHtml}</div></section>`;
+    const editorial = `<section class="story-record-editorial">${eventNotes(record)}</section>`;
     return `${editorial}${mediaSection(record)}${connections}`;
   }
 
@@ -299,7 +300,7 @@
       record.resultUrl ? `<a class="button-link" href="${A.esc(record.resultUrl)}" target="_blank" rel="noreferrer">View published result</a>` : '',
       `<a class="button-link secondary" href="${A.pageHref('map.html')}">Explore on map</a>`
     ].filter(Boolean).join('');
-    const chips = [label, record.date ? A.formatDate(record.date) : record.year, record.location, record.participationMode ? `${record.participationMode} participation` : null, record.routeInfo?.provenance ? provenanceLabel(record.routeInfo.provenance) : null]
+    const chips = [record.participationMode === 'virtual' ? 'Virtual' : null]
       .filter(Boolean).map(value => `<span class="almanac-chip">${A.esc(value)}</span>`).join('');
     const storyClass = record.kind === 'adventure' ? ' story-record-hero' : '';
     return `<section class="hero${storyClass}"><p class="eyebrow">Adventures · ${record.kind === 'adventure' ? 'Story' : A.esc(label)}</p><h1>${A.esc(record.name)}</h1><p>${A.esc(record.currentName ? `Now known as ${record.currentName}. ` : '')}${A.esc(record.location || '')}${record.date ? ` · ${A.esc(A.formatDate(record.date))}` : ''}${record.endDate ? ` – ${A.esc(A.formatDate(record.endDate))}` : ''}</p><div class="almanac-strip">${chips}</div><div class="record-actions">${actions}</div></section>`;
@@ -308,7 +309,13 @@
   function metricsSection(ctx) {
     const { record, isSummit, isRace, isDownhill, headlineValue } = ctx;
     if (record.kind === 'adventure') return '';
-    return `<section class="metrics"><div class="metric"><strong>${A.esc(headlineValue || '—')}</strong><span>${isSummit ? 'elevation' : isRace ? 'result / distance' : 'headline metric'}</span></div><div class="metric"><strong>${record.distanceMi ? `${A.esc(record.distanceMi)} mi` : '—'}</strong><span>recorded distance</span></div><div class="metric"><strong>${!isDownhill && record.elevationGainM ? `${A.fmt.format(Math.round(record.elevationGainM))} m` : '—'}</strong><span>${isDownhill ? 'pedaled gain not used' : 'recorded gain'}</span></div><div class="metric"><strong>${record.elapsedSeconds ? A.esc(A.formatDuration(record.elapsedSeconds)) : '—'}</strong><span>elapsed time</span></div></section>`;
+    const facts = [
+      isSummit && record.elevationFt ? ['Elevation', `${A.fmt.format(record.elevationFt)} ft`] : null,
+      record.officialTime ? ['Finish time', record.officialTime.replace(/\.\d+$/, '')] : null,
+      record.distanceMi ? ['Distance', `${Number(record.distanceMi.toFixed(1))} mi`] : null,
+      !isDownhill && record.elevationGainM ? ['Climb', `${A.fmt.format(Math.round(feet(record.elevationGainM) / 100) * 100)} ft`] : null
+    ].filter(Boolean);
+    return facts.length ? `<section class="metrics memory-metrics">${facts.map(([label, value]) => `<div class="metric"><strong>${A.esc(value)}</strong><span>${label}</span></div>`).join('')}</section>` : '';
   }
 
   function profileSection(ctx) {
@@ -318,9 +325,15 @@
     return `<section class="profile"><div class="profile-copy"><p class="eyebrow">The record</p><h2>${A.esc(record.note || 'A place, a date, and the effort behind it.')}</h2><div class="fact-list"><div class="fact"><small>Date</small><strong>${A.esc(A.formatDate(record.date) || String(record.year || '—'))}</strong></div><div class="fact"><small>Location</small><strong>${A.esc(record.location || '—')}</strong></div><div class="fact"><small>Type</small><strong>${A.esc(label)}</strong></div><div class="fact"><small>Collection</small><strong>${A.esc(groupLabel)}</strong></div>${record.bib ? `<div class="fact"><small>Bib</small><strong>${A.esc(record.bib)}</strong></div>` : ''}${record.officialPlace ? `<div class="fact"><small>Place</small><strong>${A.esc(record.officialPlace)}</strong></div>` : ''}${record.eventSeries ? `<div class="fact"><small>Series</small><strong>${A.esc(record.eventSeries)}</strong></div>` : ''}${record.stravaActivityId ? `<div class="fact"><small>Activity</small><strong>Strava ${A.esc(record.stravaActivityId)}</strong></div>` : ''}</div></div><aside><p class="eyebrow">Context</p><div class="card"><p class="card-kicker">Archive position</p><h3>${index + 1} of ${ordered.length}</h3><p class="card-meta">Chronological position among ${A.esc(groupLabel)} records currently in Adventures.</p></div></aside></section>`;
   }
 
+  function eventNotes(record) {
+    const story = record.storyBody || record.story;
+    const companions = companionsFor(record);
+    return `${story ? `<section class="event-memory"><h2>${A.esc(record.storyTitle || 'What I remember')}</h2><p>${A.esc(story)}</p></section>` : ''}${companions.length ? `<p class="event-companions">With ${companions.map(c => A.esc(c.name)).join(' · ')}</p>` : ''}${record.note && record.note !== story ? `<details class="event-notes"><summary>Notes from the day</summary><p>${A.esc(record.note)}</p></details>` : ''}`;
+  }
+
   function routeSection(ctx) {
     const { record, isSummit, compositeContext } = ctx;
-    return `<section class="detail-route-section"><h2>${isSummit ? 'Recorded outing' : 'Course & location'}</h2><p id="routeMeta" class="card-meta">Loading route provenance…</p>${storyRouteKey(compositeContext)}<div id="detailMap" class="detail-map" aria-label="Map for ${A.esc(record.name)}"></div></section>`;
+    return `<section class="detail-route-section"><h2>${record.kind === 'race' ? 'The course' : 'The route'}</h2><p id="routeMeta" class="card-meta"></p>${storyRouteKey(compositeContext)}<div id="detailMap" class="detail-map" aria-label="Map for ${A.esc(record.name)}"></div></section>`;
   }
 
   function chronologySection(ctx) {
@@ -335,21 +348,17 @@
 
   function compose(ctx) {
     const { record, all, relationships, related, byId, majorsData } = ctx;
-    if (record.kind === 'race' && record.discipline === 'marathon') {
+    document.body.classList.add('event-memory-page');
+    if (record.kind === 'race') {
       return heroSection(ctx) + routeSection(ctx) + relatedSection(record, related, byId) + chronologySection(ctx);
     }
     const story = record.kind === 'adventure';
-    const major = majorModule(record, majorsData);
-    const genericMedia = !story && !major ? mediaSection(record) : '';
+    const genericMedia = !story ? mediaSection(record) : '';
     return [
       heroSection(ctx),
       metricsSection(ctx),
-      story ? storyModules(record, all, relationships, ctx.compositeContext) : profileSection(ctx),
-      story ? '' : officialRaceResult(record),
+      story ? storyModules(record, all, relationships, ctx.compositeContext) : genericMedia + eventNotes(record),
       story ? '' : relatedSection(record, related, byId),
-      story ? '' : sportModule(record, all, related),
-      story ? '' : major,
-      genericMedia,
       routeSection(ctx),
       chronologySection(ctx)
     ].join('');
@@ -379,9 +388,7 @@
       const routeMeta = document.getElementById('routeMeta');
       if (routeMeta) {
         const primary = features[0]?.properties;
-        if (primary) routeMeta.textContent = `${provenanceLabel(primary.provenance)}${primary.note ? ` · ${primary.note}` : ''}`;
-        else if (recordOverride) routeMeta.textContent = `${provenanceLabel(recordOverride.provenance)}${recordOverride.note ? ` · ${recordOverride.note}` : ''}`;
-        else routeMeta.textContent = 'Location marker only; no public route geometry is attached to this record.';
+        routeMeta.textContent = features.length ? provenanceLabel(primary?.provenance || recordOverride?.provenance) : 'Location';
       }
       if (!features.length && !hasPoint) {
         el.outerHTML = '<div class="empty">No public route geometry is available for this record yet.</div>';

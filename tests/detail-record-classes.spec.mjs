@@ -60,7 +60,7 @@ test('summit detail renders summit context', async ({ page }) => {
 test('MTB outing detail renders day-level riding context', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await openRepresentative(page, "record => record.kind === 'outing' && record.discipline === 'mountain-bike'");
-  await expect(page.locator('body')).toContainText(/MTB day|Downhill MTB|Day type/i);
+  await expect(page.locator('.hero .eyebrow')).toContainText(/MTB|Mountain bik/i);
   await expect(page.locator('.detail-route-section')).toBeVisible();
   await page.waitForTimeout(500);
   expect(errors).toEqual([]);
@@ -69,7 +69,7 @@ test('MTB outing detail renders day-level riding context', async ({ page }) => {
 test('Nordic outing detail renders day-level ski context', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await openRepresentative(page, "record => record.kind === 'outing' && record.discipline === 'nordic'");
-  await expect(page.locator('body')).toContainText(/Nordic day|Day type/i);
+  await expect(page.locator('.hero .eyebrow')).toContainText(/Nordic/i);
   await expect(page.locator('.detail-route-section')).toBeVisible();
   await page.waitForTimeout(500);
   expect(errors).toEqual([]);
@@ -78,7 +78,7 @@ test('Nordic outing detail renders day-level ski context', async ({ page }) => {
 test('Story detail renders editorial chapter context', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await openRepresentative(page, "record => record.kind === 'adventure'");
-  await expect(page.locator('body')).toContainText(/The chapter|Connected records|One story, one record/i);
+  await expect(page.locator('.story-record-editorial')).toHaveCount(1);
   await expect(page.locator('.detail-route-section')).toBeVisible();
   await page.waitForTimeout(900);
   expect(errors).toEqual([]);

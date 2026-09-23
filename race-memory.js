@@ -59,7 +59,7 @@
 
   const finishTime = record => {
     const value = String(record.officialTime || record.result || '—').replace(/^0(?=\d:)/, '');
-    return record.discipline === 'marathon' ? value.replace(/\.\d+$/, '') : value;
+    return value.replace(/\.\d+$/, '');
   };
 
   function marathonDetails(record) {
@@ -142,9 +142,9 @@
     const records = await A.load();
     const record = records.find(item => item.id === key || item.slug === key);
     if (!record || (record.kind !== 'race' && record.kind !== 'adventure')) return;
-    const marathon = record.kind === 'race' && record.discipline === 'marathon';
+    const race = record.kind === 'race';
     let memory = memories[record.id] || memories[record.slug] || memories[key];
-    if (marathon) {
+    if (race) {
       memory = { ...memory, photos: [...(memory?.photos || [])] };
       if (memory.milestone?.label === 'Official time') delete memory.milestone;
       for (const photo of record.media || []) {
@@ -157,12 +157,12 @@
 
     const routeSection = page.querySelector('.detail-route-section');
     const chronology = page.querySelector('.chronology-nav');
-    const related = marathon ? page.querySelector('.grid')?.closest('section') : null;
+    const related = page.querySelector('.record-related');
     routeSection?.remove();
     chronology?.remove();
 
     page.innerHTML = memoryMarkup(record, memory);
-    if (marathon) {
+    if (race) {
       document.body.classList.add('marathon-memory-page');
       if (!memory.memory?.length) page.querySelector('.race-memory-story')?.remove();
       if (!memory.headline) page.querySelector('.race-memory-deck')?.remove();
@@ -172,6 +172,7 @@
       const finishLabel = page.querySelector('.race-memory-finish small');
       if (finishLabel) finishLabel.textContent = 'Finish time';
       page.insertAdjacentHTML('beforeend', marathonDetails(record));
+      if (!memory.memory?.length && record.note) page.insertAdjacentHTML('beforeend', `<details class="event-notes"><summary>Notes from the day</summary><p>${A.esc(record.note)}</p></details>`);
     }
     page.querySelectorAll('.race-memory-photo img').forEach(settlePhoto);
     document.body.classList.add('race-memory-page');
@@ -180,11 +181,7 @@
     if (routeSection) {
       routeSection.classList.add('race-memory-route');
       const heading = routeSection.querySelector('h2');
-      const meta = routeSection.querySelector('#routeMeta');
       if (heading) heading.textContent = record.kind === 'race' ? 'The course' : 'The routes';
-      if (meta) meta.textContent = marathon
-        ? (record.routeStatus === 'historical-course' ? 'Race course.' : record.stravaActivityId ? 'My route on race day.' : 'Where I ran.')
-        : record.kind === 'race' ? 'Personal GPS track from race day.' : 'Routes from this series.';
       page.append(routeSection);
     }
     if (related) page.append(related);

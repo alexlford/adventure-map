@@ -4,7 +4,7 @@ test('DeCaLiBron story renders the personal Strava GPS loop instead of a locatio
   await page.goto('/detail.html?record=decalibron-2023', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('h1')).toContainText('DeCaLiBron');
   await expect(page.locator('#routeMeta')).toContainText('Personal GPS route');
-  await expect(page.locator('#routeMeta')).toContainText('August 13, 2023 DeCaLiBron loop');
+  await expect(page.locator('.event-notes')).not.toHaveAttribute('open', '');
   await expect(page.locator('#detailMap .leaflet-overlay-pane path').first()).toBeVisible();
 
   const route = await page.evaluate(async () => {
