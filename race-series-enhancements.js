@@ -113,8 +113,8 @@
       return `<div class="series-chart-row${isFastest ? ' is-fastest' : ''}"><div class="series-chart-label"><strong>${A.esc(String(item.record.year || item.record.date?.slice(0, 4) || '—'))}</strong><span>${A.esc(item.time.label)}</span></div><div class="series-chart-track" aria-hidden="true"><span style="--series-bar:${width.toFixed(1)}%"></span></div><div class="series-chart-meta"><span>${A.esc(index ? deltaLabel(item.time.seconds - previous) : item.time.sourceLabel)}</span>${isFastest ? `<em>${A.esc(fastestLabel)}</em>` : ''}</div></div>`;
     }).join('');
     const caveat = cohort.source === 'official'
-      ? `Only organizer/timer results from the comparable ${cohort.distanceLabel} cohort are compared here. Lower elapsed time is better.`
-      : `No comparable organizer-time cohort is available, so this chart uses comparable ${cohort.distanceLabel} race-course GPS elapsed records only and does not present them as official results.`;
+      ? `Finish times for ${cohort.distanceLabel}.`
+      : `Watch times for ${cohort.distanceLabel}.`;
     return `<div class="series-performance"><div class="series-performance-head"><div><p class="eyebrow">Year-over-year</p><h3>${A.esc(chartLabel)}</h3></div><p>${A.esc(caveat)}</p></div><div class="series-chart">${rows}</div></div>`;
   };
 
@@ -139,8 +139,8 @@
   const cardFor = record => {
     const time = timeInfo(record);
     const year = record.year || record.date?.slice(0, 4) || '—';
-    const result = time.source === 'none' ? 'Result pending' : time.label;
-    return `<a class="series-year-card" href="${A.recordHref(record)}"><div class="series-year-top"><span>${A.esc(String(year))}</span><em>${hasGpsRoute(record) ? 'GPS course' : 'Location only'}</em></div><small>${A.esc(distanceLabel(record))}</small><strong>${A.esc(result)}</strong><p>${A.esc(time.sourceLabel)}</p><footer><span>${A.esc(record.name)}</span><b>Open record →</b></footer></a>`;
+    const result = time.source === 'none' ? 'Finished' : time.label.replace(/\.\d+$/, '');
+    return `<a class="series-year-card" href="${A.recordHref(record)}"><div class="series-year-top"><span>${A.esc(String(year))}</span></div><small>${A.esc(distanceLabel(record))}</small><strong>${A.esc(result)}</strong>${time.source === 'gps' ? '<p>Watch time</p>' : ''}<footer><span>${A.esc(record.name)}</span><b>Revisit →</b></footer></a>`;
   };
 
   const seriesAnchor = () => page.querySelector('.race-memory-story') || page.querySelector('.story-record-editorial');
@@ -174,7 +174,8 @@
       const section = document.createElement('section');
       section.className = 'race-series-feature';
       section.id = 'raceSeriesHistory';
-      section.innerHTML = `<div class="race-series-head"><div><p class="eyebrow">Recurring race series</p><h2>${A.esc(relationship.name || record.name)}</h2></div><p>${A.esc(relationship.summary || record.note || 'A multi-year race history preserved as one connected series.')}</p></div><div class="race-series-stats"><article><small>Appearances</small><strong>${members.length}</strong><span>${A.esc(span)}</span></article><article><small>Cumulative race distance</small><strong>${A.esc(mileage)}</strong><span>Organizer distance when available</span></article><article><small>Official results</small><strong>${officialCount}</strong><span>${members.length - officialCount} GPS/fallback records</span></article><article><small>Course archive</small><strong>${gpsCount}/${members.length}</strong><span>${gpsCount > 1 ? 'Routes overlay on the map below' : 'GPS routes attached when available'}</span></article></div>${benchmarkStats(members)}${chartFor(members)}<div class="series-year-grid">${members.map(cardFor).join('')}</div>${gpsCount > 1 ? `<div class="series-course-callout"><div><p class="eyebrow">Course evolution</p><h3>${gpsCount} recorded courses, one map.</h3></div><p>The course map below overlays the available personal GPS routes with a separate color for each appearance. Zoom in to compare shared sections, reroutes, start/finish changes, and event-to-event course drift.</p></div>` : ''}`;
+      const chart = chartFor(members);
+      section.innerHTML = `<div class="race-series-head"><div><p class="eyebrow">Through the years</p><h2>${A.esc(relationship.name || record.name)}</h2></div><p>${members.length} appearances · ${A.esc(span)}</p></div><div class="series-year-grid">${members.map(cardFor).join('')}</div>${chart ? `<details class="event-notes"><summary>Compare my times</summary>${chart}</details>` : ''}`;
       anchor.insertAdjacentElement('afterend', section);
       page.querySelector('.story-objective-feature.challenge-feature')?.remove();
       document.body.classList.add('story-race-series-page');

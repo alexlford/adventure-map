@@ -359,6 +359,7 @@
       metricsSection(ctx),
       story ? storyModules(record, all, relationships, ctx.compositeContext) : genericMedia + eventNotes(record),
       story ? '' : relatedSection(record, related, byId),
+      record.kind === 'summit' ? genericStoryConnections(all.filter(item => item.kind === 'summit' && item.id !== record.id && record.date && item.date === record.date)) : '',
       routeSection(ctx),
       chronologySection(ctx)
     ].join('');

@@ -52,8 +52,8 @@
   }
 
   const officialDistance = record => {
-    if (Number.isFinite(record.officialDistanceMi)) return `${record.officialDistanceMi} mi`;
     if (record.officialDistance) return record.officialDistance;
+    if (Number.isFinite(record.officialDistanceMi)) return `${Number(record.officialDistanceMi.toFixed(1))} mi`;
     return record.distance || '—';
   };
 
@@ -66,6 +66,7 @@
     const facts = [
       record.officialPace ? ['Average pace', record.officialPace] : null,
       record.bib ? ['Bib', record.bib] : null,
+      record.award ? ['Award', record.award] : null,
       record.officialPlace ? ['Overall place', String(record.officialPlace)] : null,
       record.ageGroupPlace ? ['Age-group place', String(record.ageGroupPlace)] : null
     ].filter(Boolean);
