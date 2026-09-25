@@ -5,7 +5,7 @@
   "source": "River to River Relay official 24-section course description",
   "sourceUrl": "https://www.r2rrelay.com/course/course.html",
   "historicalContextUrl": "https://fastestknowntime.com/route/river-river-relay-course-il",
-  "geometryMethod": "Section endpoints are linearly referenced by official cumulative mile markers onto the preserved historical-course overview geometry. This is historical course context, not personal GPS.",
+  "geometryMethod": "Section endpoints are linearly referenced by official cumulative mile markers onto the preserved historical-course overview geometry.",
   "appearances": [
     {
       "year": 2006,
@@ -21,7 +21,6 @@
       "year": 2008,
       "recordId": "river-to-river-relay-2008",
       "runner": 1,
-      "assignmentSource": "User recollection; corrected from Runner 8 to Runner 1 on 2026-09-25.",
       "sections": [
         {"section": 1, "startMi": 0.00, "endMi": 3.60},
         {"section": 9, "startMi": 27.05, "endMi": 30.40},
