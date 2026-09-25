@@ -20,21 +20,21 @@
     {
       "year": 2008,
       "recordId": "river-to-river-relay-2008",
-      "runner": 1,
-      "sections": [
-        {"section": 1, "startMi": 0.00, "endMi": 3.60},
-        {"section": 9, "startMi": 27.05, "endMi": 30.40},
-        {"section": 17, "startMi": 53.20, "endMi": 56.50}
-      ]
-    },
-    {
-      "year": 2010,
-      "recordId": "river-to-river-relay-2010",
       "runner": 6,
       "sections": [
         {"section": 6, "startMi": 17.15, "endMi": 20.45},
         {"section": 14, "startMi": 43.70, "endMi": 46.20},
         {"section": 22, "startMi": 69.55, "endMi": 73.35}
+      ]
+    },
+    {
+      "year": 2010,
+      "recordId": "river-to-river-relay-2010",
+      "runner": 7,
+      "sections": [
+        {"section": 7, "startMi": 20.45, "endMi": 23.45},
+        {"section": 15, "startMi": 46.20, "endMi": 49.15},
+        {"section": 23, "startMi": 73.35, "endMi": 76.70}
       ]
     }
   ]
