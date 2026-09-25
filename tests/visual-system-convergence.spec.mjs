@@ -34,9 +34,9 @@ test('Map data failure uses the shared error-state treatment and survives late e
   await expect(page.locator('.archive-state-error')).toContainText('Map archive unavailable');
 });
 
-test('Activity chapters use consistent section rhythm and editorial provenance copy', async ({ page }) => {
+test('Activity chapters use consistent section rhythm and personal archive copy', async ({ page }) => {
   await page.goto('/races/',{waitUntil:'domcontentloaded'});
-  await expect(page.locator('.hero')).toContainText('personal archives');
+  await expect(page.locator('.hero')).toContainText('This is where I keep the races I want to remember');
   await expect(page.locator('.hero')).not.toContainText('alexlford.com');
   await expect(page.locator('.hero')).not.toContainText('Strava');
   await expect(page.locator('.section-title').first()).toHaveCSS('margin-top','60px');
