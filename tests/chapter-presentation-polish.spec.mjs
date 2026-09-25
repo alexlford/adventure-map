@@ -21,7 +21,7 @@ test('MTB cards favor riding history over classification machinery', async ({ pa
 
   const ride=page.locator('#dayList .timeline-item').first();
   await expect(ride).toBeVisible();
-  await expect(ride.locator('div').last().locator('span')).toHaveText('Recorded ride');
+  await expect(ride.locator('div').last().locator('span')).toHaveText('Ride');
   expect((await ride.innerText()).toLowerCase()).not.toMatch(/\b(high|confirmed|probable)\b/);
 });
 
