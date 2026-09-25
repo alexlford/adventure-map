@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "source": "Strava account export FIT + Slopes reconciliation + user photo",
+    "updatedOn": "2026-09-25"
+  },
+  "adventures": [
+    {
+      "id": "granby-ranch-skinning-2025",
+      "kind": "adventure",
+      "discipline": "ski-objective",
+      "name": "Skinning up Granby Ranch",
+      "year": 2025,
+      "date": "2025-03-18",
+      "location": "Ski Granby Ranch, Colorado",
+      "region": "Colorado",
+      "lat": 40.043423,
+      "lon": -105.906978,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "13918978715",
+      "distanceKm": 8.5454,
+      "distanceMi": 5.31,
+      "elapsedSeconds": 11078,
+      "movingSeconds": 6984,
+      "elevationGainM": 542.0,
+      "routeFeatureIds": ["strava-13918978715"],
+      "routeStatus": "gps",
+      "matchSource": "Strava account export FIT + Slopes reconciliation + user photo",
+      "matchConfidence": "confirmed",
+      "note": "Skinning up Granby Ranch during Penny's First Ski Trip on March 18, 2025."
+    }
+  ]
+}
