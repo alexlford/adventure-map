@@ -5,8 +5,8 @@
     "reviewedOn": "2026-09-25",
     "repository": "alexlford/adventure-map",
     "batch": "2026-08-28-batch-01",
-    "photoCount": 22,
-    "canonicalCount": 21,
+    "photoCount": 30,
+    "canonicalCount": 29,
     "candidateCount": 1,
     "unresolvedCount": 0,
     "convention": "assets/event-photos/{races|adventures}/{event-id-or-group}/{descriptive-filename}.jpeg",
@@ -49,7 +49,11 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/disney-princess-half-2018/2018-02-25-disney-princess-half-character-photo-01.jpeg",
-      "repositoryBlobSha": "4fea4d458d9c6887af4bcc5b1fb89fb509798f81"
+      "repositoryBlobSha": "caceded3300388434babf4288eeb50b6148f75df",
+      "restoredFrom": "IMG_0599.jpeg",
+      "resolutionRestoredOn": "2026-09-25",
+      "pixelWidth": 1152,
+      "pixelHeight": 1536
     },
     {
       "source": "IMG_1570.jpeg",
@@ -70,7 +74,11 @@
         "User identified Olive in the photo and approved it for any Nordic event in 2024"
       ],
       "path": "assets/event-photos/adventures/frisco-nordic-2024/2024-01-frisco-nordic-center-with-olive-01.jpeg",
-      "repositoryBlobSha": "5cd1fe451b5bdf32062577849f7dc4e458a48d52"
+      "repositoryBlobSha": "7fab9b10b7db20b4efb30e61ceb0e028be53c50f",
+      "restoredFrom": "IMG_1570.jpeg",
+      "resolutionRestoredOn": "2026-09-25",
+      "pixelWidth": 1152,
+      "pixelHeight": 1536
     },
     {
       "source": "IMG_3856(1).jpeg",
@@ -142,7 +150,11 @@
         "User confirmed this is from the half marathon during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/pi-day-half-2015/2015-03-14-pi-day-river-rotation-half-trail-01.jpeg",
-      "repositoryBlobSha": "ecbcbcff4d62d99608e1c519e7e857fc330285c5"
+      "repositoryBlobSha": "c453f66ff62804991720bd1e992b45537b46299d",
+      "restoredFrom": "IMG_4476.jpeg",
+      "resolutionRestoredOn": "2026-09-25",
+      "pixelWidth": 1068,
+      "pixelHeight": 1068
     },
     {
       "source": "IMG_4965.jpeg",
@@ -178,7 +190,11 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/rock-parkway-half-2016/2016-04-09-rock-the-parkway-half-course-01.jpeg",
-      "repositoryBlobSha": "059179ff80d3c7740b21c57dc2dcb830e3ea8573"
+      "repositoryBlobSha": "08ebd7936c9a77cfc06f9f9351d95901df2f6191",
+      "restoredFrom": "RocktheParkway.jpeg",
+      "resolutionRestoredOn": "2026-09-25",
+      "pixelWidth": 1024,
+      "pixelHeight": 1536
     },
     {
       "source": "IMG_5331.jpeg",
@@ -243,7 +259,11 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/big-12-run-12k-2016/2016-03-12-kansas-city-big-12-run-12k-course-01.jpeg",
-      "repositoryBlobSha": "c5c072041c45b24a1a8606d5f9f8f655dd4a8cc1"
+      "repositoryBlobSha": "47ee78582fbff3738cb4ce2cd843182ed1e7a1b9",
+      "restoredFrom": "IMG_5261.jpeg",
+      "resolutionRestoredOn": "2026-09-25",
+      "pixelWidth": 1536,
+      "pixelHeight": 1536
     },
     {
       "source": "IMG_6450.jpeg",
@@ -265,7 +285,11 @@
         "User identified Leah as photographer and Basil and Olive in the scene during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/adventures/nordic-day-2024-01-07/2024-01-07-frisco-nordic-center-basil-olive-01.jpeg",
-      "repositoryBlobSha": "387103f83c024fda5f767b85427a89677731dd0a"
+      "repositoryBlobSha": "181d1739b67f9dd198040f2469336fbba54d944a",
+      "restoredFrom": "IMG_6450.jpeg",
+      "resolutionRestoredOn": "2026-09-25",
+      "pixelWidth": 1536,
+      "pixelHeight": 1152
     },
     {
       "source": "IMG_6879(1).jpeg",
@@ -281,7 +305,11 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/staunton-rocks-half-2022/2022-08-27-staunton-rocks-half-course-01.jpeg",
-      "repositoryBlobSha": "4fb671ca7b5d75855323453d6fbf2ce4369e37a2"
+      "repositoryBlobSha": "033823e4aa35585a5c31326a8aaa4f643daf84d2",
+      "restoredFrom": "IMG_6879.jpeg",
+      "resolutionRestoredOn": "2026-09-25",
+      "pixelWidth": 1024,
+      "pixelHeight": 1536
     },
     {
       "source": "IMG_7026.jpeg",
@@ -301,7 +329,11 @@
         "Existing Strava evidence maps the Mount Sherman outing to 2022-09-25"
       ],
       "path": "assets/event-photos/adventures/mount-sherman/2022-09-25-mount-sherman-summit-with-olive-01.jpeg",
-      "repositoryBlobSha": "10bac74632d3f8e95e2588804bad20f10d1f220b"
+      "repositoryBlobSha": "ddea479c62719180ee51a19008339ebdf1d18aa6",
+      "restoredFrom": "IMG_7026.jpeg",
+      "resolutionRestoredOn": "2026-09-25",
+      "pixelWidth": 1536,
+      "pixelHeight": 1152
     },
     {
       "source": "IMG_8266(1).jpeg",
@@ -359,7 +391,11 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/running-with-cows-half-2016/2016-05-14-running-with-the-cows-half-course-wide-01.jpeg",
-      "repositoryBlobSha": "0b7a2b65055f79691a2ea337a102a2592043c8b1"
+      "repositoryBlobSha": "538a2f1bc3c857cf6781126e9a94d65b15effc38",
+      "restoredFrom": "13220624_643895159082244_8310948097555767756_o.jpeg",
+      "resolutionRestoredOn": "2026-09-25",
+      "pixelWidth": 2300,
+      "pixelHeight": 830
     },
     {
       "source": "race_3030_photo_37353354.jpeg",
@@ -416,6 +452,156 @@
       "repositoryBlobSha": "bc694849d4acf6c0c029532bf5139a23695d43a6",
       "pixelWidth": 1152,
       "pixelHeight": 1536
+    },
+    {
+      "source": "IMG_4560.jpeg",
+      "category": "race",
+      "eventId": "illinois-marathon-2015",
+      "eventName": "Illinois Marathon",
+      "filename": "2015-04-25-illinois-marathon-2015-with-mom-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "Visual match to the existing 2015 marathon photo with Mom.",
+        "Original uploaded bytes preserved without resizing."
+      ],
+      "path": "assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-2015-with-mom-01.jpeg",
+      "repositoryBlobSha": "208b50fb689f669344144aa7aaad310d974ea1b1",
+      "pixelWidth": 1536,
+      "pixelHeight": 1536,
+      "date": "2015-04-25"
+    },
+    {
+      "source": "IMG_5362.jpeg",
+      "category": "race",
+      "eventId": "illinois-half-2016",
+      "eventName": "Illinois Half Marathon",
+      "filename": "2016-04-30-illinois-half-2016-rain-course-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "EXIF capture date April 30, 2016 and bib 7899 match the canonical half-marathon record.",
+        "Original uploaded bytes preserved without resizing."
+      ],
+      "path": "assets/event-photos/races/illinois-half-2016/2016-04-30-illinois-half-2016-rain-course-01.jpeg",
+      "repositoryBlobSha": "06c93dcc5cd3763023a96339713a311a2a5a6a23",
+      "pixelWidth": 2391,
+      "pixelHeight": 3599,
+      "date": "2016-04-30"
+    },
+    {
+      "source": "137939-367-015h.jpeg",
+      "category": "race",
+      "eventId": "big-ten-10k-2016",
+      "eventName": "Big Ten Network Big 10K",
+      "filename": "2016-08-06-big-ten-10k-2016-course-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "Event name and August 6, 2016 date are printed in the photo.",
+        "Original uploaded bytes preserved without resizing."
+      ],
+      "path": "assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-10k-2016-course-01.jpeg",
+      "repositoryBlobSha": "70f4ce4212f24ea65d1eda58a21ffe6dcc1f1552",
+      "pixelWidth": 1333,
+      "pixelHeight": 2000,
+      "date": "2016-08-06"
+    },
+    {
+      "source": "R2R 8.jpeg",
+      "category": "race",
+      "eventId": "river-to-river-relay-2006",
+      "eventName": "River to River Relay",
+      "filename": "2006-river-to-river-relay-2006-cambria-moonsnakes-team-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "Cambria Moonsnakes shirts match the recorded 2006 team.",
+        "Original uploaded bytes preserved without resizing."
+      ],
+      "path": "assets/event-photos/races/river-to-river-relay-2006/2006-river-to-river-relay-2006-cambria-moonsnakes-team-01.jpeg",
+      "repositoryBlobSha": "a1bc6f2282da4cc641da670128e73fbe1e04d572",
+      "pixelWidth": 1536,
+      "pixelHeight": 1032,
+      "relatedEventIds": [
+        "river-to-river-relay-series-story"
+      ]
+    },
+    {
+      "source": "SwampAss.jpeg",
+      "category": "race",
+      "eventId": "river-to-river-relay-2008",
+      "eventName": "River to River Relay",
+      "filename": "2008-river-to-river-relay-2008-team-swampass-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "Team Swampass shirts and bib 852 match the recorded 2008 team.",
+        "Original uploaded bytes preserved without resizing."
+      ],
+      "path": "assets/event-photos/races/river-to-river-relay-2008/2008-river-to-river-relay-2008-team-swampass-01.jpeg",
+      "repositoryBlobSha": "e66a78894fc341be29a59cf042040588fb301928",
+      "pixelWidth": 1764,
+      "pixelHeight": 1166,
+      "relatedEventIds": [
+        "river-to-river-relay-series-story"
+      ]
+    },
+    {
+      "source": "P4170206.jpeg",
+      "category": "race",
+      "eventId": "river-to-river-relay-2010",
+      "eventName": "River to River Relay",
+      "filename": "2010-river-to-river-relay-2010-legion-of-doom-team-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "EXIF capture date April 17, 2010 matches the 2010 relay.",
+        "Original uploaded bytes preserved without resizing."
+      ],
+      "path": "assets/event-photos/races/river-to-river-relay-2010/2010-river-to-river-relay-2010-legion-of-doom-team-01.jpeg",
+      "repositoryBlobSha": "054187a3e840ca766726047ca711c182b7f2d924",
+      "pixelWidth": 1024,
+      "pixelHeight": 768,
+      "relatedEventIds": [
+        "river-to-river-relay-series-story"
+      ]
+    },
+    {
+      "source": "IMG_2183.jpeg",
+      "category": "race",
+      "eventId": "colfax-5k-2026",
+      "eventName": "Denver Colfax 5K",
+      "date": "2026-05-16",
+      "filename": "2026-05-16-dog-pool-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "Exact visual match to the existing event memory photo.",
+        "Original uploaded bytes preserved without resizing."
+      ],
+      "path": "assets/event-photos/races/colfax-5k-2026/2026-05-16-dog-pool-01.jpeg",
+      "repositoryBlobSha": "84d90e8b375f463fa7029f9f99472b3023d5fa40",
+      "pixelWidth": 1152,
+      "pixelHeight": 1536
+    },
+    {
+      "source": "IMG_8244.jpeg",
+      "category": "race",
+      "eventId": "colfax-5k-2024",
+      "eventName": "Denver Colfax 5K",
+      "date": "2024-05-18",
+      "filename": "2024-05-18-dog-pool-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "Exact visual match to the existing event memory photo.",
+        "Original uploaded bytes preserved without resizing."
+      ],
+      "path": "assets/event-photos/races/colfax-5k-2024/2024-05-18-dog-pool-01.jpeg",
+      "repositoryBlobSha": "eb767bef2c44aa26270e493840a37f80afa05b22",
+      "pixelWidth": 1536,
+      "pixelHeight": 1152
     }
   ]
 }

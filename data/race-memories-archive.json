@@ -3,7 +3,11 @@
   "records": {
     "garmin-half-2014": {
       "headline": "My first half marathon.",
-      "milestone": {"label": "First", "value": "Half marathon", "note": "Under two hours"},
+      "milestone": {
+        "label": "First",
+        "value": "Half marathon",
+        "note": "Under two hours"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "This was my first half marathon. Finishing under two hours was a big goal for me, and I was very proud of the accomplishment.",
@@ -13,19 +17,32 @@
     },
     "abes-amble-2014": {
       "headline": "A fun 10K with my mom and Aunt Mary Kay.",
-      "milestone": {"label": "Together", "value": "Mom + Aunt Mary Kay", "note": "We ran the whole race together"},
+      "milestone": {
+        "label": "Together",
+        "value": "Mom + Aunt Mary Kay",
+        "note": "We ran the whole race together"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "I ran Abe's Amble with my mom and Aunt Mary Kay, and the three of us stayed together for the whole 10K.",
         "What I remember most is that it was simply a fun race through the Illinois State Fairgrounds. Running it together is what makes the day stand out."
       ],
       "photos": [
-        {"src": "media/races/abes-amble-2014-family.svg", "alt": "Alex Ford with his mom and Aunt Mary Kay after the 2014 Abe's Amble 10K.", "caption": "My mom, Aunt Mary Kay, and me after running Abe's Amble together.", "aspect": "4:3"}
+        {
+          "src": "media/races/abes-amble-2014-family.svg",
+          "alt": "Alex Ford with his mom and Aunt Mary Kay after the 2014 Abe's Amble 10K.",
+          "caption": "My mom, Aunt Mary Kay, and me after running Abe's Amble together.",
+          "aspect": "4:3"
+        }
       ]
     },
     "pi-miler-2015": {
       "headline": "My first day of trail racing started with a podium.",
-      "milestone": {"label": "Podium", "value": "3rd place", "note": "3.14-mile trail race"},
+      "milestone": {
+        "label": "Podium",
+        "value": "3rd place",
+        "note": "3.14-mile trail race"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "This was my first day of trail running. The day started with the 3.14-mile race, and I surprised myself by finishing third.",
@@ -35,7 +52,11 @@
     },
     "pi-day-half-2015": {
       "headline": "The half marathon that finished my first day of trail racing.",
-      "milestone": {"label": "First", "value": "Trail half marathon", "note": "After a 3rd-place 3.14-miler"},
+      "milestone": {
+        "label": "First",
+        "value": "Trail half marathon",
+        "note": "After a 3rd-place 3.14-miler"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "The Pi Day River Rotation was my first day of trail running. I had already raced the 3.14-miler earlier that day and finished third.",
@@ -45,7 +66,11 @@
     },
     "illinois-5k-2015": {
       "headline": "A good shakeout before my first marathon.",
-      "milestone": {"label": "Weekend", "value": "I-Challenge", "note": "5K Friday, marathon Saturday"},
+      "milestone": {
+        "label": "Weekend",
+        "value": "I-Challenge",
+        "note": "5K Friday, marathon Saturday"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "The Illinois 5K was a good shakeout race. The real goal that weekend was the next morning, when I would line up for my first marathon.",
@@ -55,7 +80,11 @@
     },
     "illinois-marathon-2015": {
       "headline": "My first marathon, finished in a thunderstorm.",
-      "milestone": {"label": "First", "value": "Marathon", "note": "3:49:34"},
+      "milestone": {
+        "label": "First",
+        "value": "Marathon",
+        "note": "3:49:34"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "This was my first marathon, and I was already proud just to be out there taking on 26.2 miles.",
@@ -63,14 +92,26 @@
         "The weekend was special for my family too. My mom ran her first half marathon that weekend, so we both came away from Champaign with a first."
       ],
       "photos": [
-        {"src": "media/races/illinois-marathon-2015-rain.svg", "alt": "Alex Ford running the 2015 Illinois Marathon in heavy rain.", "caption": "The rain coming down during my first marathon."},
-        {"src": "media/races/illinois-marathon-2015-mom.svg", "alt": "Alex Ford with his mom after the 2015 Illinois Marathon weekend.", "caption": "My first marathon and my mom's first half marathon, on the same weekend."}
+        {
+          "src": "media/races/illinois-marathon-2015-rain.svg",
+          "alt": "Alex Ford running the 2015 Illinois Marathon in heavy rain.",
+          "caption": "The rain coming down during my first marathon."
+        },
+        {
+          "src": "/assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-2015-with-mom-01.jpeg",
+          "alt": "Alex Ford with his mom after the 2015 Illinois Marathon weekend.",
+          "caption": "My first marathon and my mom's first half marathon, on the same weekend."
+        }
       ]
     },
     "heartland-39-3-2016": {
       "typeLabel": "Series memory",
       "headline": "Five weeks that showed me how well I could run.",
-      "milestone": {"label": "Series", "value": "Heartland 39.3", "note": "Three half marathons in five weeks"},
+      "milestone": {
+        "label": "Series",
+        "value": "Heartland 39.3",
+        "note": "Three half marathons in five weeks"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "I wanted something that would keep me training, so I signed up for the Heartland 39.3 Series.",
@@ -82,7 +123,11 @@
     },
     "big-ten-10k-2016": {
       "headline": "A very fun race along Lake Michigan.",
-      "milestone": {"label": "What stood out", "value": "Lake Michigan", "note": "A fun Chicago 10K"},
+      "milestone": {
+        "label": "What stood out",
+        "value": "Lake Michigan",
+        "note": "A fun Chicago 10K"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "I remember the Big Ten 10K as a very fun race along Lake Michigan.",
@@ -92,14 +137,22 @@
     },
     "disney-princess-half-2018": {
       "headline": "Running Abby's first half marathon with her.",
-      "milestone": {"label": "Together", "value": "Abby's first half", "note": "My 30th birthday weekend"},
+      "milestone": {
+        "label": "Together",
+        "value": "Abby's first half",
+        "note": "My 30th birthday weekend"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "I ran the Disney Princess Half Marathon with Abby during the weekend I turned 30.",
         "What matters most to me about the race is that it was Abby's first half marathon. Getting to run the whole experience with her is the memory I want to keep from that weekend."
       ],
       "photos": [
-        {"src": "media/races/disney-princess-half-2018-abby.svg", "alt": "Alex Ford and Abby after the 2018 Disney Princess Half Marathon.", "caption": "Running Abby's first half marathon together during my 30th birthday weekend."}
+        {
+          "src": "/assets/event-photos/races/disney-princess-half-2018/2018-02-25-disney-princess-half-character-photo-01.jpeg",
+          "alt": "Alex Ford and Abby after the 2018 Disney Princess Half Marathon.",
+          "caption": "Running Abby's first half marathon together during my 30th birthday weekend."
+        }
       ]
     }
   }
