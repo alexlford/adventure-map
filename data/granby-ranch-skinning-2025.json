@@ -22,11 +22,12 @@
       "elapsedSeconds": 11078,
       "movingSeconds": 6984,
       "elevationGainM": 542.0,
+      "runs": 3,
       "routeFeatureIds": ["strava-13918978715"],
       "routeStatus": "gps",
       "matchSource": "Strava account export FIT + Slopes reconciliation + user photo",
       "matchConfidence": "confirmed",
-      "note": "Skinning up Granby Ranch during Penny's First Ski Trip on March 18, 2025."
+      "note": "Skinning up Granby Ranch during Penny's First Ski Trip on March 18, 2025. The ski log records three runs; the route shown is the original Strava FIT track."
     }
   ]
 }
