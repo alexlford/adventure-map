@@ -98,9 +98,20 @@
 
   async function render() {
     const section = document.querySelector('.detail-route-section');
-    const currentMap = section?.querySelector('#detailMap');
-    if (!section || !currentMap || !currentMap.classList.contains('leaflet-container')) return false;
+    if (!section) return false;
     if (section.dataset.r2rLegOverlay === 'true') return true;
+
+    const currentMap = section.querySelector('#detailMap');
+    const emptyState = !currentMap ? section.querySelector('.empty') : null;
+
+    // The normal record renderer has no geometry attached directly to the
+    // series-story record, so it intentionally replaces #detailMap with an
+    // empty-state div. Wait until either that state or a real Leaflet map is
+    // present before taking ownership of the series map. This avoids racing
+    // the normal renderer while still allowing this composite map to render.
+    const normalMapReady = currentMap?.classList.contains('leaflet-container');
+    const emptyStateReady = Boolean(emptyState);
+    if (!normalMapReady && !emptyStateReady) return false;
 
     const [legData, routeData] = await Promise.all([fetchJson(DATA_PATH), fetchJson(ROUTE_PATH)]);
     const feature = (routeData.features || []).find(item => item?.properties?.id === legData.courseFeatureId || item?.id === legData.courseFeatureId);
@@ -110,8 +121,9 @@
     const appearances = legData.appearances || [];
     const colors = yearColors(appearances);
     const index = routeIndex(coordinates);
-    const oldLegend = section.querySelector('#storyRouteKey');
-    oldLegend?.remove();
+    section.querySelector('#storyRouteKey')?.remove();
+    section.querySelector('.relay-leg-key')?.remove();
+    section.querySelector('.relay-leg-note')?.remove();
 
     const meta = section.querySelector('#routeMeta');
     if (meta) meta.textContent = 'Historical 80-mile course with my three runner assignments highlighted by year.';
@@ -121,7 +133,9 @@
     replacement.id = 'detailMap';
     replacement.className = 'detail-map';
     replacement.setAttribute('aria-label', 'River to River Relay historical course with Alex Ford relay legs highlighted by year');
-    currentMap.replaceWith(replacement);
+
+    const target = currentMap || emptyState;
+    target.replaceWith(replacement);
     replacement.insertAdjacentHTML('beforebegin', legendHtml(appearances, colors));
 
     const note = document.createElement('p');
@@ -171,6 +185,8 @@
     }
 
     map.fitBounds(base.getBounds(), { padding: [28, 28], maxZoom: 10 });
+    setTimeout(() => map.invalidateSize({ pan: false }), 120);
+    setTimeout(() => { map.invalidateSize({ pan: false }); tiles.redraw(); }, 450);
     section.dataset.r2rLegOverlay = 'true';
     return true;
   }
@@ -178,7 +194,7 @@
   let attempts = 0;
   const wait = () => {
     render().then(done => {
-      if (done || attempts++ >= 160) return;
+      if (done || attempts++ >= 240) return;
       setTimeout(wait, 50);
     }).catch(error => {
       console.warn('River to River relay leg overlay', error);
