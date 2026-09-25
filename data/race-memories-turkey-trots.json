@@ -3,7 +3,11 @@
   "records": {
     "st-louis-turkey-trot-8k-2018": {
       "headline": "A Thanksgiving reunion I did not expect.",
-      "milestone": {"label": "What stood out", "value": "The reunion", "note": "Seeing friends and family at Tower Grove Park"},
+      "milestone": {
+        "label": "What stood out",
+        "value": "The reunion",
+        "note": "Seeing friends and family at Tower Grove Park"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "I went into the St. Louis Turkey Trot expecting a Thanksgiving morning race in Tower Grove Park, but the thing I remember most is who I found there.",
@@ -14,7 +18,11 @@
     },
     "gobble-cobble-2019": {
       "headline": "A cold Thanksgiving morning on the Inner Harbor.",
-      "milestone": {"label": "What stood out", "value": "Cold + excited", "note": "Thanksgiving morning in Baltimore"},
+      "milestone": {
+        "label": "What stood out",
+        "value": "Cold + excited",
+        "note": "Thanksgiving morning in Baltimore"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "I remember being excited for the Gobble Cobble on a pretty cold Thanksgiving morning in Baltimore.",
@@ -25,7 +33,11 @@
     },
     "baltimore-virtual-turkey-trot-2020": {
       "headline": "A virtual Thanksgiving edition in Baltimore.",
-      "milestone": {"label": "Format", "value": "Virtual", "note": "Thanksgiving Day 2020"},
+      "milestone": {
+        "label": "Format",
+        "value": "Virtual",
+        "note": "Thanksgiving Day 2020"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "The 2020 Gobble Cobble was virtual, so this entry is intentionally a short one.",
@@ -36,29 +48,53 @@
     },
     "mile-high-turkey-trot-2021": {
       "headline": "A sunny Thanksgiving run with my wife and mom.",
-      "milestone": {"label": "Together", "value": "Family", "note": "Washington Park on a sunny morning"},
+      "milestone": {
+        "label": "Together",
+        "value": "Family",
+        "note": "Washington Park on a sunny morning"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "The 2021 Turkey Trot was a sunny day at Washington Park, and I ran it with my wife and my mom.",
         "I remember running well, but the performance is not really what defines the day for me.",
         "What stayed with me was how much fun it was to be there together as a family on Thanksgiving morning."
       ],
-      "photos": []
+      "photos": [
+        {
+          "src": "/assets/event-photos/races/mile-high-turkey-trot-2021/2021-11-25-mile-high-turkey-trot-family-washington-park-01.jpeg",
+          "alt": "Thanksgiving morning with my wife and mom, 2021.",
+          "caption": "Thanksgiving morning with my wife and mom, 2021."
+        }
+      ]
     },
     "mile-high-turkey-trot-2023": {
       "headline": "Running late turned the four-mile race into something longer.",
-      "milestone": {"label": "Together", "value": "With Olive", "note": "Washington Park"},
+      "milestone": {
+        "label": "Together",
+        "value": "With Olive",
+        "note": "Washington Park"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "I did the 2023 Turkey Trot at Washington Park with Olive.",
         "We were running late and had to park far from the start, so I ran with Olive from the parking spot just to make it to the race.",
         "That meant the full outing was longer than the nominal four-mile Turkey Trot. The scramble to get there and getting to do the day with Olive are what make this edition memorable."
       ],
-      "photos": []
+      "photos": [
+        {
+          "src": "/assets/event-photos/races/mile-high-turkey-trot-2023/2023-11-23-mile-high-turkey-trot-olive-yellow-bandana-01.jpeg",
+          "alt": "Olive at the 2023 Turkey Trot.",
+          "caption": "Olive at the 2023 Turkey Trot."
+        }
+      ]
     },
     "springfield-turkey-trot-2024": {
       "headline": "A fun Thanksgiving morning through the UIS campus with Olive.",
-      "milestone": {"label": "Together", "value": "With Olive", "note": "Springfield, Illinois"},
+      "milestone": {
+        "label": "Together",
+        "value": "With Olive",
+        "note": "Springfield, Illinois"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "Olive and I did the Springfield Turkey Trot together on Thanksgiving morning in 2024.",
@@ -69,7 +105,11 @@
     },
     "mile-high-turkey-trot-2025": {
       "headline": "A great Thanksgiving day with Olive at Washington Park.",
-      "milestone": {"label": "Tradition", "value": "With Olive", "note": "Back at Washington Park"},
+      "milestone": {
+        "label": "Tradition",
+        "value": "With Olive",
+        "note": "Back at Washington Park"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "The 2025 Mile High United Way Turkey Trot brought me back to Washington Park with Olive.",
@@ -81,7 +121,11 @@
     "mile-high-united-way-turkey-trot-series": {
       "typeLabel": "Series memory",
       "headline": "Seven Thanksgiving editions that became one tradition.",
-      "milestone": {"label": "Tradition", "value": "2018–2025", "note": "St. Louis · Baltimore · Denver · Springfield"},
+      "milestone": {
+        "label": "Tradition",
+        "value": "2018\u20132025",
+        "note": "St. Louis \u00b7 Baltimore \u00b7 Denver \u00b7 Springfield"
+      },
       "memoryTitle": "What I remember",
       "memory": [
         "The Turkey Trots are not one race in one city. They are a Thanksgiving tradition that followed me through St. Louis, Baltimore, Denver, and Springfield.",

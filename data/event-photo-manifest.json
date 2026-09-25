@@ -2,11 +2,11 @@
   "meta": {
     "title": "Event Photo Manifest",
     "ingestedOn": "2026-08-28",
-    "reviewedOn": "2026-08-28",
+    "reviewedOn": "2026-09-25",
     "repository": "alexlford/adventure-map",
     "batch": "2026-08-28-batch-01",
-    "photoCount": 20,
-    "canonicalCount": 19,
+    "photoCount": 22,
+    "canonicalCount": 21,
     "candidateCount": 1,
     "unresolvedCount": 0,
     "convention": "assets/event-photos/{races|adventures}/{event-id-or-group}/{descriptive-filename}.jpeg",
@@ -15,8 +15,8 @@
       "Nineteen photos are tied to canonical catalog records. IMG_1570.jpeg is identified as Frisco Nordic Center in January 2024 and intentionally retained as reusable 2024 Nordic imagery rather than forced to one exact activity.",
       "User corrections supersede earlier visual/metadata guesses for Frisco Nordic imagery, BOLDERBoulder 2023, and the 2015 Illinois Marathon thunderstorm finish."
     ],
-    "assetPolicy": "Repository assets are lightweight web previews for immediate website use. Corrected identifiers and user-confirmed context are authoritative in this manifest.",
-    "integrity": "repositoryBlobSha is the authoritative identifier for each committed preview."
+    "assetPolicy": "Uploaded originals are retained at their supplied resolution when available. Older previews remain until originals are recovered.",
+    "integrity": "repositoryBlobSha identifies each committed photo asset."
   },
   "photos": [
     {
@@ -380,6 +380,42 @@
       "resolutionRestoredOn": "2026-09-23",
       "pixelWidth": 2500,
       "pixelHeight": 1666
+    },
+    {
+      "source": "IMG_7633.jpeg",
+      "category": "race",
+      "eventId": "mile-high-turkey-trot-2023",
+      "eventName": "Mile High United Way Turkey Trot",
+      "date": "2023-11-23",
+      "filename": "2023-11-23-mile-high-turkey-trot-olive-yellow-bandana-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "User confirmed the year on September 25, 2026.",
+        "Photo reviewed visually; uploaded original preserved without resizing."
+      ],
+      "path": "assets/event-photos/races/mile-high-turkey-trot-2023/2023-11-23-mile-high-turkey-trot-olive-yellow-bandana-01.jpeg",
+      "repositoryBlobSha": "9f4cc6055feedcc3e6dd594355ad93c42a6ede45",
+      "pixelWidth": 1152,
+      "pixelHeight": 1536
+    },
+    {
+      "source": "IMG_4683.jpeg",
+      "category": "race",
+      "eventId": "mile-high-turkey-trot-2021",
+      "eventName": "Mile High United Way Turkey Trot",
+      "date": "2021-11-25",
+      "filename": "2021-11-25-mile-high-turkey-trot-family-washington-park-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "User confirmed the year on September 25, 2026.",
+        "Photo reviewed visually; uploaded original preserved without resizing."
+      ],
+      "path": "assets/event-photos/races/mile-high-turkey-trot-2021/2021-11-25-mile-high-turkey-trot-family-washington-park-01.jpeg",
+      "repositoryBlobSha": "bc694849d4acf6c0c029532bf5139a23695d43a6",
+      "pixelWidth": 1152,
+      "pixelHeight": 1536
     }
   ]
 }
