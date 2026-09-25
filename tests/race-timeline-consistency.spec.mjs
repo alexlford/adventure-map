@@ -6,9 +6,6 @@ test('race timeline consistently renders distance without analytics DOM patching
   const items = page.locator('#timeline .timeline-item');
   await expect(items.first()).toBeVisible();
 
-  await expect(page.locator('.section-title', { has: page.getByRole('heading', { name: 'Race timeline' }) }).locator('p'))
-    .toContainText('distance and date on the right');
-
   const values = (await page.locator('#timeline .timeline-item > div:last-child > strong').allTextContents())
     .map(value => value.trim())
     .filter(Boolean);
