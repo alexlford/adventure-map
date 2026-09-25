@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "description": "Optional personal introductions for featured Stories cards. These are display copy, separate from canonical record notes and source/provenance fields.",
+  "records": {
+    "air-force-aim-high-challenge-2026": {
+      "summary": "I went to Fairborn and Wright-Patterson for a 5K plus marathon weekend as a hard training block before New York. I was late to the start, ran two extra miles, lost my phone, cramped after halfway, and lost my watch at mile 25, but the training goal still got done."
+    },
+    "west-maroon-pass-2026": {
+      "summary": "I spent two long days crossing the Elk Mountains over West Maroon Pass, covering more than 22 miles and 7,500 feet of climbing. Linking the two hikes into one traverse is what made the weekend stand out."
+    },
+    "ski-the-sky-loop-2026": {
+      "summary": "At Big Sky, I turned a ski day into a loop around Lone Mountain: 14 runs and more than 17,000 feet of descent. The fun was making the mountain itself the objective."
+    },
+    "kokopelli-three-day-2025": {
+      "summary": "Three straight days on the Kokopelli trails near Loma and Fruita turned a set of rides into a real Western Colorado mountain-bike weekend."
+    },
+    "decalibron-2023": {
+      "summary": "Ryan and I linked Mount Democrat, Cameron, Lincoln, and Bross in one long DeCaLiBron day. Four summits with my brother-in-law made it much more memorable than simply checking peaks off a list."
+    },
+    "colorado-triathlon-2023": {
+      "summary": "I ran the COLDERBolder, skied Eldora with Frankie, then rode North Table Mountain with him on the mountain bike I had just bought. Turning three Colorado sports into one improvised day was the whole point."
+    },
+    "tennessee-pass-nordic-weekend-2022": {
+      "summary": "Right after New Year’s, I went to Tennessee Pass for a yurt and cross-country ski weekend with Leah, Basil, Frankie, and Olive. I kept waking up to stoke the fire so nobody would get cold and managed to make the yurt so warm that everyone woke up sweating."
+    }
+  }
+}
