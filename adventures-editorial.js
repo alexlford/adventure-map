@@ -5,7 +5,22 @@
   const group=a=>a.discipline==='ski-objective'||a.discipline==='nordic'?'ski':a.discipline==='mountain-loop'?'mountain':'challenge';
   const metric=a=>a.distanceMi?`${a.distanceMi} mi`:a.runs?`${a.runs} runs`:a.distance||type(a);
   const dateLine=a=>`${A.formatDate(a.date)}${a.endDate?` – ${A.formatDate(a.endDate)}`:''}`;
-  const dek=a=>a.note||'A memorable chapter from Alex Ford Adventures.';
+  const fallbackDek=a=>{
+    const place=a.location||a.region||'';
+    const companions=(Array.isArray(a.companions)?a.companions:[]).map(x=>x?.name).filter(Boolean);
+    const withLine=companions.length?` with ${companions.join(companions.length===2?' and ':', ')}`:'';
+    return place?`A memorable ${type(a).toLowerCase()}${withLine} in ${place}.`:`A memorable chapter from Alex Ford Adventures.`;
+  };
+  let introductions={};
+  const dek=a=>introductions[a.id]?.summary||fallbackDek(a);
+  const loadIntroductions=async()=>{
+    try{
+      const response=await fetch('data/story-introductions.json',{cache:'no-cache'});
+      if(!response.ok)return{};
+      const payload=await response.json();
+      return payload?.records&&typeof payload.records==='object'?payload.records:{};
+    }catch{return{}};
+  };
   const heroMedia=a=>(Array.isArray(a.media)?a.media:[]).find(x=>x&&(!x.type||x.type==='image')&&x.src&&x.alt)||null;
   const image=(item,cls)=>item?`<figure class="${cls}"><img src="${esc(item.src)}" alt="${esc(item.alt)}" loading="lazy" decoding="async">${item.caption?`<figcaption>${esc(item.caption)}</figcaption>`:''}</figure>`:'';
   let records=[],active='all';
@@ -24,8 +39,9 @@
     const shown=records.filter(a=>active==='all'||a.group===active);
     host.innerHTML=shown.map((a,i)=>`<a class="story-index-row" href="${A.recordHref(a)}"><span class="story-index-no">${String(i+1).padStart(2,'0')}</span><span class="story-index-main"><small>${esc(type(a))} · ${esc(dateLine(a))}</small><strong>${esc(a.name)}</strong><span>${esc(a.location||'')}</span></span><span class="story-index-value">${esc(metric(a))}</span><span class="story-index-arrow" aria-hidden="true">↗</span></a>`).join('')||'<div class="empty">No stories in this view yet.</div>';
   }
-  Promise.all([A.load(),A.loadRelationships()]).then(([all,relationships])=>{
+  Promise.all([A.load(),A.loadRelationships(),loadIntroductions()]).then(([all,relationships,storyIntroductions])=>{
     A.shell('adventures');
+    introductions=storyIntroductions;
     const recordIds=new Set(all.map(a=>a.id));
     const nestedMemberIds=new Set();
     for(const relationship of relationships){
