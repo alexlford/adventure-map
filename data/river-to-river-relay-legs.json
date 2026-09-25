@@ -20,11 +20,12 @@
     {
       "year": 2008,
       "recordId": "river-to-river-relay-2008",
-      "runner": 8,
+      "runner": 1,
+      "assignmentSource": "User recollection; corrected from Runner 8 to Runner 1 on 2026-09-25.",
       "sections": [
-        {"section": 8, "startMi": 23.45, "endMi": 27.05},
-        {"section": 16, "startMi": 49.15, "endMi": 53.20},
-        {"section": 24, "startMi": 76.70, "endMi": 80.00}
+        {"section": 1, "startMi": 0.00, "endMi": 3.60},
+        {"section": 9, "startMi": 27.05, "endMi": 30.40},
+        {"section": 17, "startMi": 53.20, "endMi": 56.50}
       ]
     },
     {
