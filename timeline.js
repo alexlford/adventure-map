@@ -1,7 +1,14 @@
 (()=>{
   const A=window.AdventureSite;if(!A)return;
   const timelineEl=document.getElementById('timeline');
+  const searchEl=document.getElementById('timelineSearch');
+  const yearEl=document.getElementById('timelineYear');
+  const orderButtons=[...document.querySelectorAll('[data-order]')];
+  const params=new URLSearchParams(location.search);
   let entries=[],active='all',childrenByParent=new Map();
+  let query=(params.get('q')||'').trim();
+  let order=params.get('order')==='latest'?'latest':'beginning';
+  let requestedYear=params.get('year')||'';
 
   const groupFor=a=>{
     if(a._timelineGroup)return a._timelineGroup;
@@ -17,6 +24,21 @@
   const valueFor=a=>a._timelineValue||a.teamFinishTime||a.officialTime||(a.kind==='summit'&&Number.isFinite(a.elevationFt)?`${Number(a.elevationFt).toLocaleString()} ft`:a.distanceMi?`${a.distanceMi} mi`:a.distance||'');
   const dateLabelFor=a=>a.date?A.formatDate(a.date):(a._timelineDateLabel||'');
   const hrefFor=a=>a._timelineSynthetic?null:(a._timelineHref||A.recordHref(a));
+  const normalized=v=>String(v||'').toLowerCase().trim();
+  const matchesQuery=(a,value=query)=>{
+    const q=normalized(value);if(!q)return true;
+    return normalized([a.name,a.currentName,a.location,a.region,a.teamName,labelFor(a)].filter(Boolean).join(' ')).includes(q);
+  };
+  const syncParam=(name,value,defaultValue='')=>{
+    const url=new URL(location.href);
+    if(!value||value===defaultValue)url.searchParams.delete(name);else url.searchParams.set(name,value);
+    history.replaceState(null,'',`${url.pathname}${url.search}${url.hash}`);
+  };
+  const returnState=()=>`${location.pathname}${location.search}${location.hash}`;
+  const statefulHref=a=>{
+    const href=hrefFor(a);if(!href||a._timelineHref||a._timelineSynthetic)return href;
+    return `${href}${href.includes('?')?'&':'?'}from=${encodeURIComponent(returnState())}`;
+  };
 
   function ensureTimelineGroupStyles(){
     if(document.getElementById('timelineGroupStyles'))return;
@@ -52,7 +74,7 @@
   };
 
   function renderItem(x,{child=false,groupCount=''}={}){
-    const href=hrefFor(x);
+    const href=statefulHref(x);
     const tag=href?'a':'div';
     const hrefAttr=href?` href="${A.esc(href)}"`:'';
     const value=valueFor(x);
@@ -61,28 +83,58 @@
     return `<${tag} class="timeline-item${child?' timeline-child-item':''}"${hrefAttr}><div><strong>${A.esc(x.name)}</strong><span>${A.esc(context)}</span>${groupBadge}</div><div><strong>${A.esc(value)}</strong><span>${A.esc(dateLabelFor(x))}</span></div></${tag}>`;
   }
 
-  const visibleChildren=(entry,filter)=>{
+  const childrenForFilter=(entry,filter)=>{
     const children=childrenByParent.get(entry.id)||[];
-    if(filter==='all')return children;
-    return children.filter(child=>groupFor(child)===filter);
+    return filter==='all'?children:children.filter(child=>groupFor(child)===filter);
+  };
+  const visibleChildren=(entry,filter)=>{
+    const children=childrenForFilter(entry,filter);
+    if(!query||matchesQuery(entry))return children;
+    return children.filter(child=>matchesQuery(child));
+  };
+  const matchesFilter=(entry,filter)=>{
+    const parentFilter=filter==='all'||groupFor(entry)===filter;
+    const parentMatch=parentFilter&&matchesQuery(entry);
+    return parentMatch||visibleChildren(entry,filter).length>0;
   };
 
-  const matchesFilter=(entry,filter)=>filter==='all'||groupFor(entry)===filter||visibleChildren(entry,filter).length>0;
+  function reflectOrder(){
+    orderButtons.forEach(button=>{
+      const isActive=button.dataset.order===order;
+      button.classList.toggle('is-active',isActive);
+      button.setAttribute('aria-pressed',isActive?'true':'false');
+    });
+  }
+  function populateYears(years){
+    if(!yearEl)return;
+    const current=requestedYear;
+    yearEl.innerHTML='<option value="">Choose a year</option>'+years.slice().sort((a,b)=>b.localeCompare(a)).map(year=>`<option value="${A.esc(year)}">${A.esc(year)}</option>`).join('');
+    yearEl.value=years.includes(current)?current:'';
+  }
+  function scrollToRequestedYear(){
+    if(!requestedYear)return;
+    requestAnimationFrame(()=>document.getElementById(`timeline-year-${requestedYear}`)?.scrollIntoView({block:'start'}));
+  }
 
   const render=filter=>{
     active=filter||active;
     const shown=entries.filter(entry=>matchesFilter(entry,active));
-    const years=[...new Set(shown.map(entry=>dateFor(entry).slice(0,4)))].sort();
+    let years=[...new Set(shown.map(entry=>dateFor(entry).slice(0,4)))];
+    years.sort((a,b)=>order==='latest'?b.localeCompare(a):a.localeCompare(b));
+    populateYears(years);
     timelineEl.innerHTML=years.map(year=>{
-      const yearEntries=shown.filter(entry=>dateFor(entry).slice(0,4)===year).sort((a,b)=>dateFor(a).localeCompare(dateFor(b))||a.name.localeCompare(b.name));
+      const direction=order==='latest'?-1:1;
+      const yearEntries=shown.filter(entry=>dateFor(entry).slice(0,4)===year).sort((a,b)=>direction*(dateFor(a).localeCompare(dateFor(b))||a.name.localeCompare(b.name)));
       const items=yearEntries.map(entry=>{
-        const children=visibleChildren(entry,active);
+        const children=visibleChildren(entry,active).slice().sort((a,b)=>direction*(dateFor(a).localeCompare(dateFor(b))||a.name.localeCompare(b.name)));
         if(!children.length)return renderItem(entry);
         const nested=children.map(child=>renderItem(child,{child:true})).join('');
         return `<div class="timeline-group">${renderItem(entry,{groupCount:childLabel(entry,children)})}<div class="timeline-children">${nested}</div></div>`;
       }).join('');
-      return `<section class="timeline-year"><h3>${year}</h3><div class="timeline-items">${items}</div></section>`;
-    }).join('')||'<div class="empty">No entries in this view yet.</div>';
+      return `<section class="timeline-year" id="timeline-year-${year}"><h3>${year}</h3><div class="timeline-items">${items}</div></section>`;
+    }).join('')||'<div class="empty">No entries match this search and filter.</div>';
+    reflectOrder();
+    scrollToRequestedYear();
   };
 
   function buildGroupedEntries(all,relationships){
@@ -136,6 +188,19 @@
     return [...all.filter(record=>!claimedChildren.has(record.id)),...synthetic];
   }
 
+  if(searchEl){
+    searchEl.value=query;
+    searchEl.addEventListener('input',()=>{query=searchEl.value.trim();syncParam('q',query);render(active)});
+  }
+  if(yearEl){
+    yearEl.addEventListener('change',()=>{requestedYear=yearEl.value;syncParam('year',requestedYear);scrollToRequestedYear()});
+  }
+  orderButtons.forEach(button=>button.addEventListener('click',()=>{
+    order=button.dataset.order==='latest'?'latest':'beginning';
+    syncParam('order',order,'beginning');
+    render(active);
+  }));
+
   ensureTimelineGroupStyles();
   Promise.all([
     A.load(),
@@ -151,7 +216,7 @@
       const date=(t.dates||[])[0]||`${String(t.season).slice(0,4)}-11-01`;
       return{id:t.id,kind:'event',discipline:'ski',name:t.name,date,location:t.location||'',_timelineGroup:'skiing',_timelineLabel:'Named ski trip',_timelineHref:'skiing.html',_timelineValue:`${t.runs} runs · ${Number(t.verticalFt).toLocaleString()} ft`};
     });
-    entries=[...buildGroupedEntries(all,relationships),...seasonEntries,...tripEntries].sort((a,b)=>dateFor(a).localeCompare(dateFor(b))||a.name.localeCompare(b.name));
+    entries=[...buildGroupedEntries(all,relationships),...seasonEntries,...tripEntries];
     const years=[...new Set(entries.map(entry=>Number(dateFor(entry).slice(0,4))).filter(Boolean))].sort((a,b)=>a-b);
     entryCount.textContent=entries.length;
     firstYear.textContent=years[0]||'—';
