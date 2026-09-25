@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "raceCount": 81,
-  "seriesCount": 11,
+  "seriesCount": 10,
   "series": [
     {
       "id": "bolderboulder-series-2022-2025",
@@ -204,45 +204,6 @@
         }
       ],
       "resultRecoveryIds": [],
-      "routeRecoveryIds": []
-    },
-    {
-      "id": "illinois-marathon-weekend-series",
-      "name": "Illinois Marathon Weekend",
-      "adventureId": "illinois-marathon-weekend-series",
-      "storyPresent": true,
-      "appearanceCount": 4,
-      "years": [
-        2015,
-        2016
-      ],
-      "memberIds": [
-        "illinois-5k-2015",
-        "illinois-marathon-2015",
-        "illinois-5k-2016",
-        "illinois-half-2016"
-      ],
-      "missingMemberIds": [],
-      "officialResultCount": 2,
-      "routeCount": 4,
-      "distanceHistory": [
-        {
-          "label": "5K",
-          "count": 2
-        },
-        {
-          "label": "Marathon",
-          "count": 1
-        },
-        {
-          "label": "Half marathon",
-          "count": 1
-        }
-      ],
-      "resultRecoveryIds": [
-        "illinois-5k-2015",
-        "illinois-marathon-2015"
-      ],
       "routeRecoveryIds": []
     },
     {
@@ -690,16 +651,6 @@
       "type": "official-result",
       "seriesId": "garmin-marathon-land-of-oz-series",
       "recordId": "garmin-half-2014"
-    },
-    {
-      "type": "official-result",
-      "seriesId": "illinois-marathon-weekend-series",
-      "recordId": "illinois-5k-2015"
-    },
-    {
-      "type": "official-result",
-      "seriesId": "illinois-marathon-weekend-series",
-      "recordId": "illinois-marathon-2015"
     },
     {
       "type": "official-result",
