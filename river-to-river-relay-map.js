@@ -103,12 +103,6 @@
 
     const currentMap = section.querySelector('#detailMap');
     const emptyState = !currentMap ? section.querySelector('.empty') : null;
-
-    // The normal record renderer has no geometry attached directly to the
-    // series-story record, so it intentionally replaces #detailMap with an
-    // empty-state div. Wait until either that state or a real Leaflet map is
-    // present before taking ownership of the series map. This avoids racing
-    // the normal renderer while still allowing this composite map to render.
     const normalMapReady = currentMap?.classList.contains('leaflet-container');
     const emptyStateReady = Boolean(emptyState);
     if (!normalMapReady && !emptyStateReady) return false;
@@ -131,7 +125,7 @@
 
     const replacement = document.createElement('div');
     replacement.id = 'detailMap';
-    replacement.className = 'detail-map';
+    replacement.className = 'detail-map has-composite-routes';
     replacement.setAttribute('aria-label', 'River to River Relay historical course with Alex Ford relay legs highlighted by year');
 
     const target = currentMap || emptyState;
@@ -144,18 +138,48 @@
     replacement.insertAdjacentElement('afterend', note);
 
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    const map = L.map(replacement, { scrollWheelZoom: false, worldCopyJump: true, zoomControl: true });
-    window.stabilizeLeafletMap?.(map, replacement);
-    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+    const baseLatLngs = coordinates.map(([lon, lat]) => [lat, lon]);
+    const initialBounds = L.latLngBounds(baseLatLngs);
+    const initialCenter = initialBounds.getCenter();
+    const map = L.map(replacement, {
+      center: initialCenter,
+      zoom: 9,
+      scrollWheelZoom: false,
+      worldCopyJump: true,
+      zoomControl: true,
+      preferCanvas: true,
+      zoomAnimation: false,
+      fadeAnimation: false,
+      markerZoomAnimation: false
+    });
+
+    let activeTiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; OpenStreetMap contributors',
       updateWhenIdle: false,
       keepBuffer: 3
     }).addTo(map);
-    tiles.on('load', () => map.invalidateSize({ pan: false }));
 
-    const baseLatLngs = coordinates.map(([lon, lat]) => [lat, lon]);
+    let tileFallbackUsed = false;
+    activeTiles.on('tileerror', () => {
+      if (tileFallbackUsed) return;
+      tileFallbackUsed = true;
+      map.removeLayer(activeTiles);
+      activeTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        subdomains: 'abcd',
+        maxZoom: 20,
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        updateWhenIdle: false,
+        keepBuffer: 3
+      }).addTo(map);
+      activeTiles.on('load', () => map.invalidateSize({ pan: false }));
+    });
+    activeTiles.on('load', () => map.invalidateSize({ pan: false }));
+
+    const renderer = L.canvas({ padding: 0.5 });
     const base = L.polyline(baseLatLngs, {
+      renderer,
       color: cssColor('--muted', '#667085'),
       weight: 5,
       opacity: 0.42,
@@ -172,6 +196,7 @@
         const line = sliceRoute(coordinates, index, segment.startMi / courseDistance, segment.endMi / courseDistance);
         const latLngs = line.map(([lon, lat]) => [lat, lon]);
         const layer = L.polyline(latLngs, {
+          renderer,
           color,
           weight: 8,
           opacity: 1,
@@ -184,9 +209,15 @@
       }
     }
 
-    map.fitBounds(base.getBounds(), { padding: [28, 28], maxZoom: 10 });
+    map.fitBounds(base.getBounds(), { padding: [28, 28], maxZoom: 10, animate: false });
+    window.stabilizeLeafletMap?.(map, replacement);
+    map.invalidateSize({ pan: false });
     setTimeout(() => map.invalidateSize({ pan: false }), 120);
-    setTimeout(() => { map.invalidateSize({ pan: false }); tiles.redraw(); }, 450);
+    setTimeout(() => {
+      map.invalidateSize({ pan: false });
+      activeTiles.redraw?.();
+    }, 450);
+
     section.dataset.r2rLegOverlay = 'true';
     return true;
   }
