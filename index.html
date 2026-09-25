@@ -34,15 +34,15 @@
     <section class="home-section home-latest" aria-labelledby="latest-title">
       <div class="home-section-heading">
         <div><p class="eyebrow">Latest adventure</p><h2 id="latest-title">Air Force Aim High Challenge</h2></div>
-        <p>September 18–19, 2026 · Fairborn &amp; Wright-Patterson Air Force Base, Ohio</p>
+        <p id="latest-meta">September 18–19, 2026 · Fairborn &amp; Wright-Patterson Air Force Base, Ohio</p>
       </div>
-      <a class="latest-card" href="record/2026-09-18-air-force-aim-high-challenge/">
+      <a class="latest-card" id="latest-card" href="record/2026-09-18-air-force-aim-high-challenge/">
         <div class="latest-story">
-          <p class="latest-kicker">Training for New York. Almost everything went wrong.</p>
-          <p class="latest-copy">It was humid. I was late to the start and ran two miles just to get there, lost my phone, my calves started cramping after 13 miles, and my watch died at mile 25. The whole point was to get a hard training day in before New York, so somehow it still did exactly what I needed it to do.</p>
+          <p class="latest-kicker" id="latest-kicker">Training for New York. Almost everything went wrong.</p>
+          <p class="latest-copy" id="latest-copy">It was humid. I was late to the start and ran two miles just to get there, lost my phone, my calves started cramping after 13 miles, and my watch died at mile 25. The whole point was to get a hard training day in before New York, so somehow it still did exactly what I needed it to do.</p>
           <span class="home-text-link">Open the adventure →</span>
         </div>
-        <div class="latest-stats" aria-label="Aim High Challenge results">
+        <div class="latest-stats" id="latest-stats" aria-label="Aim High Challenge results">
           <div><strong>5K + 26.2</strong><span>The challenge</span></div>
           <div><strong>5:20:29</strong><span>Combined time</span></div>
           <div><strong>5 / 14</strong><span>M35–39</span></div>
@@ -81,6 +81,8 @@
   </main>
   <footer class="footer"><span>Alex Ford Adventures</span><span>ad astra per aspera</span></footer>
   <script src="shared.js"></script>
+  <script src="catalog.js"></script>
+  <script src="landing.js"></script>
   <script>const A=AdventureSite;A.shell('home');const majorName=x=>x.name.replace(' Marathon','').replace('New York City','New York');const joinNames=names=>names.length<2?(names[0]||''):names.length===2?`${names[0]} and ${names[1]}`:`${names.slice(0,-1).join(', ')}, and ${names.at(-1)}`;fetch('data/world-majors.json').then(r=>{if(!r.ok)throw new Error('Unable to load Majors journey');return r.json()}).then(d=>{const completed=d.majors.filter(x=>x.status==='completed'),registered=d.majors.filter(x=>x.status==='registered').sort((a,b)=>(a.year||9999)-(b.year||9999)),nextNames=registered.map(majorName),latestCompleted=completed.at(-1),confirmed2027=d.meta?.confirmedMajorCountFor2027??d.majors.filter(x=>x.membership==='current'||x.membership==='joins-2027').length;if(latestCompleted&&nextNames.length)majorsHeadline.textContent=`${majorName(latestCompleted)} complete. ${joinNames(nextNames)} ${nextNames.length===1?'is':'are'} next.`;else if(nextNames.length)majorsHeadline.textContent=`${joinNames(nextNames)} ${nextNames.length===1?'is':'are'} next.`;else if(completed.length)majorsHeadline.textContent=`${completed.length} Major${completed.length===1?'':'s'} complete. The journey continues.`;majorsStatus.textContent=[`${completed.length} completed`,...registered.map(x=>`${majorName(x)} ${x.year}`),`${confirmed2027} confirmed Majors for 2027`].join(' · ')+'.'}).catch(()=>{majorsHeadline.textContent='The Majors journey continues.';majorsStatus.textContent='Current Majors status is temporarily unavailable.'});</script>
 </body>
 </html>
