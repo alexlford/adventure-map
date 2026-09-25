@@ -18,36 +18,36 @@
     <section class="hero">
       <p class="eyebrow">Adventures · Alpine Skiing</p>
       <h1>Seasons on snow.</h1>
-      <p>A season-by-season record of alpine ski days, resorts, runs, vertical, named trips and memorable objectives. Cross-country skiing stays in the Nordic Skiing chapter.</p>
+      <p>Skiing is one of the ways I spend winter in the mountains. This is the season-by-season log of the days, trips, resorts, and objectives I want to remember.</p>
     </section>
 
     <section class="metrics">
-      <div class="metric"><strong id="days">—</strong><span>recorded alpine days</span></div>
-      <div class="metric"><strong id="runs">—</strong><span>runs recorded</span></div>
+      <div class="metric"><strong id="days">—</strong><span>ski days</span></div>
+      <div class="metric"><strong id="runs">—</strong><span>runs</span></div>
       <div class="metric"><strong id="vertical">—</strong><span>vertical feet</span></div>
       <div class="metric"><strong id="resorts">—</strong><span>resorts visited</span></div>
-    </section>
-
-    <section class="chapter-map-section" aria-labelledby="skiMapTitle">
-      <div class="chapter-map-head">
-        <div><h2 id="skiMapTitle">Resort geography</h2><p>The alpine logbook as a travel footprint, with the most-visited mountains given slightly more visual weight without turning the page into another master map.</p></div>
-        <div class="chapter-map-summary" data-map-count="skiResortMap">Loading mapped resorts</div>
-      </div>
-      <div class="chapter-map-frame"><div id="skiResortMap" class="chapter-map" aria-label="Map of ski resorts visited"></div></div>
-      <div class="chapter-map-foot"><p>Marker size reflects recorded ski days at each resort. Select a mountain to see its region and recorded-day total.</p><a class="chapter-map-link" data-map-link="skiResortMap" href="map.html">Open full map →</a></div>
     </section>
 
     <div class="section-title"><h2>Season logbook</h2><p id="coverage">Loading ski archive…</p></div>
     <div id="seasons"></div>
 
-    <div class="section-title"><h2>Nordic Skiing</h2><p>Cross-country locations, races, named events, and standout Nordic days have their own chapter rather than being duplicated in the alpine logbook.</p></div>
-    <div class="grid chapter-crosslink-grid"><a class="card" href="nordic.html"><p class="card-kicker">Separate chapter</p><h3>Nordic Skiing</h3><p class="card-meta">Trail systems, true races, social events, and memorable days on skinny skis.</p><div class="card-value">Open Nordic Skiing →</div></a></div>
-
-    <div class="section-title"><h2>Ski trips & logbooks</h2><p>Named trips preserve the larger chapter and, where detailed day records are available, the individual ski days inside it.</p></div>
+    <div class="section-title"><h2>Ski trips</h2><p>The trips that became their own chapter of a season.</p></div>
     <div class="ski-trip-grid" id="tripGrid"></div>
 
-    <div class="section-title"><h2>Notable ski objectives</h2><p>Individual days with a story or objective that stands apart from a normal resort day.</p></div>
+    <div class="section-title"><h2>Notable ski objectives</h2><p>The days that stand out beyond a normal resort day.</p></div>
     <div id="notable" class="timeline-items"></div>
+
+    <section class="chapter-map-section" aria-labelledby="skiMapTitle">
+      <div class="chapter-map-head">
+        <div><h2 id="skiMapTitle">Mountains I’ve skied</h2><p>A look at the resorts that have become part of the winter archive.</p></div>
+        <div class="chapter-map-summary" data-map-count="skiResortMap">Loading mapped resorts</div>
+      </div>
+      <div class="chapter-map-frame"><div id="skiResortMap" class="chapter-map" aria-label="Map of ski resorts visited"></div></div>
+      <div class="chapter-map-foot"><a class="chapter-map-link" data-map-link="skiResortMap" href="map.html">Open full map →</a></div>
+    </section>
+
+    <div class="section-title"><h2>Nordic Skiing</h2><p>For the cross-country side of winter, including races, trail days, and yurt weekends.</p></div>
+    <div class="grid chapter-crosslink-grid"><a class="card" href="nordic.html"><p class="card-kicker">Cross-country</p><h3>Nordic Skiing</h3><p class="card-meta">Trail systems, races, social events, and memorable days on skinny skis.</p><div class="card-value">Open Nordic Skiing →</div></a></div>
   </main>
   <footer class="footer"><span>Alex Ford Adventures</span><span>ad astra per aspera</span></footer>
 
@@ -59,28 +59,33 @@
   <script>
     const A=AdventureSite;
     const fmtMinutes=m=>{if(!Number.isFinite(m))return '';const h=Math.floor(m/60),min=m%60;return h?`${h}h ${min}m`:`${min}m`};
+    const loadJson=async(path,fallback=null)=>{try{const r=await fetch(path,{cache:'no-cache'});if(!r.ok)throw new Error(`Unable to load ${path}`);return await r.json()}catch(e){if(fallback!==null)return fallback;throw e}};
 
-    fetch('data/skiing.json').then(r=>{if(!r.ok)throw new Error('Unable to load ski archive');return r.json()}).then(d=>{
+    Promise.all([loadJson('data/skiing.json'),loadJson('data/memories.json',{records:{}})]).then(([d,memoryData])=>{
       A.shell('skiing');
+      const memories=memoryData?.records||{};
       const s=d.summary;
       days.textContent=s.recordedDays;
       runs.textContent=s.recordedRuns.toLocaleString();
       vertical.textContent=s.verticalFt.toLocaleString();
       resorts.textContent=s.resortCount;
-      coverage.textContent=`${s.firstSeason}–${s.latestSeason} · ${s.recordedDays} recorded ski days`;
+      coverage.textContent=`${s.firstSeason}–${s.latestSeason} · ${s.recordedDays} ski days`;
 
       AdventureChapterMap.mount({elementId:'skiResortMap',records:d.resorts,color:'#2f8ca6',countLabel:'resorts',valueFor:r=>r.days,kicker:'Ski resort',metaFor:r=>r.region||'',valueLabelFor:r=>`${r.days} recorded day${r.days===1?'':'s'}`,hrefFor:()=>null,maxZoom:5});
 
-      seasons.innerHTML=d.seasons.slice().reverse().map(x=>`<div class="timeline-year"><h3>${x.season}</h3><div class="timeline-items"><div class="timeline-item"><div><strong>${x.days} days</strong><span>recorded ski days</span></div>${Number.isFinite(x.verticalFtApprox)?`<div><strong>${Number(x.verticalFtApprox).toLocaleString()} ft</strong><span>season vertical</span></div>`:'<div><strong>Not recorded</strong><span>season vertical</span></div>'}</div></div></div>`).join('');
+      seasons.innerHTML=d.seasons.slice().reverse().map(x=>`<div class="timeline-year"><h3>${x.season}</h3><div class="timeline-items"><div class="timeline-item"><div><strong>${x.days} days</strong><span>ski days</span></div>${Number.isFinite(x.verticalFtApprox)?`<div><strong>${Number(x.verticalFtApprox).toLocaleString()} ft</strong><span>season vertical</span></div>`:'<div><strong>Not recorded</strong><span>season vertical</span></div>'}</div></div></div>`).join('');
 
       tripGrid.innerHTML=d.trips.map(t=>{
         const total=`${t.runs} runs${Number.isFinite(t.durationMinutes)?` · ${fmtMinutes(t.durationMinutes)}`:''} · ${Number(t.verticalFt).toLocaleString()} ft`;
         const resortNames=(t.resorts||[]).join(' · ')||t.location||'';
+        const memory=memories[t.id]||{};
+        const memoryHtml=memory.summary?`<p class="card-meta">${A.esc(memory.summary)}</p>`:'';
+        const captionHtml=memory.caption?`<p class="card-meta"><em>${A.esc(memory.caption)}</em></p>`:'';
         if(t.days?.length){
-          const rows=t.days.map(day=>`<div class="ski-day-row"><div class="ski-day-date">${A.esc(A.formatDate(day.date))}</div><div class="ski-day-resort"><strong>${A.esc(day.resort)}</strong><span>Recorded ski day</span></div><div class="ski-day-metrics"><strong>${day.runs} run${day.runs===1?'':'s'}</strong><span>${A.esc(fmtMinutes(day.durationMinutes))}</span></div></div>`).join('');
-          return `<details class="ski-trip-card" open><summary><div class="ski-trip-summary"><div><p class="card-kicker">${A.esc(t.season)} · named trip</p><h3>${A.esc(t.name)}</h3><p>${A.esc(resortNames)}</p></div><div class="ski-trip-total"><strong>${A.esc(total)}</strong><span>${t.days.length} ski days · open logbook</span></div></div></summary><div class="ski-day-list">${rows}</div></details>`;
+          const rows=t.days.map(day=>`<div class="ski-day-row"><div class="ski-day-date">${A.esc(A.formatDate(day.date))}</div><div class="ski-day-resort"><strong>${A.esc(day.resort)}</strong><span>Ski day</span></div><div class="ski-day-metrics"><strong>${day.runs} run${day.runs===1?'':'s'}</strong><span>${A.esc(fmtMinutes(day.durationMinutes))}</span></div></div>`).join('');
+          return `<details class="ski-trip-card" open><summary><div class="ski-trip-summary"><div><p class="card-kicker">${A.esc(t.season)} · trip</p><h3>${A.esc(t.name)}</h3><p>${A.esc(resortNames)}</p>${memoryHtml}${captionHtml}</div><div class="ski-trip-total"><strong>${A.esc(total)}</strong><span>${t.days.length} ski days · open logbook</span></div></div></summary><div class="ski-day-list">${rows}</div></details>`;
         }
-        return `<article class="card"><p class="card-kicker">${A.esc(t.season)} · named trip</p><h3>${A.esc(t.name)}</h3><p class="card-meta">${A.esc(resortNames||t.note||'Named ski trip')}</p><p class="card-meta">${(t.dates||[]).map(A.formatDate).join(' · ')}</p><div class="card-value">${A.esc(total)}</div></article>`;
+        return `<article class="card"><p class="card-kicker">${A.esc(t.season)} · trip</p><h3>${A.esc(t.name)}</h3><p class="card-meta">${A.esc(resortNames||t.note||'Ski trip')}</p>${memoryHtml}${captionHtml}<p class="card-meta">${(t.dates||[]).map(A.formatDate).join(' · ')}</p><div class="card-value">${A.esc(total)}</div></article>`;
       }).join('');
 
       notable.innerHTML=(d.notableStravaRecords||[]).map(x=>`<div class="timeline-item"><div><strong>${A.esc(x.name)}</strong><span>${A.esc(x.resort)} · ${A.esc(A.formatDate(x.date))}</span></div><div><strong>${x.runs?`${x.runs} runs`:''}</strong><span>${A.esc(x.note||'')}</span></div></div>`).join('')||'<div class="empty">No notable records yet.</div>';

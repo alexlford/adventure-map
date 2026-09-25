@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "description": "Optional personal memory copy keyed to canonical records or named trip ids. This is display storytelling, separate from source notes, provenance, results, and other evidence fields.",
+  "records": {
+    "air-force-aim-high-challenge-2026": {
+      "title": "Training for New York. Almost everything went wrong.",
+      "summary": "I went to Fairborn and Wright-Patterson for a 5K plus marathon weekend as a hard training block before New York. I was late to the start, ran two extra miles, lost my phone, cramped after halfway, and lost my watch at mile 25, but the training goal still got done."
+    },
+    "west-maroon-pass-2026": {
+      "title": "Two long days through the Elk Mountains",
+      "summary": "I spent two long days crossing the Elk Mountains over West Maroon Pass, covering more than 22 miles and 7,500 feet of climbing. Linking the two hikes into one traverse is what made the weekend stand out."
+    },
+    "ski-the-sky-loop-2026": {
+      "title": "Making the mountain the objective",
+      "summary": "At Big Sky, I turned a ski day into a loop around Lone Mountain: 14 runs and more than 17,000 feet of descent. The fun was making the mountain itself the objective."
+    },
+    "mount-sherman": {
+      "title": "Olive’s first 14er",
+      "summary": "Olive’s first 14er made Mount Sherman feel special before we even started. We stayed in a tiny-home cabin in Leadville, got up early, and had one of those Colorado mountain days where everything just came together. More than the summit itself, I remember it as Olive’s first big mountain.",
+      "caption": "Olive on the summit of her first 14er."
+    },
+    "decalibron-2023": {
+      "title": "Four summits and a really good day",
+      "summary": "Camping near Fairplay the night before made the DeCaLiBron feel like a full mountain weekend instead of just another hike. Ryan and I had a great day linking Democrat, Cameron, Lincoln, and Bross, stayed ahead of the thunderstorms, and got a lot of time together along the way. I remember the bonding as much as the four summits.",
+      "caption": "Four summits and a really good day with Ryan."
+    },
+    "tennessee-pass-nordic-weekend-2022": {
+      "title": "The yurt got a little too warm",
+      "summary": "The first night at Tennessee Pass, I kept feeding the yurt fire because I was worried everyone would get cold. Instead, we all woke up sweating. Leah, Doug, Sara, and I were there that night, then Doug and Sara headed home the next day and Frankie and Susie joined us for the rest of the weekend.",
+      "caption": "A pink Tennessee Pass sunrise after a very warm night in the yurt."
+    },
+    "kokopelli-three-day-2025": {
+      "title": "A long weekend in Fruita",
+      "summary": "A long weekend in Fruita turned into one of those trips where the whole thing was fun, not just the riding. Chris, Leah, Basil, Abbie, Penny, Olive, and I all made the trip, and getting out on the Kokopelli trails was an awesome way to spend the weekend together. It is exactly the kind of trip I want this site to help me remember.",
+      "caption": "A long weekend together in Fruita, with three days on the Kokopelli trails."
+    },
+    "ski-trip-steamboat-and-the-beach": {
+      "title": "A relaxed few days in Steamboat",
+      "summary": "A few relaxed days in downtown Steamboat stand out precisely because nothing dramatic happened. We stayed in an Airbnb in town, skied, spent time together, and just had a lovely trip. It was easy, comfortable, and one of those weekends that was simply great to be part of.",
+      "caption": "A relaxed Steamboat trip where the time together mattered as much as the skiing."
+    },
+    "colorado-triathlon-2023": {
+      "title": "A triathlon I made up",
+      "summary": "The Colorado Triathlon was something I basically made up. I was already registered for the COLDERBolder 5K and had just bought a mountain bike I wanted to try, so adding a ski leg seemed like a good idea. Frankie joined me for the skiing and biking, snow was coming down in Nederland, and we ended up pivoting the bike leg down to Golden. I still remember how absurdly steep the start of the North Table Mountain ride felt on a brand-new bike. We were having a great time anyway, which is probably why the whole day stuck with me.",
+      "caption": "A 5K, a ski leg, a new mountain bike, and a snowy Colorado pivot."
+    }
+  }
+}

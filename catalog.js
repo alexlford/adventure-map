@@ -13,7 +13,7 @@ window.AdventureCatalog = (() => {
     }
   };
 
-  const fetchJson = async (path) => {
+  const fetchJson = async path => {
     const response = await fetch(path, { cache: 'no-cache' });
     if (!response.ok) throw new Error(`Failed to load ${requestLabel(path)} (${response.status})`);
     return response.json();
@@ -94,6 +94,35 @@ window.AdventureCatalog = (() => {
     });
   }
 
+  async function enrichMemories(records) {
+    let payload;
+    try {
+      payload = await fetchJson(catalogAssetUrl('data/memories.json'));
+    } catch (error) {
+      console.warn('Memory layer unavailable; continuing with canonical record data.', error);
+      return records;
+    }
+    const memories = payload?.records;
+    if (!memories || typeof memories !== 'object') return records;
+
+    return records.map(record => {
+      const memory = memories[record.id];
+      if (!memory) return record;
+      const media = Array.isArray(record.media) ? record.media.map((item, index) => (
+        index === 0 && memory.caption ? { ...item, caption: memory.caption } : item
+      )) : record.media;
+      return {
+        ...record,
+        memoryTitle: memory.title || null,
+        memorySummary: memory.summary || null,
+        memoryCaption: memory.caption || null,
+        storyTitle: memory.title || record.storyTitle,
+        storyBody: memory.summary || record.storyBody || record.story,
+        ...(media ? { media } : {})
+      };
+    });
+  }
+
   // Semantic record rules are enforced once at build time by data/event-schema.json.
   // Runtime validation intentionally covers only publication identity/integrity so the
   // browser cannot become a second, drifting implementation of the record schema.
@@ -121,7 +150,8 @@ window.AdventureCatalog = (() => {
 
   async function resolveLoad() {
     const compiled = await loadCompiled();
-    const records = await enrichEventPhotos(compiled);
+    const withPhotos = await enrichEventPhotos(compiled);
+    const records = await enrichMemories(withPhotos);
     const report = validate(records);
     if (!report.valid) throw new Error(`Catalog validation failed: ${report.errors.join('; ')}`);
     cache = records;

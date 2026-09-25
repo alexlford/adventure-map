@@ -59,9 +59,11 @@
   <script>
     const A=AdventureSite;
     const fmtMinutes=m=>{if(!Number.isFinite(m))return '';const h=Math.floor(m/60),min=m%60;return h?`${h}h ${min}m`:`${min}m`};
+    const loadJson=async(path,fallback=null)=>{try{const r=await fetch(path,{cache:'no-cache'});if(!r.ok)throw new Error(`Unable to load ${path}`);return await r.json()}catch(e){if(fallback!==null)return fallback;throw e}};
 
-    fetch('data/skiing.json').then(r=>{if(!r.ok)throw new Error('Unable to load ski archive');return r.json()}).then(d=>{
+    Promise.all([loadJson('data/skiing.json'),loadJson('data/memories.json',{records:{}})]).then(([d,memoryData])=>{
       A.shell('skiing');
+      const memories=memoryData?.records||{};
       const s=d.summary;
       days.textContent=s.recordedDays;
       runs.textContent=s.recordedRuns.toLocaleString();
@@ -76,11 +78,14 @@
       tripGrid.innerHTML=d.trips.map(t=>{
         const total=`${t.runs} runs${Number.isFinite(t.durationMinutes)?` · ${fmtMinutes(t.durationMinutes)}`:''} · ${Number(t.verticalFt).toLocaleString()} ft`;
         const resortNames=(t.resorts||[]).join(' · ')||t.location||'';
+        const memory=memories[t.id]||{};
+        const memoryHtml=memory.summary?`<p class="card-meta">${A.esc(memory.summary)}</p>`:'';
+        const captionHtml=memory.caption?`<p class="card-meta"><em>${A.esc(memory.caption)}</em></p>`:'';
         if(t.days?.length){
           const rows=t.days.map(day=>`<div class="ski-day-row"><div class="ski-day-date">${A.esc(A.formatDate(day.date))}</div><div class="ski-day-resort"><strong>${A.esc(day.resort)}</strong><span>Ski day</span></div><div class="ski-day-metrics"><strong>${day.runs} run${day.runs===1?'':'s'}</strong><span>${A.esc(fmtMinutes(day.durationMinutes))}</span></div></div>`).join('');
-          return `<details class="ski-trip-card" open><summary><div class="ski-trip-summary"><div><p class="card-kicker">${A.esc(t.season)} · trip</p><h3>${A.esc(t.name)}</h3><p>${A.esc(resortNames)}</p></div><div class="ski-trip-total"><strong>${A.esc(total)}</strong><span>${t.days.length} ski days · open logbook</span></div></div></summary><div class="ski-day-list">${rows}</div></details>`;
+          return `<details class="ski-trip-card" open><summary><div class="ski-trip-summary"><div><p class="card-kicker">${A.esc(t.season)} · trip</p><h3>${A.esc(t.name)}</h3><p>${A.esc(resortNames)}</p>${memoryHtml}${captionHtml}</div><div class="ski-trip-total"><strong>${A.esc(total)}</strong><span>${t.days.length} ski days · open logbook</span></div></div></summary><div class="ski-day-list">${rows}</div></details>`;
         }
-        return `<article class="card"><p class="card-kicker">${A.esc(t.season)} · trip</p><h3>${A.esc(t.name)}</h3><p class="card-meta">${A.esc(resortNames||t.note||'Ski trip')}</p><p class="card-meta">${(t.dates||[]).map(A.formatDate).join(' · ')}</p><div class="card-value">${A.esc(total)}</div></article>`;
+        return `<article class="card"><p class="card-kicker">${A.esc(t.season)} · trip</p><h3>${A.esc(t.name)}</h3><p class="card-meta">${A.esc(resortNames||t.note||'Ski trip')}</p>${memoryHtml}${captionHtml}<p class="card-meta">${(t.dates||[]).map(A.formatDate).join(' · ')}</p><div class="card-value">${A.esc(total)}</div></article>`;
       }).join('');
 
       notable.innerHTML=(d.notableStravaRecords||[]).map(x=>`<div class="timeline-item"><div><strong>${A.esc(x.name)}</strong><span>${A.esc(x.resort)} · ${A.esc(A.formatDate(x.date))}</span></div><div><strong>${x.runs?`${x.runs} runs`:''}</strong><span>${A.esc(x.note||'')}</span></div></div>`).join('')||'<div class="empty">No notable records yet.</div>';
