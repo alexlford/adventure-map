@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "description": "Optional homepage storytelling overrides keyed by canonical public-record id. The homepage still selects the latest dated public record automatically when no override exists.",
+  "records": {
+    "air-force-aim-high-challenge-2026": {
+      "kicker": "Training for New York. Almost everything went wrong.",
+      "story": "It was humid. I was late to the start and ran two miles just to get there, lost my phone, my calves started cramping after 13 miles, and my watch died at mile 25. The whole point was to get a hard training day in before New York, so somehow it still did exactly what I needed it to do.",
+      "stats": [
+        {"value": "5K + 26.2", "label": "The challenge"},
+        {"value": "5:20:29", "label": "Combined time"},
+        {"value": "5 / 14", "label": "M35–39"}
+      ]
+    }
+  }
+}
