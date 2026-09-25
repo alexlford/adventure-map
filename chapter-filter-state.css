@@ -1,11 +1,27 @@
-/* Shared filter bar behavior for chapter and timeline views. */
+/* Shared filter and archive navigation behavior for chapter and timeline views. */
 .filters[aria-label]{scroll-margin-top:110px}
 .filters .filter{font-weight:750}
+.archive-tools{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:14px 0 26px;padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.48)}
+.archive-control{display:grid;gap:5px;min-width:180px}
+.archive-control-search{flex:1 1 280px}
+.archive-control span,.archive-order-label{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.archive-control input,.archive-control select{width:100%;min-height:42px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--paper,#fff);color:var(--ink);font:inherit;font-size:.88rem}
+.archive-control input:focus,.archive-control select:focus{outline:2px solid color-mix(in srgb,var(--accent) 35%,transparent);outline-offset:1px;border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+.archive-order{display:grid;gap:5px}
+.archive-order-buttons{display:flex;gap:6px;padding:3px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.52)}
+.archive-order-button{min-height:34px;padding:6px 10px;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-size:.76rem;font-weight:800;cursor:pointer}
+.archive-order-button.is-active{background:var(--ink);color:var(--paper,#fff)}
+.timeline-year{scroll-margin-top:110px}
 @media(max-width:700px){
   .filters{display:flex;flex-wrap:nowrap;gap:7px;overflow-x:auto;margin-left:calc(0px - clamp(20px,5vw,72px));margin-right:calc(0px - clamp(20px,5vw,72px));padding:2px clamp(20px,5vw,72px) 7px;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
   .filters::-webkit-scrollbar{display:none}
   .filters .filter{flex:0 0 auto;white-space:nowrap}
+  .archive-tools{align-items:stretch}
+  .archive-control,.archive-control-search,.archive-order{flex:1 1 100%;min-width:0}
+  .archive-order-buttons{width:100%}
+  .archive-order-button{flex:1}
 }
 @media(max-width:560px){
   .filters{margin-left:-20px;margin-right:-20px;padding-left:20px;padding-right:20px}
+  .archive-tools{margin-left:-4px;margin-right:-4px;padding:12px}
 }
