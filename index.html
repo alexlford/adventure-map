@@ -1,1 +1,86 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Alex Ford Adventures: a personal record of races, mountains, skiing, biking and memorable days outside."><title>Alex Ford Adventures</title><link rel="canonical" href="https://adventures.alexlford.com/"><link rel="stylesheet" href="section.css"><link rel="stylesheet" href="landing.css"></head><body><header class="site-header"><a class="brand" href="https://alexlford.com">ALEX FORD</a><nav class="nav"></nav></header><main class="page"><section class="hero"><p class="eyebrow">Alex Ford Adventures</p><h1>Run. Ride. Ski. Climb.</h1><p>A living record of finish lines, mountain days, ski seasons, bike rides, Nordic kilometers, and the adventures worth remembering.</p></section><div class="section-title"><h2>Explore</h2><p>Start broad. Dive into the detail when something catches your eye.</p></div><div class="grid landing-grid"><a class="card" href="map.html"><p class="card-kicker">By place</p><h3>Map</h3><p class="card-meta">See the routes, mountains, races, resorts and riding locations together.</p><div class="card-value">Open the map →</div></a><a class="card" href="activities.html"><p class="card-kicker">By activity</p><h3>Explore</h3><p class="card-meta">Races, Summits, Skiing, Nordic, Mountain Biking, plus the full chronology.</p><div class="card-value">Choose a chapter →</div></a><a class="card" href="adventures.html"><p class="card-kicker">By story</p><h3>Stories</h3><p class="card-meta">The traverses, challenges, big days and objectives that deserve more than a line in a log.</p><div class="card-value">Read the stories →</div></a></div><div class="section-title"><h2>Current pursuit</h2><p>Where the story is headed next.</p></div><a class="card landing-pursuit" href="races.html#world-majors"><p class="card-kicker">World Marathon Majors</p><h3 id="majorsHeadline">The Majors journey continues.</h3><p id="majorsStatus" class="card-meta">Loading the current Majors journey…</p><div class="card-value">Follow the marathon journey →</div></a><p class="landing-timeline-link">Want the full history? <a href="timeline.html">Browse everything in chronological order →</a></p></main><footer class="footer"><span>Alex Ford Adventures</span><span>ad astra per aspera</span></footer><script src="shared.js"></script><script>const A=AdventureSite;A.shell('home');const majorName=x=>x.name.replace(' Marathon','').replace('New York City','New York');const joinNames=names=>names.length<2?(names[0]||''):names.length===2?`${names[0]} and ${names[1]}`:`${names.slice(0,-1).join(', ')}, and ${names.at(-1)}`;fetch('data/world-majors.json').then(r=>{if(!r.ok)throw new Error('Unable to load Majors journey');return r.json()}).then(d=>{const completed=d.majors.filter(x=>x.status==='completed'),registered=d.majors.filter(x=>x.status==='registered').sort((a,b)=>(a.year||9999)-(b.year||9999)),nextNames=registered.map(majorName),latestCompleted=completed.at(-1),confirmed2027=d.meta?.confirmedMajorCountFor2027??d.majors.filter(x=>x.membership==='current'||x.membership==='joins-2027').length;if(latestCompleted&&nextNames.length)majorsHeadline.textContent=`${majorName(latestCompleted)} complete. ${joinNames(nextNames)} ${nextNames.length===1?'is':'are'} next.`;else if(nextNames.length)majorsHeadline.textContent=`${joinNames(nextNames)} ${nextNames.length===1?'is':'are'} next.`;else if(completed.length)majorsHeadline.textContent=`${completed.length} Major${completed.length===1?'':'s'} complete. The journey continues.`;majorsStatus.textContent=[`${completed.length} completed`,...registered.map(x=>`${majorName(x)} ${x.year}`),`${confirmed2027} confirmed Majors for 2027`].join(' · ')+'.'}).catch(()=>{majorsHeadline.textContent='The Majors journey continues.';majorsStatus.textContent='Current Majors status is temporarily unavailable.'});</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Alex Ford Adventures: a personal record of races, mountains, skiing, biking and memorable days outside.">
+  <title>Alex Ford Adventures</title>
+  <link rel="canonical" href="https://adventures.alexlford.com/">
+  <link rel="stylesheet" href="section.css">
+  <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="https://alexlford.com">ALEX FORD</a><nav class="nav"></nav></header>
+  <main class="page">
+    <section class="home-hero" aria-labelledby="home-title">
+      <a class="home-hero-photo" href="record/2022-09-25-mount-sherman/" aria-label="Open the Mount Sherman adventure">
+        <img src="assets/event-photos/adventures/mount-sherman/2022-09-25-mount-sherman-summit-with-olive-01.jpeg" alt="Alex hiking Mount Sherman with Olive in the Colorado high country" fetchpriority="high">
+        <span class="photo-caption">Mount Sherman · September 2022</span>
+      </a>
+      <div class="home-hero-copy">
+        <p class="eyebrow">Alex Ford Adventures</p>
+        <h1 id="home-title">Miles, mountains, and the stories between.</h1>
+        <p>This is where I keep the races, routes, mountain days, ski seasons, rides, and memories I want to be able to find again.</p>
+        <a class="home-text-link" href="timeline.html">Browse the full chronology →</a>
+      </div>
+    </section>
+
+    <nav class="home-portals" aria-label="Explore Alex Ford Adventures">
+      <a class="home-portal" href="map.html"><span>By place</span><strong>Map</strong><small>See the routes and places together.</small><b aria-hidden="true">→</b></a>
+      <a class="home-portal" href="activities.html"><span>By activity</span><strong>Explore</strong><small>Run, ride, ski, climb, and browse.</small><b aria-hidden="true">→</b></a>
+      <a class="home-portal" href="adventures.html"><span>By story</span><strong>Stories</strong><small>The days that deserve more than a line.</small><b aria-hidden="true">→</b></a>
+    </nav>
+
+    <section class="home-section home-latest" aria-labelledby="latest-title">
+      <div class="home-section-heading">
+        <div><p class="eyebrow">Latest adventure</p><h2 id="latest-title">Air Force Aim High Challenge</h2></div>
+        <p>September 18–19, 2026 · Fairborn &amp; Wright-Patterson Air Force Base, Ohio</p>
+      </div>
+      <a class="latest-card" href="record/2026-09-18-air-force-aim-high-challenge/">
+        <div class="latest-story">
+          <p class="latest-kicker">One bib. Two starts. One weekend.</p>
+          <p class="latest-copy">A Friday-evening 5K followed by the full U.S. Air Force Marathon on Saturday morning: 29.3 miles across the 2026 Aim High Challenge.</p>
+          <span class="home-text-link">Open the adventure →</span>
+        </div>
+        <div class="latest-stats" aria-label="Aim High Challenge results">
+          <div><strong>5K + 26.2</strong><span>The challenge</span></div>
+          <div><strong>5:20:29</strong><span>Combined time</span></div>
+          <div><strong>5 / 14</strong><span>M35–39</span></div>
+        </div>
+      </a>
+    </section>
+
+    <section class="home-section" aria-labelledby="favorites-title">
+      <div class="home-section-heading">
+        <div><p class="eyebrow">Favorite memories</p><h2 id="favorites-title">A few I keep coming back to.</h2></div>
+        <p>Big-city finish lines, hard-earned weather, and quieter days outside with good company.</p>
+      </div>
+      <div class="memory-grid">
+        <a class="memory-card memory-wide" href="record/2021-10-10-chicago-marathon/">
+          <img src="assets/event-photos/races/chicago-marathon-2021/2021-10-10-chicago-marathon-course-01.jpeg" alt="Alex racing the 2021 Chicago Marathon" loading="lazy">
+          <span class="memory-overlay"><small>Chicago · 2021</small><strong>Chicago Marathon</strong><em>26.2 miles through Chicago on October 10, 2021.</em></span>
+        </a>
+        <a class="memory-card" href="record/2015-04-25-illinois-marathon/">
+          <img src="assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-thunderstorm-finish-01.jpeg" alt="Alex finishing the 2015 Illinois Marathon in a thunderstorm" loading="lazy">
+          <span class="memory-overlay"><small>Champaign-Urbana · 2015</small><strong>Illinois Marathon</strong><em>Finishing 26.2 in a thunderstorm.</em></span>
+        </a>
+        <a class="memory-card" href="record/2024-01-07-frisco-nordic-center-nordic-day/">
+          <img src="assets/event-photos/adventures/nordic-day-2024-01-07/2024-01-07-frisco-nordic-center-basil-olive-01.jpeg" alt="Nordic skiing at Frisco Nordic Center with Basil and Olive" loading="lazy">
+          <span class="memory-overlay"><small>Frisco · 2024</small><strong>Nordic with Basil &amp; Olive</strong><em>A January day on the trails, photographed by Leah.</em></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="home-section home-pursuit-section" aria-labelledby="pursuit-title">
+      <div class="home-section-heading">
+        <div><p class="eyebrow">Current pursuit</p><h2 id="pursuit-title">Where the story is headed next.</h2></div>
+        <p>The World Marathon Majors are the long thread running through the next chapter.</p>
+      </div>
+      <a class="card landing-pursuit" href="races.html#world-majors"><p class="card-kicker">World Marathon Majors</p><h3 id="majorsHeadline">The Majors journey continues.</h3><p id="majorsStatus" class="card-meta">Loading the current Majors journey…</p><div class="card-value">Follow the marathon journey →</div></a>
+    </section>
+  </main>
+  <footer class="footer"><span>Alex Ford Adventures</span><span>ad astra per aspera</span></footer>
+  <script src="shared.js"></script>
+  <script>const A=AdventureSite;A.shell('home');const majorName=x=>x.name.replace(' Marathon','').replace('New York City','New York');const joinNames=names=>names.length<2?(names[0]||''):names.length===2?`${names[0]} and ${names[1]}`:`${names.slice(0,-1).join(', ')}, and ${names.at(-1)}`;fetch('data/world-majors.json').then(r=>{if(!r.ok)throw new Error('Unable to load Majors journey');return r.json()}).then(d=>{const completed=d.majors.filter(x=>x.status==='completed'),registered=d.majors.filter(x=>x.status==='registered').sort((a,b)=>(a.year||9999)-(b.year||9999)),nextNames=registered.map(majorName),latestCompleted=completed.at(-1),confirmed2027=d.meta?.confirmedMajorCountFor2027??d.majors.filter(x=>x.membership==='current'||x.membership==='joins-2027').length;if(latestCompleted&&nextNames.length)majorsHeadline.textContent=`${majorName(latestCompleted)} complete. ${joinNames(nextNames)} ${nextNames.length===1?'is':'are'} next.`;else if(nextNames.length)majorsHeadline.textContent=`${joinNames(nextNames)} ${nextNames.length===1?'is':'are'} next.`;else if(completed.length)majorsHeadline.textContent=`${completed.length} Major${completed.length===1?'':'s'} complete. The journey continues.`;majorsStatus.textContent=[`${completed.length} completed`,...registered.map(x=>`${majorName(x)} ${x.year}`),`${confirmed2027} confirmed Majors for 2027`].join(' · ')+'.'}).catch(()=>{majorsHeadline.textContent='The Majors journey continues.';majorsStatus.textContent='Current Majors status is temporarily unavailable.'});</script>
+</body>
+</html>
