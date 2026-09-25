@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 161,
+  "recordCount": 160,
   "records": [
     {
       "id": "mount-lincoln",
@@ -4469,53 +4469,6 @@
       },
       "routeInfo": {
         "status": "historical-course",
-        "provenance": null
-      }
-    },
-    {
-      "id": "illinois-marathon-weekend-series",
-      "slug": "illinois-marathon-weekend-series",
-      "kind": "adventure",
-      "discipline": "challenge",
-      "name": "Illinois Marathon Weekend",
-      "year": 2015,
-      "date": "2015-04-24",
-      "endDate": "2016-04-30",
-      "distance": "Two race weekends · 5K + Marathon / Half Marathon",
-      "location": "Champaign-Urbana, Illinois",
-      "region": "Illinois",
-      "lat": 40.0998,
-      "lon": -88.2362,
-      "routeStatus": "multi-event-match",
-      "matchSource": "Strava + Illinois Marathon weekend schedules + medal evidence",
-      "matchConfidence": "confirmed",
-      "note": "Two Illinois Marathon weekends: the 2015 5K plus full marathon I-Challenge and the 2016 5K plus half marathon Half I-Challenge.",
-      "_catalogSource": "data/notable-adventures.json",
-      "recordClass": "adventure",
-      "sport": "adventure",
-      "startDate": "2015-04-24",
-      "finishDate": "2016-04-30",
-      "distanceInfo": {
-        "km": null,
-        "mi": null,
-        "label": "Two race weekends · 5K + Marathon / Half Marathon",
-        "source": "recorded"
-      },
-      "locationInfo": {
-        "label": "Champaign-Urbana, Illinois",
-        "region": "Illinois",
-        "lat": 40.0998,
-        "lon": -88.2362,
-        "precision": "unknown"
-      },
-      "evidence": {
-        "source": "Strava + Illinois Marathon weekend schedules + medal evidence",
-        "matchSource": "Strava + Illinois Marathon weekend schedules + medal evidence",
-        "resultSource": null,
-        "confidence": "confirmed"
-      },
-      "routeInfo": {
-        "status": "multi-event-match",
         "provenance": null
       }
     },

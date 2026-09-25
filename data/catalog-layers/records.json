@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceCount": 38,
-  "recordCount": 164,
+  "recordCount": 163,
   "layeredMergeCount": 54,
   "adventures": [
     {
@@ -2025,26 +2025,6 @@
       "matchSource": "Official River to River Relay results + historical course archive",
       "matchConfidence": "verified",
       "note": "Three editions of the classic Southern Illinois point-to-point relay: 2006 with Cambria Moonsnakes, 2008 with Team Swampass, and 2010 with Legion of Doom. The shared route is a historical full-course reference, not a personal GPS track.",
-      "_catalogSource": "data/notable-adventures.json"
-    },
-    {
-      "id": "illinois-marathon-weekend-series",
-      "slug": "illinois-marathon-weekend-series",
-      "kind": "adventure",
-      "discipline": "challenge",
-      "name": "Illinois Marathon Weekend",
-      "year": 2015,
-      "date": "2015-04-24",
-      "endDate": "2016-04-30",
-      "distance": "Two race weekends · 5K + Marathon / Half Marathon",
-      "location": "Champaign-Urbana, Illinois",
-      "region": "Illinois",
-      "lat": 40.0998,
-      "lon": -88.2362,
-      "routeStatus": "multi-event-match",
-      "matchSource": "Strava + Illinois Marathon weekend schedules + medal evidence",
-      "matchConfidence": "confirmed",
-      "note": "Two Illinois Marathon weekends: the 2015 5K plus full marathon I-Challenge and the 2016 5K plus half marathon Half I-Challenge.",
       "_catalogSource": "data/notable-adventures.json"
     },
     {
@@ -4633,9 +4613,6 @@
       "data/notable-adventures.json"
     ],
     "river-to-river-relay-series-story": [
-      "data/notable-adventures.json"
-    ],
-    "illinois-marathon-weekend-series": [
       "data/notable-adventures.json"
     ],
     "rundenver-series-story": [
