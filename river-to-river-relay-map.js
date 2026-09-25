@@ -110,7 +110,7 @@
     const [legData, routeData] = await Promise.all([fetchJson(DATA_PATH), fetchJson(ROUTE_PATH)]);
     const feature = (routeData.features || []).find(item => item?.properties?.id === legData.courseFeatureId || item?.id === legData.courseFeatureId);
     const coordinates = feature?.geometry?.type === 'LineString' ? feature.geometry.coordinates : null;
-    if (!coordinates?.length || coordinates.length < 2) throw new Error('Historical River to River course geometry is unavailable.');
+    if (!coordinates?.length || coordinates.length < 2) throw new Error('River to River course geometry is unavailable.');
 
     const appearances = legData.appearances || [];
     const colors = yearColors(appearances);
@@ -120,13 +120,13 @@
     section.querySelector('.relay-leg-note')?.remove();
 
     const meta = section.querySelector('#routeMeta');
-    if (meta) meta.textContent = 'Historical 80-mile course with my three runner assignments highlighted by year.';
-    section.querySelector('h2')?.replaceChildren(document.createTextNode('The historical course'));
+    if (meta) meta.textContent = 'The full 80-mile course with the legs I ran highlighted by year.';
+    section.querySelector('h2')?.replaceChildren(document.createTextNode('The course'));
 
     const replacement = document.createElement('div');
     replacement.id = 'detailMap';
     replacement.className = 'detail-map has-composite-routes';
-    replacement.setAttribute('aria-label', 'River to River Relay historical course with Alex Ford relay legs highlighted by year');
+    replacement.setAttribute('aria-label', 'River to River Relay course with Alex Ford relay legs highlighted by year');
 
     const target = currentMap || emptyState;
     target.replaceWith(replacement);
@@ -134,7 +134,7 @@
 
     const note = document.createElement('p');
     note.className = 'card-meta relay-leg-note';
-    note.textContent = 'The muted line is the preserved historical full-course overview. Colored section endpoints use the official cumulative mile markers projected onto that overview; these are historical course spans, not personal GPS tracks.';
+    note.textContent = 'The muted line is the full relay course. The colored sections are the legs I ran in each year.';
     replacement.insertAdjacentElement('afterend', note);
 
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
