@@ -43,7 +43,7 @@ test('Activity chapters use consistent section rhythm and personal archive copy'
 
   await page.goto('/nordic/',{waitUntil:'domcontentloaded'});
   const whereCopy=page.locator('.section-title').filter({hasText:'Where I’ve skied'}).locator('p');
-  await expect(whereCopy).toContainText('personal GPS history');
+  await expect(whereCopy).toContainText('trail systems I keep coming back to');
   await expect(whereCopy).not.toContainText('Strava');
   await expect(page.locator('.section-title').first()).toHaveCSS('margin-top','60px');
 });
