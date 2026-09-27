@@ -7,7 +7,7 @@
   const registry=window.AdventureSiteRoutes?.routes||[];
   const timelineRoute=registry.find(route=>route.key==='timeline');
   const production=location.hostname==='adventures.alexlford.com';
-  const base=production?(timelineRoute?.path||'/timeline'):(timelineRoute?.source||'timeline.html');
+  const base=production?(timelineRoute?.path||'/timeline'):`/${timelineRoute?.source||'timeline.html'}`;
   const layerToView={
     mtb:'mtb',
     nordic:'nordic',
@@ -39,7 +39,7 @@
 
   const update=()=>{
     const current=new URL(location.href);
-    const target=new URL(base,location.href);
+    const target=new URL(base,location.origin);
     const layer=current.searchParams.get('layer')||'all';
     const view=layerToView[layer];
     const q=current.searchParams.get('q')||'';
