@@ -70,6 +70,13 @@ jobs:
         run: npm run build:static-site
       - name: Build static navigation and metadata
         run: npm run build:static-shell
+      - name: Capture static shell diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-shell-diagnostics
+          path: static-shell-diagnostics.txt
+          if-no-files-found: ignore
       - name: Build public index
         run: npm run build:public-index
       - name: Validate generated structure
