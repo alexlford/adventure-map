@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
-  "routeCatalogUpdatedOn": "2026-09-19",
-  "recordCount": 141,
-  "featureCount": 127,
+  "routeCatalogUpdatedOn": "2026-09-25",
+  "recordCount": 142,
+  "featureCount": 128,
   "browserMaterializedFeatureCount": 13,
   "records": {
     "abbott-chicago-5k-2021": {
@@ -267,6 +267,12 @@
     "gobble-cobble-2019": {
       "file": "data/strava-route-full-resolution-gobble-cobble-2019.json",
       "featureId": "strava-4312787170",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "granby-ranch-skinning-2025": {
+      "file": "data/strava-route-full-resolution-granby-ranch-skinning-2025.json",
+      "featureId": "strava-13918978715",
       "format": "polyline",
       "quality": "full-source"
     },

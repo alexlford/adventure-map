@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 160,
+  "recordCount": 161,
   "records": [
     {
       "id": "mount-lincoln",
@@ -9175,6 +9175,62 @@
       "routeFeatureIds": [
         "strava-13002340446"
       ]
+    },
+    {
+      "id": "granby-ranch-skinning-2025",
+      "kind": "adventure",
+      "discipline": "ski-objective",
+      "name": "Skinning up Granby Ranch",
+      "year": 2025,
+      "date": "2025-03-18",
+      "location": "Ski Granby Ranch, Colorado",
+      "region": "Colorado",
+      "lat": 40.043423,
+      "lon": -105.906978,
+      "coordinatePrecision": "gps-start",
+      "stravaActivityId": "13918978715",
+      "distanceKm": 8.5454,
+      "distanceMi": 5.31,
+      "elapsedSeconds": 11078,
+      "movingSeconds": 6984,
+      "elevationGainM": 542,
+      "runs": 3,
+      "routeFeatureIds": [
+        "strava-13918978715"
+      ],
+      "routeStatus": "gps",
+      "matchSource": "Strava account export FIT + Slopes reconciliation + user photo",
+      "matchConfidence": "confirmed",
+      "note": "Skinning up Granby Ranch during Penny's First Ski Trip on March 18, 2025. The ski log records three runs; the route shown is the original Strava FIT track.",
+      "_catalogSource": "data/granby-ranch-skinning-2025.json",
+      "slug": "2025-03-18-skinning-up-granby-ranch",
+      "recordClass": "adventure",
+      "sport": "alpine-skiing",
+      "startDate": "2025-03-18",
+      "finishDate": "2025-03-18",
+      "distanceInfo": {
+        "km": 8.5454,
+        "mi": 5.31,
+        "label": null,
+        "source": "recorded"
+      },
+      "locationInfo": {
+        "label": "Ski Granby Ranch, Colorado",
+        "region": "Colorado",
+        "lat": 40.043423,
+        "lon": -105.906978,
+        "precision": "gps-start"
+      },
+      "evidence": {
+        "source": "Strava account export FIT + Slopes reconciliation + user photo",
+        "matchSource": "Strava account export FIT + Slopes reconciliation + user photo",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "gps",
+        "provenance": null
+      }
     },
     {
       "id": "pi-miler-2015",
