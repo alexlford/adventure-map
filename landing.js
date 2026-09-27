@@ -259,6 +259,7 @@
         renderRecent(recentRecords(records, featured));
       }
       renderSnapshot(records, health);
+      document.body.dataset.homeArchiveReady = 'true';
     } catch (error) {
       console.warn('Homepage archive data could not be refreshed; keeping the static homepage fallback.', error);
     }
