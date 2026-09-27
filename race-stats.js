@@ -4,6 +4,8 @@
   const esc=A.esc;
   const script=document.currentScript;
   const dataUrl=script?.src?new URL('data/race-history.json',script.src).href:'data/race-history.json';
+  const styleUrl=script?.src?new URL('race-history.css',script.src).href:'race-history.css';
+  if(!document.querySelector('link[data-race-history-style]')){const link=document.createElement('link');link.rel='stylesheet';link.href=styleUrl;link.dataset.raceHistoryStyle='true';document.head.appendChild(link)}
   const labels={marathon:'Marathon',road:'Road',trail:'Trail',relay:'Relay',nordic:'Nordic','mountain-bike':'MTB'};
   const miles=value=>Number.isFinite(value)?`${value.toFixed(value>=100?0:1)} mi`:'—';
   const yearRange=years=>!years?.length?'—':years.length===1?String(years[0]):`${years[0]}–${years.at(-1)}`;
