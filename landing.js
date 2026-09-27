@@ -1,5 +1,6 @@
 (() => {
   const storyPath = 'data/homepage-stories.json';
+  const photoIndexPath = 'data/photo-index.json';
 
   const dateKey = record => record.finishDate || record.endDate || record.date || record.startDate || '';
   const startKey = record => record.startDate || record.date || dateKey(record);
@@ -19,18 +20,30 @@
     return score;
   };
 
-  const latestRecord = records => {
+  const completedRecords = records => {
     const today = localToday();
-    return records
-      .filter(record => record?.slug && dateKey(record) && dateKey(record) <= today)
-      .sort((a, b) => {
-        const byDate = dateKey(b).localeCompare(dateKey(a));
-        if (byDate) return byDate;
-        const byPriority = recordPriority(b) - recordPriority(a);
-        if (byPriority) return byPriority;
-        return startKey(a).localeCompare(startKey(b));
-      })[0] || null;
+    return records.filter(record => record?.slug && dateKey(record) && dateKey(record) <= today);
   };
+
+  const latestRecord = records => completedRecords(records)
+    .sort((a, b) => {
+      const byDate = dateKey(b).localeCompare(dateKey(a));
+      if (byDate) return byDate;
+      const byPriority = recordPriority(b) - recordPriority(a);
+      if (byPriority) return byPriority;
+      return startKey(a).localeCompare(startKey(b));
+    })[0] || null;
+
+  const recentRecords = (records, featuredId, limit = 4) => completedRecords(records)
+    .filter(record => record.id !== featuredId)
+    .sort((a, b) => {
+      const byDate = dateKey(b).localeCompare(dateKey(a));
+      if (byDate) return byDate;
+      const byPriority = recordPriority(b) - recordPriority(a);
+      if (byPriority) return byPriority;
+      return String(a.name || '').localeCompare(String(b.name || ''));
+    })
+    .slice(0, limit);
 
   const parseDate = value => new Date(`${value}T12:00:00`);
   const formatSingleDate = (value, includeYear = true) => {
@@ -125,15 +138,24 @@
     return stats.slice(0, 3);
   };
 
-  const loadStories = async () => {
+  const loadJson = async (path, fallback) => {
     try {
-      const response = await fetch(storyPath, { cache: 'no-cache' });
-      if (!response.ok) return {};
-      const payload = await response.json();
-      return payload?.records && typeof payload.records === 'object' ? payload.records : {};
+      const response = await fetch(path, { cache: 'no-cache' });
+      if (!response.ok) return fallback;
+      return await response.json();
     } catch {
-      return {};
+      return fallback;
     }
+  };
+
+  const loadStories = async () => {
+    const payload = await loadJson(storyPath, {});
+    return payload?.records && typeof payload.records === 'object' ? payload.records : {};
+  };
+
+  const loadPhotoIndex = async () => {
+    const payload = await loadJson(photoIndexPath, {});
+    return payload?.records && typeof payload.records === 'object' ? payload.records : {};
   };
 
   const renderLatest = (record, override = {}) => {
@@ -166,16 +188,98 @@
     stats.setAttribute('aria-label', `${record.name} details`);
   };
 
-  const initLatest = async () => {
+  const createRecentCard = (record, photoRecord) => {
+    const card = document.createElement('a');
+    card.className = 'recent-card';
+    card.href = `record/${record.slug}/`;
+    card.setAttribute('aria-label', `Open ${record.name}`);
+
+    const media = document.createElement('div');
+    media.className = 'recent-media';
+    const photo = photoRecord?.primary;
+    if (photo?.path) {
+      card.classList.add('has-photo');
+      const image = document.createElement('img');
+      image.src = photo.path;
+      image.alt = photo.caption || `${record.name} archive photo`;
+      image.loading = 'lazy';
+      image.decoding = 'async';
+      if (Number.isFinite(photo.width)) image.width = photo.width;
+      if (Number.isFinite(photo.height)) image.height = photo.height;
+      media.appendChild(image);
+    } else {
+      const activity = document.createElement('strong');
+      const year = document.createElement('span');
+      activity.textContent = activityLabel(record);
+      year.textContent = String(parseDate(dateKey(record)).getFullYear());
+      media.append(activity, year);
+    }
+
+    const copy = document.createElement('div');
+    copy.className = 'recent-copy';
+    const meta = document.createElement('p');
+    const title = document.createElement('h3');
+    const location = document.createElement('span');
+    meta.textContent = [formatDateRange(record), activityLabel(record)].filter(Boolean).join(' · ');
+    title.textContent = record.name;
+    location.textContent = record.locationInfo?.label || record.location || record.region || '';
+    copy.append(meta, title, location);
+    card.append(media, copy);
+    return card;
+  };
+
+  const renderRecent = (records, featuredId, photoIndex) => {
+    const portals = document.querySelector('.home-portals');
+    if (!portals) return;
+    let section = document.querySelector('.home-recent');
+    if (!section) {
+      section = document.createElement('section');
+      section.className = 'home-section home-recent';
+      section.setAttribute('aria-labelledby', 'recent-title');
+      const heading = document.createElement('div');
+      heading.className = 'home-section-heading';
+      const headingCopy = document.createElement('div');
+      const eyebrow = document.createElement('p');
+      const title = document.createElement('h2');
+      eyebrow.className = 'eyebrow';
+      eyebrow.textContent = 'Recently added';
+      title.id = 'recent-title';
+      title.textContent = 'Fresh from the archive.';
+      headingCopy.append(eyebrow, title);
+      const description = document.createElement('p');
+      description.textContent = 'The newest completed records, with archive photos where I have them.';
+      heading.append(headingCopy, description);
+      const grid = document.createElement('div');
+      grid.className = 'recent-grid';
+      grid.id = 'recent-grid';
+      section.append(heading, grid);
+      portals.insertAdjacentElement('afterend', section);
+    }
+
+    const grid = section.querySelector('#recent-grid');
+    const recent = recentRecords(records, featuredId);
+    if (!grid || !recent.length) {
+      section.remove();
+      return;
+    }
+    grid.replaceChildren(...recent.map(record => createRecentCard(record, photoIndex[record.id])));
+  };
+
+  const initHomepage = async () => {
     if (!window.AdventureCatalog?.load) return;
     try {
-      const [records, stories] = await Promise.all([window.AdventureCatalog.load(), loadStories()]);
-      const record = latestRecord(records);
-      if (record) renderLatest(record, stories[record.id] || {});
+      const [records, stories, photoIndex] = await Promise.all([
+        window.AdventureCatalog.load(),
+        loadStories(),
+        loadPhotoIndex()
+      ]);
+      const featured = latestRecord([...records]);
+      if (featured) renderLatest(featured, stories[featured.id] || {});
+      renderRecent(records, featured?.id || null, photoIndex);
     } catch (error) {
-      console.warn('Latest adventure could not be refreshed; keeping the static homepage fallback.', error);
+      console.warn('Homepage archive content could not be refreshed; keeping the static homepage fallback.', error);
     }
   };
 
-  initLatest();
+  initHomepage();
 })();
