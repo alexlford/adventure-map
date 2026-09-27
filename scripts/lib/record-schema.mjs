@@ -21,7 +21,11 @@ assertEnumMirror('matchConfidence', 'confidence');
 assertEnumMirror('coordinatePrecision', 'coordinatePrecision');
 
 export function validatePublicRecord(record, label = record?.id || 'record') {
-  return validateJsonSchema(record, eventRecordSchema, label);
+  const errors = validateJsonSchema(record, eventRecordSchema, label);
+  if (record?.recordClass && record?.kind && record.recordClass !== record.kind) {
+    errors.push(`${label}.recordClass must match kind (${record.kind}); got ${record.recordClass}`);
+  }
+  return errors;
 }
 
 export function validatePublicRecords(records) {
