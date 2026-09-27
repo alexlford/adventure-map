@@ -1,0 +1,607 @@
+{
+  "schemaVersion": 1,
+  "generatedFrom": "data/event-photo-manifest.json",
+  "photoCount": 29,
+  "recordCount": 26,
+  "records": {
+    "abes-amble-2014": {
+      "primary": {
+        "path": "assets/event-photos/races/abes-amble-2014/2014-08-17-abes-amble-10k-finish-01.jpeg",
+        "caption": null,
+        "eventName": "Abe's Amble 10K",
+        "date": "2014-08-17",
+        "width": 2048,
+        "height": 1530,
+        "aspectRatio": 1.3386
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/abes-amble-2014/2014-08-17-abes-amble-10k-finish-01.jpeg",
+          "caption": null,
+          "eventName": "Abe's Amble 10K",
+          "date": "2014-08-17",
+          "width": 2048,
+          "height": 1530,
+          "aspectRatio": 1.3386
+        }
+      ]
+    },
+    "beerfit-kansas-city-5k-2016": {
+      "primary": {
+        "path": "assets/event-photos/races/beerfit-kansas-city-5k-2016/2016-06-04-beerfit-kansas-city-5k-course-01.jpeg",
+        "caption": null,
+        "eventName": "BeerFit Kansas City 5K",
+        "date": "2016-06-04",
+        "width": 2500,
+        "height": 1666,
+        "aspectRatio": 1.5006
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/beerfit-kansas-city-5k-2016/2016-06-04-beerfit-kansas-city-5k-course-01.jpeg",
+          "caption": null,
+          "eventName": "BeerFit Kansas City 5K",
+          "date": "2016-06-04",
+          "width": 2500,
+          "height": 1666,
+          "aspectRatio": 1.5006
+        }
+      ]
+    },
+    "big-12-run-12k-2016": {
+      "primary": {
+        "path": "assets/event-photos/races/big-12-run-12k-2016/2016-03-12-kansas-city-big-12-run-12k-course-01.jpeg",
+        "caption": null,
+        "eventName": "Kansas City Big 12 Run 12K",
+        "date": "2016-03-12",
+        "width": 1536,
+        "height": 1536,
+        "aspectRatio": 1
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/big-12-run-12k-2016/2016-03-12-kansas-city-big-12-run-12k-course-01.jpeg",
+          "caption": null,
+          "eventName": "Kansas City Big 12 Run 12K",
+          "date": "2016-03-12",
+          "width": 1536,
+          "height": 1536,
+          "aspectRatio": 1
+        }
+      ]
+    },
+    "big-ten-10k-2016": {
+      "primary": {
+        "path": "assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-network-big-10k-finish-group-01.jpeg",
+        "caption": null,
+        "eventName": "Big Ten Network Big 10K",
+        "date": "2016-08-06",
+        "width": null,
+        "height": null,
+        "aspectRatio": null
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-network-big-10k-finish-group-01.jpeg",
+          "caption": null,
+          "eventName": "Big Ten Network Big 10K",
+          "date": "2016-08-06",
+          "width": null,
+          "height": null,
+          "aspectRatio": null
+        },
+        {
+          "path": "assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-10k-2016-course-01.jpeg",
+          "caption": null,
+          "eventName": "Big Ten Network Big 10K",
+          "date": "2016-08-06",
+          "width": 1333,
+          "height": 2000,
+          "aspectRatio": 0.6665
+        }
+      ]
+    },
+    "bolderboulder-2023": {
+      "primary": {
+        "path": "assets/event-photos/races/bolderboulder-2023/2023-05-29-bolderboulder-10k-course-01.jpeg",
+        "caption": null,
+        "eventName": "BOLDERBoulder 10K",
+        "date": "2023-05-29",
+        "width": 1152,
+        "height": 1536,
+        "aspectRatio": 0.75
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/bolderboulder-2023/2023-05-29-bolderboulder-10k-course-01.jpeg",
+          "caption": null,
+          "eventName": "BOLDERBoulder 10K",
+          "date": "2023-05-29",
+          "width": 1152,
+          "height": 1536,
+          "aspectRatio": 0.75
+        }
+      ]
+    },
+    "charles-street-12-2019": {
+      "primary": {
+        "path": "assets/event-photos/races/charles-street-12-2019/2019-08-31-charles-street-12-finish-01.jpeg",
+        "caption": null,
+        "eventName": "Charles Street 12",
+        "date": "2019-08-31",
+        "width": null,
+        "height": null,
+        "aspectRatio": null
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/charles-street-12-2019/2019-08-31-charles-street-12-finish-01.jpeg",
+          "caption": null,
+          "eventName": "Charles Street 12",
+          "date": "2019-08-31",
+          "width": null,
+          "height": null,
+          "aspectRatio": null
+        }
+      ]
+    },
+    "chicago-marathon-2021": {
+      "primary": {
+        "path": "assets/event-photos/races/chicago-marathon-2021/2021-10-10-chicago-marathon-course-01.jpeg",
+        "caption": null,
+        "eventName": "Chicago Marathon",
+        "date": "2021-10-10",
+        "width": 1536,
+        "height": 874,
+        "aspectRatio": 1.7574
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/chicago-marathon-2021/2021-10-10-chicago-marathon-course-01.jpeg",
+          "caption": null,
+          "eventName": "Chicago Marathon",
+          "date": "2021-10-10",
+          "width": 1536,
+          "height": 874,
+          "aspectRatio": 1.7574
+        }
+      ]
+    },
+    "colfax-5k-2024": {
+      "primary": {
+        "path": "assets/event-photos/races/colfax-5k-2024/2024-05-18-colfax-5k-with-olive-finish-01.jpeg",
+        "caption": null,
+        "eventName": "Colfax 5K with Olive",
+        "date": "2024-05-18",
+        "width": 2133,
+        "height": 3200,
+        "aspectRatio": 0.6666
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/colfax-5k-2024/2024-05-18-colfax-5k-with-olive-finish-01.jpeg",
+          "caption": null,
+          "eventName": "Colfax 5K with Olive",
+          "date": "2024-05-18",
+          "width": 2133,
+          "height": 3200,
+          "aspectRatio": 0.6666
+        },
+        {
+          "path": "assets/event-photos/races/colfax-5k-2024/2024-05-18-dog-pool-01.jpeg",
+          "caption": null,
+          "eventName": "Denver Colfax 5K",
+          "date": "2024-05-18",
+          "width": 1536,
+          "height": 1152,
+          "aspectRatio": 1.3333
+        }
+      ]
+    },
+    "colfax-5k-2026": {
+      "primary": {
+        "path": "assets/event-photos/races/colfax-5k-2026/2026-05-16-dog-pool-01.jpeg",
+        "caption": null,
+        "eventName": "Denver Colfax 5K",
+        "date": "2026-05-16",
+        "width": 1152,
+        "height": 1536,
+        "aspectRatio": 0.75
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/colfax-5k-2026/2026-05-16-dog-pool-01.jpeg",
+          "caption": null,
+          "eventName": "Denver Colfax 5K",
+          "date": "2026-05-16",
+          "width": 1152,
+          "height": 1536,
+          "aspectRatio": 0.75
+        }
+      ]
+    },
+    "disney-princess-half-2018": {
+      "primary": {
+        "path": "assets/event-photos/races/disney-princess-half-2018/2018-02-25-disney-princess-half-character-photo-01.jpeg",
+        "caption": null,
+        "eventName": "Disney Princess Half Marathon",
+        "date": "2018-02-25",
+        "width": 1152,
+        "height": 1536,
+        "aspectRatio": 0.75
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/disney-princess-half-2018/2018-02-25-disney-princess-half-character-photo-01.jpeg",
+          "caption": null,
+          "eventName": "Disney Princess Half Marathon",
+          "date": "2018-02-25",
+          "width": 1152,
+          "height": 1536,
+          "aspectRatio": 0.75
+        }
+      ]
+    },
+    "garmin-half-2016": {
+      "primary": {
+        "path": "assets/event-photos/races/garmin-half-2016/2016-04-16-garmin-land-of-oz-half-course-01.jpeg",
+        "caption": null,
+        "eventName": "Garmin Marathon in the Land of Oz Half Marathon",
+        "date": "2016-04-16",
+        "width": null,
+        "height": null,
+        "aspectRatio": null
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/garmin-half-2016/2016-04-16-garmin-land-of-oz-half-course-01.jpeg",
+          "caption": null,
+          "eventName": "Garmin Marathon in the Land of Oz Half Marathon",
+          "date": "2016-04-16",
+          "width": null,
+          "height": null,
+          "aspectRatio": null
+        }
+      ]
+    },
+    "illinois-half-2016": {
+      "primary": {
+        "path": "assets/event-photos/races/illinois-half-2016/2016-04-30-illinois-half-2016-rain-course-01.jpeg",
+        "caption": null,
+        "eventName": "Illinois Half Marathon",
+        "date": "2016-04-30",
+        "width": 2391,
+        "height": 3599,
+        "aspectRatio": 0.6644
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/illinois-half-2016/2016-04-30-illinois-half-2016-rain-course-01.jpeg",
+          "caption": null,
+          "eventName": "Illinois Half Marathon",
+          "date": "2016-04-30",
+          "width": 2391,
+          "height": 3599,
+          "aspectRatio": 0.6644
+        }
+      ]
+    },
+    "illinois-marathon-2015": {
+      "primary": {
+        "path": "assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-thunderstorm-finish-01.jpeg",
+        "caption": "Finishing the 2015 Illinois Marathon in a thunderstorm.",
+        "eventName": "Illinois Marathon",
+        "date": "2015-04-25",
+        "width": null,
+        "height": null,
+        "aspectRatio": null
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-thunderstorm-finish-01.jpeg",
+          "caption": "Finishing the 2015 Illinois Marathon in a thunderstorm.",
+          "eventName": "Illinois Marathon",
+          "date": "2015-04-25",
+          "width": null,
+          "height": null,
+          "aspectRatio": null
+        },
+        {
+          "path": "assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-2015-with-mom-01.jpeg",
+          "caption": null,
+          "eventName": "Illinois Marathon",
+          "date": "2015-04-25",
+          "width": 1536,
+          "height": 1536,
+          "aspectRatio": 1
+        }
+      ]
+    },
+    "kansas-city-marathon-2019": {
+      "primary": {
+        "path": "assets/event-photos/races/kansas-city-marathon-2019/2019-10-19-kansas-city-marathon-course-01.jpeg",
+        "caption": null,
+        "eventName": "Kansas City Marathon",
+        "date": "2019-10-19",
+        "width": null,
+        "height": null,
+        "aspectRatio": null
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/kansas-city-marathon-2019/2019-10-19-kansas-city-marathon-course-01.jpeg",
+          "caption": null,
+          "eventName": "Kansas City Marathon",
+          "date": "2019-10-19",
+          "width": null,
+          "height": null,
+          "aspectRatio": null
+        }
+      ]
+    },
+    "mile-high-turkey-trot-2021": {
+      "primary": {
+        "path": "assets/event-photos/races/mile-high-turkey-trot-2021/2021-11-25-mile-high-turkey-trot-family-washington-park-01.jpeg",
+        "caption": null,
+        "eventName": "Mile High United Way Turkey Trot",
+        "date": "2021-11-25",
+        "width": 1152,
+        "height": 1536,
+        "aspectRatio": 0.75
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/mile-high-turkey-trot-2021/2021-11-25-mile-high-turkey-trot-family-washington-park-01.jpeg",
+          "caption": null,
+          "eventName": "Mile High United Way Turkey Trot",
+          "date": "2021-11-25",
+          "width": 1152,
+          "height": 1536,
+          "aspectRatio": 0.75
+        }
+      ]
+    },
+    "mile-high-turkey-trot-2023": {
+      "primary": {
+        "path": "assets/event-photos/races/mile-high-turkey-trot-2023/2023-11-23-mile-high-turkey-trot-olive-yellow-bandana-01.jpeg",
+        "caption": null,
+        "eventName": "Mile High United Way Turkey Trot",
+        "date": "2023-11-23",
+        "width": 1152,
+        "height": 1536,
+        "aspectRatio": 0.75
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/mile-high-turkey-trot-2023/2023-11-23-mile-high-turkey-trot-olive-yellow-bandana-01.jpeg",
+          "caption": null,
+          "eventName": "Mile High United Way Turkey Trot",
+          "date": "2023-11-23",
+          "width": 1152,
+          "height": 1536,
+          "aspectRatio": 0.75
+        }
+      ]
+    },
+    "mount-sherman": {
+      "primary": {
+        "path": "assets/event-photos/adventures/mount-sherman/2022-09-25-mount-sherman-summit-with-olive-01.jpeg",
+        "caption": "Summiting Mount Sherman with Olive in September 2022.",
+        "eventName": "Mount Sherman",
+        "date": "2022-09-25",
+        "width": 1536,
+        "height": 1152,
+        "aspectRatio": 1.3333
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/adventures/mount-sherman/2022-09-25-mount-sherman-summit-with-olive-01.jpeg",
+          "caption": "Summiting Mount Sherman with Olive in September 2022.",
+          "eventName": "Mount Sherman",
+          "date": "2022-09-25",
+          "width": 1536,
+          "height": 1152,
+          "aspectRatio": 1.3333
+        }
+      ]
+    },
+    "nordic-day-2024-01-07": {
+      "primary": {
+        "path": "assets/event-photos/adventures/nordic-day-2024-01-07/2024-01-07-frisco-nordic-center-basil-olive-01.jpeg",
+        "caption": "Frisco Nordic Center Trails on January 7, 2024. Leah took the photo; Basil is in the bright yellow harness and Olive is in front.",
+        "eventName": "Frisco Nordic Center Trails",
+        "date": "2024-01-07",
+        "width": 1536,
+        "height": 1152,
+        "aspectRatio": 1.3333
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/adventures/nordic-day-2024-01-07/2024-01-07-frisco-nordic-center-basil-olive-01.jpeg",
+          "caption": "Frisco Nordic Center Trails on January 7, 2024. Leah took the photo; Basil is in the bright yellow harness and Olive is in front.",
+          "eventName": "Frisco Nordic Center Trails",
+          "date": "2024-01-07",
+          "width": 1536,
+          "height": 1152,
+          "aspectRatio": 1.3333
+        }
+      ]
+    },
+    "pi-day-half-2015": {
+      "primary": {
+        "path": "assets/event-photos/races/pi-day-half-2015/2015-03-14-pi-day-river-rotation-half-trail-01.jpeg",
+        "caption": null,
+        "eventName": "Pi Day River Rotation Half Marathon",
+        "date": "2015-03-14",
+        "width": 1068,
+        "height": 1068,
+        "aspectRatio": 1
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/pi-day-half-2015/2015-03-14-pi-day-river-rotation-half-trail-01.jpeg",
+          "caption": null,
+          "eventName": "Pi Day River Rotation Half Marathon",
+          "date": "2015-03-14",
+          "width": 1068,
+          "height": 1068,
+          "aspectRatio": 1
+        }
+      ]
+    },
+    "river-to-river-relay-2006": {
+      "primary": {
+        "path": "assets/event-photos/races/river-to-river-relay-2006/2006-river-to-river-relay-2006-cambria-moonsnakes-team-01.jpeg",
+        "caption": null,
+        "eventName": "River to River Relay",
+        "date": null,
+        "width": 1536,
+        "height": 1032,
+        "aspectRatio": 1.4884
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/river-to-river-relay-2006/2006-river-to-river-relay-2006-cambria-moonsnakes-team-01.jpeg",
+          "caption": null,
+          "eventName": "River to River Relay",
+          "date": null,
+          "width": 1536,
+          "height": 1032,
+          "aspectRatio": 1.4884
+        }
+      ]
+    },
+    "river-to-river-relay-2008": {
+      "primary": {
+        "path": "assets/event-photos/races/river-to-river-relay-2008/2008-river-to-river-relay-2008-team-swampass-01.jpeg",
+        "caption": null,
+        "eventName": "River to River Relay",
+        "date": null,
+        "width": 1764,
+        "height": 1166,
+        "aspectRatio": 1.5129
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/river-to-river-relay-2008/2008-river-to-river-relay-2008-team-swampass-01.jpeg",
+          "caption": null,
+          "eventName": "River to River Relay",
+          "date": null,
+          "width": 1764,
+          "height": 1166,
+          "aspectRatio": 1.5129
+        }
+      ]
+    },
+    "river-to-river-relay-2010": {
+      "primary": {
+        "path": "assets/event-photos/races/river-to-river-relay-2010/2010-river-to-river-relay-2010-legion-of-doom-team-01.jpeg",
+        "caption": null,
+        "eventName": "River to River Relay",
+        "date": null,
+        "width": 1024,
+        "height": 768,
+        "aspectRatio": 1.3333
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/river-to-river-relay-2010/2010-river-to-river-relay-2010-legion-of-doom-team-01.jpeg",
+          "caption": null,
+          "eventName": "River to River Relay",
+          "date": null,
+          "width": 1024,
+          "height": 768,
+          "aspectRatio": 1.3333
+        }
+      ]
+    },
+    "rock-parkway-half-2016": {
+      "primary": {
+        "path": "assets/event-photos/races/rock-parkway-half-2016/2016-04-09-rock-the-parkway-half-course-01.jpeg",
+        "caption": null,
+        "eventName": "Rock the Parkway Half Marathon",
+        "date": "2016-04-09",
+        "width": 1024,
+        "height": 1536,
+        "aspectRatio": 0.6667
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/rock-parkway-half-2016/2016-04-09-rock-the-parkway-half-course-01.jpeg",
+          "caption": null,
+          "eventName": "Rock the Parkway Half Marathon",
+          "date": "2016-04-09",
+          "width": 1024,
+          "height": 1536,
+          "aspectRatio": 0.6667
+        }
+      ]
+    },
+    "running-with-cows-half-2016": {
+      "primary": {
+        "path": "assets/event-photos/races/running-with-cows-half-2016/2016-05-14-running-with-the-cows-half-course-wide-01.jpeg",
+        "caption": null,
+        "eventName": "Running With The Cows Half Marathon",
+        "date": "2016-05-14",
+        "width": 2300,
+        "height": 830,
+        "aspectRatio": 2.7711
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/running-with-cows-half-2016/2016-05-14-running-with-the-cows-half-course-wide-01.jpeg",
+          "caption": null,
+          "eventName": "Running With The Cows Half Marathon",
+          "date": "2016-05-14",
+          "width": 2300,
+          "height": 830,
+          "aspectRatio": 2.7711
+        }
+      ]
+    },
+    "staunton-rocks-half-2022": {
+      "primary": {
+        "path": "assets/event-photos/races/staunton-rocks-half-2022/2022-08-27-staunton-rocks-half-course-01.jpeg",
+        "caption": null,
+        "eventName": "Staunton Rocks! Half Marathon",
+        "date": "2022-08-27",
+        "width": 1024,
+        "height": 1536,
+        "aspectRatio": 0.6667
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/staunton-rocks-half-2022/2022-08-27-staunton-rocks-half-course-01.jpeg",
+          "caption": null,
+          "eventName": "Staunton Rocks! Half Marathon",
+          "date": "2022-08-27",
+          "width": 1024,
+          "height": 1536,
+          "aspectRatio": 0.6667
+        }
+      ]
+    },
+    "twin-cities-marathon-2015": {
+      "primary": {
+        "path": "assets/event-photos/races/twin-cities-marathon-2015/2015-10-04-twin-cities-marathon-finish-01.jpeg",
+        "caption": null,
+        "eventName": "Twin Cities Marathon",
+        "date": "2015-10-04",
+        "width": 1199,
+        "height": 1199,
+        "aspectRatio": 1
+      },
+      "photos": [
+        {
+          "path": "assets/event-photos/races/twin-cities-marathon-2015/2015-10-04-twin-cities-marathon-finish-01.jpeg",
+          "caption": null,
+          "eventName": "Twin Cities Marathon",
+          "date": "2015-10-04",
+          "width": 1199,
+          "height": 1199,
+          "aspectRatio": 1
+        }
+      ]
+    }
+  }
+}
