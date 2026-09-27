@@ -11,7 +11,7 @@
   <main class="page">
     <section class="home-hero" aria-labelledby="home-title">
       <a class="home-hero-photo" href="record/2022-09-25-mount-sherman/" aria-label="Open the Mount Sherman adventure">
-        <img src="assets/event-photos/adventures/mount-sherman/2022-09-25-mount-sherman-summit-with-olive-01.jpeg" alt="Alex hiking Mount Sherman with Olive in the Colorado high country" fetchpriority="high">
+        <img src="assets/event-photos/adventures/mount-sherman/2022-09-25-mount-sherman-summit-with-olive-01.jpeg" alt="Alex hiking Mount Sherman with Olive in the Colorado high country" width="1536" height="1152" decoding="async" fetchpriority="high">
         <span class="photo-caption">Mount Sherman · September 2022</span>
       </a>
       <div class="home-hero-copy">
@@ -28,12 +28,16 @@
       <a class="home-portal" href="adventures.html"><span>By story</span><strong>Stories</strong><small>The days that deserve more than a line.</small><b aria-hidden="true">→</b></a>
     </nav>
 
-    <section class="home-section home-latest" aria-labelledby="latest-title">
+    <section class="home-section home-recently-added" aria-labelledby="recently-added-title">
       <div class="home-section-heading">
-        <div><p class="eyebrow">Latest adventure</p><h2 id="latest-title">Air Force Aim High Challenge</h2></div>
+        <div><p class="eyebrow">Recently added</p><h2 id="recently-added-title">Fresh in the archive.</h2></div>
+        <p>New records as they enter the archive, independent of when the adventure happened.</p>
+      </div>
+      <div class="recent-feature-heading">
+        <div><p class="eyebrow" id="recent-feature-added">Added Sep 20, 2026</p><h3 id="latest-title">Air Force Aim High Challenge</h3></div>
         <p id="latest-meta">September 18–19, 2026 · Fairborn &amp; Wright-Patterson Air Force Base, Ohio</p>
       </div>
-      <a class="latest-card" id="latest-card" href="record/2026-09-18-air-force-aim-high-challenge/">
+      <a class="latest-card" id="latest-card" data-record-id="air-force-aim-high-challenge-2026" data-added-at="2026-09-20" href="record/2026-09-18-air-force-aim-high-challenge/">
         <div class="latest-story">
           <p class="latest-kicker" id="latest-kicker">Training for New York. Almost everything went wrong.</p>
           <p class="latest-copy" id="latest-copy">It was humid. I was late to the start and ran two miles just to get there, lost my phone, my calves started cramping after 13 miles, and my watch died at mile 25. The whole point was to get a hard training day in before New York, so somehow it still did exactly what I needed it to do.</p>
@@ -45,6 +49,20 @@
           <div><strong>5 / 14</strong><span>M35–39</span></div>
         </div>
       </a>
+      <div class="recent-grid" id="recently-added-list" aria-label="More recently added records">
+        <a class="recent-card" data-record-id="air-force-marathon-2026" data-added-at="2026-09-20" href="record/2026-09-19-u-s-air-force-marathon/">
+          <span class="recent-card-added">Added Sep 20, 2026</span>
+          <strong>U.S. Air Force Marathon</strong>
+          <small>September 19, 2026 · Wright-Patterson Air Force Base &amp; Fairborn, Ohio</small>
+          <span class="recent-card-footer"><em>Running</em><b>Open record →</b></span>
+        </a>
+        <a class="recent-card" data-record-id="air-force-5k-2026" data-added-at="2026-09-20" href="record/2026-09-18-u-s-air-force-marathon-5k/">
+          <span class="recent-card-added">Added Sep 20, 2026</span>
+          <strong>U.S. Air Force Marathon 5K</strong>
+          <small>September 18, 2026 · Fairborn, Ohio</small>
+          <span class="recent-card-footer"><em>Running</em><b>Open record →</b></span>
+        </a>
+      </div>
     </section>
 
     <section class="home-section" aria-labelledby="favorites-title">
@@ -54,17 +72,30 @@
       </div>
       <div class="memory-grid">
         <a class="memory-card memory-wide" href="record/2022-01-02-tennessee-pass-cross-country-ski-weekend/">
-          <img src="assets/event-photos/adventures/tennessee-pass-2022/2022-01-02-tennessee-pass-pink-sunrise-01.jpeg" alt="Pink sunrise over the snowy mountains at Tennessee Pass" loading="lazy">
+          <img src="assets/event-photos/adventures/tennessee-pass-2022/2022-01-02-tennessee-pass-pink-sunrise-01.jpeg" alt="Pink sunrise over the snowy mountains at Tennessee Pass" loading="lazy" decoding="async">
           <span class="memory-overlay"><small>Tennessee Pass · 2022</small><strong>Tennessee Pass Yurt Weekend</strong><em>Cross-country skiing and yurts were still new to us. I kept stoking the fire all night so nobody would get cold. By morning, everyone was sweating.</em></span>
         </a>
         <a class="memory-card" href="record/2021-10-10-chicago-marathon/">
-          <img src="assets/event-photos/races/chicago-marathon-2021/2021-10-10-chicago-marathon-course-01.jpeg" alt="Alex racing the 2021 Chicago Marathon" loading="lazy">
+          <img src="assets/event-photos/races/chicago-marathon-2021/2021-10-10-chicago-marathon-course-01.jpeg" alt="Alex racing the 2021 Chicago Marathon" width="1536" height="874" loading="lazy" decoding="async">
           <span class="memory-overlay"><small>Chicago · 2021</small><strong>Back under four</strong><em>My first sub-four marathon since my first marathon, with the city full of people excited to be running together again.</em></span>
         </a>
         <a class="memory-card" href="record/2015-10-04-medtronic-twin-cities-marathon/">
-          <img src="assets/event-photos/races/twin-cities-marathon-2015/2015-10-04-twin-cities-marathon-finish-01.jpeg" alt="Twin Cities Marathon finish in 2015" loading="lazy">
+          <img src="assets/event-photos/races/twin-cities-marathon-2015/2015-10-04-twin-cities-marathon-finish-01.jpeg" alt="Twin Cities Marathon finish in 2015" width="1199" height="1199" loading="lazy" decoding="async">
           <span class="memory-overlay"><small>Twin Cities · 2015</small><strong>Running it with Leah</strong><em>One of the marathon days I remember most because we ran it together.</em></span>
         </a>
+      </div>
+    </section>
+
+    <section class="home-section home-snapshot" aria-labelledby="snapshot-title">
+      <div class="home-section-heading">
+        <div><p class="eyebrow">Archive snapshot</p><h2 id="snapshot-title">The record keeps growing.</h2></div>
+        <p>A compact look at what is documented today. These counts come from the same archive-health checks used during publication.</p>
+      </div>
+      <div class="snapshot-grid" id="archiveSnapshot" aria-label="Adventure archive snapshot">
+        <div class="snapshot-item"><strong class="snapshot-value" id="snapshot-records">161</strong><span>records</span></div>
+        <div class="snapshot-item"><strong class="snapshot-value" id="snapshot-routes">78</strong><span>with routes</span></div>
+        <div class="snapshot-item"><strong class="snapshot-value" id="snapshot-photos">26</strong><span>with photos</span></div>
+        <div class="snapshot-item"><strong class="snapshot-value" id="snapshot-years">2006–2026</strong><span>years covered</span></div>
       </div>
     </section>
 
