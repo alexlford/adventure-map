@@ -71,12 +71,19 @@ const privacyIds = new Set(Object.entries(routeCatalog.recordOverrides || {})
 
 const statusRequiresPersonalRoute = status => {
   const value = String(status || '').toLowerCase();
+  // Only statuses that explicitly promise recorded GPS geometry require a
+  // personal route. A `multi-event-match` / `multi-activity-match` confirms
+  // the aggregate's member-event identity, but does not imply that every
+  // member has publishable personal GPS (for example, an event may be
+  // `matched-no-public-route` or `historical-course`). Direct Strava IDs are
+  // audited independently below, so removing generic `multi-*` matches here
+  // does not weaken coverage checks for records that actually cite Strava.
   return value === 'gps'
     || value === 'strava-record'
     || value === 'gps-source-available'
     || value === 'partial-recording'
-    || value.startsWith('multi-event')
-    || value.startsWith('multi-activity');
+    || value === 'multi-event-gps'
+    || value === 'multi-activity-gps';
 };
 
 const records = recordsPayload.records || recordsPayload;
