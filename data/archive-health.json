@@ -38,9 +38,9 @@
       "percent": 100
     },
     "Photo": {
-      "complete": 26,
-      "missing": 135,
-      "percent": 16.1
+      "complete": 27,
+      "missing": 134,
+      "percent": 16.8
     }
   },
   "priorityIncomplete": [
@@ -96,18 +96,6 @@
       "id": "colfax-marathon-weekend-series",
       "slug": "denver-colfax-marathon-weekend-series",
       "name": "Denver Colfax Marathon Weekend",
-      "score": 7,
-      "missing": [
-        "Coordinates",
-        "Distance",
-        "Route",
-        "Photo"
-      ]
-    },
-    {
-      "id": "river-to-river-relay-series-story",
-      "slug": "river-to-river-relay-series",
-      "name": "River to River Relay",
       "score": 7,
       "missing": [
         "Coordinates",
@@ -562,6 +550,16 @@
       "id": "nordic-day-2021-01-16",
       "slug": "2021-01-16-steamboat-ski-touring-center-nordic-day",
       "name": "Steamboat Ski Touring Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "baltimore-virtual-turkey-trot-2020",
+      "slug": "2020-11-26-gobble-cobble-2020-virtual",
+      "name": "Gobble Cobble 2020 (Virtual)",
       "score": 5,
       "missing": [
         "Coordinates",

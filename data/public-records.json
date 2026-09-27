@@ -316,6 +316,19 @@
       ],
       "matchSource": "Strava export",
       "matchConfidence": "high",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/adventures/mount-sherman/2022-09-25-mount-sherman-summit-with-olive-01.jpeg",
+          "alt": "Photo from Mount Sherman",
+          "caption": "Summiting Mount Sherman with Olive in September 2022.",
+          "width": 1536,
+          "height": 1152,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_7026.jpeg",
+          "repositoryBlobSha": "ddea479c62719180ee51a19008339ebdf1d18aa6"
+        }
+      ],
       "slug": "2022-09-25-mount-sherman",
       "recordClass": "summit",
       "sport": "mountaineering",
@@ -1409,6 +1422,19 @@
         "strava-6094685711"
       ],
       "matchSource": "Strava export",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/chicago-marathon-2021/2021-10-10-chicago-marathon-course-01.jpeg",
+          "alt": "Photo from Chicago Marathon",
+          "caption": "Chicago Marathon · 2021-10-10",
+          "width": 1536,
+          "height": 874,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_3856(1).jpeg",
+          "repositoryBlobSha": "59d04dda438ad3670eeac10bde7c571928635873"
+        }
+      ],
       "slug": "2021-10-10-chicago-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -1527,6 +1553,19 @@
       ],
       "matchSource": "Strava export",
       "matchConfidence": "high",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/kansas-city-marathon-2019/2019-10-19-kansas-city-marathon-course-01.jpeg",
+          "alt": "Photo from Kansas City Marathon",
+          "caption": "Kansas City Marathon · 2019-10-19",
+          "width": null,
+          "height": null,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_5495.jpeg",
+          "repositoryBlobSha": "94ddf279fe54fd2446fde196c9f167dac3cb1f34"
+        }
+      ],
       "slug": "2019-10-19-kansas-city-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -1602,6 +1641,19 @@
       "routeFeatureIds": [
         "strava-641964287"
       ],
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/twin-cities-marathon-2015/2015-10-04-twin-cities-marathon-finish-01.jpeg",
+          "alt": "Photo from Twin Cities Marathon",
+          "caption": "Twin Cities Marathon · 2015-10-04",
+          "width": 1199,
+          "height": 1199,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_4965.jpeg",
+          "repositoryBlobSha": "988269a0a3ef5aacd2e001891124cafafa46c943"
+        }
+      ],
       "slug": "2015-10-04-medtronic-twin-cities-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -1671,6 +1723,30 @@
       "routeFeatureIds": [
         "strava-641965920"
       ],
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-thunderstorm-finish-01.jpeg",
+          "alt": "Photo from Illinois Marathon",
+          "caption": "Finishing the 2015 Illinois Marathon in a thunderstorm.",
+          "width": null,
+          "height": null,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_5383.jpeg",
+          "repositoryBlobSha": "2940d0511aec0b0067d55f84f61e5ca3fc97c3e7"
+        },
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-2015-with-mom-01.jpeg",
+          "alt": "Photo from Illinois Marathon",
+          "caption": "Illinois Marathon · 2015-04-25",
+          "width": 1536,
+          "height": 1536,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_4560.jpeg",
+          "repositoryBlobSha": "208b50fb689f669344144aa7aaad310d974ea1b1"
+        }
+      ],
       "slug": "2015-04-25-illinois-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -1721,6 +1797,19 @@
       "resultUrl": "https://r2rrelay.com/results/result2006.html",
       "note": "2006 River to River Relay team: Cambria Moonsnakes. Official results list the team 54th overall, 17th in the Open division, in 10:11:21.",
       "_catalogSource": "data/adventures.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/river-to-river-relay-2006/2006-river-to-river-relay-2006-cambria-moonsnakes-team-01.jpeg",
+          "alt": "Photo from River to River Relay",
+          "caption": "River to River Relay",
+          "width": 1536,
+          "height": 1032,
+          "source": "event-photo-manifest",
+          "sourceFile": "R2R 8.jpeg",
+          "repositoryBlobSha": "a1bc6f2282da4cc641da670128e73fbe1e04d572"
+        }
+      ],
       "slug": "2006-river-to-river-relay",
       "recordClass": "race",
       "sport": "running",
@@ -1771,6 +1860,19 @@
       "resultSource": "2008 River to River Relay official results spreadsheet supplied by the user",
       "note": "2008 River to River Relay team: Team Swampass. The official results spreadsheet lists race number 852, 143rd overall, 55th in the Open division, with a 10:27:44 finish.",
       "_catalogSource": "data/adventures.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/river-to-river-relay-2008/2008-river-to-river-relay-2008-team-swampass-01.jpeg",
+          "alt": "Photo from River to River Relay",
+          "caption": "River to River Relay",
+          "width": 1764,
+          "height": 1166,
+          "source": "event-photo-manifest",
+          "sourceFile": "SwampAss.jpeg",
+          "repositoryBlobSha": "e66a78894fc341be29a59cf042040588fb301928"
+        }
+      ],
       "slug": "2008-river-to-river-relay",
       "recordClass": "race",
       "sport": "running",
@@ -1821,6 +1923,19 @@
       "resultUrl": "https://r2rrelay.com/results/results10.htm",
       "note": "2010 River to River Relay team: Legion of Doom. Official results list the team 95th overall, 20th in the Mixed division, in 10:35:54.",
       "_catalogSource": "data/adventures.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/river-to-river-relay-2010/2010-river-to-river-relay-2010-legion-of-doom-team-01.jpeg",
+          "alt": "Photo from River to River Relay",
+          "caption": "River to River Relay",
+          "width": 1024,
+          "height": 768,
+          "source": "event-photo-manifest",
+          "sourceFile": "P4170206.jpeg",
+          "repositoryBlobSha": "054187a3e840ca766726047ca711c182b7f2d924"
+        }
+      ],
       "slug": "2010-river-to-river-relay",
       "recordClass": "race",
       "sport": "running",
@@ -2072,6 +2187,19 @@
       "resultSource": "2014 Abe's Amble registration archive and Springfield Road Runners Club historical results index",
       "resultUrl": "https://secure.getmeregistered.com/register.php?event_id=10905",
       "note": "The original 2014 registration page specifies a 7:30 AM 10K starting and finishing beside the Grandstand at the Illinois State Fairgrounds. The Strava activity begins at that exact local start time, starts at the fairgrounds, and records 10.101 km. The old TimingIsEverything individual results page is no longer crawler-accessible, so 1:03:09 remains a Strava elapsed-time fallback rather than an asserted official result.",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/abes-amble-2014/2014-08-17-abes-amble-10k-finish-01.jpeg",
+          "alt": "Photo from Abe's Amble 10K",
+          "caption": "Abe's Amble 10K · 2014-08-17",
+          "width": 2048,
+          "height": 1530,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_3972.jpeg",
+          "repositoryBlobSha": "3080de1f535462f6802c3251f3e1e6c92f60910b"
+        }
+      ],
       "slug": "2014-08-17-abe-s-amble-10k",
       "recordClass": "race",
       "sport": "running",
@@ -2130,6 +2258,19 @@
       "matchConfidence": "confirmed",
       "note": "User confirms the Pi Day River Rotation Half Marathon was a trail race in Lawrence.",
       "_catalogSource": "data/discovered-races.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/pi-day-half-2015/2015-03-14-pi-day-river-rotation-half-trail-01.jpeg",
+          "alt": "Photo from Pi Day River Rotation Half Marathon",
+          "caption": "Pi Day River Rotation Half Marathon · 2015-03-14",
+          "width": 1068,
+          "height": 1068,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_4476.jpeg",
+          "repositoryBlobSha": "c453f66ff62804991720bd1e992b45537b46299d"
+        }
+      ],
       "slug": "2015-03-14-pi-day-river-rotation-half-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -2271,6 +2412,19 @@
       "divisionPlace": 70,
       "division": "M 25-29",
       "teamName": "Heartland Series",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/rock-parkway-half-2016/2016-04-09-rock-the-parkway-half-course-01.jpeg",
+          "alt": "Photo from Rock the Parkway Half Marathon",
+          "caption": "Rock the Parkway Half Marathon · 2016-04-09",
+          "width": 1024,
+          "height": 1536,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_5301.jpeg",
+          "repositoryBlobSha": "08ebd7936c9a77cfc06f9f9351d95901df2f6191"
+        }
+      ],
       "slug": "2016-04-09-rock-the-parkway-half-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -2353,6 +2507,19 @@
       ],
       "resultSource": "OnlineRaceResults official 2016 Garmin Marathon in the Land of Oz Half Marathon result, user-supplied PDF",
       "note": "OnlineRaceResults lists Alex Ford 120th overall in the 2016 Garmin Marathon in the Land of Oz Half Marathon, finishing in 1:43:16 at 7:54/mi. Published splits are 50:52 at 10K and 1:30:12 at 11.5 miles.",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/garmin-half-2016/2016-04-16-garmin-land-of-oz-half-course-01.jpeg",
+          "alt": "Photo from Garmin Marathon in the Land of Oz Half Marathon",
+          "caption": "Garmin Marathon in the Land of Oz Half Marathon · 2016-04-16",
+          "width": null,
+          "height": null,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_5331.jpeg",
+          "repositoryBlobSha": "f6db26cbc1a78563c8595ea726471322f6bc3860"
+        }
+      ],
       "slug": "2016-04-16-garmin-marathon-in-the-land-of-oz-half-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -2493,6 +2660,19 @@
       "gender": "Male",
       "age": 28,
       "note": "Official Illinois race-results page lists Alex Ford, bib 7899, M/28, with a 1:48:13 net time and 1:50:03 clock time in the Half Marathon.",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/illinois-half-2016/2016-04-30-illinois-half-2016-rain-course-01.jpeg",
+          "alt": "Photo from Illinois Half Marathon",
+          "caption": "Illinois Half Marathon · 2016-04-30",
+          "width": 2391,
+          "height": 3599,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_5362.jpeg",
+          "repositoryBlobSha": "06c93dcc5cd3763023a96339713a311a2a5a6a23"
+        }
+      ],
       "slug": "2016-04-30-illinois-half-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -2565,6 +2745,19 @@
       "teamName": "Heartland 39.3",
       "resultSource": "User-supplied official 2016 Heartland 39.3 member-race result screenshot",
       "note": "Official result lists Alex Ford, bib 418, age 28, 116th overall and 17th in M 25-29, with a 1:43:29.6 chip time, 1:44:12.3 clock time, and 7:54/mi pace. The result explicitly lists Team Name: Heartland 39.3.",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/running-with-cows-half-2016/2016-05-14-running-with-the-cows-half-course-wide-01.jpeg",
+          "alt": "Photo from Running With The Cows Half Marathon",
+          "caption": "Running With The Cows Half Marathon · 2016-05-14",
+          "width": 2300,
+          "height": 830,
+          "source": "event-photo-manifest",
+          "sourceFile": "RWTC3.jpeg",
+          "repositoryBlobSha": "538a2f1bc3c857cf6781126e9a94d65b15effc38"
+        }
+      ],
       "slug": "2016-05-14-running-with-the-cows-half-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -2621,6 +2814,30 @@
       "matchConfidence": "verified",
       "note": "Previously rejected as a Red Dog Run candidate; user confirmation and the exact 2016 BTN Big 10K race date resolve the activity.",
       "_catalogSource": "data/discovered-races.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-network-big-10k-finish-group-01.jpeg",
+          "alt": "Photo from Big Ten Network Big 10K",
+          "caption": "Big Ten Network Big 10K · 2016-08-06",
+          "width": null,
+          "height": null,
+          "source": "event-photo-manifest",
+          "sourceFile": "137939-067-018h.jpeg",
+          "repositoryBlobSha": "7938eecd2026c25eecdf369c0b3d0d55b869cfec"
+        },
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-10k-2016-course-01.jpeg",
+          "alt": "Photo from Big Ten Network Big 10K",
+          "caption": "Big Ten Network Big 10K · 2016-08-06",
+          "width": 1333,
+          "height": 2000,
+          "source": "event-photo-manifest",
+          "sourceFile": "137939-367-015h.jpeg",
+          "repositoryBlobSha": "70f4ce4212f24ea65d1eda58a21ffe6dcc1f1552"
+        }
+      ],
       "slug": "2016-08-06-big-ten-network-big-10k",
       "recordClass": "race",
       "sport": "running",
@@ -2676,6 +2893,19 @@
       "matchConfidence": "verified",
       "note": "Strava records a 21.22 km run on the exact date of the 2018 Disney Princess Half Marathon.",
       "_catalogSource": "data/discovered-races.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/disney-princess-half-2018/2018-02-25-disney-princess-half-character-photo-01.jpeg",
+          "alt": "Photo from Disney Princess Half Marathon",
+          "caption": "Disney Princess Half Marathon · 2018-02-25",
+          "width": 1152,
+          "height": 1536,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_0599(1).jpeg",
+          "repositoryBlobSha": "caceded3300388434babf4288eeb50b6148f75df"
+        }
+      ],
       "slug": "2018-02-25-disney-princess-half-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -2827,6 +3057,19 @@
           "time": "3:12:14"
         }
       ],
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/staunton-rocks-half-2022/2022-08-27-staunton-rocks-half-course-01.jpeg",
+          "alt": "Photo from Staunton Rocks! Half Marathon",
+          "caption": "Staunton Rocks! Half Marathon · 2022-08-27",
+          "width": 1024,
+          "height": 1536,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_6879(1).jpeg",
+          "repositoryBlobSha": "033823e4aa35585a5c31326a8aaa4f643daf84d2"
+        }
+      ],
       "slug": "2022-08-27-staunton-rocks-half-marathon",
       "recordClass": "race",
       "sport": "running",
@@ -2954,6 +3197,30 @@
       "stravaDistanceMi": 3.2,
       "stravaElapsedSeconds": 2171,
       "resultSource": "Denver Colfax official race archive",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/colfax-5k-2024/2024-05-18-colfax-5k-with-olive-finish-01.jpeg",
+          "alt": "Photo from Colfax 5K with Olive",
+          "caption": "Colfax 5K with Olive · 2024-05-18",
+          "width": 2133,
+          "height": 3200,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_8266(1).jpeg",
+          "repositoryBlobSha": "f2b5558ba23ae7759a2ba9a4ab4bdafe6f244255"
+        },
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/colfax-5k-2024/2024-05-18-dog-pool-01.jpeg",
+          "alt": "Photo from Denver Colfax 5K",
+          "caption": "Denver Colfax 5K · 2024-05-18",
+          "width": 1536,
+          "height": 1152,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_8244.jpeg",
+          "repositoryBlobSha": "eb767bef2c44aa26270e493840a37f80afa05b22"
+        }
+      ],
       "slug": "2024-05-18-denver-colfax-5k",
       "recordClass": "race",
       "sport": "running",
@@ -3250,6 +3517,19 @@
       "stravaDistanceMi": 3.2,
       "stravaElapsedSeconds": 1951,
       "resultSource": "Denver Colfax official 2026 race archive",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/colfax-5k-2026/2026-05-16-dog-pool-01.jpeg",
+          "alt": "Photo from Denver Colfax 5K",
+          "caption": "Denver Colfax 5K · 2026-05-16",
+          "width": 1152,
+          "height": 1536,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_2183.jpeg",
+          "repositoryBlobSha": "84d90e8b375f463fa7029f9f99472b3023d5fa40"
+        }
+      ],
       "slug": "2026-05-16-denver-colfax-5k",
       "recordClass": "race",
       "sport": "running",
@@ -3559,6 +3839,19 @@
       "matchConfidence": "high",
       "note": "The Strava activity starts at the published downtown 12th & Grand event location on the exact race date and records 12.08 km.",
       "_catalogSource": "data/mined-races.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/big-12-run-12k-2016/2016-03-12-kansas-city-big-12-run-12k-course-01.jpeg",
+          "alt": "Photo from Kansas City Big 12 Run 12K",
+          "caption": "Kansas City Big 12 Run 12K · 2016-03-12",
+          "width": 1536,
+          "height": 1536,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_5631.jpeg",
+          "repositoryBlobSha": "47ee78582fbff3738cb4ce2cd843182ed1e7a1b9"
+        }
+      ],
       "slug": "2016-03-12-kansas-city-s-big-12-run-12k",
       "recordClass": "race",
       "sport": "running",
@@ -4444,6 +4737,41 @@
       "matchConfidence": "verified",
       "note": "Three editions of the classic Southern Illinois point-to-point relay: 2006 with Cambria Moonsnakes, 2008 with Team Swampass, and 2010 with Legion of Doom. The shared route is a historical full-course reference, not a personal GPS track.",
       "_catalogSource": "data/notable-adventures.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/river-to-river-relay-2006/2006-river-to-river-relay-2006-cambria-moonsnakes-team-01.jpeg",
+          "alt": "Photo from River to River Relay",
+          "caption": "River to River Relay",
+          "width": 1536,
+          "height": 1032,
+          "source": "event-photo-manifest",
+          "sourceFile": "R2R 8.jpeg",
+          "repositoryBlobSha": "a1bc6f2282da4cc641da670128e73fbe1e04d572"
+        },
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/river-to-river-relay-2008/2008-river-to-river-relay-2008-team-swampass-01.jpeg",
+          "alt": "Photo from River to River Relay",
+          "caption": "River to River Relay",
+          "width": 1764,
+          "height": 1166,
+          "source": "event-photo-manifest",
+          "sourceFile": "SwampAss.jpeg",
+          "repositoryBlobSha": "e66a78894fc341be29a59cf042040588fb301928"
+        },
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/river-to-river-relay-2010/2010-river-to-river-relay-2010-legion-of-doom-team-01.jpeg",
+          "alt": "Photo from River to River Relay",
+          "caption": "River to River Relay",
+          "width": 1024,
+          "height": 768,
+          "source": "event-photo-manifest",
+          "sourceFile": "P4170206.jpeg",
+          "repositoryBlobSha": "054187a3e840ca766726047ca711c182b7f2d924"
+        }
+      ],
       "recordClass": "adventure",
       "sport": "adventure",
       "startDate": "2006-04-22",
@@ -5430,6 +5758,19 @@
       "stravaElapsedSeconds": 1363,
       "stravaMovingSeconds": 1360,
       "elevationGainM": 13.7,
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/beerfit-kansas-city-5k-2016/2016-06-04-beerfit-kansas-city-5k-course-01.jpeg",
+          "alt": "Photo from BeerFit Kansas City 5K",
+          "caption": "BeerFit Kansas City 5K · 2016-06-04",
+          "width": 2500,
+          "height": 1666,
+          "source": "event-photo-manifest",
+          "sourceFile": "race_3030_photo_37353354.jpeg",
+          "repositoryBlobSha": "27753fb8126312cbd802394461fd09a7bec4bebe"
+        }
+      ],
       "slug": "2016-06-04-beerfit-kansas-city-5k-classic",
       "recordClass": "race",
       "sport": "running",
@@ -5757,6 +6098,19 @@
       "matchSource": "Strava exact Memorial Day date/distance/Folsom Stadium location + BOLDERBoulder event archive",
       "matchConfidence": "high",
       "_catalogSource": "data/medal-recovered.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/bolderboulder-2023/2023-05-29-bolderboulder-10k-course-01.jpeg",
+          "alt": "Photo from BOLDERBoulder 10K",
+          "caption": "BOLDERBoulder 10K · 2023-05-29",
+          "width": 1152,
+          "height": 1536,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_9560.jpeg",
+          "repositoryBlobSha": "5cafbdc6b34e77547a211226337ccd106a4ade1b"
+        }
+      ],
       "slug": "2023-05-29-bolderboulder",
       "recordClass": "race",
       "sport": "running",
@@ -7859,6 +8213,19 @@
         "10514763415"
       ],
       "_catalogSource": "data/activity-days.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/adventures/nordic-day-2024-01-07/2024-01-07-frisco-nordic-center-basil-olive-01.jpeg",
+          "alt": "Photo from Frisco Nordic Center Trails",
+          "caption": "Frisco Nordic Center Trails on January 7, 2024. Leah took the photo; Basil is in the bright yellow harness and Olive is in front.",
+          "width": 1536,
+          "height": 1152,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_6450.jpeg",
+          "repositoryBlobSha": "181d1739b67f9dd198040f2469336fbba54d944a"
+        }
+      ],
       "slug": "2024-01-07-frisco-nordic-center-nordic-day",
       "recordClass": "outing",
       "sport": "nordic-skiing",
@@ -8805,6 +9172,19 @@
       "matchConfidence": "verified",
       "note": "A sunny Thanksgiving morning at Washington Park with my wife and mom. I remember running well, but what stands out most is having fun together at my first Denver Turkey Trot.",
       "_catalogSource": "data/turkey-trots-story-2026-08-28.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/mile-high-turkey-trot-2021/2021-11-25-mile-high-turkey-trot-family-washington-park-01.jpeg",
+          "alt": "Photo from Mile High United Way Turkey Trot",
+          "caption": "Mile High United Way Turkey Trot · 2021-11-25",
+          "width": 1152,
+          "height": 1536,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_4683.jpeg",
+          "repositoryBlobSha": "bc694849d4acf6c0c029532bf5139a23695d43a6"
+        }
+      ],
       "slug": "2021-11-25-mile-high-united-way-turkey-trot",
       "recordClass": "race",
       "sport": "running",
@@ -8870,6 +9250,19 @@
       "matchConfidence": "verified",
       "note": "Back at Washington Park with Olive. I arrived late and ran from the parking area to the start, so the full outing ended up longer than the nominal four-mile race.",
       "_catalogSource": "data/turkey-trots-story-2026-08-28.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/mile-high-turkey-trot-2023/2023-11-23-mile-high-turkey-trot-olive-yellow-bandana-01.jpeg",
+          "alt": "Photo from Mile High United Way Turkey Trot",
+          "caption": "Mile High United Way Turkey Trot · 2023-11-23",
+          "width": 1152,
+          "height": 1536,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_7633.jpeg",
+          "repositoryBlobSha": "9f4cc6055feedcc3e6dd594355ad93c42a6ede45"
+        }
+      ],
       "slug": "2023-11-23-mile-high-united-way-turkey-trot",
       "recordClass": "race",
       "sport": "running",
@@ -9520,6 +9913,19 @@
       "matchConfidence": "verified",
       "note": "User screenshot confirms Alexander Ford, 12 Miler, male, age 31, Baltimore MD, bib 456. Official chip time is not visible in the supplied screenshot and has not yet been recovered, so no official time is asserted.",
       "_catalogSource": "data/official-results-overrides-2026-08-11f.json",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/event-photos/races/charles-street-12-2019/2019-08-31-charles-street-12-finish-01.jpeg",
+          "alt": "Photo from Charles Street 12",
+          "caption": "Charles Street 12 · 2019-08-31",
+          "width": null,
+          "height": null,
+          "source": "event-photo-manifest",
+          "sourceFile": "IMG_4082.jpeg",
+          "repositoryBlobSha": "7186f0105b8305bea1a1da07a14f074605f4c191"
+        }
+      ],
       "slug": "2019-08-31-altra-charles-street-12",
       "recordClass": "race",
       "sport": "running",
