@@ -1,5 +1,6 @@
 (() => {
   const storyPath = 'data/homepage-stories.json';
+  const archiveHealthPath = 'data/archive-health.json';
 
   const dateKey = record => record.finishDate || record.endDate || record.date || record.startDate || '';
   const startKey = record => record.startDate || record.date || dateKey(record);
@@ -19,17 +20,47 @@
     return score;
   };
 
-  const latestRecord = records => {
+  const compareNewest = (a, b) => {
+    const byDate = dateKey(b).localeCompare(dateKey(a));
+    if (byDate) return byDate;
+    const byPriority = recordPriority(b) - recordPriority(a);
+    if (byPriority) return byPriority;
+    return startKey(a).localeCompare(startKey(b));
+  };
+
+  const eligibleRecords = records => {
     const today = localToday();
     return records
       .filter(record => record?.slug && dateKey(record) && dateKey(record) <= today)
-      .sort((a, b) => {
-        const byDate = dateKey(b).localeCompare(dateKey(a));
-        if (byDate) return byDate;
-        const byPriority = recordPriority(b) - recordPriority(a);
-        if (byPriority) return byPriority;
-        return startKey(a).localeCompare(startKey(b));
-      })[0] || null;
+      .sort(compareNewest);
+  };
+
+  const latestRecord = records => eligibleRecords(records)[0] || null;
+
+  const recentRecords = (records, featured, limit = 3) => {
+    if (!featured) return [];
+    const featuredStart = startKey(featured);
+    const featuredEnd = dateKey(featured);
+    const seenWindows = new Set();
+    const result = [];
+
+    for (const record of eligibleRecords(records)) {
+      if (record.id === featured.id) continue;
+      const recordStart = startKey(record);
+      const recordEnd = dateKey(record);
+      const overlapsFeature = recordStart <= featuredEnd && recordEnd >= featuredStart;
+      if (overlapsFeature) continue;
+
+      // The archive can contain a weekend/challenge parent plus dated child records.
+      // On the homepage, one representative per date window keeps "Recently added"
+      // from becoming three versions of the same outing.
+      const windowKey = `${recordStart}::${recordEnd}`;
+      if (seenWindows.has(windowKey)) continue;
+      seenWindows.add(windowKey);
+      result.push(record);
+      if (result.length >= limit) break;
+    }
+    return result;
   };
 
   const parseDate = value => new Date(`${value}T12:00:00`);
@@ -86,9 +117,11 @@
       'mountain-biking': 'Mountain biking',
       'nordic-skiing': 'Nordic skiing',
       'alpine-skiing': 'Alpine skiing',
+      'ski-objective': 'Ski objective',
       mountaineering: 'Mountaineering',
       hiking: 'Hiking',
       running: 'Running',
+      cycling: 'Cycling',
       adventure: 'Adventure'
     };
     return map[record.sport] || map[record.discipline] || (record.kind === 'race' ? 'Race' : 'Adventure');
@@ -125,16 +158,22 @@
     return stats.slice(0, 3);
   };
 
-  const loadStories = async () => {
+  const loadJson = async (path, fallback) => {
     try {
-      const response = await fetch(storyPath, { cache: 'no-cache' });
-      if (!response.ok) return {};
-      const payload = await response.json();
-      return payload?.records && typeof payload.records === 'object' ? payload.records : {};
+      const response = await fetch(path, { cache: 'no-cache' });
+      if (!response.ok) return fallback;
+      return await response.json();
     } catch {
-      return {};
+      return fallback;
     }
   };
+
+  const loadStories = async () => {
+    const payload = await loadJson(storyPath, {});
+    return payload?.records && typeof payload.records === 'object' ? payload.records : {};
+  };
+
+  const loadArchiveHealth = () => loadJson(archiveHealthPath, {});
 
   const renderLatest = (record, override = {}) => {
     const title = document.getElementById('latest-title');
@@ -166,16 +205,64 @@
     stats.setAttribute('aria-label', `${record.name} details`);
   };
 
-  const initLatest = async () => {
+  const renderRecent = records => {
+    const list = document.getElementById('recent-list');
+    if (!list || !records.length) return;
+    list.replaceChildren(...records.map(record => {
+      const link = document.createElement('a');
+      const copy = document.createElement('span');
+      const activity = document.createElement('small');
+      const title = document.createElement('strong');
+      const meta = document.createElement('em');
+      const arrow = document.createElement('b');
+      const location = record.locationInfo?.label || record.location || '';
+
+      link.className = 'recent-item';
+      link.href = `record/${record.slug}/`;
+      activity.textContent = activityLabel(record);
+      title.textContent = record.name;
+      meta.textContent = [formatDateRange(record), location].filter(Boolean).join(' · ');
+      arrow.textContent = '→';
+      arrow.setAttribute('aria-hidden', 'true');
+      copy.append(activity, title, meta);
+      link.append(copy, arrow);
+      return link;
+    }));
+  };
+
+  const renderSnapshot = (records, health = {}) => {
+    const years = new Set(records
+      .map(record => String(startKey(record)).slice(0, 4))
+      .filter(year => /^\d{4}$/.test(year)));
+    const set = (id, value) => {
+      const node = document.getElementById(id);
+      if (node && Number.isFinite(value)) node.textContent = Number(value).toLocaleString();
+    };
+
+    set('snapshot-records', records.length);
+    set('snapshot-years', years.size);
+    set('snapshot-routes', Number(health.coverage?.Route?.complete));
+    set('snapshot-photos', Number(health.coverage?.Photo?.complete));
+  };
+
+  const initHome = async () => {
     if (!window.AdventureCatalog?.load) return;
     try {
-      const [records, stories] = await Promise.all([window.AdventureCatalog.load(), loadStories()]);
-      const record = latestRecord(records);
-      if (record) renderLatest(record, stories[record.id] || {});
+      const [records, stories, health] = await Promise.all([
+        window.AdventureCatalog.load(),
+        loadStories(),
+        loadArchiveHealth()
+      ]);
+      const featured = latestRecord(records);
+      if (featured) {
+        renderLatest(featured, stories[featured.id] || {});
+        renderRecent(recentRecords(records, featured));
+      }
+      renderSnapshot(records, health);
     } catch (error) {
-      console.warn('Latest adventure could not be refreshed; keeping the static homepage fallback.', error);
+      console.warn('Homepage archive data could not be refreshed; keeping the static homepage fallback.', error);
     }
   };
 
-  initLatest();
+  initHome();
 })();
