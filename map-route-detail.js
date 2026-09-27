@@ -95,6 +95,18 @@
     syncDetailState();
   }
 
+  function suspendDetailForZoom() {
+    requestVersion += 1;
+    refreshPending = false;
+    if (map.hasLayer(detailLayer)) map.removeLayer(detailLayer);
+    clearDetail({ invalidate: false });
+  }
+
+  function resumeDetailAfterZoom() {
+    if (map.getZoom() >= DETAIL_ZOOM && !map.hasLayer(detailLayer)) detailLayer.addTo(map);
+    scheduleRefresh();
+  }
+
   function styleItem(item) {
     const focusId = runtime.snapshot().focusId;
     const focused = Boolean(focusId && item.adventureIds.includes(focusId));
@@ -313,7 +325,9 @@
   }
 
   internal.registerPresentationHook('afterFocusStyles', scheduleRefresh);
-  map.on('zoomend moveend', scheduleRefresh);
+  map.on('zoomstart', suspendDetailForZoom);
+  map.on('zoomend', resumeDetailAfterZoom);
+  map.on('moveend', scheduleRefresh);
   runtime.ready().then(scheduleRefresh).catch(() => {});
 
   window.AdventureMapRouteDetail = Object.freeze({
