@@ -1,8 +1,11 @@
 {
   "schemaVersion": 1,
   "generatedFrom": "data/event-photo-manifest.json",
+  "responsiveVariantsFrom": null,
   "photoCount": 29,
   "recordCount": 26,
+  "responsivePhotoCount": 0,
+  "responsiveVariantCount": 0,
   "records": {
     "abes-amble-2014": {
       "primary": {
@@ -12,7 +15,8 @@
         "date": "2014-08-17",
         "width": 2048,
         "height": 1530,
-        "aspectRatio": 1.3386
+        "aspectRatio": 1.3386,
+        "variants": []
       },
       "photos": [
         {
@@ -22,7 +26,8 @@
           "date": "2014-08-17",
           "width": 2048,
           "height": 1530,
-          "aspectRatio": 1.3386
+          "aspectRatio": 1.3386,
+          "variants": []
         }
       ]
     },
@@ -34,7 +39,8 @@
         "date": "2016-06-04",
         "width": 2500,
         "height": 1666,
-        "aspectRatio": 1.5006
+        "aspectRatio": 1.5006,
+        "variants": []
       },
       "photos": [
         {
@@ -44,7 +50,8 @@
           "date": "2016-06-04",
           "width": 2500,
           "height": 1666,
-          "aspectRatio": 1.5006
+          "aspectRatio": 1.5006,
+          "variants": []
         }
       ]
     },
@@ -56,7 +63,8 @@
         "date": "2016-03-12",
         "width": 1536,
         "height": 1536,
-        "aspectRatio": 1
+        "aspectRatio": 1,
+        "variants": []
       },
       "photos": [
         {
@@ -66,7 +74,8 @@
           "date": "2016-03-12",
           "width": 1536,
           "height": 1536,
-          "aspectRatio": 1
+          "aspectRatio": 1,
+          "variants": []
         }
       ]
     },
@@ -78,7 +87,8 @@
         "date": "2016-08-06",
         "width": null,
         "height": null,
-        "aspectRatio": null
+        "aspectRatio": null,
+        "variants": []
       },
       "photos": [
         {
@@ -88,7 +98,8 @@
           "date": "2016-08-06",
           "width": null,
           "height": null,
-          "aspectRatio": null
+          "aspectRatio": null,
+          "variants": []
         },
         {
           "path": "assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-10k-2016-course-01.jpeg",
@@ -97,7 +108,8 @@
           "date": "2016-08-06",
           "width": 1333,
           "height": 2000,
-          "aspectRatio": 0.6665
+          "aspectRatio": 0.6665,
+          "variants": []
         }
       ]
     },
@@ -109,7 +121,8 @@
         "date": "2023-05-29",
         "width": 1152,
         "height": 1536,
-        "aspectRatio": 0.75
+        "aspectRatio": 0.75,
+        "variants": []
       },
       "photos": [
         {
@@ -119,7 +132,8 @@
           "date": "2023-05-29",
           "width": 1152,
           "height": 1536,
-          "aspectRatio": 0.75
+          "aspectRatio": 0.75,
+          "variants": []
         }
       ]
     },
@@ -131,7 +145,8 @@
         "date": "2019-08-31",
         "width": null,
         "height": null,
-        "aspectRatio": null
+        "aspectRatio": null,
+        "variants": []
       },
       "photos": [
         {
@@ -141,7 +156,8 @@
           "date": "2019-08-31",
           "width": null,
           "height": null,
-          "aspectRatio": null
+          "aspectRatio": null,
+          "variants": []
         }
       ]
     },
@@ -153,7 +169,8 @@
         "date": "2021-10-10",
         "width": 1536,
         "height": 874,
-        "aspectRatio": 1.7574
+        "aspectRatio": 1.7574,
+        "variants": []
       },
       "photos": [
         {
@@ -163,7 +180,8 @@
           "date": "2021-10-10",
           "width": 1536,
           "height": 874,
-          "aspectRatio": 1.7574
+          "aspectRatio": 1.7574,
+          "variants": []
         }
       ]
     },
@@ -175,7 +193,8 @@
         "date": "2024-05-18",
         "width": 2133,
         "height": 3200,
-        "aspectRatio": 0.6666
+        "aspectRatio": 0.6666,
+        "variants": []
       },
       "photos": [
         {
@@ -185,7 +204,8 @@
           "date": "2024-05-18",
           "width": 2133,
           "height": 3200,
-          "aspectRatio": 0.6666
+          "aspectRatio": 0.6666,
+          "variants": []
         },
         {
           "path": "assets/event-photos/races/colfax-5k-2024/2024-05-18-dog-pool-01.jpeg",
@@ -194,7 +214,8 @@
           "date": "2024-05-18",
           "width": 1536,
           "height": 1152,
-          "aspectRatio": 1.3333
+          "aspectRatio": 1.3333,
+          "variants": []
         }
       ]
     },
@@ -206,7 +227,8 @@
         "date": "2026-05-16",
         "width": 1152,
         "height": 1536,
-        "aspectRatio": 0.75
+        "aspectRatio": 0.75,
+        "variants": []
       },
       "photos": [
         {
@@ -216,7 +238,8 @@
           "date": "2026-05-16",
           "width": 1152,
           "height": 1536,
-          "aspectRatio": 0.75
+          "aspectRatio": 0.75,
+          "variants": []
         }
       ]
     },
@@ -228,7 +251,8 @@
         "date": "2018-02-25",
         "width": 1152,
         "height": 1536,
-        "aspectRatio": 0.75
+        "aspectRatio": 0.75,
+        "variants": []
       },
       "photos": [
         {
@@ -238,7 +262,8 @@
           "date": "2018-02-25",
           "width": 1152,
           "height": 1536,
-          "aspectRatio": 0.75
+          "aspectRatio": 0.75,
+          "variants": []
         }
       ]
     },
@@ -250,7 +275,8 @@
         "date": "2016-04-16",
         "width": null,
         "height": null,
-        "aspectRatio": null
+        "aspectRatio": null,
+        "variants": []
       },
       "photos": [
         {
@@ -260,7 +286,8 @@
           "date": "2016-04-16",
           "width": null,
           "height": null,
-          "aspectRatio": null
+          "aspectRatio": null,
+          "variants": []
         }
       ]
     },
@@ -272,7 +299,8 @@
         "date": "2016-04-30",
         "width": 2391,
         "height": 3599,
-        "aspectRatio": 0.6644
+        "aspectRatio": 0.6644,
+        "variants": []
       },
       "photos": [
         {
@@ -282,7 +310,8 @@
           "date": "2016-04-30",
           "width": 2391,
           "height": 3599,
-          "aspectRatio": 0.6644
+          "aspectRatio": 0.6644,
+          "variants": []
         }
       ]
     },
@@ -294,7 +323,8 @@
         "date": "2015-04-25",
         "width": null,
         "height": null,
-        "aspectRatio": null
+        "aspectRatio": null,
+        "variants": []
       },
       "photos": [
         {
@@ -304,7 +334,8 @@
           "date": "2015-04-25",
           "width": null,
           "height": null,
-          "aspectRatio": null
+          "aspectRatio": null,
+          "variants": []
         },
         {
           "path": "assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-2015-with-mom-01.jpeg",
@@ -313,7 +344,8 @@
           "date": "2015-04-25",
           "width": 1536,
           "height": 1536,
-          "aspectRatio": 1
+          "aspectRatio": 1,
+          "variants": []
         }
       ]
     },
@@ -325,7 +357,8 @@
         "date": "2019-10-19",
         "width": null,
         "height": null,
-        "aspectRatio": null
+        "aspectRatio": null,
+        "variants": []
       },
       "photos": [
         {
@@ -335,7 +368,8 @@
           "date": "2019-10-19",
           "width": null,
           "height": null,
-          "aspectRatio": null
+          "aspectRatio": null,
+          "variants": []
         }
       ]
     },
@@ -347,7 +381,8 @@
         "date": "2021-11-25",
         "width": 1152,
         "height": 1536,
-        "aspectRatio": 0.75
+        "aspectRatio": 0.75,
+        "variants": []
       },
       "photos": [
         {
@@ -357,7 +392,8 @@
           "date": "2021-11-25",
           "width": 1152,
           "height": 1536,
-          "aspectRatio": 0.75
+          "aspectRatio": 0.75,
+          "variants": []
         }
       ]
     },
@@ -369,7 +405,8 @@
         "date": "2023-11-23",
         "width": 1152,
         "height": 1536,
-        "aspectRatio": 0.75
+        "aspectRatio": 0.75,
+        "variants": []
       },
       "photos": [
         {
@@ -379,7 +416,8 @@
           "date": "2023-11-23",
           "width": 1152,
           "height": 1536,
-          "aspectRatio": 0.75
+          "aspectRatio": 0.75,
+          "variants": []
         }
       ]
     },
@@ -391,7 +429,8 @@
         "date": "2022-09-25",
         "width": 1536,
         "height": 1152,
-        "aspectRatio": 1.3333
+        "aspectRatio": 1.3333,
+        "variants": []
       },
       "photos": [
         {
@@ -401,7 +440,8 @@
           "date": "2022-09-25",
           "width": 1536,
           "height": 1152,
-          "aspectRatio": 1.3333
+          "aspectRatio": 1.3333,
+          "variants": []
         }
       ]
     },
@@ -413,7 +453,8 @@
         "date": "2024-01-07",
         "width": 1536,
         "height": 1152,
-        "aspectRatio": 1.3333
+        "aspectRatio": 1.3333,
+        "variants": []
       },
       "photos": [
         {
@@ -423,7 +464,8 @@
           "date": "2024-01-07",
           "width": 1536,
           "height": 1152,
-          "aspectRatio": 1.3333
+          "aspectRatio": 1.3333,
+          "variants": []
         }
       ]
     },
@@ -435,7 +477,8 @@
         "date": "2015-03-14",
         "width": 1068,
         "height": 1068,
-        "aspectRatio": 1
+        "aspectRatio": 1,
+        "variants": []
       },
       "photos": [
         {
@@ -445,7 +488,8 @@
           "date": "2015-03-14",
           "width": 1068,
           "height": 1068,
-          "aspectRatio": 1
+          "aspectRatio": 1,
+          "variants": []
         }
       ]
     },
@@ -457,7 +501,8 @@
         "date": null,
         "width": 1536,
         "height": 1032,
-        "aspectRatio": 1.4884
+        "aspectRatio": 1.4884,
+        "variants": []
       },
       "photos": [
         {
@@ -467,7 +512,8 @@
           "date": null,
           "width": 1536,
           "height": 1032,
-          "aspectRatio": 1.4884
+          "aspectRatio": 1.4884,
+          "variants": []
         }
       ]
     },
@@ -479,7 +525,8 @@
         "date": null,
         "width": 1764,
         "height": 1166,
-        "aspectRatio": 1.5129
+        "aspectRatio": 1.5129,
+        "variants": []
       },
       "photos": [
         {
@@ -489,7 +536,8 @@
           "date": null,
           "width": 1764,
           "height": 1166,
-          "aspectRatio": 1.5129
+          "aspectRatio": 1.5129,
+          "variants": []
         }
       ]
     },
@@ -501,7 +549,8 @@
         "date": null,
         "width": 1024,
         "height": 768,
-        "aspectRatio": 1.3333
+        "aspectRatio": 1.3333,
+        "variants": []
       },
       "photos": [
         {
@@ -511,7 +560,8 @@
           "date": null,
           "width": 1024,
           "height": 768,
-          "aspectRatio": 1.3333
+          "aspectRatio": 1.3333,
+          "variants": []
         }
       ]
     },
@@ -523,7 +573,8 @@
         "date": "2016-04-09",
         "width": 1024,
         "height": 1536,
-        "aspectRatio": 0.6667
+        "aspectRatio": 0.6667,
+        "variants": []
       },
       "photos": [
         {
@@ -533,7 +584,8 @@
           "date": "2016-04-09",
           "width": 1024,
           "height": 1536,
-          "aspectRatio": 0.6667
+          "aspectRatio": 0.6667,
+          "variants": []
         }
       ]
     },
@@ -545,7 +597,8 @@
         "date": "2016-05-14",
         "width": 2300,
         "height": 830,
-        "aspectRatio": 2.7711
+        "aspectRatio": 2.7711,
+        "variants": []
       },
       "photos": [
         {
@@ -555,7 +608,8 @@
           "date": "2016-05-14",
           "width": 2300,
           "height": 830,
-          "aspectRatio": 2.7711
+          "aspectRatio": 2.7711,
+          "variants": []
         }
       ]
     },
@@ -567,7 +621,8 @@
         "date": "2022-08-27",
         "width": 1024,
         "height": 1536,
-        "aspectRatio": 0.6667
+        "aspectRatio": 0.6667,
+        "variants": []
       },
       "photos": [
         {
@@ -577,7 +632,8 @@
           "date": "2022-08-27",
           "width": 1024,
           "height": 1536,
-          "aspectRatio": 0.6667
+          "aspectRatio": 0.6667,
+          "variants": []
         }
       ]
     },
@@ -589,7 +645,8 @@
         "date": "2015-10-04",
         "width": 1199,
         "height": 1199,
-        "aspectRatio": 1
+        "aspectRatio": 1,
+        "variants": []
       },
       "photos": [
         {
@@ -599,7 +656,8 @@
           "date": "2015-10-04",
           "width": 1199,
           "height": 1199,
-          "aspectRatio": 1
+          "aspectRatio": 1,
+          "variants": []
         }
       ]
     }
