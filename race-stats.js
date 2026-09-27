@@ -1,14 +1,52 @@
 (()=>{
- const A=window.AdventureSite;if(!A)return;const esc=A.esc,pct=(n,d)=>d?Math.round(n/d*100):0;
- const bar=(label,value,max,meta='')=>`<div style="display:grid;grid-template-columns:minmax(72px,120px) 1fr auto;gap:10px;align-items:center;margin:8px 0"><span>${esc(label)}</span><div style="height:10px;border-radius:999px;background:rgba(127,127,127,.18);overflow:hidden"><div style="height:100%;width:${max?Math.max(3,value/max*100):0}%;background:currentColor;border-radius:999px"></div></div><strong>${esc(meta||String(value))}</strong></div>`;
- const raceMiles=r=>{const official=Number(r.officialDistanceMi);if(Number.isFinite(official)&&official>0)return official;const normalized=Number(r.distanceInfo?.mi);if(Number.isFinite(normalized)&&normalized>0)return normalized;const fallback=Number(r.distanceMi);return Number.isFinite(fallback)&&fallback>0?fallback:0;};
- A.load().then(all=>{const races=all.filter(a=>a.kind==='race').sort((a,b)=>(a.date||'').localeCompare(b.date||''));if(!races.length)return;const host=document.getElementById('timeline');if(!host)return;const compact=window.matchMedia?.('(max-width:760px)')?.matches||false;
- const years=new Map(),milesByYear=new Map(),disc=new Map();let cumulative=0;const cumulativeRows=[];
- races.forEach(r=>{const y=Number(r.year||r.date?.slice(0,4)),miles=raceMiles(r);if(y){years.set(y,(years.get(y)||0)+1);milesByYear.set(y,(milesByYear.get(y)||0)+miles)}const d=r.discipline||'road';disc.set(d,(disc.get(d)||0)+1);cumulative+=miles;cumulativeRows.push([r.date?.slice(0,4)||r.year||'?',cumulative])});
- const peak=[...years.entries()].sort((a,b)=>b[1]-a[1]||a[0]-b[0])[0],knownMiles=[...milesByYear.values()].reduce((a,b)=>a+b,0);const offroad=(disc.get('trail')||0)+(disc.get('nordic')||0)+(disc.get('mountain-bike')||0);const marathons=disc.get('marathon')||0;
- const recurring=new Map();races.forEach(r=>{const key=(r.eventSeries||r.name||'').replace(/\b(19|20)\d{2}\b/g,'').replace(/\s+/g,' ').trim();if(key)recurring.set(key,(recurring.get(key)||0)+1)});const repeat=[...recurring.entries()].filter(x=>x[1]>1).sort((a,b)=>b[1]-a[1]).slice(0,compact?4:6);
- const overview=document.createElement('section');overview.className='sport-detail';overview.innerHTML=`<div class="sport-detail-head"><h2>Race history at a glance</h2><p>${compact?'The useful archive numbers, without interrupting the race timeline.':'A statistical view generated directly from the canonical race archive. Official race distances are used when verified; GPS distance is the fallback.'}</p></div><div class="sport-detail-grid"><article class="sport-panel"><small>Known race mileage</small><strong>${knownMiles?knownMiles.toFixed(1)+' mi':'—'}</strong><p>Only records with normalized distance data.</p></article><article class="sport-panel"><small>Busiest year</small><strong>${peak?peak[0]:'—'}</strong><p>${peak?peak[1]+' recorded races':''}</p></article><article class="sport-panel"><small>Marathon share</small><strong>${pct(marathons,races.length)}%</strong><p>${marathons} of ${races.length} race records</p></article><article class="sport-panel"><small>Off-road racing</small><strong>${offroad}</strong><p>Trail, Nordic, and MTB races</p></article></div>${repeat.length?`<div class="detail-callout"><strong>Recurring race families</strong><p>${repeat.map(([n,c])=>`${esc(n)} × ${c}`).join(' · ')}</p></div>`:''}`;host.parentNode.insertBefore(overview,host);
- if(!compact){const maxYear=Math.max(...years.values()),yearBars=[...years.entries()].sort((a,b)=>a[0]-b[0]).map(([y,n])=>bar(String(y),n,maxYear,`${n}`)).join('');const labels={'marathon':'Marathon','road':'Road','trail':'Trail','relay':'Relay','nordic':'Nordic','mountain-bike':'MTB'},maxDisc=Math.max(...disc.values());const discBars=[...disc.entries()].sort((a,b)=>b[1]-a[1]).map(([d,n])=>bar(labels[d]||d,n,maxDisc,`${n}`)).join('');
- const analytics=document.createElement('section');analytics.className='sport-detail';analytics.innerHTML=`<div class="sport-detail-head"><h2>The shape of the race archive</h2><p>Chronology and discipline mix, calculated from the same records that power the timeline below.</p></div><div class="sport-detail-grid"><article class="sport-panel wide"><small>Races by year</small>${yearBars}</article><article class="sport-panel wide"><small>Discipline mix</small>${discBars}</article></div><div class="detail-callout"><strong>Cumulative known race distance</strong><p>${knownMiles?`${knownMiles.toFixed(1)} miles currently documented across ${races.filter(r=>raceMiles(r)>0).length} races. This total grows only when a race distance is actually known.`:'Distance normalization is still in progress.'}</p></div>`;host.parentNode.insertBefore(analytics,host)}
- }).catch(e=>console.error('Race stats',e));
+  'use strict';
+  const A=window.AdventureSite;if(!A)return;
+  const esc=A.esc;
+  const script=document.currentScript;
+  const dataUrl=script?.src?new URL('data/race-history.json',script.src).href:'data/race-history.json';
+  const labels={marathon:'Marathon',road:'Road',trail:'Trail',relay:'Relay',nordic:'Nordic','mountain-bike':'MTB'};
+  const miles=value=>Number.isFinite(value)?`${value.toFixed(value>=100?0:1)} mi`:'—';
+  const yearRange=years=>!years?.length?'—':years.length===1?String(years[0]):`${years[0]}–${years.at(-1)}`;
+  const hrefFor=item=>A.recordHref({id:item.id,slug:item.slug});
+  const pct=(value,max)=>max?Math.max(3,Math.round(value/max*100)):0;
+
+  function summaryCard(label,value,detail){return `<article class="race-history-card"><small>${esc(label)}</small><strong>${esc(value)}</strong><p>${esc(detail||'')}</p></article>`}
+
+  function renderYearHistory(history){
+    const maxCount=Math.max(1,...history.yearly.map(row=>row.count));
+    const rows=history.yearly.map(row=>`<div class="race-history-year-row"><span>${row.year}</span><div class="race-history-year-track" title="${esc(`${row.count} races · ${miles(row.miles)}`)}"><div class="race-history-year-bar" style="width:${pct(row.count,maxCount)}%"></div></div><span class="race-history-year-meta">${row.count} · ${esc(miles(row.miles))}</span></div>`).join('');
+    return `<article class="race-history-panel wide"><small>Year-by-year archive</small>${rows}<p class="race-history-note">Each row shows recorded race starts and known race mileage. Mileage only includes normalized distances in the archive.</p></article>`;
+  }
+
+  function renderDisciplines(history){
+    const max=Math.max(1,...history.disciplines.map(item=>item.count));
+    return `<article class="race-history-panel"><small>Discipline mix</small><div class="race-history-disciplines">${history.disciplines.map(item=>`<div class="race-history-discipline"><span>${esc(labels[item.name]||item.name)}</span><span>${item.count}</span><div class="race-history-year-track" style="grid-column:1/-1"><div class="race-history-year-bar" style="width:${pct(item.count,max)}%"></div></div></div>`).join('')}</div></article>`;
+  }
+
+  function renderPlaces(history){
+    const items=history.topPlaces.slice(0,8);
+    return `<article class="race-history-panel"><small>Most-raced places</small><div class="race-history-list">${items.map(item=>`<div class="race-history-list-row"><div><strong>${esc(item.name)}</strong><span>${esc(yearRange(item.years))}</span></div><strong>${item.count}</strong></div>`).join('')}</div></article>`;
+  }
+
+  function renderRecurring(history){
+    const items=history.recurringSeries.slice(0,8);
+    return `<article class="race-history-panel"><small>Recurring traditions</small><div class="race-history-list">${items.map(item=>`<div class="race-history-list-row"><div><strong>${esc(item.name)}</strong><span>${esc(yearRange(item.years))}</span></div><strong>×${item.appearanceCount}</strong></div>`).join('')}</div></article>`;
+  }
+
+  function renderMarathons(history){
+    if(!history.marathonTimeline.length)return '';
+    return `<article class="race-history-panel wide"><small>Marathon chronology</small><div class="race-history-marathons">${history.marathonTimeline.map(item=>`<a class="race-history-marathon" href="${esc(hrefFor(item))}"><small>${esc(String(item.year||''))}</small><strong>${esc(item.name)}</strong><span>${esc([item.time,item.location].filter(Boolean).join(' · '))}</span></a>`).join('')}</div><p class="race-history-note">Chronology is generated from records classified as marathons; result times appear only when the archive contains them.</p></article>`;
+  }
+
+  function render(history){
+    const host=document.getElementById('timeline');if(!host)return;
+    document.querySelector('[data-race-history]')?.remove();
+    const s=history.summary;
+    const section=document.createElement('section');
+    section.className='race-history';section.dataset.raceHistory='true';
+    section.innerHTML=`<div class="race-history-head"><div><h2>Race history</h2><p>A sports-history view of the archive: how the racing years accumulated, where the finish lines landed, and which traditions kept returning.</p></div></div><div class="race-history-summary" data-race-history-count="${s.raceCount}">${summaryCard('Known race mileage',miles(s.knownDistanceMiles),`${s.knownDistanceCount} of ${s.raceCount} records with normalized distance`)}${summaryCard('Busiest year',s.busiestYear?String(s.busiestYear.year):'—',s.busiestYear?`${s.busiestYear.count} recorded races`:'')}${summaryCard('Marathons',String(s.marathonCount),s.firstYear&&s.lastYear?`${s.firstYear}–${s.lastYear} archive span`:'')}${summaryCard('Longest documented',s.longestKnown?miles(s.longestKnown.miles):'—',s.longestKnown?.name||'')}</div><div class="race-history-grid">${renderYearHistory(history)}${renderDisciplines(history)}${renderPlaces(history)}${renderRecurring(history)}${renderMarathons(history)}</div>`;
+    host.parentNode.insertBefore(section,host);
+  }
+
+  fetch(dataUrl,{cache:'no-cache'}).then(response=>{if(!response.ok)throw new Error(`Race history unavailable (${response.status})`);return response.json()}).then(render).catch(error=>console.error('Race history',error));
 })();
