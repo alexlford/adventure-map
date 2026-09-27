@@ -47,17 +47,40 @@ test('record pages use manifest-backed photography when no curated photo essay e
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
 
-  await page.goto('/record/2022-09-25-mount-sherman/', { waitUntil: 'domcontentloaded' });
+  const [recordsResponse, photosResponse] = await Promise.all([
+    page.request.get('/data/public-records.json'),
+    page.request.get('/data/photo-index.json')
+  ]);
+  expect(recordsResponse.ok()).toBeTruthy();
+  expect(photosResponse.ok()).toBeTruthy();
+  const records = (await recordsResponse.json()).records || [];
+  const photos = (await photosResponse.json()).records || {};
+  const record = records.find(item => {
+    const primary = photos[item.id]?.primary;
+    return item.slug && !item.media?.length && primary?.path && Number.isFinite(primary.width) && Number.isFinite(primary.height);
+  });
+  expect(record, 'photo index should include at least one record without separately curated media').toBeTruthy();
+  const primary = photos[record.id].primary;
+
+  await page.goto(`/record/${record.slug}/`, { waitUntil: 'domcontentloaded' });
 
   const media = page.locator('.record-media-indexed');
   await expect(media).toHaveCount(1);
   await expect(media.locator('h2')).toHaveText('Scenes from the day');
   const image = media.locator('img').first();
-  await expect(image).toHaveAttribute('src', /mount-sherman-summit-with-olive/);
-  await expect(image).toHaveAttribute('width', '1536');
-  await expect(image).toHaveAttribute('height', '1152');
+  await expect(image).toHaveAttribute('src', primary.path);
+  await expect(image).toHaveAttribute('width', String(primary.width));
+  await expect(image).toHaveAttribute('height', String(primary.height));
   await expect(image).toHaveAttribute('loading', 'lazy');
   await expect(page.locator('body')).toHaveClass(/has-record-media/);
 
   expect(errors).toEqual([]);
+});
+
+test('curated record media remains authoritative over the manifest fallback', async ({ page }) => {
+  await page.goto('/record/2022-09-25-mount-sherman/', { waitUntil: 'domcontentloaded' });
+
+  await expect(page.locator('.record-media')).toHaveCount(1);
+  await expect(page.locator('.record-media-indexed')).toHaveCount(0);
+  await expect(page.locator('.record-media img')).toHaveAttribute('alt', 'Photo from Mount Sherman');
 });
