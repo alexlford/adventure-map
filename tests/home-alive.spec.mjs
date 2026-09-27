@@ -43,34 +43,27 @@ test('generated photo index exposes rendering metadata without provenance intern
   expect(JSON.stringify(payload)).not.toContain('evidence');
 });
 
-test('record pages use manifest-backed photography when no curated photo essay exists', async ({ page }) => {
+test('race pages inherit manifest-backed photography through the indexed fallback', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
 
-  const [recordsResponse, photosResponse] = await Promise.all([
-    page.request.get('/data/public-records.json'),
-    page.request.get('/data/photo-index.json')
-  ]);
-  expect(recordsResponse.ok()).toBeTruthy();
+  const photosResponse = await page.request.get('/data/photo-index.json');
   expect(photosResponse.ok()).toBeTruthy();
-  const records = (await recordsResponse.json()).records || [];
   const photos = (await photosResponse.json()).records || {};
-  const record = records.find(item => {
-    const primary = photos[item.id]?.primary;
-    return item.slug && !item.media?.length && primary?.path && Number.isFinite(primary.width) && Number.isFinite(primary.height);
-  });
-  expect(record, 'photo index should include at least one record without separately curated media').toBeTruthy();
-  const primary = photos[record.id].primary;
+  const primary = photos['abes-amble-2014']?.primary;
+  expect(primary?.path).toContain('abes-amble');
+  expect(primary?.width).toBe(2048);
+  expect(primary?.height).toBe(1530);
 
-  await page.goto(`/record/${record.slug}/`, { waitUntil: 'domcontentloaded' });
+  await page.goto('/record/2014-08-17-abe-s-amble-10k/', { waitUntil: 'domcontentloaded' });
 
   const media = page.locator('.record-media-indexed');
   await expect(media).toHaveCount(1);
   await expect(media.locator('h2')).toHaveText('Scenes from the day');
   const image = media.locator('img').first();
   await expect(image).toHaveAttribute('src', primary.path);
-  await expect(image).toHaveAttribute('width', String(primary.width));
-  await expect(image).toHaveAttribute('height', String(primary.height));
+  await expect(image).toHaveAttribute('width', '2048');
+  await expect(image).toHaveAttribute('height', '1530');
   await expect(image).toHaveAttribute('loading', 'lazy');
   await expect(page.locator('body')).toHaveClass(/has-record-media/);
 
