@@ -30,6 +30,46 @@ const sportFor = record => {
   return 'adventure';
 };
 
+const normalizedMediaSrc = value => String(value || '').replace(/^https?:\/\/[^/]+/i, '').replace(/^\.?\.?\//, '/');
+const mediaItemForPhoto = photo => ({
+  type: 'image',
+  src: `/${photo.path}`,
+  alt: photo.alt || `Photo from ${photo.eventName || 'this adventure'}`,
+  caption: photo.caption || [photo.eventName, photo.date].filter(Boolean).join(' · '),
+  width: Number.isInteger(photo.pixelWidth) ? photo.pixelWidth : null,
+  height: Number.isInteger(photo.pixelHeight) ? photo.pixelHeight : null,
+  source: 'event-photo-manifest',
+  sourceFile: photo.source || null,
+  repositoryBlobSha: photo.repositoryBlobSha || null
+});
+
+function mergeManifestMedia(records, photoManifest) {
+  const photosByRecord = new Map();
+  for (const photo of photoManifest?.photos || []) {
+    if (photo?.status !== 'canonical' || !photo?.path || !photo?.eventId) continue;
+    const targetIds = [photo.eventId, ...(Array.isArray(photo.relatedEventIds) ? photo.relatedEventIds : [])];
+    for (const id of new Set(targetIds.filter(Boolean))) {
+      const items = photosByRecord.get(id) || [];
+      items.push(photo);
+      photosByRecord.set(id, items);
+    }
+  }
+
+  return records.map(record => {
+    const manifestPhotos = photosByRecord.get(record.id) || [];
+    if (!manifestPhotos.length) return record;
+    const media = Array.isArray(record.media) ? [...record.media] : [];
+    const seen = new Set(media.map(item => normalizedMediaSrc(item?.src)).filter(Boolean));
+    for (const photo of manifestPhotos) {
+      const src = `/${photo.path}`;
+      if ([...seen].some(existing => existing === src || existing.endsWith(photo.path))) continue;
+      media.push(mediaItemForPhoto(photo));
+      seen.add(src);
+    }
+    return { ...record, media };
+  });
+}
+
 export const normalizeRecord = record => {
   const startDate = record.date || (record.year ? `${record.year}-01-01` : null);
   const finishDate = record.endDate || startDate;
@@ -95,10 +135,15 @@ export async function resolvePublicRecords() {
     records.set(id, { ...records.get(id), ...override });
   }
 
+  // Verified photo identity lives in the photo manifest. Merge those canonical assets into
+  // the public record layer so every renderer sees the same media without duplicating paths
+  // across catalog overrides or presentation code.
+  const photoManifest = await readJson('data/event-photo-manifest.json');
+
   // A single GPS activity can legitimately represent several public records, such as
   // multiple summits reached on one hike. Identity decisions belong in the canonical
   // catalog (compiled evidence, matches, tombstones, and explicit overrides), never in the publisher.
-  const publicRecords = [...records.values()].map(normalizeRecord);
+  const publicRecords = mergeManifestMedia([...records.values()], photoManifest).map(normalizeRecord);
   const ids = new Set();
   const slugs = new Set();
   for (const record of publicRecords) {
