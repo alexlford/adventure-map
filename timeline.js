@@ -104,14 +104,15 @@
     return`${children.length} linked event${children.length===1?'':'s'}`;
   };
 
-  function renderItem(x,{child=false,groupCount=''}={}){
+  function renderItem(x,{child=false,groupCount='',contextOnly=false}={}){
     const href=statefulHref(x);
     const tag=href?'a':'div';
     const hrefAttr=href?` href="${A.esc(href)}"`:'';
     const value=valueFor(x);
     const groupBadge=groupCount?`<span class="timeline-group-count">${A.esc(groupCount)}</span>`:'';
     const context=[labelFor(x),x.teamName?`Team: ${x.teamName}`:'',x.locationInfo?.label||x.location||''].filter(Boolean).join(' · ');
-    return `<${tag} class="timeline-item${child?' timeline-child-item':''}"${hrefAttr}><div><strong>${A.esc(x.name)}</strong><span>${A.esc(context)}</span>${groupBadge}</div><div><strong>${A.esc(value)}</strong><span>${A.esc(dateLabelFor(x))}</span></div></${tag}>`;
+    const dateLabel=contextOnly?'Context':dateLabelFor(x);
+    return `<${tag} class="timeline-item${child?' timeline-child-item':''}"${hrefAttr}><div><strong>${A.esc(x.name)}</strong><span>${A.esc(context)}</span>${groupBadge}</div><div><strong>${A.esc(value)}</strong><span>${A.esc(dateLabel)}</span></div></${tag}>`;
   }
 
   const matchesFacets=a=>{
@@ -128,10 +129,28 @@
     if(!query||matchesQuery(entry))return children;
     return children.filter(child=>matchesQuery(child));
   };
-  const matchesFilter=(entry,filter)=>{
-    const parentMatch=matchesActivity(entry,filter)&&matchesFacets(entry)&&matchesQuery(entry);
-    return parentMatch||visibleChildren(entry,filter).length>0;
+  const matchesEntry=(entry,filter)=>matchesActivity(entry,filter)&&matchesFacets(entry)&&matchesQuery(entry);
+  const displayRows=filter=>{
+    const rows=[];
+    entries.forEach(entry=>{
+      const includeParent=matchesEntry(entry,filter);
+      const children=visibleChildren(entry,filter);
+      if(includeParent){
+        rows.push({entry,children,year:yearFor(entry),includeParent:true});
+        return;
+      }
+      if(!children.length)return;
+      const byYear=new Map();
+      children.forEach(child=>{
+        const year=yearFor(child);
+        if(!byYear.has(year))byYear.set(year,[]);
+        byYear.get(year).push(child);
+      });
+      byYear.forEach((yearChildren,year)=>rows.push({entry,children:yearChildren,year,includeParent:false}));
+    });
+    return rows;
   };
+  const rowDate=row=>row.includeParent?dateFor(row.entry):row.children.map(dateFor).sort()[0]||dateFor(row.entry);
 
   function reflectOrder(){
     orderButtons.forEach(button=>{
@@ -184,25 +203,26 @@
 
   const render=filter=>{
     active=filter||active;
-    const shown=entries.filter(entry=>matchesFilter(entry,active));
-    let years=[...new Set(shown.map(entry=>yearFor(entry)))];
+    const rows=displayRows(active);
+    let years=[...new Set(rows.map(row=>row.year))];
     years.sort((a,b)=>order==='latest'?b.localeCompare(a):a.localeCompare(b));
     const visibleIds=[];
     timelineEl.innerHTML=years.map(year=>{
       const direction=order==='latest'?-1:1;
-      const yearEntries=shown.filter(entry=>yearFor(entry)===year).sort((a,b)=>direction*(dateFor(a).localeCompare(dateFor(b))||a.name.localeCompare(b.name)));
-      const items=yearEntries.map(entry=>{
-        const children=visibleChildren(entry,active).slice().sort((a,b)=>direction*(dateFor(a).localeCompare(dateFor(b))||a.name.localeCompare(b.name)));
-        if(!entry._timelineSynthetic&&!entry._timelineHref&&allRecords.some(record=>record.id===entry.id))visibleIds.push(entry.id);
+      const yearRows=rows.filter(row=>row.year===year).sort((a,b)=>direction*(rowDate(a).localeCompare(rowDate(b))||a.entry.name.localeCompare(b.entry.name)));
+      const items=yearRows.map(row=>{
+        const {entry,includeParent}=row;
+        const children=row.children.slice().sort((a,b)=>direction*(dateFor(a).localeCompare(dateFor(b))||a.name.localeCompare(b.name)));
+        if(includeParent&&!entry._timelineSynthetic&&!entry._timelineHref&&allRecords.some(record=>record.id===entry.id))visibleIds.push(entry.id);
         children.forEach(child=>{if(allRecords.some(record=>record.id===child.id))visibleIds.push(child.id)});
         if(!children.length)return renderItem(entry);
         const nested=children.map(child=>renderItem(child,{child:true})).join('');
-        return `<div class="timeline-group">${renderItem(entry,{groupCount:childLabel(entry,children)})}<div class="timeline-children">${nested}</div></div>`;
+        return `<div class="timeline-group">${renderItem(entry,{groupCount:childLabel(entry,children),contextOnly:!includeParent})}<div class="timeline-children">${nested}</div></div>`;
       }).join('');
       return `<section class="timeline-year" id="timeline-year-${year}"><h3>${year}</h3><div class="timeline-items">${items}</div></section>`;
     }).join('')||'<div class="empty">No entries match this combination of filters.</div>';
     reflectOrder();
-    reflectResults([...new Set(visibleIds)],shown.length);
+    reflectResults([...new Set(visibleIds)],rows.length);
   };
 
   function buildGroupedEntries(all,relationships){
