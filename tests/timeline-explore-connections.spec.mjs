@@ -50,3 +50,21 @@ test('Using normal map controls exits a carried Timeline selection', async ({ pa
   await expect.poll(() => new URL(page.url()).searchParams.get('selection')).toBeNull();
   await expect.poll(() => new URL(page.url()).searchParams.get('layer')).toBe('summits');
 });
+
+test('A filtered Map view becomes the exact same record set in Timeline', async ({ page }) => {
+  await page.goto('/map.html', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#resultCount')).toContainText('shown');
+  await page.locator('[data-filter="summits"]').click();
+
+  const mapCountText = await page.locator('#resultCount').textContent();
+  const mapCount = Number(mapCountText?.match(/(\d+)/)?.[1]);
+  expect(mapCount).toBeGreaterThan(0);
+  await expect(page.locator('.map-timeline-link')).toHaveAttribute('href', /selection=/);
+
+  await page.locator('.map-timeline-link').click();
+  await expect(page.locator('.archive-source-context')).toBeVisible();
+  await expect(page.locator('.archive-source-context')).toContainText(`Map selection · ${mapCount} record`);
+  await expect(page.locator('#timeline .timeline-item').first()).toBeVisible();
+  await expect.poll(() => new URL(page.url()).searchParams.get('source')).toBe('map');
+  expect(new URL(page.url()).searchParams.get('selection')?.split(',').length).toBe(mapCount);
+});
