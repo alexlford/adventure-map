@@ -130,14 +130,29 @@ window.AdventureSite = (() => {
     const nav=document.querySelector('.nav'); if(!nav)return;
     const top=primaryKey(active);
     nav.setAttribute('aria-label','Primary navigation');
-    nav.innerHTML=PRIMARY.map(([href,text,key])=>`<a data-nav="${key}" href="${pageHref(href)}"${top===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('');
-    document.querySelector('.activity-subnav-wrap')?.remove();
-    if(active==='timeline'||activityKeys.has(active)){
+    if(!nav.querySelector('a[data-nav]')){
+      nav.innerHTML=PRIMARY.map(([href,text,key])=>`<a data-nav="${key}" href="${pageHref(href)}">${text}</a>`).join('');
+    }
+    nav.querySelectorAll('a[data-nav]').forEach(link=>{
+      const current=link.dataset.nav===top;
+      link.classList.toggle('is-active',current);
+      if(current)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
+    });
+    const needsSubnav=active==='timeline'||activityKeys.has(active);
+    let wrap=document.querySelector('.activity-subnav-wrap');
+    if(!needsSubnav){wrap?.remove();wrap=null}
+    else if(!wrap){
       const header=document.querySelector('.site-header');if(!header)return;
-      const wrap=document.createElement('div');wrap.className='activity-subnav-wrap';
-      wrap.innerHTML=`<nav class="activity-subnav" aria-label="Explore Adventures"><span class="activity-subnav-label">Explore</span>${ACTIVITIES.map(([href,text,key])=>`<a href="${pageHref(href)}"${active===key?' class="is-active" aria-current="page"':''}>${text}</a>`).join('')}<a href="${pageHref('timeline.html')}"${active==='timeline'?' class="is-active" aria-current="page"':''}>Timeline</a></nav>`;
+      wrap=document.createElement('div');wrap.className='activity-subnav-wrap';
+      wrap.innerHTML=`<nav class="activity-subnav" aria-label="Explore Adventures"><span class="activity-subnav-label">Explore</span>${ACTIVITIES.map(([href,text,key])=>`<a data-activity-nav="${key}" href="${pageHref(href)}">${text}</a>`).join('')}<a data-activity-nav="timeline" href="${pageHref('timeline.html')}">Timeline</a></nav>`;
       header.insertAdjacentElement('afterend',wrap);
     }
+    wrap?.querySelectorAll('a[data-activity-nav]').forEach(link=>{
+      const current=link.dataset.activityNav===active;
+      link.classList.toggle('is-active',current);
+      if(current)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
+    });
+    rewritePublicLinks();
     requestAnimationFrame(()=>document.querySelector('.nav .is-active,.activity-subnav .is-active')?.scrollIntoView({block:'nearest',inline:'center'}));
   }
   function chapterAnchor(text,index,used){

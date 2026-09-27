@@ -1,0 +1,572 @@
+{
+  "schemaVersion": 1,
+  "recordCount": 161,
+  "coverage": {
+    "Date": {
+      "complete": 161,
+      "missing": 0,
+      "percent": 100
+    },
+    "Place": {
+      "complete": 161,
+      "missing": 0,
+      "percent": 100
+    },
+    "Coordinates": {
+      "complete": 108,
+      "missing": 53,
+      "percent": 67.1
+    },
+    "Explicit taxonomy": {
+      "complete": 161,
+      "missing": 0,
+      "percent": 100
+    },
+    "Distance": {
+      "complete": 149,
+      "missing": 12,
+      "percent": 92.5
+    },
+    "Route": {
+      "complete": 78,
+      "missing": 83,
+      "percent": 48.4
+    },
+    "Evidence": {
+      "complete": 161,
+      "missing": 0,
+      "percent": 100
+    },
+    "Photo": {
+      "complete": 26,
+      "missing": 135,
+      "percent": 16.1
+    }
+  },
+  "priorityIncomplete": [
+    {
+      "id": "colorado-triathlon-2023",
+      "slug": "2023-12-02-colorado-triathlon",
+      "name": "Colorado Triathlon",
+      "score": 7,
+      "missing": [
+        "Coordinates",
+        "Distance",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "colderbolder-series-story",
+      "slug": "colderbolder-series",
+      "name": "COLDERBolder 5K",
+      "score": 7,
+      "missing": [
+        "Coordinates",
+        "Distance",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "bolderboulder-series-story",
+      "slug": "bolderboulder-series",
+      "name": "BOLDERBoulder",
+      "score": 7,
+      "missing": [
+        "Coordinates",
+        "Distance",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "rundenver-series-story",
+      "slug": "rundenver-series",
+      "name": "RunDenver Series",
+      "score": 7,
+      "missing": [
+        "Coordinates",
+        "Distance",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "colfax-marathon-weekend-series",
+      "slug": "denver-colfax-marathon-weekend-series",
+      "name": "Denver Colfax Marathon Weekend",
+      "score": 7,
+      "missing": [
+        "Coordinates",
+        "Distance",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "river-to-river-relay-series-story",
+      "slug": "river-to-river-relay-series",
+      "name": "River to River Relay",
+      "score": 7,
+      "missing": [
+        "Coordinates",
+        "Distance",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "west-maroon-pass-2026",
+      "slug": "2026-06-29-west-maroon-pass-traverse",
+      "name": "West Maroon Pass Traverse",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "colderbolder-2022",
+      "slug": "2022-12-10-colderbolder-5k",
+      "name": "COLDERBolder 5K",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "that-dam-run-10k-2022",
+      "slug": "2022-03-19-that-dam-run-10k",
+      "name": "That Dam Run 10K",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "valentines-day-4m-2022",
+      "slug": "2022-02-13-valentine-s-day-4-mile",
+      "name": "Valentine's Day 4 Mile",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "super-bowl-5k-2022",
+      "slug": "2022-02-06-super-bowl-5k",
+      "name": "Super Bowl 5K",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "chicago-marathon-series",
+      "slug": "chicago-marathon-series",
+      "name": "Chicago Marathon",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "universal-sole-virtual-5k-2020",
+      "slug": "2020-06-03-universal-sole-virtual-5k",
+      "name": "Universal Sole Virtual 5K",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "baltimore-shamrock-5k-2020-deferred-virtual",
+      "slug": "2020-03-15-kelly-benefits-st-patrick-s-day-shamrock-5k",
+      "name": "Kelly Benefits St. Patrick's Day Shamrock 5K",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mile-high-united-way-turkey-trot-series",
+      "slug": "mile-high-united-way-turkey-trot-series",
+      "name": "Turkey Trots",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "heartland-39-3-2016",
+      "slug": "2016-04-09-heartland-39-3-series",
+      "name": "Heartland 39.3 Series",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "garmin-marathon-land-of-oz-series",
+      "slug": "garmin-marathon-land-of-oz-series",
+      "name": "Garmin Marathon in the Land of Oz",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Route",
+        "Photo"
+      ]
+    },
+    {
+      "id": "snowman-shuffle-series",
+      "slug": "snowman-shuffle-series",
+      "name": "Snowman Shuffle",
+      "score": 6,
+      "missing": [
+        "Coordinates",
+        "Distance",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2026-08-05",
+      "slug": "2026-08-05-trestle-bike-park-winter-park-mtb-day",
+      "name": "Trestle Bike Park / Winter Park MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2026-05-24",
+      "slug": "2026-05-24-leadville-trail-network-mtb-day",
+      "name": "Leadville trail network MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2025-10-05",
+      "slug": "2025-10-05-steamboat-bike-park-mtb-day",
+      "name": "Steamboat Bike Park MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2025-09-28",
+      "slug": "2025-09-28-vail-trail-network-mtb-day",
+      "name": "Vail trail network MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2025-07-11",
+      "slug": "2025-07-11-granby-ranch-mtb-day",
+      "name": "Granby Ranch MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2025-06-07",
+      "slug": "2025-06-07-kokopelli-trails-mtb-day",
+      "name": "Kokopelli Trails MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2025-06-06",
+      "slug": "2025-06-06-kokopelli-trails-mtb-day",
+      "name": "Kokopelli Trails MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2025-06-05",
+      "slug": "2025-06-05-kokopelli-trails-mtb-day",
+      "name": "Kokopelli Trails MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2025-04-01",
+      "slug": "2025-04-01-snow-mountain-ranch-nordic-day",
+      "name": "Snow Mountain Ranch Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2025-03-30",
+      "slug": "2025-03-30-devil-s-thumb-ranch-nordic-day",
+      "name": "Devil’s Thumb Ranch Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2025-03-27",
+      "slug": "2025-03-27-snow-mountain-ranch-nordic-day",
+      "name": "Snow Mountain Ranch Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2025-03-19",
+      "slug": "2025-03-19-snow-mountain-ranch-nordic-day",
+      "name": "Snow Mountain Ranch Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2024-08-31",
+      "slug": "2024-08-31-trestle-bike-park-winter-park-mtb-day",
+      "name": "Trestle Bike Park / Winter Park MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2024-07-27",
+      "slug": "2024-07-27-trestle-bike-park-winter-park-mtb-day",
+      "name": "Trestle Bike Park / Winter Park MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2023-12-02",
+      "slug": "2023-12-02-north-table-mountain-mtb-day",
+      "name": "North Table Mountain MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2023-09-24",
+      "slug": "2023-09-24-crested-butte-trail-network-mtb-day",
+      "name": "Crested Butte trail network MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2023-03-01",
+      "slug": "2023-03-01-crested-butte-nordic-nordic-day",
+      "name": "Crested Butte Nordic Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2023-01-28",
+      "slug": "2023-01-28-frisco-nordic-center-nordic-day",
+      "name": "Frisco Nordic Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2023-01-21",
+      "slug": "2023-01-21-breckenridge-nordic-center-nordic-day",
+      "name": "Breckenridge Nordic Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2023-01-11",
+      "slug": "2023-01-11-breckenridge-nordic-center-nordic-day",
+      "name": "Breckenridge Nordic Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2023-01-08",
+      "slug": "2023-01-08-breckenridge-nordic-center-nordic-day",
+      "name": "Breckenridge Nordic Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "mtb-day-2022-07-16",
+      "slug": "2022-07-16-trestle-bike-park-winter-park-mtb-day",
+      "name": "Trestle Bike Park / Winter Park MTB day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2022-02-19",
+      "slug": "2022-02-19-vail-nordic-center-nordic-day",
+      "name": "Vail Nordic Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2022-02-16",
+      "slug": "2022-02-16-steamboat-ski-touring-center-nordic-day",
+      "name": "Steamboat Ski Touring Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2022-02-13",
+      "slug": "2022-02-13-haymaker-nordic-center-nordic-day",
+      "name": "Haymaker Nordic Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2022-02-05",
+      "slug": "2022-02-05-snow-mountain-ranch-nordic-day",
+      "name": "Snow Mountain Ranch Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2022-02-03",
+      "slug": "2022-02-03-snow-mountain-ranch-nordic-day",
+      "name": "Snow Mountain Ranch Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2022-01-22",
+      "slug": "2022-01-22-gold-run-nordic-center-nordic-day",
+      "name": "Gold Run Nordic Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2022-01-03",
+      "slug": "2022-01-03-tennessee-pass-nordic-center-nordic-day",
+      "name": "Tennessee Pass Nordic Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "tennessee-pass-nordic-weekend-2022",
+      "slug": "2022-01-02-tennessee-pass-cross-country-ski-weekend",
+      "name": "Tennessee Pass Cross-Country Ski Weekend",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2022-01-02",
+      "slug": "2022-01-02-tennessee-pass-nordic-center-nordic-day",
+      "name": "Tennessee Pass Nordic Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    },
+    {
+      "id": "nordic-day-2021-01-16",
+      "slug": "2021-01-16-steamboat-ski-touring-center-nordic-day",
+      "name": "Steamboat Ski Touring Center Nordic day",
+      "score": 5,
+      "missing": [
+        "Coordinates",
+        "Photo"
+      ]
+    }
+  ]
+}

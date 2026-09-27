@@ -27,8 +27,11 @@ on:
       - 'scripts/build-shared.mjs'
       - 'scripts/build-catalog-record-layer.mjs'
       - 'scripts/build-public-records.mjs'
+      - 'scripts/report-archive-health.mjs'
       - 'scripts/build-recurring-race-audit.mjs'
       - 'scripts/build-static-site.mjs'
+      - 'scripts/build-static-shell.mjs'
+      - 'scripts/validate-static-shell.mjs'
       - 'scripts/build-public-index.mjs'
       - 'scripts/build-route-detail-index.mjs'
       - 'scripts/audit-strava-route-coverage.mjs'
@@ -58,10 +61,29 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --ignore-scripts
-      - name: Generate public records, route index, and static pages
-        run: npm run build:publish
+      - name: Build shared assets
+        run: npm run build:vendor && npm run build:shared
+      - name: Build public records
+        run: npm run build:public-records
+      - name: Build archive health report
+        run: npm run build:archive-health
+      - name: Build route publication data
+        run: npm run build:route-detail-index && npm run sync:route-status && npm run build:recurring-race-audit
+      - name: Build static pages
+        run: npm run build:static-site
+      - name: Build static navigation and metadata
+        run: npm run build:static-shell
+      - name: Capture static shell diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-shell-diagnostics
+          path: static-shell-diagnostics.txt
+          if-no-files-found: ignore
+      - name: Build public index
+        run: npm run build:public-index
       - name: Validate generated structure
-        run: npm run validate:static
+        run: npm run validate:static && npm run validate:static-shell
       - name: Audit Strava route coverage
         run: node scripts/audit-strava-route-coverage.mjs
       - name: Commit generated publication artifacts
@@ -82,10 +104,11 @@ jobs:
               npm ci --ignore-scripts
               npm run build:publish
               npm run validate:static
+              npm run validate:static-shell
               node scripts/audit-strava-route-coverage.mjs
             fi
 
-            git add package-lock.json shared.js data/catalog-layers/records.json data/public-records.json data/recurring-race-audit.json data/route-detail-index.json data/route-detail-browser-polylines.json sitemap.xml robots.txt vendor/leaflet record map explore timeline stories races summits skiing nordic mtb
+            git add package-lock.json shared.js index.html world-majors data/archive-health.json data/catalog-layers/records.json data/public-records.json data/recurring-race-audit.json data/route-detail-index.json data/route-detail-browser-polylines.json sitemap.xml robots.txt vendor/leaflet record map explore timeline stories races summits skiing nordic mtb
             if git diff --cached --quiet; then
               echo "Publication artifacts are already current."
               exit 0
