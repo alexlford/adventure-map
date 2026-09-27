@@ -1,0 +1,652 @@
+{
+  "schemaVersion": 1,
+  "generatedFromRecordCount": 161,
+  "chapters": {
+    "summits": {
+      "summary": {
+        "count": 19,
+        "fourteeners": 6,
+        "routeCount": 19,
+        "regionCount": 8,
+        "firstYear": 2020,
+        "lastYear": 2023,
+        "activeYearCount": 4,
+        "highest": {
+          "id": "mount-lincoln",
+          "slug": "2023-08-13-mount-lincoln",
+          "name": "Mount Lincoln",
+          "elevationFt": 14293
+        }
+      },
+      "yearly": [
+        {
+          "year": 2020,
+          "count": 4
+        },
+        {
+          "year": 2021,
+          "count": 4
+        },
+        {
+          "year": 2022,
+          "count": 4
+        },
+        {
+          "year": 2023,
+          "count": 7
+        }
+      ],
+      "regions": [
+        {
+          "name": "Colorado",
+          "count": 9
+        },
+        {
+          "name": "Guam",
+          "count": 2
+        },
+        {
+          "name": "Hawaii",
+          "count": 2
+        },
+        {
+          "name": "Virginia",
+          "count": 2
+        },
+        {
+          "name": "California",
+          "count": 1
+        },
+        {
+          "name": "Massachusetts",
+          "count": 1
+        },
+        {
+          "name": "Tennessee",
+          "count": 1
+        },
+        {
+          "name": "Tennessee / North Carolina",
+          "count": 1
+        }
+      ],
+      "highest": [
+        {
+          "id": "mount-lincoln",
+          "slug": "2023-08-13-mount-lincoln",
+          "name": "Mount Lincoln",
+          "elevationFt": 14293,
+          "year": 2023
+        },
+        {
+          "id": "mount-evans",
+          "slug": "2022-07-31-mount-evans",
+          "name": "Mount Evans",
+          "elevationFt": 14265,
+          "year": 2022
+        },
+        {
+          "id": "mount-cameron",
+          "slug": "2023-08-13-mount-cameron",
+          "name": "Mount Cameron",
+          "elevationFt": 14248,
+          "year": 2023
+        },
+        {
+          "id": "mount-bross",
+          "slug": "2023-08-13-mount-bross",
+          "name": "Mount Bross",
+          "elevationFt": 14178,
+          "year": 2023
+        },
+        {
+          "id": "mount-democrat",
+          "slug": "2023-08-13-mount-democrat",
+          "name": "Mount Democrat",
+          "elevationFt": 14154,
+          "year": 2023
+        }
+      ]
+    },
+    "skiing": {
+      "summary": {
+        "recordedDays": 111,
+        "recordedRuns": 1132,
+        "verticalFt": 1264730,
+        "resortCount": 29,
+        "tripCount": 8,
+        "firstSeason": "2012/13",
+        "latestSeason": "2025/26",
+        "regionCount": 9
+      },
+      "seasons": [
+        {
+          "season": "2012/13",
+          "days": 3,
+          "verticalFt": 18300
+        },
+        {
+          "season": "2019/20",
+          "days": 3,
+          "verticalFt": null
+        },
+        {
+          "season": "2020/21",
+          "days": 4,
+          "verticalFt": 54200
+        },
+        {
+          "season": "2021/22",
+          "days": 20,
+          "verticalFt": 261900
+        },
+        {
+          "season": "2022/23",
+          "days": 28,
+          "verticalFt": 310100
+        },
+        {
+          "season": "2023/24",
+          "days": 21,
+          "verticalFt": 256800
+        },
+        {
+          "season": "2024/25",
+          "days": 16,
+          "verticalFt": 177300
+        },
+        {
+          "season": "2025/26",
+          "days": 16,
+          "verticalFt": 185700
+        }
+      ],
+      "regions": [
+        {
+          "name": "Colorado",
+          "count": 16
+        },
+        {
+          "name": "California",
+          "count": 3
+        },
+        {
+          "name": "Utah",
+          "count": 3
+        },
+        {
+          "name": "Maine",
+          "count": 2
+        },
+        {
+          "name": "Indiana",
+          "count": 1
+        },
+        {
+          "name": "Missouri",
+          "count": 1
+        },
+        {
+          "name": "Montana",
+          "count": 1
+        },
+        {
+          "name": "Pennsylvania",
+          "count": 1
+        },
+        {
+          "name": "Vermont",
+          "count": 1
+        }
+      ],
+      "resorts": [
+        {
+          "name": "Eldora Mountain Resort",
+          "days": 18,
+          "region": "Colorado"
+        },
+        {
+          "name": "Copper Mountain Resort",
+          "days": 16,
+          "region": "Colorado"
+        },
+        {
+          "name": "Steamboat Ski Resort",
+          "days": 13,
+          "region": "Colorado"
+        },
+        {
+          "name": "Arapahoe Basin Ski Area",
+          "days": 11,
+          "region": "Colorado"
+        },
+        {
+          "name": "Winter Park Resort",
+          "days": 11,
+          "region": "Colorado"
+        },
+        {
+          "name": "Breckenridge Resort",
+          "days": 6,
+          "region": "Colorado"
+        },
+        {
+          "name": "Big Sky Resort",
+          "days": 5,
+          "region": "Montana"
+        },
+        {
+          "name": "Crested Butte Mountain Resort",
+          "days": 5,
+          "region": "Colorado"
+        },
+        {
+          "name": "Vail Ski Resort",
+          "days": 4,
+          "region": "Colorado"
+        },
+        {
+          "name": "Keystone Resort",
+          "days": 3,
+          "region": "Colorado"
+        }
+      ],
+      "trips": [
+        {
+          "id": "ski-trip-elledge-family-visit",
+          "name": "Elledge Family Visit",
+          "season": "2023/24",
+          "runs": 5,
+          "verticalFt": 8053,
+          "dates": [
+            "2024-01-14"
+          ],
+          "location": "Vail, Colorado"
+        },
+        {
+          "id": "ski-trip-ski-in-ski-out-copper",
+          "name": "Ski-In Ski-Out Copper",
+          "season": "2023/24",
+          "runs": 35,
+          "verticalFt": 43394,
+          "dates": [
+            "2024-01-18",
+            "2024-01-19",
+            "2024-01-20"
+          ],
+          "location": "Colorado"
+        },
+        {
+          "id": "ski-trip-steamboat-and-the-beach",
+          "name": "Steamboat and the Beach",
+          "season": "2023/24",
+          "runs": 68,
+          "verticalFt": 69337,
+          "dates": [
+            "2024-02-05",
+            "2024-02-06",
+            "2024-02-07",
+            "2024-02-08",
+            "2024-02-09",
+            "2024-02-10"
+          ],
+          "location": "Colorado"
+        },
+        {
+          "id": "ski-trip-coast-to-coast",
+          "name": "Coast to Coast",
+          "season": "2023/24",
+          "runs": 45,
+          "verticalFt": 42315,
+          "dates": [
+            "2024-03-01",
+            "2024-03-02",
+            "2024-03-03"
+          ],
+          "location": "California → Maine"
+        },
+        {
+          "id": "ski-trip-slc-solitude",
+          "name": "SLC Solitude",
+          "season": "2024/25",
+          "runs": 42,
+          "verticalFt": 50507,
+          "dates": [
+            "2025-01-15",
+            "2025-01-16",
+            "2025-01-17"
+          ],
+          "location": "Wasatch Mountains, Utah"
+        },
+        {
+          "id": "ski-trip-pennys-first-ski-trip",
+          "name": "Penny's First Ski Trip",
+          "season": "2024/25",
+          "runs": 56,
+          "verticalFt": 63050,
+          "dates": [
+            "2025-03-17",
+            "2025-03-18",
+            "2025-03-20",
+            "2025-03-22",
+            "2025-03-28",
+            "2025-03-29",
+            "2025-04-03"
+          ],
+          "location": "Colorado"
+        },
+        {
+          "id": "ski-trip-east-coast-powder",
+          "name": "East Coast Powder",
+          "season": "2025/26",
+          "runs": 28,
+          "verticalFt": 36381,
+          "dates": [
+            "2026-01-30",
+            "2026-01-31"
+          ],
+          "location": "Stowe, Vermont"
+        },
+        {
+          "id": "ski-trip-ieee-aeroconf",
+          "name": "IEEE AeroConf",
+          "season": "2025/26",
+          "runs": 54,
+          "verticalFt": 69226,
+          "dates": [
+            "2026-03-08",
+            "2026-03-09",
+            "2026-03-10",
+            "2026-03-11",
+            "2026-03-13"
+          ],
+          "location": "Big Sky, Montana"
+        }
+      ]
+    },
+    "nordic": {
+      "summary": {
+        "locationCount": 10,
+        "recordedDays": 23,
+        "raceCount": 3,
+        "eventCount": 1,
+        "memorableCount": 3,
+        "firstYear": 2021,
+        "lastYear": 2025,
+        "activeYearCount": 5
+      },
+      "yearly": [
+        {
+          "year": 2021,
+          "count": 1
+        },
+        {
+          "year": 2022,
+          "count": 10
+        },
+        {
+          "year": 2023,
+          "count": 5
+        },
+        {
+          "year": 2024,
+          "count": 3
+        },
+        {
+          "year": 2025,
+          "count": 4
+        }
+      ],
+      "regions": [
+        {
+          "name": "Colorado",
+          "count": 10
+        }
+      ],
+      "recurringLocations": [
+        {
+          "name": "Snow Mountain Ranch",
+          "recordedDays": 7,
+          "dates": [
+            "2022-02-03",
+            "2022-02-05",
+            "2022-03-12",
+            "2022-03-13",
+            "2025-03-19",
+            "2025-03-27",
+            "2025-04-01"
+          ]
+        },
+        {
+          "name": "Breckenridge Nordic Center",
+          "recordedDays": 3,
+          "dates": [
+            "2023-01-08",
+            "2023-01-11",
+            "2023-01-21"
+          ]
+        },
+        {
+          "name": "Frisco Nordic Center",
+          "recordedDays": 3,
+          "dates": [
+            "2023-01-28",
+            "2024-01-07",
+            "2024-03-09"
+          ]
+        },
+        {
+          "name": "Devil’s Thumb Ranch",
+          "recordedDays": 2,
+          "dates": [
+            "2024-01-20",
+            "2025-03-30"
+          ]
+        },
+        {
+          "name": "Steamboat Ski Touring Center",
+          "recordedDays": 2,
+          "dates": [
+            "2021-01-16",
+            "2022-02-16"
+          ]
+        },
+        {
+          "name": "Tennessee Pass Nordic Center",
+          "recordedDays": 2,
+          "dates": [
+            "2022-01-02",
+            "2022-01-03"
+          ]
+        },
+        {
+          "name": "Crested Butte Nordic",
+          "recordedDays": 1,
+          "dates": [
+            "2023-03-01"
+          ]
+        },
+        {
+          "name": "Gold Run Nordic Center",
+          "recordedDays": 1,
+          "dates": [
+            "2022-01-22"
+          ]
+        }
+      ],
+      "memorable": [
+        {
+          "id": "nordic-tennessee-pass-weekend-2022",
+          "name": "Tennessee Pass New Year weekend",
+          "date": "2022-01-02",
+          "endDate": "2022-01-03",
+          "distanceMi": 15,
+          "location": "Tennessee Pass Nordic Center, Leadville, Colorado"
+        },
+        {
+          "id": "nordic-frisco-long-day-2024",
+          "name": "Frisco long Nordic day",
+          "date": "2024-01-07",
+          "endDate": null,
+          "distanceMi": 11.66,
+          "location": "Frisco Nordic Center, Frisco, Colorado"
+        },
+        {
+          "id": "nordic-devils-thumb-multisession-2025",
+          "name": "Devil’s Thumb multi-session day",
+          "date": "2025-03-30",
+          "endDate": null,
+          "distanceMi": 12.3,
+          "location": "Devil’s Thumb Ranch, Tabernash, Colorado"
+        }
+      ]
+    },
+    "mountainBiking": {
+      "summary": {
+        "locationCount": 9,
+        "recordedDays": 14,
+        "pedalDays": 8,
+        "downhillDays": 7,
+        "raceCount": 1,
+        "memorableCount": 3,
+        "firstYear": 2022,
+        "lastYear": 2026,
+        "activeYearCount": 5
+      },
+      "yearly": [
+        {
+          "year": 2022,
+          "count": 1
+        },
+        {
+          "year": 2023,
+          "count": 2
+        },
+        {
+          "year": 2024,
+          "count": 3
+        },
+        {
+          "year": 2025,
+          "count": 6
+        },
+        {
+          "year": 2026,
+          "count": 2
+        }
+      ],
+      "ridingStyles": [
+        {
+          "name": "pedal",
+          "count": 7
+        },
+        {
+          "name": "lift-served",
+          "count": 6
+        },
+        {
+          "name": "mixed",
+          "count": 1
+        }
+      ],
+      "regions": [
+        {
+          "name": "Colorado",
+          "count": 9
+        }
+      ],
+      "recurringLocations": [
+        {
+          "name": "Trestle Bike Park / Winter Park",
+          "recordedDays": 4,
+          "dates": [
+            "2022-07-16",
+            "2024-07-27",
+            "2024-08-31",
+            "2026-08-05"
+          ]
+        },
+        {
+          "name": "Kokopelli Trails",
+          "recordedDays": 3,
+          "dates": [
+            "2025-06-05",
+            "2025-06-06",
+            "2025-06-07"
+          ]
+        },
+        {
+          "name": "Crested Butte trail network",
+          "recordedDays": 1,
+          "dates": [
+            "2023-09-24"
+          ]
+        },
+        {
+          "name": "Granby Ranch",
+          "recordedDays": 1,
+          "dates": [
+            "2025-07-11"
+          ]
+        },
+        {
+          "name": "Leadville trail network",
+          "recordedDays": 1,
+          "dates": [
+            "2026-05-24"
+          ]
+        },
+        {
+          "name": "North Table Mountain",
+          "recordedDays": 1,
+          "dates": [
+            "2023-12-02"
+          ]
+        },
+        {
+          "name": "Royal Gorge Park",
+          "recordedDays": 1,
+          "dates": [
+            "2024-04-21"
+          ]
+        },
+        {
+          "name": "Steamboat Bike Park",
+          "recordedDays": 1,
+          "dates": [
+            "2025-10-05"
+          ]
+        }
+      ],
+      "memorable": [
+        {
+          "id": "trestle-big-day-2024",
+          "name": "Trestle downhill day",
+          "date": "2024-07-27",
+          "endDate": null,
+          "distanceMi": 28.3,
+          "ridingStyle": "lift-served",
+          "location": "Trestle Bike Park / Winter Park, Colorado"
+        },
+        {
+          "id": "trestle-downhill-day-2026",
+          "name": "Trestle downhill day",
+          "date": "2026-08-05",
+          "endDate": null,
+          "distanceMi": 21.38,
+          "ridingStyle": "lift-served",
+          "location": "Trestle Bike Park / Winter Park, Colorado"
+        },
+        {
+          "id": "kokopelli-three-day-2025",
+          "name": "Kokopelli three-day weekend",
+          "date": "2025-06-05",
+          "endDate": "2025-06-07",
+          "distanceMi": 27.51,
+          "ridingStyle": "pedal",
+          "location": "Kokopelli Trails, Loma / Fruita, Colorado"
+        }
+      ]
+    }
+  }
+}
