@@ -121,5 +121,17 @@ for (const record of payload.records || []) {
   });
 }
 
-for (const [file, context] of publicDocuments) await materialize(file, context);
-console.log(`Static shell materialized for ${publicDocuments.size} public documents.`);
+const failures = [];
+for (const [file, context] of publicDocuments) {
+  try {
+    await materialize(file, context);
+  } catch (error) {
+    failures.push(`${file}: ${error.message}`);
+  }
+}
+const diagnostic = failures.length
+  ? `Static shell failures (${failures.length})\n${failures.map(item => `- ${item}`).join('\n')}\n`
+  : `Static shell materialized for ${publicDocuments.size} public documents.\n`;
+await fs.writeFile('static-shell-diagnostics.txt', diagnostic);
+if (failures.length) throw new Error(diagnostic);
+console.log(diagnostic.trim());
