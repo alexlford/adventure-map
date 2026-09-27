@@ -45,10 +45,14 @@ for (const { record, missing } of weighted.slice(0, 20)) {
 }
 
 const report = {
-  generatedAt: new Date().toISOString(),
+  schemaVersion: 1,
   recordCount: records.length,
   coverage: Object.fromEntries(rows.map(row => [row.label, { complete: row.complete, missing: row.missing, percent: Number(row.pct.toFixed(1)) }])),
   priorityIncomplete: weighted.slice(0, 50).map(({ record, missing, score }) => ({ id: record.id, slug: record.slug || null, name: record.name, score, missing }))
 };
 
+if (process.argv.includes('--write')) {
+  await fs.writeFile('data/archive-health.json', `${JSON.stringify(report, null, 2)}\n`);
+  console.log('\nWrote data/archive-health.json.');
+}
 if (process.argv.includes('--json')) process.stdout.write(`\n${JSON.stringify(report, null, 2)}\n`);
