@@ -1,0 +1,1 @@
+Phase 4 is intentionally behavior-preserving: shared reduced-motion support, mobile touch targets, overflow regression coverage, and critical-asset performance budgets. See `polish.css`, `scripts/validate-polish.mjs`, and `tests/polish.spec.mjs`.
