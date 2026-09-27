@@ -8,7 +8,7 @@
 
   const DETAIL_ZOOM = 7;
   const DETAIL_LOAD_CONCURRENCY = 6;
-  const detailLayer = L.layerGroup().addTo(map);
+  let detailLayer = L.layerGroup().addTo(map);
   const rendered = new Map();
   const failures = new Map();
   let relationshipsPromise;
@@ -86,9 +86,17 @@
     delete container.dataset.routeDetailQuality;
   }
 
-  function clearDetail({ invalidate = true } = {}) {
+  function clearDetail({ invalidate = true, discardLayer = false } = {}) {
     if (invalidate) requestVersion += 1;
-    detailLayer.clearLayers();
+    if (discardLayer) {
+      if (map.hasLayer(detailLayer)) map.removeLayer(detailLayer);
+      // Dropping the detached layer group avoids synchronously walking every
+      // high-resolution child geometry during zoom-out. The old group becomes
+      // collectible once rendered references are cleared below.
+      detailLayer = L.layerGroup();
+    } else {
+      detailLayer.clearLayers();
+    }
     rendered.clear();
     failures.clear();
     lastTargets = [];
@@ -98,8 +106,7 @@
   function suspendDetailForZoom() {
     requestVersion += 1;
     refreshPending = false;
-    if (map.hasLayer(detailLayer)) map.removeLayer(detailLayer);
-    clearDetail({ invalidate: false });
+    clearDetail({ invalidate: false, discardLayer: true });
   }
 
   function resumeDetailAfterZoom() {

@@ -115,7 +115,9 @@ test('high-detail GPS stays lazy at overview zoom and reconciles every addressab
   expect(requestedDetailPaths.size, 'detail zoom should lazily request high-detail route data').toBeGreaterThan(0);
   expect(requestedDetailPaths.size, 'network requests may be deduplicated or cached, but cannot exceed rendered detail targets').toBeLessThanOrEqual(expected.count);
 
-  await page.evaluate(() => window.AdventureMap.leaflet.setZoom(5));
+  await page.evaluate(() => {
+    window.AdventureMap.leaflet.setZoom(5, { animate: false });
+  });
   await expect.poll(() => page.evaluate(() => document.getElementById('map')?.classList.contains('has-lazy-route-detail'))).toBeFalsy();
   await expect.poll(() => page.evaluate(() => document.getElementById('map')?.dataset.routeDetailCount || null)).toBeNull();
   expect(errors).toEqual([]);
