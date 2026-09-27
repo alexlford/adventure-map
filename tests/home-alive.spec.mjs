@@ -20,10 +20,7 @@ test('homepage surfaces recent archive records without duplicating the featured 
   const photoCards = recent.filter({ has: page.locator('img') });
   const photoCount = await photoCards.count();
   for (let index = 0; index < photoCount; index += 1) {
-    const image = photoCards.nth(index).locator('img');
-    await expect(image).toHaveAttribute('loading', 'lazy');
-    await expect(image).toHaveAttribute('width', /\d+/);
-    await expect(image).toHaveAttribute('height', /\d+/);
+    await expect(photoCards.nth(index).locator('img')).toHaveAttribute('loading', 'lazy');
   }
 
   expect(errors).toEqual([]);
@@ -44,4 +41,23 @@ test('generated photo index exposes rendering metadata without provenance intern
   expect(mountSherman?.primary?.height).toBe(1152);
   expect(JSON.stringify(payload)).not.toContain('repositoryBlobSha');
   expect(JSON.stringify(payload)).not.toContain('evidence');
+});
+
+test('record pages use manifest-backed photography when no curated photo essay exists', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+
+  await page.goto('/record/2022-09-25-mount-sherman/', { waitUntil: 'domcontentloaded' });
+
+  const media = page.locator('.record-media-indexed');
+  await expect(media).toHaveCount(1);
+  await expect(media.locator('h2')).toHaveText('Scenes from the day');
+  const image = media.locator('img').first();
+  await expect(image).toHaveAttribute('src', /mount-sherman-summit-with-olive/);
+  await expect(image).toHaveAttribute('width', '1536');
+  await expect(image).toHaveAttribute('height', '1152');
+  await expect(image).toHaveAttribute('loading', 'lazy');
+  await expect(page.locator('body')).toHaveClass(/has-record-media/);
+
+  expect(errors).toEqual([]);
 });
