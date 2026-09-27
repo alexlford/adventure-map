@@ -1,10 +1,16 @@
 {
   "schemaVersion": 1,
-  "generatedFrom": "data/event-photo-manifest.json",
-  "photoCount": 30,
+  "generatedFrom": [
+    "assets/event-photos",
+    "data/event-photo-manifest.json"
+  ],
+  "photoCount": 31,
+  "manifestPhotoCount": 30,
+  "unmanifestedCount": 1,
   "photos": [
     {
       "path": "assets/event-photos/adventures/frisco-nordic-2024/2024-01-frisco-nordic-center-with-olive-01.jpeg",
+      "manifested": true,
       "eventId": null,
       "eventName": "Frisco Nordic Center",
       "date": "2024-01",
@@ -15,6 +21,7 @@
     },
     {
       "path": "assets/event-photos/adventures/mount-sherman/2022-09-25-mount-sherman-summit-with-olive-01.jpeg",
+      "manifested": true,
       "eventId": "mount-sherman",
       "eventName": "Mount Sherman",
       "date": "2022-09-25",
@@ -26,6 +33,7 @@
     },
     {
       "path": "assets/event-photos/adventures/nordic-day-2024-01-07/2024-01-07-frisco-nordic-center-basil-olive-01.jpeg",
+      "manifested": true,
       "eventId": "nordic-day-2024-01-07",
       "eventName": "Frisco Nordic Center Trails",
       "date": "2024-01-07",
@@ -37,7 +45,19 @@
       "photographer": "Leah"
     },
     {
+      "path": "assets/event-photos/adventures/tennessee-pass-2022/2022-01-02-tennessee-pass-pink-sunrise-01.jpeg",
+      "manifested": false,
+      "eventId": null,
+      "eventName": null,
+      "date": null,
+      "status": null,
+      "width": 640,
+      "height": 360,
+      "aspectRatio": 1.777778
+    },
+    {
       "path": "assets/event-photos/races/abes-amble-2014/2014-08-17-abes-amble-10k-finish-01.jpeg",
+      "manifested": true,
       "eventId": "abes-amble-2014",
       "eventName": "Abe's Amble 10K",
       "date": "2014-08-17",
@@ -48,6 +68,7 @@
     },
     {
       "path": "assets/event-photos/races/beerfit-kansas-city-5k-2016/2016-06-04-beerfit-kansas-city-5k-course-01.jpeg",
+      "manifested": true,
       "eventId": "beerfit-kansas-city-5k-2016",
       "eventName": "BeerFit Kansas City 5K",
       "date": "2016-06-04",
@@ -58,6 +79,7 @@
     },
     {
       "path": "assets/event-photos/races/big-12-run-12k-2016/2016-03-12-kansas-city-big-12-run-12k-course-01.jpeg",
+      "manifested": true,
       "eventId": "big-12-run-12k-2016",
       "eventName": "Kansas City Big 12 Run 12K",
       "date": "2016-03-12",
@@ -68,6 +90,7 @@
     },
     {
       "path": "assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-10k-2016-course-01.jpeg",
+      "manifested": true,
       "eventId": "big-ten-10k-2016",
       "eventName": "Big Ten Network Big 10K",
       "date": "2016-08-06",
@@ -78,6 +101,7 @@
     },
     {
       "path": "assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-network-big-10k-finish-group-01.jpeg",
+      "manifested": true,
       "eventId": "big-ten-10k-2016",
       "eventName": "Big Ten Network Big 10K",
       "date": "2016-08-06",
@@ -88,6 +112,7 @@
     },
     {
       "path": "assets/event-photos/races/bolderboulder-2023/2023-05-29-bolderboulder-10k-course-01.jpeg",
+      "manifested": true,
       "eventId": "bolderboulder-2023",
       "eventName": "BOLDERBoulder 10K",
       "date": "2023-05-29",
@@ -98,6 +123,7 @@
     },
     {
       "path": "assets/event-photos/races/charles-street-12-2019/2019-08-31-charles-street-12-finish-01.jpeg",
+      "manifested": true,
       "eventId": "charles-street-12-2019",
       "eventName": "Charles Street 12",
       "date": "2019-08-31",
@@ -108,6 +134,7 @@
     },
     {
       "path": "assets/event-photos/races/chicago-marathon-2021/2021-10-10-chicago-marathon-course-01.jpeg",
+      "manifested": true,
       "eventId": "chicago-marathon-2021",
       "eventName": "Chicago Marathon",
       "date": "2021-10-10",
@@ -118,6 +145,7 @@
     },
     {
       "path": "assets/event-photos/races/colfax-5k-2024/2024-05-18-colfax-5k-with-olive-finish-01.jpeg",
+      "manifested": true,
       "eventId": "colfax-5k-2024",
       "eventName": "Colfax 5K with Olive",
       "date": "2024-05-18",
@@ -128,6 +156,7 @@
     },
     {
       "path": "assets/event-photos/races/colfax-5k-2024/2024-05-18-dog-pool-01.jpeg",
+      "manifested": true,
       "eventId": "colfax-5k-2024",
       "eventName": "Denver Colfax 5K",
       "date": "2024-05-18",
@@ -138,6 +167,7 @@
     },
     {
       "path": "assets/event-photos/races/colfax-5k-2026/2026-05-16-dog-pool-01.jpeg",
+      "manifested": true,
       "eventId": "colfax-5k-2026",
       "eventName": "Denver Colfax 5K",
       "date": "2026-05-16",
@@ -148,6 +178,7 @@
     },
     {
       "path": "assets/event-photos/races/disney-princess-half-2018/2018-02-25-disney-princess-half-character-photo-01.jpeg",
+      "manifested": true,
       "eventId": "disney-princess-half-2018",
       "eventName": "Disney Princess Half Marathon",
       "date": "2018-02-25",
@@ -158,6 +189,7 @@
     },
     {
       "path": "assets/event-photos/races/garmin-half-2016/2016-04-16-garmin-land-of-oz-half-course-01.jpeg",
+      "manifested": true,
       "eventId": "garmin-half-2016",
       "eventName": "Garmin Marathon in the Land of Oz Half Marathon",
       "date": "2016-04-16",
@@ -168,6 +200,7 @@
     },
     {
       "path": "assets/event-photos/races/illinois-half-2016/2016-04-30-illinois-half-2016-rain-course-01.jpeg",
+      "manifested": true,
       "eventId": "illinois-half-2016",
       "eventName": "Illinois Half Marathon",
       "date": "2016-04-30",
@@ -178,6 +211,7 @@
     },
     {
       "path": "assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-2015-with-mom-01.jpeg",
+      "manifested": true,
       "eventId": "illinois-marathon-2015",
       "eventName": "Illinois Marathon",
       "date": "2015-04-25",
@@ -188,6 +222,7 @@
     },
     {
       "path": "assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-thunderstorm-finish-01.jpeg",
+      "manifested": true,
       "eventId": "illinois-marathon-2015",
       "eventName": "Illinois Marathon",
       "date": "2015-04-25",
@@ -199,6 +234,7 @@
     },
     {
       "path": "assets/event-photos/races/kansas-city-marathon-2019/2019-10-19-kansas-city-marathon-course-01.jpeg",
+      "manifested": true,
       "eventId": "kansas-city-marathon-2019",
       "eventName": "Kansas City Marathon",
       "date": "2019-10-19",
@@ -209,6 +245,7 @@
     },
     {
       "path": "assets/event-photos/races/mile-high-turkey-trot-2021/2021-11-25-mile-high-turkey-trot-family-washington-park-01.jpeg",
+      "manifested": true,
       "eventId": "mile-high-turkey-trot-2021",
       "eventName": "Mile High United Way Turkey Trot",
       "date": "2021-11-25",
@@ -219,6 +256,7 @@
     },
     {
       "path": "assets/event-photos/races/mile-high-turkey-trot-2023/2023-11-23-mile-high-turkey-trot-olive-yellow-bandana-01.jpeg",
+      "manifested": true,
       "eventId": "mile-high-turkey-trot-2023",
       "eventName": "Mile High United Way Turkey Trot",
       "date": "2023-11-23",
@@ -229,6 +267,7 @@
     },
     {
       "path": "assets/event-photos/races/pi-day-half-2015/2015-03-14-pi-day-river-rotation-half-trail-01.jpeg",
+      "manifested": true,
       "eventId": "pi-day-half-2015",
       "eventName": "Pi Day River Rotation Half Marathon",
       "date": "2015-03-14",
@@ -239,6 +278,7 @@
     },
     {
       "path": "assets/event-photos/races/river-to-river-relay-2006/2006-river-to-river-relay-2006-cambria-moonsnakes-team-01.jpeg",
+      "manifested": true,
       "eventId": "river-to-river-relay-2006",
       "eventName": "River to River Relay",
       "date": null,
@@ -249,6 +289,7 @@
     },
     {
       "path": "assets/event-photos/races/river-to-river-relay-2008/2008-river-to-river-relay-2008-team-swampass-01.jpeg",
+      "manifested": true,
       "eventId": "river-to-river-relay-2008",
       "eventName": "River to River Relay",
       "date": null,
@@ -259,6 +300,7 @@
     },
     {
       "path": "assets/event-photos/races/river-to-river-relay-2010/2010-river-to-river-relay-2010-legion-of-doom-team-01.jpeg",
+      "manifested": true,
       "eventId": "river-to-river-relay-2010",
       "eventName": "River to River Relay",
       "date": null,
@@ -269,6 +311,7 @@
     },
     {
       "path": "assets/event-photos/races/rock-parkway-half-2016/2016-04-09-rock-the-parkway-half-course-01.jpeg",
+      "manifested": true,
       "eventId": "rock-parkway-half-2016",
       "eventName": "Rock the Parkway Half Marathon",
       "date": "2016-04-09",
@@ -279,6 +322,7 @@
     },
     {
       "path": "assets/event-photos/races/running-with-cows-half-2016/2016-05-14-running-with-the-cows-half-course-wide-01.jpeg",
+      "manifested": true,
       "eventId": "running-with-cows-half-2016",
       "eventName": "Running With The Cows Half Marathon",
       "date": "2016-05-14",
@@ -289,6 +333,7 @@
     },
     {
       "path": "assets/event-photos/races/staunton-rocks-half-2022/2022-08-27-staunton-rocks-half-course-01.jpeg",
+      "manifested": true,
       "eventId": "staunton-rocks-half-2022",
       "eventName": "Staunton Rocks! Half Marathon",
       "date": "2022-08-27",
@@ -299,6 +344,7 @@
     },
     {
       "path": "assets/event-photos/races/twin-cities-marathon-2015/2015-10-04-twin-cities-marathon-finish-01.jpeg",
+      "manifested": true,
       "eventId": "twin-cities-marathon-2015",
       "eventName": "Twin Cities Marathon",
       "date": "2015-10-04",
