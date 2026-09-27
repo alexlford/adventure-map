@@ -3,9 +3,9 @@
   "$id": "https://adventures.alexlford.com/schema/event-record.schema.json",
   "title": "Alex Ford Adventures public record",
   "description": "Canonical contract for resolved public adventure records. Source-layer fragments may be partial; this schema applies after catalog resolution and normalization.",
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "type": "object",
-  "required": ["id", "name", "kind"],
+  "required": ["id", "name", "kind", "recordClass", "sport"],
   "properties": {
     "id": {"type": "string", "minLength": 1},
     "slug": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
@@ -108,6 +108,7 @@
   "coordinatePrecision": ["gps-course", "gps-area", "gps-start", "venue", "venue-placeholder", "event-area", "event-area-placeholder", "start-area-placeholder", "resort", "resort-placeholder", "city", "city-placeholder", "city-privacy", "region", "summit", "unknown"],
   "notes": {
     "scope": "This schema validates resolved and normalized public records, not partial evidence/source fragments.",
+    "taxonomy": "recordClass and sport are required on resolved public records so presentation code never has to infer primary taxonomy from names or locations.",
     "hikeVsHiking": "Both values remain accepted while the historical summit inventory is normalized incrementally.",
     "coordinatePrecision": "Precision labels describe evidence quality or privacy treatment, not survey-grade geodetic accuracy.",
     "probable": "Probable is retained for legacy evidence that is stronger than an unknown match but not fully confirmed."
