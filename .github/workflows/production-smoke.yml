@@ -1,0 +1,22 @@
+name: Check Adventures production origin
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 13 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Check production routes
+        run: node scripts/check-production.mjs
