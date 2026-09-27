@@ -1,13 +1,31 @@
 import fs from 'node:fs/promises';
 
 const manifestPath = 'data/event-photo-manifest.json';
+const variantsPath = 'data/photo-variants.json';
 const outputPath = 'data/photo-index.json';
 
 const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
 const photos = Array.isArray(manifest.photos) ? manifest.photos : [];
+let variantRecords = {};
+try {
+  const variants = JSON.parse(await fs.readFile(variantsPath, 'utf8'));
+  if (variants?.schemaVersion === 1 && variants.records && typeof variants.records === 'object') variantRecords = variants.records;
+} catch {}
 
 const clean = value => typeof value === 'string' && value.trim() ? value.trim() : null;
 const finite = value => Number.isFinite(value) ? value : null;
+
+function publicVariants(photo) {
+  return (Array.isArray(variantRecords[photo.path]) ? variantRecords[photo.path] : [])
+    .filter(variant => variant?.format === 'webp' && variant.path && Number.isFinite(variant.width) && Number.isFinite(variant.height))
+    .map(variant => ({
+      path: clean(variant.path),
+      width: finite(variant.width),
+      height: finite(variant.height),
+      format: 'webp'
+    }))
+    .sort((a, b) => a.width - b.width);
+}
 
 function publicPhoto(photo) {
   const width = finite(photo.pixelWidth);
@@ -19,7 +37,8 @@ function publicPhoto(photo) {
     date: clean(photo.date),
     width,
     height,
-    aspectRatio: width && height ? Number((width / height).toFixed(4)) : null
+    aspectRatio: width && height ? Number((width / height).toFixed(4)) : null,
+    variants: publicVariants(photo)
   };
 }
 
@@ -42,8 +61,11 @@ const records = Object.fromEntries(
 const payload = {
   schemaVersion: 1,
   generatedFrom: manifestPath,
+  responsiveVariantsFrom: Object.keys(variantRecords).length ? variantsPath : null,
   photoCount: Object.values(records).reduce((sum, record) => sum + record.photos.length, 0),
   recordCount: Object.keys(records).length,
+  responsivePhotoCount: Object.values(records).flatMap(record => record.photos).filter(photo => photo.variants.length).length,
+  responsiveVariantCount: Object.values(records).flatMap(record => record.photos).reduce((sum, photo) => sum + photo.variants.length, 0),
   records
 };
 
@@ -53,7 +75,7 @@ const check = process.argv.includes('--check');
 
 if (write) {
   await fs.writeFile(outputPath, serialized);
-  console.log(`Wrote ${outputPath}: ${payload.photoCount} photos across ${payload.recordCount} records.`);
+  console.log(`Wrote ${outputPath}: ${payload.photoCount} photos across ${payload.recordCount} records; ${payload.responsiveVariantCount} responsive variants.`);
 }
 
 if (check) {
@@ -63,7 +85,7 @@ if (check) {
     console.error(`${outputPath} is stale. Run npm run build:photo-index.`);
     process.exitCode = 1;
   } else {
-    console.log(`Photo index is current: ${payload.photoCount} photos across ${payload.recordCount} records.`);
+    console.log(`Photo index is current: ${payload.photoCount} photos across ${payload.recordCount} records; ${payload.responsiveVariantCount} responsive variants.`);
   }
 }
 
