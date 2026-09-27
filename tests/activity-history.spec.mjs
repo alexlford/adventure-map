@@ -15,6 +15,7 @@ for (const [path, key, heading] of chapters) {
     await expect(section).toBeVisible();
     await expect(section.getByRole('heading', { name: heading })).toBeVisible();
     await expect(section.locator('.activity-history-card')).toHaveCount(4);
+    expect(await section.locator('.activity-history-panel').count()).toBeGreaterThanOrEqual(2);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
     expect(overflow).toBeFalsy();
   });
