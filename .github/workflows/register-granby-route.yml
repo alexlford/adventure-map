@@ -1,0 +1,34 @@
+name: Register Granby Route
+
+on:
+  push:
+    branches:
+      - granby-ranch-strava-route
+    paths:
+      - '.github/workflows/register-granby-route.yml'
+      - 'scripts/register_granby_route.py'
+
+permissions:
+  contents: write
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: granby-ranch-strava-route
+          fetch-depth: 0
+      - name: Register source and route catalogs
+        run: python scripts/register_granby_route.py
+      - name: Commit catalog registration
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/evidence-sources.json data/route-catalog.json
+          if git diff --cached --quiet; then
+            echo 'Granby route already registered.'
+            exit 0
+          fi
+          git commit -m 'Register Granby Ranch Strava route'
+          git push origin HEAD:granby-ranch-strava-route

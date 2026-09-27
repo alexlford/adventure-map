@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-09-19",
+  "updatedOn": "2026-09-25",
   "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
@@ -48,6 +48,7 @@
     "data/strava-route-full-resolution-bolderboulder-2023.json",
     "data/strava-route-full-resolution-bolderboulder-2024.json",
     "data/strava-route-full-resolution-colorado-triathlon-ski-2023.json",
+    "data/strava-route-full-resolution-granby-ranch-skinning-2025.json",
     "data/strava-route-source-complete-01.json",
     "data/strava-route-source-complete-02.json",
     "data/strava-route-rdp3-01.json",
