@@ -1,7 +1,12 @@
 import { test, expect } from '@playwright/test';
 
+async function waitForArchiveHydration(page) {
+  await expect(page.locator('body')).toHaveAttribute('data-home-archive-ready', 'true');
+}
+
 test('homepage presents a distinct recent-adventure stream from live archive data', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await waitForArchiveHydration(page);
 
   await expect(page.locator('#latest-title')).not.toHaveText('');
   await expect(page.locator('#recent-list .recent-item')).toHaveCount(3);
@@ -16,11 +21,12 @@ test('homepage presents a distinct recent-adventure stream from live archive dat
   expect(featuredHref).toBeTruthy();
   expect(new Set(recent.map(item => item.href)).size).toBe(3);
   expect(recent.every(item => item.href && item.href !== featuredHref)).toBe(true);
-  expect(recent.every(item => item.title && item.meta)).toBe(true);
+  expect(recent.every(item => item.title && item.meta.includes(' · '))).toBe(true);
 });
 
 test('homepage ends with field notes and a live unambiguous archive snapshot', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await waitForArchiveHydration(page);
 
   await expect(page.getByText('Field notes', { exact: true })).toBeVisible();
   await expect(page.locator('#home-snapshot > div')).toHaveCount(4);
