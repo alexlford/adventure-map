@@ -106,10 +106,19 @@ function ensureNavigation(html, active) {
   return out;
 }
 
+function ensurePolishStylesheet(html, file) {
+  const href = path.relative(path.dirname(file), 'polish.css').replaceAll(path.sep, '/') || 'polish.css';
+  let out = html.replace(/\s*<link\b[^>]*data-global-polish=["']true["'][^>]*>/gi, '');
+  const tag = `<link rel="stylesheet" href="${esc(href)}" data-global-polish="true">`;
+  if (!/<\/head>/i.test(out)) throw new Error('Document is missing </head> for global polish stylesheet.');
+  return out.replace(/<\/head>/i, `${tag}</head>`);
+}
+
 async function materialize(file, { canonical, active }) {
   let html = await fs.readFile(file, 'utf8');
   html = ensureMetadata(html, canonical);
   html = ensureNavigation(html, active);
+  html = ensurePolishStylesheet(html, file);
   await fs.writeFile(file, html.endsWith('\n') ? html : `${html}\n`);
 }
 
