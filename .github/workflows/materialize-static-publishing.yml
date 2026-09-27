@@ -60,8 +60,18 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --ignore-scripts
-      - name: Generate public records, route index, and static pages
-        run: npm run build:publish
+      - name: Build shared assets
+        run: npm run build:vendor && npm run build:shared
+      - name: Build public records
+        run: npm run build:public-records
+      - name: Build route publication data
+        run: npm run build:route-detail-index && npm run sync:route-status && npm run build:recurring-race-audit
+      - name: Build static pages
+        run: npm run build:static-site
+      - name: Build static navigation and metadata
+        run: npm run build:static-shell
+      - name: Build public index
+        run: npm run build:public-index
       - name: Validate generated structure
         run: npm run validate:static && npm run validate:static-shell
       - name: Audit Strava route coverage
