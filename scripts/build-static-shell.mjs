@@ -106,10 +106,43 @@ function ensureNavigation(html, active) {
   return out;
 }
 
+function normalizedAssetPath(src) {
+  let value = decode(src).split(/[?#]/, 1)[0];
+  try {
+    if (/^https?:\/\//i.test(value)) {
+      const url = new URL(value);
+      if (url.origin !== SITE_ORIGIN) return null;
+      value = url.pathname;
+    }
+  } catch {
+    return null;
+  }
+  value = value.replace(/^\/+/, '').replace(/^(?:\.\.\/)+/, '').replace(/^\.\//, '');
+  return value.startsWith('assets/event-photos/') ? value : null;
+}
+
+function ensurePhotoDimensions(html, dimensionsByPath) {
+  return html.replace(/<img\b[^>]*>/gi, tag => {
+    const src = tag.match(/\bsrc=["']([^"']+)["']/i)?.[1];
+    const assetPath = src ? normalizedAssetPath(src) : null;
+    const dimensions = assetPath ? dimensionsByPath.get(assetPath) : null;
+    if (!dimensions) return tag;
+
+    let out = tag;
+    if (!/\bwidth=["'][^"']+["']/i.test(out)) out = out.replace(/<img\b/i, `<img width="${dimensions.width}"`);
+    if (!/\bheight=["'][^"']+["']/i.test(out)) out = out.replace(/<img\b/i, `<img height="${dimensions.height}"`);
+    return out;
+  });
+}
+
+const photoIndex = JSON.parse(await fs.readFile('data/photo-index.json', 'utf8'));
+const photoDimensions = new Map((photoIndex.photos || []).map(photo => [photo.path, { width: photo.width, height: photo.height }]));
+
 async function materialize(file, { canonical, active }) {
   let html = await fs.readFile(file, 'utf8');
   html = ensureMetadata(html, canonical);
   html = ensureNavigation(html, active);
+  html = ensurePhotoDimensions(html, photoDimensions);
   await fs.writeFile(file, html.endsWith('\n') ? html : `${html}\n`);
 }
 
@@ -142,4 +175,4 @@ if (failures.length) {
   throw new Error(diagnostic);
 }
 await fs.rm('static-shell-diagnostics.txt', { force: true });
-console.log(`Static shell materialized for ${publicDocuments.size} public documents.`);
+console.log(`Static shell materialized for ${publicDocuments.size} public documents with ${photoDimensions.size} indexed photos.`);
