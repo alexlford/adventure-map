@@ -1,0 +1,75 @@
+/* Phase 4: shared accessibility, motion, and touch polish for every public page. */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0s !important;
+  }
+}
+
+@media (pointer: coarse), (max-width: 820px) {
+  button,
+  input,
+  select,
+  summary,
+  .nav a,
+  .section-nav a,
+  .activity-subnav a,
+  .filter,
+  .filter-button,
+  .button-link,
+  .home-text-link,
+  .map-timeline-link,
+  [role="button"] {
+    min-height: 44px;
+  }
+
+  button,
+  .nav a,
+  .section-nav a,
+  .activity-subnav a,
+  .filter,
+  .filter-button,
+  .button-link,
+  .home-text-link,
+  .map-timeline-link,
+  [role="button"] {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  input,
+  select {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .page,
+  .app-shell,
+  .sidebar,
+  .map-panel,
+  .profile,
+  .grid,
+  .timeline-items,
+  .record-detail,
+  .record-main {
+    min-width: 0;
+  }
+
+  img,
+  svg,
+  canvas,
+  video {
+    max-width: 100%;
+  }
+}
