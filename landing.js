@@ -1,5 +1,7 @@
 (() => {
   const storyPath = 'data/homepage-stories.json';
+  const additionsPath = 'data/archive-additions.json';
+  const healthPath = 'data/archive-health.json';
 
   const dateKey = record => record.finishDate || record.endDate || record.date || record.startDate || '';
   const startKey = record => record.startDate || record.date || dateKey(record);
@@ -39,6 +41,15 @@
       month: 'long',
       day: 'numeric',
       ...(includeYear ? { year: 'numeric' } : {})
+    }).format(parseDate(value));
+  };
+
+  const formatAddedDate = value => {
+    if (!value) return '';
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
     }).format(parseDate(value));
   };
 
@@ -125,24 +136,24 @@
     return stats.slice(0, 3);
   };
 
-  const loadStories = async () => {
+  const loadJson = async (path, fallback) => {
     try {
-      const response = await fetch(storyPath, { cache: 'no-cache' });
-      if (!response.ok) return {};
-      const payload = await response.json();
-      return payload?.records && typeof payload.records === 'object' ? payload.records : {};
+      const response = await fetch(path, { cache: 'no-cache' });
+      if (!response.ok) return fallback;
+      return await response.json();
     } catch {
-      return {};
+      return fallback;
     }
   };
 
-  const renderLatest = (record, override = {}) => {
+  const renderFeaturedAddition = (record, override = {}, addition = null) => {
     const title = document.getElementById('latest-title');
     const meta = document.getElementById('latest-meta');
     const card = document.getElementById('latest-card');
     const kicker = document.getElementById('latest-kicker');
     const copy = document.getElementById('latest-copy');
     const stats = document.getElementById('latest-stats');
+    const added = document.getElementById('recent-feature-added');
     if (!title || !meta || !card || !kicker || !copy || !stats) return;
 
     const location = record.locationInfo?.label || record.location || '';
@@ -150,7 +161,11 @@
     meta.textContent = [formatDateRange(record), location].filter(Boolean).join(' · ');
     card.href = `record/${record.slug}/`;
     card.setAttribute('aria-label', `Open ${record.name}`);
-    kicker.textContent = override.kicker || 'The newest adventure in the archive.';
+    card.dataset.recordId = record.id;
+    if (addition?.addedAt) card.dataset.addedAt = addition.addedAt;
+    else delete card.dataset.addedAt;
+    if (added) added.textContent = addition?.addedAt ? `Added ${formatAddedDate(addition.addedAt)}` : 'Latest adventure';
+    kicker.textContent = override.kicker || 'A new record in the archive.';
     copy.textContent = override.story || fallbackStory(record);
 
     const statItems = Array.isArray(override.stats) && override.stats.length ? override.stats.slice(0, 3) : defaultStats(record);
@@ -166,16 +181,90 @@
     stats.setAttribute('aria-label', `${record.name} details`);
   };
 
-  const initLatest = async () => {
+  const buildRecentCard = (record, addition) => {
+    const card = document.createElement('a');
+    card.className = 'recent-card';
+    card.href = `record/${record.slug}/`;
+    card.dataset.recordId = record.id;
+    card.dataset.addedAt = addition.addedAt;
+
+    const added = document.createElement('span');
+    added.className = 'recent-card-added';
+    added.textContent = `Added ${formatAddedDate(addition.addedAt)}`;
+
+    const title = document.createElement('strong');
+    title.textContent = record.name;
+
+    const location = record.locationInfo?.label || record.location || '';
+    const meta = document.createElement('small');
+    meta.textContent = [formatDateRange(record), location].filter(Boolean).join(' · ');
+
+    const footer = document.createElement('span');
+    footer.className = 'recent-card-footer';
+    const activity = document.createElement('em');
+    activity.textContent = activityLabel(record);
+    const open = document.createElement('b');
+    open.textContent = 'Open record →';
+    footer.append(activity, open);
+
+    card.append(added, title, meta, footer);
+    return card;
+  };
+
+  const renderRecentAdditions = (entries, recordsById, featuredId) => {
+    const list = document.getElementById('recently-added-list');
+    if (!list) return;
+    const cards = entries
+      .filter(entry => entry.recordId !== featuredId)
+      .map(entry => ({ entry, record: recordsById.get(entry.recordId) }))
+      .filter(item => item.record?.slug)
+      .slice(0, 3)
+      .map(item => buildRecentCard(item.record, item.entry));
+    if (cards.length) list.replaceChildren(...cards);
+  };
+
+  const renderArchiveSnapshot = (records, health) => {
+    const setValue = (id, value) => {
+      const node = document.getElementById(id);
+      if (node && value != null && value !== '') node.textContent = value;
+    };
+
+    const years = records
+      .map(record => startKey(record) || dateKey(record))
+      .filter(Boolean)
+      .map(value => Number(String(value).slice(0, 4)))
+      .filter(Number.isFinite);
+    const span = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '';
+
+    setValue('snapshot-records', Number(health?.recordCount || records.length).toLocaleString());
+    setValue('snapshot-routes', Number(health?.coverage?.Route?.complete || 0).toLocaleString());
+    setValue('snapshot-photos', Number(health?.coverage?.Photo?.complete || 0).toLocaleString());
+    setValue('snapshot-years', span);
+  };
+
+  const initHome = async () => {
     if (!window.AdventureCatalog?.load) return;
     try {
-      const [records, stories] = await Promise.all([window.AdventureCatalog.load(), loadStories()]);
-      const record = latestRecord(records);
-      if (record) renderLatest(record, stories[record.id] || {});
+      const [records, storyPayload, additionPayload, health] = await Promise.all([
+        window.AdventureCatalog.load(),
+        loadJson(storyPath, {}),
+        loadJson(additionsPath, { entries: [] }),
+        loadJson(healthPath, null)
+      ]);
+      const stories = storyPayload?.records && typeof storyPayload.records === 'object' ? storyPayload.records : {};
+      const additions = Array.isArray(additionPayload?.entries) ? additionPayload.entries : [];
+      const recordsById = new Map(records.map(record => [record.id, record]));
+      const validAdditions = additions.filter(entry => recordsById.get(entry.recordId)?.slug);
+      const featuredAddition = validAdditions.find(entry => entry.featured) || validAdditions[0] || null;
+      const featuredRecord = featuredAddition ? recordsById.get(featuredAddition.recordId) : latestRecord(records);
+
+      if (featuredRecord) renderFeaturedAddition(featuredRecord, stories[featuredRecord.id] || {}, featuredAddition);
+      if (validAdditions.length && featuredRecord) renderRecentAdditions(validAdditions, recordsById, featuredRecord.id);
+      renderArchiveSnapshot(records, health);
     } catch (error) {
-      console.warn('Latest adventure could not be refreshed; keeping the static homepage fallback.', error);
+      console.warn('Homepage archive data could not be refreshed; keeping the static homepage fallback.', error);
     }
   };
 
-  initLatest();
+  initHome();
 })();

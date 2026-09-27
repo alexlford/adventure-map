@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "description": "Persistent first-seen dates for records intentionally surfaced as recently added. addedAt tracks archive entry, not event date.",
+  "entries": [
+    {
+      "recordId": "air-force-aim-high-challenge-2026",
+      "addedAt": "2026-09-20",
+      "source": "git-history",
+      "sourceCommit": "3a79f6b3398b7ecc950df5c4f5a6edc5824bd68a",
+      "featured": true
+    },
+    {
+      "recordId": "air-force-marathon-2026",
+      "addedAt": "2026-09-20",
+      "source": "git-history",
+      "sourceCommit": "3a79f6b3398b7ecc950df5c4f5a6edc5824bd68a"
+    },
+    {
+      "recordId": "air-force-5k-2026",
+      "addedAt": "2026-09-20",
+      "source": "git-history",
+      "sourceCommit": "3a79f6b3398b7ecc950df5c4f5a6edc5824bd68a"
+    }
+  ]
+}

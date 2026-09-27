@@ -20,6 +20,7 @@ const records = Array.isArray(publicRecords.records) ? publicRecords.records : [
 const recordIds = new Set(records.map(record => record.id).filter(Boolean));
 const seenPaths = new Set();
 const counts = { canonical: 0, candidate: 0, unresolved: 0 };
+let dimensionedCount = 0;
 
 if (!Array.isArray(manifest.photos)) problems.push('Manifest photos must be an array.');
 if (!manifest.meta || typeof manifest.meta !== 'object') problems.push('Manifest meta object is required.');
@@ -43,6 +44,15 @@ for (const [index, photo] of photos.entries()) {
     problems.push(`${label}: repositoryBlobSha must be a 40-character Git blob SHA.`);
   }
 
+  const hasWidth = photo?.pixelWidth != null;
+  const hasHeight = photo?.pixelHeight != null;
+  if (hasWidth !== hasHeight) problems.push(`${label}: pixelWidth and pixelHeight must be supplied together.`);
+  if (hasWidth && hasHeight) {
+    if (!Number.isInteger(photo.pixelWidth) || photo.pixelWidth <= 0) problems.push(`${label}: pixelWidth must be a positive integer.`);
+    if (!Number.isInteger(photo.pixelHeight) || photo.pixelHeight <= 0) problems.push(`${label}: pixelHeight must be a positive integer.`);
+    if (Number.isInteger(photo.pixelWidth) && photo.pixelWidth > 0 && Number.isInteger(photo.pixelHeight) && photo.pixelHeight > 0) dimensionedCount += 1;
+  }
+
   if (status === 'canonical') {
     if (!photo.eventId) problems.push(`${label}: canonical photo requires eventId.`);
     else if (!recordIds.has(photo.eventId)) problems.push(`${label}: canonical eventId ${photo.eventId} is absent from data/public-records.json.`);
@@ -62,7 +72,7 @@ for (const [field, actual] of Object.entries(expectedCounts)) {
   if (manifest.meta?.[field] !== actual) problems.push(`meta.${field} is ${manifest.meta?.[field]} but should be ${actual}.`);
 }
 
-console.log(`Event photos checked: ${photos.length} (${counts.canonical} canonical, ${counts.candidate} candidate, ${counts.unresolved} unresolved)`);
+console.log(`Event photos checked: ${photos.length} (${counts.canonical} canonical, ${counts.candidate} candidate, ${counts.unresolved} unresolved; ${dimensionedCount} with verified dimensions)`);
 if (problems.length) {
   problems.forEach(problem => console.error(`ERROR ${problem}`));
   process.exitCode = 1;
