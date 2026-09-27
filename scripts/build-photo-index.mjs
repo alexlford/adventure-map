@@ -4,8 +4,10 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const manifestPath = path.join(root, 'data/event-photo-manifest.json');
+const assetRoot = path.join(root, 'assets/event-photos');
 const outputPath = path.join(root, 'data/photo-index.json');
 const checkOnly = process.argv.includes('--check');
+const imageExtensions = new Set(['.jpg', '.jpeg', '.png']);
 
 function jpegDimensions(buffer) {
   if (buffer.length < 4 || buffer[0] !== 0xff || buffer[1] !== 0xd8) return null;
@@ -47,40 +49,60 @@ function imageDimensions(buffer, file) {
   return null;
 }
 
+async function discoverImages(directory) {
+  const found = [];
+  const entries = await fs.readdir(directory, { withFileTypes: true });
+  for (const entry of entries) {
+    const file = path.join(directory, entry.name);
+    if (entry.isDirectory()) found.push(...await discoverImages(file));
+    else if (entry.isFile() && imageExtensions.has(path.extname(entry.name).toLowerCase())) found.push(file);
+  }
+  return found;
+}
+
+const toRepoPath = file => path.relative(root, file).split(path.sep).join('/');
 const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
-const photos = Array.isArray(manifest.photos) ? manifest.photos : [];
+const manifestPhotos = Array.isArray(manifest.photos) ? manifest.photos : [];
+const manifestByPath = new Map(manifestPhotos.filter(photo => photo?.path).map(photo => [photo.path, photo]));
+const assetFiles = await discoverImages(assetRoot);
+const assetPaths = new Set(assetFiles.map(toRepoPath));
 const output = [];
 const failures = [];
 
-for (const photo of photos) {
-  if (!photo?.path) continue;
+for (const photo of manifestPhotos) {
+  if (photo?.path && !assetPaths.has(photo.path)) failures.push(`${photo.source || photo.path}: manifest asset is missing at ${photo.path}`);
+}
+
+for (const file of assetFiles) {
+  const assetPath = toRepoPath(file);
+  const photo = manifestByPath.get(assetPath) || null;
   try {
-    const file = path.join(root, photo.path);
     const buffer = await fs.readFile(file);
     const dimensions = imageDimensions(buffer, file);
     if (!dimensions?.width || !dimensions?.height) throw new Error('unsupported or unreadable image dimensions');
 
-    if (Number.isFinite(photo.pixelWidth) && photo.pixelWidth !== dimensions.width) {
+    if (photo && Number.isFinite(photo.pixelWidth) && photo.pixelWidth !== dimensions.width) {
       throw new Error(`manifest pixelWidth ${photo.pixelWidth} does not match asset width ${dimensions.width}`);
     }
-    if (Number.isFinite(photo.pixelHeight) && photo.pixelHeight !== dimensions.height) {
+    if (photo && Number.isFinite(photo.pixelHeight) && photo.pixelHeight !== dimensions.height) {
       throw new Error(`manifest pixelHeight ${photo.pixelHeight} does not match asset height ${dimensions.height}`);
     }
 
     output.push({
-      path: photo.path,
-      eventId: photo.eventId || null,
-      eventName: photo.eventName || null,
-      date: photo.date || null,
-      status: photo.status || null,
+      path: assetPath,
+      manifested: Boolean(photo),
+      eventId: photo?.eventId || null,
+      eventName: photo?.eventName || null,
+      date: photo?.date || null,
+      status: photo?.status || null,
       width: dimensions.width,
       height: dimensions.height,
       aspectRatio: Number((dimensions.width / dimensions.height).toFixed(6)),
-      ...(photo.caption ? { caption: photo.caption } : {}),
-      ...(photo.photographer ? { photographer: photo.photographer } : {})
+      ...(photo?.caption ? { caption: photo.caption } : {}),
+      ...(photo?.photographer ? { photographer: photo.photographer } : {})
     });
   } catch (error) {
-    failures.push(`${photo.source || photo.path}: ${error.message}`);
+    failures.push(`${photo?.source || assetPath}: ${error.message}`);
   }
 }
 
@@ -91,8 +113,10 @@ if (failures.length) {
 output.sort((a, b) => a.path.localeCompare(b.path));
 const payload = {
   schemaVersion: 1,
-  generatedFrom: 'data/event-photo-manifest.json',
+  generatedFrom: ['assets/event-photos', 'data/event-photo-manifest.json'],
   photoCount: output.length,
+  manifestPhotoCount: manifestPhotos.length,
+  unmanifestedCount: output.length - manifestPhotos.length,
   photos: output
 };
 const serialized = `${JSON.stringify(payload, null, 2)}\n`;
@@ -102,8 +126,8 @@ if (checkOnly) {
   try { existing = await fs.readFile(outputPath, 'utf8'); }
   catch { throw new Error('data/photo-index.json is missing; run npm run build:photo-index.'); }
   if (existing !== serialized) throw new Error('data/photo-index.json is stale; run npm run build:photo-index.');
-  console.log(`Photo index validation passed for ${output.length} manifest-backed assets.`);
+  console.log(`Photo index validation passed for ${output.length} event-photo assets (${manifestPhotos.length} manifest-backed).`);
 } else {
   await fs.writeFile(outputPath, serialized);
-  console.log(`Photo index built for ${output.length} manifest-backed assets.`);
+  console.log(`Photo index built for ${output.length} event-photo assets (${manifestPhotos.length} manifest-backed).`);
 }
