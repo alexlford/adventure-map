@@ -1,0 +1,618 @@
+{
+  "schemaVersion": 1,
+  "generatedFromRecordCount": 161,
+  "summary": {
+    "raceCount": 81,
+    "firstYear": 2006,
+    "lastYear": 2026,
+    "activeYearCount": 18,
+    "knownDistanceMiles": 732.49,
+    "knownDistanceCount": 78,
+    "officialResultCount": 27,
+    "marathonCount": 9,
+    "halfMarathonCount": 12,
+    "busiestYear": {
+      "year": 2025,
+      "count": 10
+    },
+    "longestKnown": {
+      "id": "brew-to-brew-relay-2013",
+      "slug": "2013-04-07-brew-to-brew-team-relay",
+      "name": "Brew to Brew Team Relay",
+      "year": 2013,
+      "miles": 44.4
+    }
+  },
+  "yearly": [
+    {
+      "year": 2006,
+      "count": 2,
+      "miles": 3.11,
+      "knownDistanceCount": 1,
+      "marathonCount": 0,
+      "disciplines": {
+        "relay": 1,
+        "road": 1
+      },
+      "cumulativeMiles": 3.11
+    },
+    {
+      "year": 2007,
+      "count": 1,
+      "miles": 3.11,
+      "knownDistanceCount": 1,
+      "marathonCount": 0,
+      "disciplines": {
+        "road": 1
+      },
+      "cumulativeMiles": 6.22
+    },
+    {
+      "year": 2008,
+      "count": 2,
+      "miles": 3.11,
+      "knownDistanceCount": 1,
+      "marathonCount": 0,
+      "disciplines": {
+        "relay": 1,
+        "road": 1
+      },
+      "cumulativeMiles": 9.33
+    },
+    {
+      "year": 2009,
+      "count": 1,
+      "miles": 3.11,
+      "knownDistanceCount": 1,
+      "marathonCount": 0,
+      "disciplines": {
+        "road": 1
+      },
+      "cumulativeMiles": 12.44
+    },
+    {
+      "year": 2010,
+      "count": 1,
+      "miles": 0,
+      "knownDistanceCount": 0,
+      "marathonCount": 0,
+      "disciplines": {
+        "relay": 1
+      },
+      "cumulativeMiles": 12.44
+    },
+    {
+      "year": 2013,
+      "count": 1,
+      "miles": 44.4,
+      "knownDistanceCount": 1,
+      "marathonCount": 0,
+      "disciplines": {
+        "road": 1
+      },
+      "cumulativeMiles": 56.84
+    },
+    {
+      "year": 2014,
+      "count": 2,
+      "miles": 19.51,
+      "knownDistanceCount": 2,
+      "marathonCount": 0,
+      "disciplines": {
+        "road": 2
+      },
+      "cumulativeMiles": 76.35
+    },
+    {
+      "year": 2015,
+      "count": 8,
+      "miles": 99.04,
+      "knownDistanceCount": 8,
+      "marathonCount": 2,
+      "disciplines": {
+        "road": 3,
+        "marathon": 2,
+        "trail": 2,
+        "relay": 1
+      },
+      "cumulativeMiles": 175.39
+    },
+    {
+      "year": 2016,
+      "count": 9,
+      "miles": 73.56,
+      "knownDistanceCount": 9,
+      "marathonCount": 0,
+      "disciplines": {
+        "road": 9
+      },
+      "cumulativeMiles": 248.95
+    },
+    {
+      "year": 2018,
+      "count": 4,
+      "miles": 34.38,
+      "knownDistanceCount": 4,
+      "marathonCount": 0,
+      "disciplines": {
+        "road": 4
+      },
+      "cumulativeMiles": 283.33
+    },
+    {
+      "year": 2019,
+      "count": 3,
+      "miles": 41.88,
+      "knownDistanceCount": 3,
+      "marathonCount": 1,
+      "disciplines": {
+        "road": 2,
+        "marathon": 1
+      },
+      "cumulativeMiles": 325.21
+    },
+    {
+      "year": 2020,
+      "count": 4,
+      "miles": 35.84,
+      "knownDistanceCount": 4,
+      "marathonCount": 1,
+      "disciplines": {
+        "road": 3,
+        "marathon": 1
+      },
+      "cumulativeMiles": 361.05
+    },
+    {
+      "year": 2021,
+      "count": 7,
+      "miles": 65.77,
+      "knownDistanceCount": 7,
+      "marathonCount": 1,
+      "disciplines": {
+        "road": 6,
+        "marathon": 1
+      },
+      "cumulativeMiles": 426.82
+    },
+    {
+      "year": 2022,
+      "count": 9,
+      "miles": 70.3,
+      "knownDistanceCount": 9,
+      "marathonCount": 0,
+      "disciplines": {
+        "road": 6,
+        "nordic": 2,
+        "trail": 1
+      },
+      "cumulativeMiles": 497.12
+    },
+    {
+      "year": 2023,
+      "count": 3,
+      "miles": 13.38,
+      "knownDistanceCount": 3,
+      "marathonCount": 0,
+      "disciplines": {
+        "road": 3
+      },
+      "cumulativeMiles": 510.5
+    },
+    {
+      "year": 2024,
+      "count": 9,
+      "miles": 78.88,
+      "knownDistanceCount": 9,
+      "marathonCount": 1,
+      "disciplines": {
+        "road": 5,
+        "marathon": 1,
+        "mountain-bike": 1,
+        "nordic": 1,
+        "trail": 1
+      },
+      "cumulativeMiles": 589.38
+    },
+    {
+      "year": 2025,
+      "count": 10,
+      "miles": 94.38,
+      "knownDistanceCount": 10,
+      "marathonCount": 2,
+      "disciplines": {
+        "road": 8,
+        "marathon": 2
+      },
+      "cumulativeMiles": 683.76
+    },
+    {
+      "year": 2026,
+      "count": 5,
+      "miles": 48.73,
+      "knownDistanceCount": 5,
+      "marathonCount": 1,
+      "disciplines": {
+        "road": 4,
+        "marathon": 1
+      },
+      "cumulativeMiles": 732.49
+    }
+  ],
+  "disciplines": [
+    {
+      "name": "road",
+      "count": 60
+    },
+    {
+      "name": "marathon",
+      "count": 9
+    },
+    {
+      "name": "relay",
+      "count": 4
+    },
+    {
+      "name": "trail",
+      "count": 4
+    },
+    {
+      "name": "nordic",
+      "count": 3
+    },
+    {
+      "name": "mountain-bike",
+      "count": 1
+    }
+  ],
+  "marathonTimeline": [
+    {
+      "id": "illinois-marathon-2015",
+      "slug": "2015-04-25-illinois-marathon",
+      "year": 2015,
+      "date": "2015-04-25",
+      "name": "Illinois Marathon",
+      "location": "Champaign-Urbana, Illinois",
+      "time": null,
+      "miles": 26.2
+    },
+    {
+      "id": "twin-cities-marathon-2015",
+      "slug": "2015-10-04-medtronic-twin-cities-marathon",
+      "year": 2015,
+      "date": "2015-10-04",
+      "name": "Medtronic Twin Cities Marathon",
+      "location": "Minneapolis to Saint Paul, Minnesota",
+      "time": "5:25:40",
+      "miles": 26.2
+    },
+    {
+      "id": "kansas-city-marathon-2019",
+      "slug": "2019-10-19-kansas-city-marathon",
+      "year": 2019,
+      "date": "2019-10-19",
+      "name": "Kansas City Marathon",
+      "location": "Kansas City, Missouri",
+      "time": null,
+      "miles": 26.77
+    },
+    {
+      "id": "chicago-marathon-virtual-2020",
+      "slug": "2020-10-07-chicago-marathon-virtual",
+      "year": 2020,
+      "date": "2020-10-07",
+      "name": "Chicago Marathon (virtual)",
+      "location": "Baltimore, Maryland",
+      "time": null,
+      "miles": 26.22
+    },
+    {
+      "id": "chicago-marathon-2021",
+      "slug": "2021-10-10-chicago-marathon",
+      "year": 2021,
+      "date": "2021-10-10",
+      "name": "Chicago Marathon",
+      "location": "Chicago, Illinois",
+      "time": "03:57:50",
+      "miles": 26.2
+    },
+    {
+      "id": "boulderthon-2024",
+      "slug": "2024-09-29-boulderthon",
+      "year": 2024,
+      "date": "2024-09-29",
+      "name": "Boulderthon",
+      "location": "Boulder, Colorado",
+      "time": null,
+      "miles": 26.47
+    },
+    {
+      "id": "flying-pig-marathon-2025",
+      "slug": "2025-05-04-flying-pig-marathon",
+      "year": 2025,
+      "date": "2025-05-04",
+      "name": "Flying Pig Marathon",
+      "location": "Cincinnati, Ohio",
+      "time": null,
+      "miles": 26.2
+    },
+    {
+      "id": "colfax-marathon-2025",
+      "slug": "2025-05-18-denver-colfax-marathon",
+      "year": 2025,
+      "date": "2025-05-18",
+      "name": "Denver Colfax Marathon",
+      "location": "Denver, Colorado",
+      "time": "04:59:53",
+      "miles": 26.2
+    },
+    {
+      "id": "air-force-marathon-2026",
+      "slug": "2026-09-19-u-s-air-force-marathon",
+      "year": 2026,
+      "date": "2026-09-19",
+      "name": "U.S. Air Force Marathon",
+      "location": "Wright-Patterson Air Force Base & Fairborn, Ohio",
+      "time": "4:54:34.40",
+      "miles": 26.2
+    }
+  ],
+  "topPlaces": [
+    {
+      "name": "Boulder, Colorado",
+      "count": 8,
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "name": "Denver, Colorado",
+      "count": 6,
+      "years": [
+        2021,
+        2024,
+        2025,
+        2026
+      ]
+    },
+    {
+      "name": "Baltimore, Maryland",
+      "count": 5,
+      "years": [
+        2018,
+        2020,
+        2021
+      ]
+    },
+    {
+      "name": "John A. Logan College, Carterville, Illinois",
+      "count": 4,
+      "years": [
+        2006,
+        2007,
+        2008,
+        2009
+      ]
+    },
+    {
+      "name": "Washington Park, Denver, Colorado",
+      "count": 4,
+      "years": [
+        2021,
+        2022,
+        2023,
+        2025
+      ]
+    },
+    {
+      "name": "Champaign-Urbana, Illinois",
+      "count": 4,
+      "years": [
+        2015,
+        2016
+      ]
+    },
+    {
+      "name": "Southern Illinois",
+      "count": 3,
+      "years": [
+        2006,
+        2008,
+        2010
+      ]
+    },
+    {
+      "name": "City Park, Denver, Colorado",
+      "count": 3,
+      "years": [
+        2021,
+        2025
+      ]
+    },
+    {
+      "name": "Estes Park, Colorado",
+      "count": 3,
+      "years": [
+        2021,
+        2025
+      ]
+    },
+    {
+      "name": "Virtual / Denver, Colorado",
+      "count": 3,
+      "years": [
+        2020,
+        2022
+      ]
+    }
+  ],
+  "recurringSeries": [
+    {
+      "id": "colfax-marathon-weekend-series",
+      "name": "Denver Colfax Marathon Weekend",
+      "appearanceCount": 7,
+      "years": [
+        2021,
+        2024,
+        2025,
+        2026
+      ],
+      "firstYear": 2021,
+      "lastYear": 2026,
+      "story": {
+        "id": "colfax-marathon-weekend-series",
+        "slug": "denver-colfax-marathon-weekend-series"
+      }
+    },
+    {
+      "id": "mile-high-united-way-turkey-trot-series",
+      "name": "Turkey Trots",
+      "appearanceCount": 7,
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2023,
+        2024,
+        2025
+      ],
+      "firstYear": 2018,
+      "lastYear": 2025,
+      "story": {
+        "id": "mile-high-united-way-turkey-trot-series",
+        "slug": "mile-high-united-way-turkey-trot-series"
+      }
+    },
+    {
+      "id": "rundenver-2021-2022",
+      "name": "RunDenver Series",
+      "appearanceCount": 5,
+      "years": [
+        2021,
+        2022
+      ],
+      "firstYear": 2021,
+      "lastYear": 2022,
+      "story": {
+        "id": "rundenver-series-story",
+        "slug": "rundenver-series"
+      }
+    },
+    {
+      "id": "snowman-shuffle-series",
+      "name": "Snowman Shuffle",
+      "appearanceCount": 5,
+      "years": [
+        2006,
+        2007,
+        2008,
+        2009,
+        2021
+      ],
+      "firstYear": 2006,
+      "lastYear": 2021,
+      "story": {
+        "id": "snowman-shuffle-series",
+        "slug": "snowman-shuffle-series"
+      }
+    },
+    {
+      "id": "bolderboulder-series-2022-2025",
+      "name": "BOLDERBoulder",
+      "appearanceCount": 4,
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "firstYear": 2022,
+      "lastYear": 2025,
+      "story": {
+        "id": "bolderboulder-series-story",
+        "slug": "bolderboulder-series"
+      }
+    },
+    {
+      "id": "colderbolder-series-2022-2025",
+      "name": "COLDERBolder 5K",
+      "appearanceCount": 4,
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "firstYear": 2022,
+      "lastYear": 2025,
+      "story": {
+        "id": "colderbolder-series-story",
+        "slug": "colderbolder-series"
+      }
+    },
+    {
+      "id": "heartland-39-3-series-2016",
+      "name": "Heartland 39.3",
+      "appearanceCount": 3,
+      "years": [
+        2016
+      ],
+      "firstYear": 2016,
+      "lastYear": 2016,
+      "story": {
+        "id": "heartland-39-3-2016",
+        "slug": "2016-04-09-heartland-39-3-series"
+      }
+    },
+    {
+      "id": "river-to-river-relay-series",
+      "name": "River to River Relay",
+      "appearanceCount": 3,
+      "years": [
+        2006,
+        2008,
+        2010
+      ],
+      "firstYear": 2006,
+      "lastYear": 2010,
+      "story": {
+        "id": "river-to-river-relay-series-story",
+        "slug": "river-to-river-relay-series"
+      }
+    },
+    {
+      "id": "chicago-marathon-series",
+      "name": "Chicago Marathon",
+      "appearanceCount": 2,
+      "years": [
+        2020,
+        2021
+      ],
+      "firstYear": 2020,
+      "lastYear": 2021,
+      "story": {
+        "id": "chicago-marathon-series",
+        "slug": "chicago-marathon-series"
+      }
+    },
+    {
+      "id": "garmin-marathon-land-of-oz-series",
+      "name": "Garmin Marathon in the Land of Oz",
+      "appearanceCount": 2,
+      "years": [
+        2014,
+        2016
+      ],
+      "firstYear": 2014,
+      "lastYear": 2016,
+      "story": {
+        "id": "garmin-marathon-land-of-oz-series",
+        "slug": "garmin-marathon-land-of-oz-series"
+      }
+    }
+  ]
+}
