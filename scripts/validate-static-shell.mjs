@@ -28,7 +28,7 @@ function validateDocument(file, html, canonical, active) {
   }
   if (!html.includes(`<link rel="canonical" href="${canonical}">`)) errors.push(`${label}: canonical URL is not ${canonical}`);
   if (!html.includes(`<meta property="og:url" content="${canonical}">`)) errors.push(`${label}: og:url is not ${canonical}`);
-  if (!/<nav\s+class=["']nav["'][^>]*data-static-shell=["']true["']/i.test(html)) errors.push(`${label}: primary navigation is not materialized in HTML`);
+  if (!/<nav\s+class=["'](?:nav|section-nav)["'][^>]*data-static-shell=["']true["']/i.test(html)) errors.push(`${label}: primary navigation is not materialized in HTML`);
   for (const route of primaryRoutes) {
     if (!html.includes(`data-nav="${route.key}"`)) errors.push(`${label}: static primary navigation is missing ${route.key}`);
   }
