@@ -25,14 +25,17 @@ const primaryKey = active => active === 'activities' || active === 'timeline' ||
     ? 'stories'
     : active;
 
-function renderPrimaryNav(active) {
+function renderPrimaryLinks(active) {
   const top = primaryKey(active);
-  const links = primaryRoutes.map(route => {
+  return primaryRoutes.map(route => {
     const key = route.key;
     const current = top === key ? ' class="is-active" aria-current="page"' : '';
     return `<a data-nav="${esc(key)}" href="${esc(route.path)}"${current}>${esc(route.navLabel || route.label)}</a>`;
   }).join('');
-  return `<nav class="nav" aria-label="Primary navigation" data-static-shell="true">${links}</nav>`;
+}
+
+function renderPrimaryNav(active, className = 'nav') {
+  return `<nav class="${className}" aria-label="Primary navigation" data-static-shell="true">${renderPrimaryLinks(active)}</nav>`;
 }
 
 function renderActivitySubnav(active) {
@@ -88,8 +91,12 @@ function ensureMetadata(html, canonical) {
 
 function ensureNavigation(html, active) {
   const navPattern = /<nav\s+class=["']nav["'][^>]*>[\s\S]*?<\/nav>/i;
-  if (!navPattern.test(html)) throw new Error('Document is missing <nav class="nav">.');
-  let out = html.replace(navPattern, renderPrimaryNav(active));
+  const mapNavPattern = /<nav\s+class=["']section-nav["'][^>]*>[\s\S]*?<\/nav>/i;
+  let out = html;
+  if (navPattern.test(out)) out = out.replace(navPattern, renderPrimaryNav(active));
+  else if (mapNavPattern.test(out)) out = out.replace(mapNavPattern, renderPrimaryNav(active, 'section-nav'));
+  else throw new Error('Document is missing a recognized primary navigation element.');
+
   out = out.replace(/\s*<div\s+class=["']activity-subnav-wrap["'][^>]*>[\s\S]*?<\/nav>\s*<\/div>/gi, '');
   const subnav = renderActivitySubnav(active);
   if (subnav) {
@@ -129,9 +136,10 @@ for (const [file, context] of publicDocuments) {
     failures.push(`${file}: ${error.message}`);
   }
 }
-const diagnostic = failures.length
-  ? `Static shell failures (${failures.length})\n${failures.map(item => `- ${item}`).join('\n')}\n`
-  : `Static shell materialized for ${publicDocuments.size} public documents.\n`;
-await fs.writeFile('static-shell-diagnostics.txt', diagnostic);
-if (failures.length) throw new Error(diagnostic);
-console.log(diagnostic.trim());
+if (failures.length) {
+  const diagnostic = `Static shell failures (${failures.length})\n${failures.map(item => `- ${item}`).join('\n')}\n`;
+  await fs.writeFile('static-shell-diagnostics.txt', diagnostic);
+  throw new Error(diagnostic);
+}
+await fs.rm('static-shell-diagnostics.txt', { force: true });
+console.log(`Static shell materialized for ${publicDocuments.size} public documents.`);
