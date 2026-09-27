@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const manifestPath = path.join(root, 'data/event-photo-manifest.json');
 const outputPath = path.join(root, 'data/photo-index.json');
+const checkOnly = process.argv.includes('--check');
 
 function jpegDimensions(buffer) {
   if (buffer.length < 4 || buffer[0] !== 0xff || buffer[1] !== 0xd8) return null;
@@ -94,6 +95,15 @@ const payload = {
   photoCount: output.length,
   photos: output
 };
+const serialized = `${JSON.stringify(payload, null, 2)}\n`;
 
-await fs.writeFile(outputPath, `${JSON.stringify(payload, null, 2)}\n`);
-console.log(`Photo index built for ${output.length} manifest-backed assets.`);
+if (checkOnly) {
+  let existing = '';
+  try { existing = await fs.readFile(outputPath, 'utf8'); }
+  catch { throw new Error('data/photo-index.json is missing; run npm run build:photo-index.'); }
+  if (existing !== serialized) throw new Error('data/photo-index.json is stale; run npm run build:photo-index.');
+  console.log(`Photo index validation passed for ${output.length} manifest-backed assets.`);
+} else {
+  await fs.writeFile(outputPath, serialized);
+  console.log(`Photo index built for ${output.length} manifest-backed assets.`);
+}
