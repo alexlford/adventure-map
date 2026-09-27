@@ -6,10 +6,41 @@ const primaryRoutes = navRoutes('primary');
 const activityRoutes = navRoutes('activity');
 const activityKeys = new Set(activityRoutes.map(route => route.activeKey || route.key));
 const errors = [];
+const photoIndex = JSON.parse(await fs.readFile('data/photo-index.json', 'utf8'));
+const photoDimensions = new Map((photoIndex.photos || []).map(photo => [photo.path, { width: photo.width, height: photo.height }]));
 
 const activeForRoute = route => route?.parentActiveKey || route?.activeKey || route?.key || null;
 const shouldHaveSubnav = active => active === 'timeline' || activityKeys.has(active);
 const count = (html, pattern) => (html.match(pattern) || []).length;
+
+function normalizedAssetPath(src) {
+  let value = String(src || '').split(/[?#]/, 1)[0];
+  try {
+    if (/^https?:\/\//i.test(value)) {
+      const url = new URL(value);
+      if (url.origin !== SITE_ORIGIN) return null;
+      value = url.pathname;
+    }
+  } catch {
+    return null;
+  }
+  value = value.replace(/^\/+/, '').replace(/^(?:\.\.\/)+/, '').replace(/^\.\//, '');
+  return value.startsWith('assets/event-photos/') ? value : null;
+}
+
+function validatePhotoDimensions(label, html) {
+  for (const tag of html.match(/<img\b[^>]*>/gi) || []) {
+    const src = tag.match(/\bsrc=["']([^"']+)["']/i)?.[1];
+    const assetPath = src ? normalizedAssetPath(src) : null;
+    const dimensions = assetPath ? photoDimensions.get(assetPath) : null;
+    if (!dimensions) continue;
+    const width = Number(tag.match(/\bwidth=["'](\d+)["']/i)?.[1]);
+    const height = Number(tag.match(/\bheight=["'](\d+)["']/i)?.[1]);
+    if (width !== dimensions.width || height !== dimensions.height) {
+      errors.push(`${label}: indexed photo ${assetPath} must declare width="${dimensions.width}" height="${dimensions.height}"`);
+    }
+  }
+}
 
 function validateDocument(file, html, canonical, active) {
   const label = file;
@@ -35,6 +66,7 @@ function validateDocument(file, html, canonical, active) {
   const subnavCount = count(html, /<div\s+class=["']activity-subnav-wrap["'][^>]*data-static-shell=["']true["']/gi);
   if (shouldHaveSubnav(active) && subnavCount !== 1) errors.push(`${label}: expected one static activity subnav; found ${subnavCount}`);
   if (!shouldHaveSubnav(active) && subnavCount !== 0) errors.push(`${label}: unexpected activity subnav`);
+  validatePhotoDimensions(label, html);
 }
 
 for (const route of siteRoutes) {
@@ -63,5 +95,5 @@ if (errors.length) {
   errors.forEach(error => console.error(`ERROR ${error}`));
   process.exitCode = 1;
 } else {
-  console.log(`Static shell validation passed for ${siteRoutes.length + (payload.records || []).length} public documents.`);
+  console.log(`Static shell validation passed for ${siteRoutes.length + (payload.records || []).length} public documents with ${photoDimensions.size} indexed photos.`);
 }
