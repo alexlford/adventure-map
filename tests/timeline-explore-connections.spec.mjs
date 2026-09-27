@@ -12,6 +12,19 @@ test('Timeline facets are shareable and filter the chronology by year', async ({
   await expect(page.locator('#timeline .timeline-year')).toHaveCount(1);
   await expect(page.locator('#timeline .timeline-year h3')).toHaveText(year);
 
+  const selectedYears = await page.evaluate(async () => {
+    const href = document.getElementById('timelineMapLink')?.href || '';
+    const ids = (new URL(href, location.href).searchParams.get('selection') || '').split(',').filter(Boolean);
+    const records = await window.AdventureSite.load();
+    const byId = new Map(records.map(record => [record.id, record]));
+    return ids.map(id => {
+      const record = byId.get(id);
+      return String(record?.date || record?.startDate || record?.year || '').slice(0, 4);
+    });
+  });
+  expect(selectedYears.length).toBeGreaterThan(0);
+  expect(selectedYears.every(selectedYear => selectedYear === year)).toBe(true);
+
   const stateUrl = page.url();
   await page.goto(stateUrl, { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#timelineYear')).toHaveValue(year);
