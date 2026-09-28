@@ -8,9 +8,9 @@ const sections = [
   ['/timeline/', 'Timeline'],
   ['/races/', 'Races'],
   ['/summits/', 'Summits'],
-  ['/skiing/', 'Skiing'],
-  ['/nordic/', 'Nordic'],
-  ['/mtb/', 'MTB']
+  ['/skiing/', 'Alpine Skiing'],
+  ['/nordic/', 'Nordic Skiing'],
+  ['/mtb/', 'Mountain Biking']
 ];
 
 const activitySections = new Map([
@@ -18,7 +18,7 @@ const activitySections = new Map([
   ['/summits/', 'Summits'],
   ['/skiing/', 'Alpine Skiing'],
   ['/nordic/', 'Nordic Skiing'],
-  ['/mtb/', 'MTB']
+  ['/mtb/', 'Mountain Biking']
 ]);
 
 const cleanPath = value => value === '/' ? '/' : value.replace(/\/$/, '');
@@ -58,7 +58,7 @@ for (const [path, label] of sections) {
     if (activitySections.has(path)) {
       const subnav = page.locator('nav[aria-label="Explore Adventures"]');
       await expect(subnav).toBeVisible();
-      for (const item of ['Races','Summits','Alpine Skiing','Nordic Skiing','MTB','Timeline']) {
+      for (const item of ['Races','Summits','Alpine Skiing','Nordic Skiing','Mountain Biking','Timeline']) {
         await expect(subnav.getByRole('link',{name:item,exact:true})).toHaveCount(1);
       }
       await expect(subnav.getByRole('link',{name:activitySections.get(path),exact:true})).toHaveAttribute('aria-current','page');
