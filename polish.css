@@ -1,5 +1,34 @@
 /* Phase 4: shared accessibility, motion, and touch polish for every public page. */
 
+/* Step 1 typography audit: keep secondary labels compact without letting
+   important metadata fall below a practical reading size. */
+.activity-subnav-label,
+.card-kicker,
+.verification-badge,
+.result-stat small,
+.split-title,
+.split small,
+.chronology-link small,
+.photo-caption,
+.home-portal span,
+.home-portal small,
+.latest-kicker,
+.latest-stats span,
+.recent-card-added,
+.recent-card > small,
+.recent-card-footer em,
+.recent-card-footer b,
+.memory-overlay small,
+.snapshot-item span {
+  font-size: .75rem !important;
+  line-height: 1.35;
+}
+
+.almanac-chip,
+.footer {
+  font-size: .76rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto !important;
@@ -50,6 +79,27 @@
   input,
   select {
     font-size: 16px;
+  }
+
+  .activity-subnav-label,
+  .card-kicker,
+  .verification-badge,
+  .result-stat small,
+  .split-title,
+  .split small,
+  .chronology-link small,
+  .photo-caption,
+  .home-portal span,
+  .home-portal small,
+  .latest-kicker,
+  .latest-stats span,
+  .recent-card-added,
+  .recent-card > small,
+  .recent-card-footer em,
+  .recent-card-footer b,
+  .memory-overlay small,
+  .snapshot-item span {
+    font-size: .78rem !important;
   }
 }
 
