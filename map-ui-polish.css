@@ -75,6 +75,34 @@
 .popup-card-refined .popup-detail a{display:inline-flex;align-items:center;gap:4px;color:var(--ink);font-size:.7rem;font-weight:850;text-decoration-thickness:1px;text-underline-offset:3px}
 .leaflet-popup-content{max-height:min(58vh,460px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
 
+/* Step 1 typography audit: map labels and popup metadata need to stay readable
+   without changing the established hierarchy. */
+.stat-label,
+.control-label,
+.control-hint,
+.year-controls label,
+.year-reset,
+.refine-controls summary,
+.refine-controls summary small,
+.refine-body .search-label,
+.refine-body .secondary-button,
+.filter-button,
+.item-meta,
+.item-value,
+.sidebar-footer,
+.popup-kicker,
+.popup-status,
+.popup-card-refined .popup-kicker,
+.popup-card-refined .popup-location,
+.popup-card-refined .popup-alias,
+.popup-headline small,
+.popup-metric,
+.popup-detail,
+.popup-card-refined .popup-detail a {
+  font-size: .75rem;
+  line-height: 1.35;
+}
+
 @media(max-width:820px){
   .app-shell{display:block}
   .sidebar{padding:24px 20px 20px}
@@ -84,6 +112,31 @@
   .filter-button{padding:7px 9px}
   .refine-controls{margin-top:5px}
   .results-section{max-height:none!important;overflow:visible!important}
+
+  .stat-label,
+  .control-label,
+  .control-hint,
+  .year-controls label,
+  .year-reset,
+  .refine-controls summary,
+  .refine-controls summary small,
+  .refine-body .search-label,
+  .refine-body .secondary-button,
+  .filter-button,
+  .item-meta,
+  .item-value,
+  .sidebar-footer,
+  .popup-kicker,
+  .popup-status,
+  .popup-card-refined .popup-kicker,
+  .popup-card-refined .popup-location,
+  .popup-card-refined .popup-alias,
+  .popup-headline small,
+  .popup-metric,
+  .popup-detail,
+  .popup-card-refined .popup-detail a {
+    font-size: .78rem;
+  }
 }
 
 @media(max-width:520px){
