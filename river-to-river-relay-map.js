@@ -148,7 +148,6 @@
       scrollWheelZoom: false,
       worldCopyJump: true,
       zoomControl: true,
-      preferCanvas: true,
       zoomAnimation: false,
       fadeAnimation: false,
       markerZoomAnimation: false
@@ -177,9 +176,7 @@
     });
     activeTiles.on('load', () => map.invalidateSize({ pan: false }));
 
-    const renderer = L.canvas({ padding: 0.5 });
     const base = L.polyline(baseLatLngs, {
-      renderer,
       color: cssColor('--muted', '#667085'),
       weight: 5,
       opacity: 0.42,
@@ -196,7 +193,6 @@
         const line = sliceRoute(coordinates, index, segment.startMi / courseDistance, segment.endMi / courseDistance);
         const latLngs = line.map(([lon, lat]) => [lat, lon]);
         const layer = L.polyline(latLngs, {
-          renderer,
           color,
           weight: 8,
           opacity: 1,
