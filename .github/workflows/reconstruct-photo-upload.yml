@@ -1,0 +1,49 @@
+name: Reconstruct photo upload
+
+on:
+  push:
+    paths:
+      - '.photo-upload/READY'
+
+permissions:
+  contents: write
+
+jobs:
+  reconstruct:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reconstruct Tennessee Pass image
+        shell: bash
+        run: |
+          set -euo pipefail
+          target='assets/event-photos/adventures/tennessee-pass-2022/2022-01-02-tennessee-pass-pink-sunrise-01.jpeg'
+          cat .photo-upload/tennessee-*.b64 | tr -d '\n' | base64 --decode > "$target"
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          target = Path('assets/event-photos/adventures/tennessee-pass-2022/2022-01-02-tennessee-pass-pink-sunrise-01.jpeg')
+          b = target.read_bytes()
+          sha = hashlib.sha1(b'blob ' + str(len(b)).encode() + b'\0' + b).hexdigest()
+          manifest_path = Path('data/event-photo-manifest.json')
+          manifest = json.loads(manifest_path.read_text())
+          for photo in manifest.get('photos', []):
+              if photo.get('path') == str(target):
+                  photo['repositoryBlobSha'] = sha
+                  photo['pixelWidth'] = 1536
+                  photo['pixelHeight'] = 864
+                  photo['restoredFrom'] = '9DFC0807-C53E-4BAD-9235-0753266D82D4(2).jpeg'
+                  photo['resolutionRestoredOn'] = '2026-09-28'
+                  break
+          manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
+          print('restored', target, len(b), sha)
+          PY
+          rm -rf .photo-upload
+          rm -f .github/workflows/reconstruct-photo-upload.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Restore Tennessee Pass photo'
+          git push origin HEAD:main
