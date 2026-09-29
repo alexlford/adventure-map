@@ -10,6 +10,9 @@
     'data/race-memories-archive.json',
     'data/race-memories-turkey-trots.json',
   ];
+  const DIMENSION_SOURCE = 'data/image-dimensions.json';
+  const PHOTO_MANIFEST_SOURCE = 'data/event-photo-manifest.json';
+  let imageDimensions = {};
 
   const fetchJson = async path => {
     const response = await fetch(path, { cache: 'no-cache' });
@@ -31,6 +34,42 @@
       Object.assign(records, payload?.records || {});
       return records;
     }, {});
+  };
+
+  const loadImageDimensions = async () => {
+    const dimensions = {};
+    try {
+      const payload = await fetchJson(PHOTO_MANIFEST_SOURCE);
+      for (const photo of payload?.photos || []) {
+        if (photo?.path && photo?.pixelWidth > 0 && photo?.pixelHeight > 0) {
+          dimensions[photo.path] = { width: photo.pixelWidth, height: photo.pixelHeight };
+        }
+      }
+    } catch (error) {
+      console.warn('Event photo dimension metadata unavailable', error);
+    }
+    try {
+      const payload = await fetchJson(DIMENSION_SOURCE);
+      Object.assign(dimensions, payload?.images && typeof payload.images === 'object' ? payload.images : {});
+    } catch (error) {
+      console.warn('Image dimension metadata unavailable', error);
+    }
+    return dimensions;
+  };
+
+  const imageKey = src => {
+    const clean = String(src || '').trim().split(/[?#]/, 1)[0];
+    if (!clean) return '';
+    if (/^https?:\/\//i.test(clean)) {
+      try { return new URL(clean).pathname.replace(/^\/+/, ''); }
+      catch { return clean; }
+    }
+    return clean.replace(/^\.\//, '').replace(/^\/+/, '');
+  };
+  const imageAttrs = (photo, priority = false) => {
+    const size = imageDimensions[imageKey(photo.src)];
+    const dimensions = size?.width && size?.height ? ` width="${size.width}" height="${size.height}"` : '';
+    return `${dimensions} loading="${priority ? 'eager' : 'lazy'}" decoding="async"${priority ? ' fetchpriority="high"' : ''}`;
   };
 
   const currentKey = () => {
@@ -78,7 +117,8 @@
   const photoFigure = (photo, className = '') => {
     const aspect = String(photo.aspect || photo.layout || '').toLowerCase();
     const layoutClass = aspect === '4:3' || aspect === 'four-three' ? ' race-memory-photo-four-three' : '';
-    return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}" loading="${className.includes('hero') ? 'eager' : 'lazy'}" decoding="async"><figcaption>${photo.caption ? `${A.esc(photo.caption)} · ` : ''}<a href="${A.esc(photo.src)}" target="_blank" rel="noopener">Open full photo ↗</a></figcaption></figure>`;
+    const priority = className.includes('hero');
+    return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}"${imageAttrs(photo, priority)}><figcaption>${photo.caption ? `${A.esc(photo.caption)} · ` : ''}<a href="${A.esc(photo.src)}" target="_blank" rel="noopener">Open full photo ↗</a></figcaption></figure>`;
   };
 
   const fallbackPhotoSrc = img => {
@@ -141,8 +181,8 @@
     const key = currentKey();
     if (!key) return;
 
-    const memories = await loadMemories();
-    const records = await A.load();
+    const [memories, dimensions, records] = await Promise.all([loadMemories(), loadImageDimensions(), A.load()]);
+    imageDimensions = dimensions;
     const record = records.find(item => item.id === key || item.slug === key);
     if (!record || (record.kind !== 'race' && record.kind !== 'adventure')) return;
     const race = record.kind === 'race';

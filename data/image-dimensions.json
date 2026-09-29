@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "images": {
+    "assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-network-big-10k-finish-group-01.jpeg": { "width": 133, "height": 200 },
+    "assets/event-photos/races/charles-street-12-2019/2019-08-31-charles-street-12-finish-01.jpeg": { "width": 200, "height": 150 },
+    "assets/event-photos/races/garmin-half-2016/2016-04-16-garmin-land-of-oz-half-course-01.jpeg": { "width": 150, "height": 150 },
+    "assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-thunderstorm-finish-01.jpeg": { "width": 100, "height": 150 },
+    "assets/event-photos/races/kansas-city-marathon-2019/2019-10-19-kansas-city-marathon-course-01.jpeg": { "width": 64, "height": 150 },
+    "media/races/abes-amble-2014-family.svg": { "width": 600, "height": 448 },
+    "media/races/chicago-2021-pilsen.webp": { "width": 640, "height": 364 },
+    "media/races/colfax-2024-olive-finish.webp": { "width": 213, "height": 320 },
+    "media/races/illinois-marathon-2015-rain.svg": { "width": 332, "height": 500 }
+  }
+}
