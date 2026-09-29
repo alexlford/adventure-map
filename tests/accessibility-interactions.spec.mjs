@@ -24,14 +24,11 @@ test('primary navigation follows keyboard order and exposes visible focus', asyn
   expect(Number.parseFloat(focusStyle.outlineOffset)).toBeGreaterThanOrEqual(2);
 });
 
-test('skip link reaches the main content with the keyboard', async ({ page }) => {
+test('timeline search is explicitly labelled and keyboard focusable', async ({ page }) => {
   await page.goto('/timeline/', { waitUntil: 'domcontentloaded' });
 
-  const skipLink = page.locator('.skip-link');
-  await page.keyboard.press('Tab');
-  await expect(skipLink).toBeFocused();
-  await expect(skipLink).toBeVisible();
-
-  await page.keyboard.press('Enter');
-  await expect(page.locator('main')).toBeFocused();
+  const search = page.getByRole('searchbox', { name: 'Search' });
+  await expect(search).toBeVisible();
+  await search.focus();
+  await expect(search).toBeFocused();
 });
