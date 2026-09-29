@@ -23,6 +23,14 @@ for (const photo of photoManifest.photos || []) {
 const dimensionMap = { ...manifestDimensions, ...supplementalDimensions };
 
 const attr = (tag, name) => tag.match(new RegExp(`\\b${name}=["']([^"']*)["']`, 'i'))?.[1] ?? null;
+const parseSrcset = value => String(value || '')
+  .split(',')
+  .map(candidate => candidate.trim())
+  .filter(Boolean)
+  .map(candidate => {
+    const match = candidate.match(/^(\S+)\s+(\d+)w$/i);
+    return match ? { src: match[1], width: Number(match[2]) } : null;
+  });
 const localFileFor = src => {
   const key = normalizeImageSrc(src);
   return key ? { key, file: path.join(root, ...key.split('/')) } : null;
@@ -100,6 +108,7 @@ for (const record of publicRecords.records || []) {
 const rootEntries = await fs.readdir(root, { withFileTypes: true });
 const htmlFiles = rootEntries.filter(entry => entry.isFile() && entry.name.endsWith('.html')).map(entry => entry.name).sort();
 let staticPhotoCount = 0;
+let responsivePhotoCount = 0;
 for (const file of htmlFiles) {
   const html = await fs.readFile(path.join(root, file), 'utf8');
   const tags = html.match(/<img\b[^>]*>/gi) || [];
@@ -118,6 +127,24 @@ for (const file of htmlFiles) {
     if (priority && loading === 'lazy') problems.push(`${label}: high-priority images must not be lazy-loaded.`);
     if (!priority && loading !== 'lazy') problems.push(`${label}: non-priority images must use loading="lazy".`);
 
+    const srcset = attr(tag, 'srcset');
+    if (srcset) {
+      responsivePhotoCount += 1;
+      if (!String(attr(tag, 'sizes') || '').trim()) problems.push(`${label}: sizes is required when srcset is present.`);
+      const candidates = parseSrcset(srcset);
+      if (candidates.length < 2) problems.push(`${label}: srcset must contain at least two valid width-descriptor candidates.`);
+      for (const [candidateIndex, candidate] of candidates.entries()) {
+        if (!candidate) {
+          problems.push(`${label}: srcset candidate ${candidateIndex + 1} must use a local URL and a width descriptor such as 800w.`);
+          continue;
+        }
+        const actualCandidate = await actualDimensions(candidate.src, `${label}:srcset-${candidateIndex + 1}`);
+        if (actualCandidate?.size && candidate.width !== actualCandidate.size.width) {
+          problems.push(`${label}: ${actualCandidate.key} is declared as ${candidate.width}w but is actually ${actualCandidate.size.width}px wide.`);
+        }
+      }
+    }
+
     if (!src) {
       problems.push(`${label}: src is required.`);
       continue;
@@ -134,7 +161,7 @@ for (const file of htmlFiles) {
   }
 }
 
-console.log(`Image markup checked: ${staticPhotoCount} static images, ${dynamicPhotoCount} dynamic archive photos, ${Object.keys(manifestDimensions).length} manifest dimensions, ${Object.keys(supplementalDimensions).length} supplemental dimensions.`);
+console.log(`Image markup checked: ${staticPhotoCount} static images, ${responsivePhotoCount} responsive static images, ${dynamicPhotoCount} dynamic archive photos, ${Object.keys(manifestDimensions).length} manifest dimensions, ${Object.keys(supplementalDimensions).length} supplemental dimensions.`);
 if (problems.length) {
   problems.forEach(problem => console.error(`ERROR ${problem}`));
   process.exitCode = 1;
