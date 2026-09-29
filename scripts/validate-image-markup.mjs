@@ -7,11 +7,20 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = async rel => JSON.parse(await fs.readFile(path.join(root, rel), 'utf8'));
 const problems = [];
 const dimensionsPayload = await readJson('data/image-dimensions.json');
-const dimensionMap = dimensionsPayload.images || {};
+const photoManifest = await readJson('data/event-photo-manifest.json');
+const supplementalDimensions = dimensionsPayload.images || {};
 
-if (dimensionsPayload.schemaVersion !== 1 || typeof dimensionMap !== 'object' || Array.isArray(dimensionMap)) {
+if (dimensionsPayload.schemaVersion !== 1 || typeof supplementalDimensions !== 'object' || Array.isArray(supplementalDimensions)) {
   throw new Error('data/image-dimensions.json must contain schemaVersion 1 and an images object.');
 }
+
+const manifestDimensions = {};
+for (const photo of photoManifest.photos || []) {
+  if (photo?.path && Number.isInteger(photo.pixelWidth) && photo.pixelWidth > 0 && Number.isInteger(photo.pixelHeight) && photo.pixelHeight > 0) {
+    manifestDimensions[photo.path] = { width: photo.pixelWidth, height: photo.pixelHeight };
+  }
+}
+const dimensionMap = { ...manifestDimensions, ...supplementalDimensions };
 
 const attr = (tag, name) => tag.match(new RegExp(`\\b${name}=["']([^"']*)["']`, 'i'))?.[1] ?? null;
 const localFileFor = src => {
@@ -38,7 +47,7 @@ async function validateDimensionEntry(src, label) {
   if (!actual?.size) return;
   const expected = dimensionMap[actual.key];
   if (!expected) {
-    problems.push(`${label}: ${actual.key} is missing from data/image-dimensions.json; actual size is ${describe(actual.size)}.`);
+    problems.push(`${label}: ${actual.key} is missing dimension metadata; actual size is ${describe(actual.size)}.`);
     return;
   }
   if (expected.width !== actual.size.width || expected.height !== actual.size.height) {
@@ -46,12 +55,22 @@ async function validateDimensionEntry(src, label) {
   }
 }
 
+let dynamicPhotoCount = 0;
+for (const [index, photo] of (photoManifest.photos || []).entries()) {
+  const label = `data/event-photo-manifest.json:photo-${index + 1}`;
+  if (!photo?.path) continue;
+  dynamicPhotoCount += 1;
+  if (manifestDimensions[photo.path] && supplementalDimensions[photo.path]) {
+    problems.push(`${label}: ${photo.path} duplicates canonical manifest dimensions in data/image-dimensions.json.`);
+  }
+  await validateDimensionEntry(photo.path, label);
+}
+
 const memorySources = [
   'data/race-memories.json',
   'data/race-memories-archive.json',
   'data/race-memories-turkey-trots.json'
 ];
-let dynamicPhotoCount = 0;
 for (const source of memorySources) {
   const payload = await readJson(source);
   for (const [recordId, memory] of Object.entries(payload.records || {})) {
@@ -115,7 +134,7 @@ for (const file of htmlFiles) {
   }
 }
 
-console.log(`Image markup checked: ${staticPhotoCount} static images, ${dynamicPhotoCount} dynamic archive photos, ${Object.keys(dimensionMap).length} dimension entries.`);
+console.log(`Image markup checked: ${staticPhotoCount} static images, ${dynamicPhotoCount} dynamic archive photos, ${Object.keys(manifestDimensions).length} manifest dimensions, ${Object.keys(supplementalDimensions).length} supplemental dimensions.`);
 if (problems.length) {
   problems.forEach(problem => console.error(`ERROR ${problem}`));
   process.exitCode = 1;
