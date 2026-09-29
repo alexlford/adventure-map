@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "images": {
+    "assets/event-photos/races/colfax-5k-2024/2024-05-18-dog-pool-01.jpeg": { "width": 1536, "height": 1152 },
+    "assets/event-photos/races/colfax-5k-2026/2026-05-16-dog-pool-01.jpeg": { "width": 1152, "height": 1536 },
+    "assets/event-photos/races/disney-princess-half-2018/2018-02-25-disney-princess-half-character-photo-01.jpeg": { "width": 1152, "height": 1536 },
+    "assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-2015-with-mom-01.jpeg": { "width": 1536, "height": 1536 },
+    "assets/event-photos/races/mile-high-turkey-trot-2021/2021-11-25-mile-high-turkey-trot-family-washington-park-01.jpeg": { "width": 1152, "height": 1536 },
+    "assets/event-photos/races/mile-high-turkey-trot-2023/2023-11-23-mile-high-turkey-trot-olive-yellow-bandana-01.jpeg": { "width": 1152, "height": 1536 },
+    "assets/event-photos/races/staunton-rocks-half-2022/2022-08-27-staunton-rocks-half-course-01.jpeg": { "width": 1024, "height": 1536 },
+    "media/races/abes-amble-2014-family.svg": { "width": 600, "height": 448 },
+    "media/races/colfax-2024-olive-finish.webp": { "width": 280, "height": 420 },
+    "media/races/illinois-marathon-2015-rain.svg": { "width": 332, "height": 500 }
+  }
+}
