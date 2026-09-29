@@ -11,6 +11,7 @@
     'data/race-memories-turkey-trots.json',
   ];
   const DIMENSION_SOURCE = 'data/image-dimensions.json';
+  const PHOTO_MANIFEST_SOURCE = 'data/event-photo-manifest.json';
   let imageDimensions = {};
 
   const fetchJson = async path => {
@@ -36,16 +37,35 @@
   };
 
   const loadImageDimensions = async () => {
+    const dimensions = {};
+    try {
+      const payload = await fetchJson(PHOTO_MANIFEST_SOURCE);
+      for (const photo of payload?.photos || []) {
+        if (photo?.path && photo?.pixelWidth > 0 && photo?.pixelHeight > 0) {
+          dimensions[photo.path] = { width: photo.pixelWidth, height: photo.pixelHeight };
+        }
+      }
+    } catch (error) {
+      console.warn('Event photo dimension metadata unavailable', error);
+    }
     try {
       const payload = await fetchJson(DIMENSION_SOURCE);
-      return payload?.images && typeof payload.images === 'object' ? payload.images : {};
+      Object.assign(dimensions, payload?.images && typeof payload.images === 'object' ? payload.images : {});
     } catch (error) {
       console.warn('Image dimension metadata unavailable', error);
-      return {};
     }
+    return dimensions;
   };
 
-  const imageKey = src => String(src || '').split(/[?#]/, 1)[0].replace(/^\.\//, '').replace(/^\/+/, '');
+  const imageKey = src => {
+    const clean = String(src || '').trim().split(/[?#]/, 1)[0];
+    if (!clean) return '';
+    if (/^https?:\/\//i.test(clean)) {
+      try { return new URL(clean).pathname.replace(/^\/+/, ''); }
+      catch { return clean; }
+    }
+    return clean.replace(/^\.\//, '').replace(/^\/+/, '');
+  };
   const imageAttrs = (photo, priority = false) => {
     const size = imageDimensions[imageKey(photo.src)];
     const dimensions = size?.width && size?.height ? ` width="${size.width}" height="${size.height}"` : '';
