@@ -41,6 +41,7 @@ on:
       - 'scripts/build-public-index.mjs'
       - 'scripts/build-route-detail-index.mjs'
       - 'scripts/audit-strava-route-coverage.mjs'
+      - 'scripts/build-responsive-image-pilot.sh'
       - 'scripts/lib/**'
 
 concurrency:
@@ -67,6 +68,14 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --ignore-scripts
+      - name: Install responsive-image tooling
+        run: |
+          if ! command -v convert >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y imagemagick
+          fi
+      - name: Build responsive image pilot
+        run: bash scripts/build-responsive-image-pilot.sh
       - name: Build shared assets
         run: npm run build:vendor && npm run build:shared
       - name: Build public records
@@ -108,6 +117,7 @@ jobs:
               echo "Publication branch advanced from $HEAD_SHA to $REMOTE_SHA; rebuilding from the latest head (attempt $attempt)."
               git reset --hard "$REMOTE_SHA"
               npm ci --ignore-scripts
+              bash scripts/build-responsive-image-pilot.sh
               npm run build:publish
               npm run validate:static
               npm run validate:static-shell
@@ -116,7 +126,7 @@ jobs:
               node scripts/audit-strava-route-coverage.mjs
             fi
 
-            git add package-lock.json shared.js index.html world-majors data/archive-health.json data/catalog-layers/records.json data/public-records.json data/recurring-race-audit.json data/race-history.json data/activity-history.json data/route-detail-index.json data/route-detail-browser-polylines.json sitemap.xml robots.txt vendor/leaflet record map explore timeline stories races summits skiing nordic mtb
+            git add package-lock.json shared.js index.html world-majors data/archive-health.json data/catalog-layers/records.json data/public-records.json data/recurring-race-audit.json data/race-history.json data/activity-history.json data/route-detail-index.json data/route-detail-browser-polylines.json sitemap.xml robots.txt vendor/leaflet assets/responsive record map explore timeline stories races summits skiing nordic mtb
             if git diff --cached --quiet; then
               echo "Publication artifacts are already current."
               exit 0
