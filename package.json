@@ -69,6 +69,7 @@
     "test:segmented-route-publication": "node scripts/test-segmented-route-publication.mjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
     "@playwright/test": "1.62.0",
     "leaflet": "1.9.4"
   }

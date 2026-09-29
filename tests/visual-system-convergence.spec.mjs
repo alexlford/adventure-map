@@ -18,7 +18,7 @@ test('Map shell shares chapter tokens and renders a useful no-results state', as
     const style=getComputedStyle(node);
     return {muted:style.getPropertyValue('--muted').trim().toLowerCase(),accent:style.getPropertyValue('--accent').trim().toLowerCase(),focus:style.getPropertyValue('--focus').trim().toLowerCase()};
   });
-  expect(tokens).toEqual({muted:'#68737d',accent:'#16836d',focus:'#16836d'});
+  expect(tokens).toEqual({muted:'#66717b',accent:'#16836d',focus:'#16836d'});
   await expect(page.locator('.stat').first()).toHaveCSS('border-radius','18px');
   await expect(page.locator('.section-nav a').first()).toHaveCSS('background-color','rgba(0, 0, 0, 0)');
   expect(errors).toEqual([]);

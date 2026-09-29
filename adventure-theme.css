@@ -3,6 +3,9 @@
 @import url('mobile-navigation.css');
 
 :root {
+  --muted: #66717b !important;
+  --activity-summits-text: #147763;
+  --activity-road-races-text: #a95500;
   --activity-mtb: #2f7d4a;
   --activity-nordic: #1779a8;
   --activity-road-races: #d97706;
@@ -11,4 +14,24 @@
   --activity-summits: #16836d;
   --activity-adventures: #8b5cf6;
   --activity-mixed: #59636d;
+}
+
+/* Preserve the brighter activity palette for maps, borders and graphic accents,
+   while using WCAG AA companion colors when those hues carry small text. */
+body[data-page="home"] .eyebrow,
+.app-shell .eyebrow,
+.app-shell .map-timeline-link,
+.stories-page .story-index-main small {
+  color: var(--activity-summits-text) !important;
+}
+
+body[data-page="races"] .eyebrow,
+body[data-page="races"] .timeline-year h3 {
+  color: var(--activity-road-races-text) !important;
+}
+
+/* Dark editorial cards need a light text treatment rather than the page-level
+   race companion color. */
+body[data-page="races"] .majors-horizon-card .eyebrow {
+  color: #dce6e1 !important;
 }
