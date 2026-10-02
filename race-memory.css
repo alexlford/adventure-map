@@ -73,3 +73,6 @@ body.race-memory-page .chronology-nav{margin-top:54px}
   .race-memory-photo img{border-radius:18px}
   .race-memory-gallery{grid-template-columns:1fr}
 }
+/* Low-resolution stand-in photos: cap at 2x natural width so they stay legible instead of stretching. */
+.race-memory-photo.race-memory-photo-lowres img{width:min(100%,calc(var(--photo-natural-width,240px) * 2));max-width:100%;height:auto;aspect-ratio:auto;object-fit:contain;margin-inline:auto}
+.race-memory-photo.race-memory-photo-lowres figcaption{text-align:center}
