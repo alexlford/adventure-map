@@ -41,11 +41,13 @@ resize_jpeg \
   1200 \
   "$OUT_DIR/mount-sherman-1200.jpeg"
 
-# Favorite memory: 517 × 757 source.
-resize_jpeg \
-  "assets/event-photos/adventures/tennessee-pass-2022/2022-01-02-tennessee-pass-pink-sunrise-01.jpeg" \
-  400 \
-  "$OUT_DIR/tennessee-pass-400.jpeg"
+# Favorite memory: 1536 × 864 source.
+for width in 400 800 1200; do
+  resize_jpeg \
+    "assets/event-photos/adventures/tennessee-pass-2022/2022-01-02-tennessee-pass-pink-sunrise-01.jpeg" \
+    "$width" \
+    "$OUT_DIR/tennessee-pass-$width.jpeg"
+done
 
 # Favorite memory: 1536 × 874 source.
 resize_jpeg \

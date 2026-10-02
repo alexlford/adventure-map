@@ -38,9 +38,9 @@
       "percent": 100
     },
     "Photo": {
-      "complete": 26,
-      "missing": 135,
-      "percent": 16.1
+      "complete": 27,
+      "missing": 134,
+      "percent": 16.8
     }
   },
   "priorityIncomplete": [

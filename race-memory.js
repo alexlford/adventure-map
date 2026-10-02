@@ -11,6 +11,9 @@
     'data/race-memories-turkey-trots.json',
   ];
   const DIMENSION_SOURCE = 'data/image-dimensions.json';
+  // Photos narrower than this are low-resolution stand-ins; show them near their
+  // true size instead of stretching them across the frame.
+  const LOW_RES_WIDTH = 480;
   const PHOTO_MANIFEST_SOURCE = 'data/event-photo-manifest.json';
   let imageDimensions = {};
 
@@ -118,7 +121,11 @@
     const aspect = String(photo.aspect || photo.layout || '').toLowerCase();
     const layoutClass = aspect === '4:3' || aspect === 'four-three' ? ' race-memory-photo-four-three' : '';
     const priority = className.includes('hero');
-    return `<figure class="race-memory-photo ${className}${layoutClass}"><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}"${imageAttrs(photo, priority)}><figcaption>${photo.caption ? `${A.esc(photo.caption)} · ` : ''}<a href="${A.esc(photo.src)}" target="_blank" rel="noopener">Open full photo ↗</a></figcaption></figure>`;
+    const size = imageDimensions[imageKey(photo.src)];
+    const lowRes = size?.width > 0 && size.width < LOW_RES_WIDTH;
+    const lowResClass = lowRes ? ' race-memory-photo-lowres' : '';
+    const lowResStyle = lowRes ? ` style="--photo-natural-width:${size.width}px"` : '';
+    return `<figure class="race-memory-photo ${className}${layoutClass}${lowResClass}"${lowResStyle}><img src="${A.esc(photo.src)}" alt="${A.esc(photo.alt || '')}"${imageAttrs(photo, priority)}><figcaption>${photo.caption ? `${A.esc(photo.caption)} · ` : ''}<a href="${A.esc(photo.src)}" target="_blank" rel="noopener">Open full photo ↗</a></figcaption></figure>`;
   };
 
   const fallbackPhotoSrc = img => {
@@ -130,6 +137,11 @@
     const figure = img.closest('.race-memory-photo');
     const applyLayout = () => {
       if (img.naturalHeight > img.naturalWidth * 1.15) figure?.classList.add('race-memory-photo-portrait');
+      const isVector = /\.svg(?:[?#]|$)/i.test(img.currentSrc || img.getAttribute('src') || '');
+      if (figure && !isVector && img.naturalWidth > 0 && img.naturalWidth < LOW_RES_WIDTH && !figure.classList.contains('race-memory-photo-lowres')) {
+        figure.style.setProperty('--photo-natural-width', `${img.naturalWidth}px`);
+        figure.classList.add('race-memory-photo-lowres');
+      }
     };
     const attachFallbackOutcome = () => {
       img.addEventListener('load', applyLayout, { once: true });
@@ -174,7 +186,7 @@
     const resultLink = isRace && record.resultUrl ? `<a class="race-memory-source" href="${A.esc(record.resultUrl)}" target="_blank" rel="noopener">Official result ↗</a>` : '';
     const memoryLabel = memory.typeLabel || (isRace ? 'Race memory' : 'Series memory');
 
-    return `<section class="race-memory-hero"><p class="eyebrow">${A.esc(memoryLabel)} · ${A.esc(String(record.year || record.date?.slice(0, 4) || ''))}</p><h1>${A.esc(record.name)}</h1><p class="race-memory-meta">${A.esc(record.date ? A.formatDate(record.date) : '')}${record.location ? ` · ${A.esc(record.location)}` : ''}</p><p class="race-memory-deck">${A.esc(memory.headline || '')}</p>${results}${resultLink}</section>${heroPhoto ? photoFigure(heroPhoto, 'race-memory-photo-hero') : ''}<section class="race-memory-story"><header><p class="eyebrow">${A.esc(memory.memoryTitle || 'What I remember')}</p><h2>${A.esc(memory.headline || record.name)}</h2></header><div class="race-memory-story-copy">${paragraphs}</div></section>${gallery.length ? `<section class="race-memory-gallery" aria-label="Race photos">${gallery.map(photo => photoFigure(photo)).join('')}</section>` : ''}`;
+    return `<section class="race-memory-hero"><p class="eyebrow">${A.esc(memoryLabel)} · ${A.esc(String(record.year || record.date?.slice(0, 4) || ''))}</p><h1>${A.esc(record.name)}</h1><p class="race-memory-meta">${[record.date ? A.formatDate(record.date) : '', record.location || ''].filter(Boolean).map(A.esc).join(' · ')}</p><p class="race-memory-deck">${A.esc(memory.headline || '')}</p>${results}${resultLink}</section>${heroPhoto ? photoFigure(heroPhoto, 'race-memory-photo-hero') : ''}<section class="race-memory-story"><header><p class="eyebrow">${A.esc(memory.memoryTitle || 'What I remember')}</p><h2>${A.esc(memory.headline || record.name)}</h2></header><div class="race-memory-story-copy">${paragraphs}</div></section>${gallery.length ? `<section class="race-memory-gallery" aria-label="Race photos">${gallery.map(photo => photoFigure(photo)).join('')}</section>` : ''}`;
   }
 
   async function enhance() {
