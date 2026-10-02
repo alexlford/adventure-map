@@ -33,7 +33,7 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-network-big-10k-finish-group-01.jpeg",
-      "repositoryBlobSha": "7938eecd2026c25eecdf369c0b3d0d55b869cfec"
+      "repositoryBlobSha": "def9f3b5b9f8e615c97bd5e7f7f9ae036f54219b"
     },
     {
       "source": "IMG_0599(1).jpeg",
@@ -134,7 +134,7 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/charles-street-12-2019/2019-08-31-charles-street-12-finish-01.jpeg",
-      "repositoryBlobSha": "7186f0105b8305bea1a1da07a14f074605f4c191"
+      "repositoryBlobSha": "929aabd918fa8fafe17a38a53fac5d8bee93e589"
     },
     {
       "source": "IMG_4476.jpeg",
@@ -190,11 +190,11 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/rock-parkway-half-2016/2016-04-09-rock-the-parkway-half-course-01.jpeg",
-      "repositoryBlobSha": "08ebd7936c9a77cfc06f9f9351d95901df2f6191",
+      "repositoryBlobSha": "dbfcf2ae78ceaa696ad5f28013cbbb8fb537515d",
       "restoredFrom": "RocktheParkway.jpeg",
       "resolutionRestoredOn": "2026-09-25",
-      "pixelWidth": 1024,
-      "pixelHeight": 1536
+      "pixelWidth": 1333,
+      "pixelHeight": 2000
     },
     {
       "source": "IMG_5331.jpeg",
@@ -210,7 +210,7 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/garmin-half-2016/2016-04-16-garmin-land-of-oz-half-course-01.jpeg",
-      "repositoryBlobSha": "f6db26cbc1a78563c8595ea726471322f6bc3860"
+      "repositoryBlobSha": "8e544c0a571a44ea4cd41c3ae900bcd36e8f2e85"
     },
     {
       "source": "IMG_5383.jpeg",
@@ -243,7 +243,7 @@
         "User confirmed event identification during photo review on 2026-08-28"
       ],
       "path": "assets/event-photos/races/kansas-city-marathon-2019/2019-10-19-kansas-city-marathon-course-01.jpeg",
-      "repositoryBlobSha": "94ddf279fe54fd2446fde196c9f167dac3cb1f34"
+      "repositoryBlobSha": "287e153c05e5873041140336cb2ed8ec8b7b56e8"
     },
     {
       "source": "IMG_5631.jpeg",

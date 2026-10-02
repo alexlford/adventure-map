@@ -17,13 +17,8 @@ import { readImageDimensions } from './lib/image-dimensions.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MIN_WIDTH = 480;
 const KNOWN_ISSUES = new Map([
-  ['assets/event-photos/races/kansas-city-marathon-2019/2019-10-19-kansas-city-marathon-course-01.jpeg', 'low-res'],
+  // Same frame as the 2016 Illinois Half photo (bib 7899); waiting on a decision about which race it belongs to.
   ['assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-thunderstorm-finish-01.jpeg', 'low-res'],
-  ['assets/event-photos/races/big-ten-10k-2016/2016-08-06-big-ten-network-big-10k-finish-group-01.jpeg', 'low-res'],
-  ['assets/event-photos/races/garmin-half-2016/2016-04-16-garmin-land-of-oz-half-course-01.jpeg', 'low-res'],
-  ['assets/event-photos/races/charles-street-12-2019/2019-08-31-charles-street-12-finish-01.jpeg', 'low-res'],
-  // Truncated upload; the bytes that survived show a race photo, not the Tennessee Pass sunrise.
-  ['assets/event-photos/adventures/tennessee-pass-2022/2022-01-02-tennessee-pass-pink-sunrise-01.jpeg', 'truncated'],
 ]);
 
 const problems = [];

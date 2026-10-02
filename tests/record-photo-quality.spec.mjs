@@ -1,13 +1,22 @@
 import { test, expect } from '@playwright/test';
 
 test('low-resolution race photos are capped near their true size instead of stretched', async ({ page }) => {
-  await page.goto('/record/2019-10-19-kansas-city-marathon/', { waitUntil: 'domcontentloaded' });
-  const figure = page.locator('.race-memory-photo.race-memory-photo-lowres').first();
+  // The thunderstorm-finish file is the archive's remaining 100px stand-in.
+  await page.goto('/record/2015-04-25-illinois-marathon/', { waitUntil: 'domcontentloaded' });
+  const figure = page.locator('.race-memory-photo.race-memory-photo-lowres:has(img[src*="thunderstorm"])').first();
   await expect(figure).toBeVisible();
   const img = figure.locator('img');
   await expect.poll(() => img.evaluate(el => el.complete && el.naturalWidth)).toBeGreaterThan(0);
   const { natural, shown } = await img.evaluate(el => ({ natural: el.naturalWidth, shown: el.getBoundingClientRect().width }));
   expect(shown).toBeLessThanOrEqual(natural * 2 + 1);
+});
+
+test('restored full-size photos fill their frame instead of being capped', async ({ page }) => {
+  await page.goto('/record/2019-10-19-kansas-city-marathon/', { waitUntil: 'domcontentloaded' });
+  const restored = page.locator('.race-memory-photo img[src*="kansas-city-marathon-course"]').first();
+  await expect(restored).toBeVisible();
+  await expect(page.locator('.race-memory-photo-lowres')).toHaveCount(0);
+  await expect.poll(() => restored.evaluate(el => el.complete && el.naturalWidth)).toBeGreaterThanOrEqual(480);
 });
 
 test('full-size race photos keep filling their frame', async ({ page }) => {
