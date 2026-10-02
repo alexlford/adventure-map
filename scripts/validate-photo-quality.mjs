@@ -17,8 +17,7 @@ import { readImageDimensions } from './lib/image-dimensions.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MIN_WIDTH = 480;
 const KNOWN_ISSUES = new Map([
-  // Same frame as the 2016 Illinois Half photo (bib 7899); waiting on a decision about which race it belongs to.
-  ['assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-thunderstorm-finish-01.jpeg', 'low-res'],
+  // Add [path, 'low-res' | 'truncated'] entries here only while a replacement original is pending.
 ]);
 
 const problems = [];

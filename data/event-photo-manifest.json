@@ -5,8 +5,8 @@
     "reviewedOn": "2026-09-25",
     "repository": "alexlford/adventure-map",
     "batch": "2026-08-28-batch-01",
-    "photoCount": 30,
-    "canonicalCount": 29,
+    "photoCount": 32,
+    "canonicalCount": 31,
     "candidateCount": 1,
     "unresolvedCount": 0,
     "convention": "assets/event-photos/{races|adventures}/{event-id-or-group}/{descriptive-filename}.jpeg",
@@ -224,10 +224,11 @@
       "caption": "Finishing the 2015 Illinois Marathon in a thunderstorm.",
       "evidence": [
         "User corrected the prior 2016 I-Challenge match: this is the 2015 Illinois Marathon",
-        "User described the scene as finishing the marathon in a thunderstorm during photo review on 2026-08-28"
+        "User described the scene as finishing the marathon in a thunderstorm during photo review on 2026-08-28",
+        "Full-size original supplied by the user on 2026-10-02; its bib reads 'Illinois half marathon' (7899), and the user confirmed it belongs to the 2015 Illinois Marathon."
       ],
       "path": "assets/event-photos/races/illinois-marathon-2015/2015-04-25-illinois-marathon-thunderstorm-finish-01.jpeg",
-      "repositoryBlobSha": "2940d0511aec0b0067d55f84f61e5ca3fc97c3e7"
+      "repositoryBlobSha": "25b547c7046c277cb41282de6215cc76cd35cde3"
     },
     {
       "source": "IMG_5495.jpeg",
@@ -600,6 +601,42 @@
       ],
       "path": "assets/event-photos/races/colfax-5k-2024/2024-05-18-dog-pool-01.jpeg",
       "repositoryBlobSha": "eb767bef2c44aa26270e493840a37f80afa05b22",
+      "pixelWidth": 1536,
+      "pixelHeight": 1152
+    },
+    {
+      "source": "KC-Marathon-2019-finish (uploaded 2026-10-02)",
+      "category": "race",
+      "eventId": "kansas-city-marathon-2019",
+      "eventName": "Kansas City Marathon",
+      "date": "2019-10-19",
+      "filename": "2019-10-19-kansas-city-marathon-finish-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "Visible Kansas City Marathon finish-area branding and bib 1048, matching the course photo",
+        "User supplied the original and assigned it to this record on 2026-10-02"
+      ],
+      "path": "assets/event-photos/races/kansas-city-marathon-2019/2019-10-19-kansas-city-marathon-finish-01.jpeg",
+      "repositoryBlobSha": "034a7b15fd0ee7e8d772a050d2522e66d78fe029",
+      "pixelWidth": 1331,
+      "pixelHeight": 2000
+    },
+    {
+      "source": "Mt-Evans-2022-summit (uploaded 2026-10-02)",
+      "category": "adventure",
+      "eventId": "mount-evans",
+      "eventName": "Mount Evans",
+      "date": "2022-07-31",
+      "filename": "2022-07-31-mount-evans-summit-01.jpeg",
+      "confidence": "verified",
+      "status": "canonical",
+      "evidence": [
+        "Handwritten summit sign reads 'MT. Evans 7/31/22 elev 14,265''",
+        "User supplied the original and assigned it to this record on 2026-10-02"
+      ],
+      "path": "assets/event-photos/adventures/mount-evans/2022-07-31-mount-evans-summit-01.jpeg",
+      "repositoryBlobSha": "f4c32b2385887625590e1babb10e36786d804c36",
       "pixelWidth": 1536,
       "pixelHeight": 1152
     }

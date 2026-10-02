@@ -1,14 +1,17 @@
 import { test, expect } from '@playwright/test';
 
+// A 100x150 JPEG stands in for an undersized archive photo.
+const TINY_JPEG = Buffer.from('/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCACWAGQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCtRRRXnH0YUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQB/9k=', 'base64');
+
 test('low-resolution race photos are capped near their true size instead of stretched', async ({ page }) => {
-  // The thunderstorm-finish file is the archive's remaining 100px stand-in.
-  await page.goto('/record/2015-04-25-illinois-marathon/', { waitUntil: 'domcontentloaded' });
-  const figure = page.locator('.race-memory-photo.race-memory-photo-lowres:has(img[src*="thunderstorm"])').first();
+  await page.route('**/2019-10-19-kansas-city-marathon-course-01.jpeg', route => route.fulfill({ contentType: 'image/jpeg', body: TINY_JPEG }));
+  await page.goto('/record/2019-10-19-kansas-city-marathon/', { waitUntil: 'domcontentloaded' });
+  const figure = page.locator('.race-memory-photo.race-memory-photo-lowres:has(img[src*="kansas-city-marathon-course"])').first();
   await expect(figure).toBeVisible();
   const img = figure.locator('img');
-  await expect.poll(() => img.evaluate(el => el.complete && el.naturalWidth)).toBeGreaterThan(0);
-  const { natural, shown } = await img.evaluate(el => ({ natural: el.naturalWidth, shown: el.getBoundingClientRect().width }));
-  expect(shown).toBeLessThanOrEqual(natural * 2 + 1);
+  await expect.poll(() => img.evaluate(el => el.complete && el.naturalWidth)).toBe(100);
+  const shown = await img.evaluate(el => el.getBoundingClientRect().width);
+  expect(shown).toBeLessThanOrEqual(201);
 });
 
 test('restored full-size photos fill their frame instead of being capped', async ({ page }) => {
