@@ -172,6 +172,7 @@ for (const polylineFile of polylineFiles) {
       stravaActivityIds: sourceActivityIds,
       routeResolution: route.sampling || payload.sampling || null,
       sourcePointCount: route.sourcePointCount || null,
+      retainedPointCount: route.retainedPointCount || null,
       geometryClass: route.geometryClass || payload.geometryClass || null,
       publicationSelected: route.publicationSelected === true,
     };
