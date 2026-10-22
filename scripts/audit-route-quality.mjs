@@ -79,6 +79,7 @@ for (const feature of routes.features || []) {
       sourceActivityIds: new Set(),
       lines: [],
       sourcePointCount: null,
+      declaredRetainedPointCount: null,
       declaresFullSource: false,
     });
   }
@@ -91,6 +92,10 @@ for (const feature of routes.features || []) {
   const sourcePointCount = Number(p.sourcePointCount);
   if (Number.isFinite(sourcePointCount) && sourcePointCount > 0) {
     family.sourcePointCount = Math.max(family.sourcePointCount || 0, sourcePointCount);
+  }
+  const retainedPointCount = Number(p.retainedPointCount);
+  if (Number.isInteger(retainedPointCount) && retainedPointCount > 0) {
+    family.declaredRetainedPointCount = Math.max(family.declaredRetainedPointCount || 0, retainedPointCount);
   }
 }
 
@@ -125,11 +130,16 @@ for (const family of families.values()) {
   const retainedSourcePct = family.sourcePointCount
     ? (pointCount / family.sourcePointCount) * 100
     : null;
-  const sourceComplete = !highResolution && family.sourcePointCount != null && retainedSourcePct >= 98;
-  // Dense geometry can still be incomplete: Illinois Marathon 2015 retained just
-  // 60% of the declared full-source samples and previously passed this audit.
+  // A deliberately cropped activity may publish fewer points than the parent
+  // recording, so measure fidelity against declared retained points when present.
+  const expectedPublishedPoints = family.declaredRetainedPointCount || family.sourcePointCount;
+  const retainedExpectedPct = expectedPublishedPoints ? (pointCount / expectedPublishedPoints) * 100 : null;
+  const sourceComplete = !highResolution && retainedExpectedPct != null && retainedExpectedPct >= 98;
+  // Dense geometry can still be incomplete: Illinois Marathon 2015 decoded to
+  // 60% of the 3,690 declared retained points and previously passed this audit.
+  // Use the *retained* expectation so legitimate cropped route segments pass.
   // Source-RDP and reviewed geometries are exempt because reduction is intentional.
-  const fullSourceComplete = !family.declaresFullSource || (retainedSourcePct != null && retainedSourcePct >= 98);
+  const fullSourceComplete = !family.declaresFullSource || (retainedExpectedPct != null && retainedExpectedPct >= 98);
   const highQuality = (highResolution || sourceComplete) && fullSourceComplete;
   const resolutionClass = !fullSourceComplete
     ? 'source-truncated'
@@ -147,6 +157,8 @@ for (const family of families.values()) {
     lineCount: family.lines.length,
     pointCount,
     sourcePointCount: family.sourcePointCount,
+    declaredRetainedPointCount: family.declaredRetainedPointCount,
+    retainedExpectedPct: retainedExpectedPct == null ? null : Number(retainedExpectedPct.toFixed(1)),
     retainedSourcePct: retainedSourcePct == null ? null : Number(retainedSourcePct.toFixed(1)),
     lengthKm: Number(lengthKm.toFixed(3)),
     pointsPerKm: Number(pointsPerKm.toFixed(1)),
