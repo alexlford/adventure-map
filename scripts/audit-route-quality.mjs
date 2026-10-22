@@ -79,11 +79,13 @@ for (const feature of routes.features || []) {
       sourceActivityIds: new Set(),
       lines: [],
       sourcePointCount: null,
+      declaresFullSource: false,
     });
   }
   const family = families.get(id);
   family.featureIds.push(featureId(feature));
   family.lines.push(...lines);
+  if (String(p.routeResolution || '').includes('full-source')) family.declaresFullSource = true;
   for (const adventureId of p.adventureIds || []) family.adventureIds.add(String(adventureId));
   for (const activityId of sourceActivityIds(feature)) family.sourceActivityIds.add(String(activityId));
   const sourcePointCount = Number(p.sourcePointCount);
@@ -124,12 +126,18 @@ for (const family of families.values()) {
     ? (pointCount / family.sourcePointCount) * 100
     : null;
   const sourceComplete = !highResolution && family.sourcePointCount != null && retainedSourcePct >= 98;
-  const highQuality = highResolution || sourceComplete;
-  const resolutionClass = highResolution
-    ? 'high-resolution'
-    : sourceComplete
-      ? 'source-limited-complete'
-      : 'below-target';
+  // Dense geometry can still be incomplete: Illinois Marathon 2015 retained just
+  // 60% of the declared full-source samples and previously passed this audit.
+  // Source-RDP and reviewed geometries are exempt because reduction is intentional.
+  const fullSourceComplete = !family.declaresFullSource || (retainedSourcePct != null && retainedSourcePct >= 98);
+  const highQuality = (highResolution || sourceComplete) && fullSourceComplete;
+  const resolutionClass = !fullSourceComplete
+    ? 'source-truncated'
+    : highResolution
+      ? 'high-resolution'
+      : sourceComplete
+        ? 'source-limited-complete'
+        : 'below-target';
 
   rows.push({
     id: family.id,
@@ -148,6 +156,7 @@ for (const family of families.values()) {
     minimumPoints,
     highResolution,
     sourceComplete,
+    fullSourceComplete,
     resolutionClass,
     highQuality,
   });
