@@ -794,8 +794,8 @@
       "movingSeconds": 1355,
       "routeStatus": "partial-recording",
       "matchSource": "Strava export",
-      "matchConfidence": "confirmed",
-      "note": "2015 Illinois 5K. The Strava file is only a partial recording; event distance is the official 5K distance.",
+      "matchConfidence": "verified",
+      "note": "2015 Illinois 5K official result. Original Strava track covers only 1.82 km; do not fabricate GPS geometry or intermediate splits.",
       "_catalogSource": "data/official-results-overrides.json",
       "officialDistance": "5K",
       "officialDistanceKm": 5,
@@ -803,7 +803,16 @@
       "stravaDistanceKm": 1.82,
       "stravaDistanceMi": 1.13,
       "stravaElapsedSeconds": 1398,
-      "resultSource": "Christie Clinic Illinois Marathon official event archive + user I-Challenge medal"
+      "resultSource": "User-provided official Christie Clinic Illinois 5K result screenshot",
+      "officialTime": "23:27",
+      "officialNetTime": "23:27",
+      "officialClockTime": "23:37",
+      "officialPace": "7:33/mi",
+      "bib": "15062",
+      "officialPlace": 248,
+      "genderPlace": 211,
+      "division": "Men 25–29",
+      "divisionPlace": 33
     },
     {
       "id": "rock-parkway-half-2016",
