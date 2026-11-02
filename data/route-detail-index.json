@@ -5,7 +5,7 @@
   "routeCatalogUpdatedOn": "2026-11-02",
   "recordCount": 143,
   "featureCount": 129,
-  "browserMaterializedFeatureCount": 13,
+  "browserMaterializedFeatureCount": 12,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
