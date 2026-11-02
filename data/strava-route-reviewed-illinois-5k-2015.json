@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "encoding": "google-polyline5",
+  "source": "2015 Illinois 5K original Strava GPX activity 641965799, reviewed against 2016 comparison",
+  "routes": [
+    {
+      "id": "strava-641965799",
+      "adventureIds": [
+        "illinois-5k-2015"
+      ],
+      "stravaActivityIds": [
+        "641965799"
+      ],
+      "sourceFiles": [
+        "activities/708168717.gpx.gz"
+      ],
+      "sourcePointCount": 162,
+      "retainedPointCount": 162,
+      "sampling": "full-source-track-gap-split-180m",
+      "geometryClass": "recorded-partial",
+      "publicationSelected": true,
+      "geometryNote": "Original 2015 Strava GPS preserves the final 1.82 km (162 points). The opening ~3.18 km was not recorded and is intentionally not drawn; the 2016 course is not an accurate substitute because its direction differs at the observed 2015 segment. 2015 course map unavailable. Route is incomplete, not a full 5K reconstruction.",
+      "lines": [
+        "g`ysF`cpyO?X?\\?X@^??A\\D^@Z??CVD\\BVCXCX?X?X@TDZBVCZ?X?V@^?^??AZ?ZAZAX?X?X?V???X?V?XA\\BV??BXAXDZLPR@TAPAVER?PATCRBTBP?RBTAV?P?PBVATATCT?V@VAPAPCV@P?V@TAT?VAPAPAV@P@V?P?T?V?P@P@T?VCV@VAP?P?P@VDR@T?PAR?P?VBPAPAVCP?VAPAT?RCXAP?R?R?V?T?P?P?RBV@T?TETAP?TCP@TAR@P@PAV@T@VDP@R?T?P@TAPARAPAP@RARAJY?W?WAY?_@A[?_@A_@AU?]A]?]?Y?YAWP?VERERGZQPIXOVM"
+      ],
+      "reconstructionEvidence": {
+        "status": "2016-gps-corroborates-2015-corridor-but-not-complete-2015-course",
+        "raceDate": "2015-04-24",
+        "recorded2015Points": 162,
+        "recorded2015LengthKm": 1.8205,
+        "reference2016File": "data/strava-route-full-resolution-illinois-5k-2016.json",
+        "reference2016RouteId": "strava-641962419",
+        "reference2016Points": 127,
+        "reference2016LengthKm": 5.0129,
+        "nearest2015To2016MedianMeters": 14.2,
+        "nearest2015To2016P90Meters": 20.7,
+        "nearest2015To2016MaxMeters": 30.2,
+        "finishSeparationMeters": 16.2,
+        "approxCandidateSplice2016Points": 66,
+        "approxCandidateSpliceDistanceKm": 4.467,
+        "missingDistanceTo5KApproxKm": 0.533,
+        "officialHistoricalSource": "https://fightingillini.com/news/2015/4/23/SB_0601152850",
+        "officialHistoricalSourceFinding": "2015 University of Illinois Athletics article confirms Friday 5K at 7:30 pm and Kirby Avenue road closure; it links a race-year 5K map but map coordinates are not yet retrieved.",
+        "caution": "2016 GPS route overlaps the 2015 observed corridor, but simple 2016-prefix plus 2015-observed track falls roughly 0.53 km short. Do not publish as complete 2015 course or fabricate a loop. Preserve 2015 source geometry and official 2015 chip time 23:27.",
+        "historical2015CourseMapOriginalUrl": "https://www.illinoismarathon.com/pdf/map_5K.pdf",
+        "historical2015CourseMapLinkSource": "https://fightingillini.com/news/2015/4/23/SB_0601152850",
+        "historical2015CourseMapAvailability": "Original map link currently inaccessible; archive recovery required before claiming exact 2015 geometry.",
+        "reference2016Interpretation": "Observed 2015 points overlap the 2016 course closely, but the 2016-prefix splice is 4.467 km, 0.533 km shorter than a nominal 5K; reference 2016 geometry is corroboration only, not a replacement.",
+        "directionalMismatchAtSplice": {
+          "reference2016PointBefore": [
+            40.11036,
+            -88.23405
+          ],
+          "reference2016PointAt": [
+            40.11038,
+            -88.23359
+          ],
+          "reference2016PointAfter": [
+            40.11018,
+            -88.23315
+          ],
+          "recorded2015Start": [
+            40.11028,
+            -88.23361
+          ],
+          "recorded2015Next": [
+            40.11028,
+            -88.23374
+          ],
+          "finding": "The 2016 course travels eastbound at the closest splice point while the 2015 GPS travels westbound; the two routes overlap spatially but run opposite directions here. A naive 2016-prefix plus 2015-suffix would reverse direction and undercount by ~0.53 km.",
+          "implication": "Do not treat the 2016 prefix as the 2015 route. Need original 2015 map or independently verified course; the 2016 recording is only spatial corroboration."
+        }
+      }
+    }
+  ]
+}
