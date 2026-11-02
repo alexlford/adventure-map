@@ -3,11 +3,16 @@
   "description": "Persistent first-seen dates for records intentionally surfaced as recently added. addedAt tracks archive entry, not event date.",
   "entries": [
     {
+      "recordId": "new-york-city-marathon-2026",
+      "addedAt": "2026-11-02",
+      "source": "manual",
+      "featured": true
+    },
+    {
       "recordId": "air-force-aim-high-challenge-2026",
       "addedAt": "2026-09-20",
       "source": "git-history",
-      "sourceCommit": "3a79f6b3398b7ecc950df5c4f5a6edc5824bd68a",
-      "featured": true
+      "sourceCommit": "3a79f6b3398b7ecc950df5c4f5a6edc5824bd68a"
     },
     {
       "recordId": "air-force-marathon-2026",

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updatedOn": "2026-08-11",
+    "updatedOn": "2026-11-02",
     "officialSourceCheckedOn": "2026-08-11",
     "currentMajorCount": 7,
     "confirmedMajorCountFor2027": 8,
@@ -9,7 +9,7 @@
   },
   "majors": [
     {"id":"chicago","recordId":"chicago-marathon-2021","name":"Chicago Marathon","city":"Chicago, Illinois","status":"completed","membership":"current","label":"Completed","lat":41.8781,"lon":-87.6298},
-    {"id":"new-york","name":"New York City Marathon","city":"New York, New York","status":"registered","membership":"current","year":2026,"label":"Registered · 2026","lat":40.7128,"lon":-74.0060},
+    {"id":"new-york","recordId":"new-york-city-marathon-2026","name":"New York City Marathon","city":"New York, New York","status":"completed","membership":"current","year":2026,"label":"Completed · 2026","lat":40.7128,"lon":-74.0060},
     {"id":"tokyo","name":"Tokyo Marathon","city":"Tokyo, Japan","status":"registered","membership":"current","year":2027,"label":"Registered · 2027","lat":35.6762,"lon":139.6503},
     {"id":"boston","name":"Boston Marathon","city":"Boston, Massachusetts","status":"future","membership":"current","label":"Future target","lat":42.3601,"lon":-71.0589},
     {"id":"london","name":"London Marathon","city":"London, United Kingdom","status":"future","membership":"current","label":"Future target","lat":51.5072,"lon":-0.1276},
