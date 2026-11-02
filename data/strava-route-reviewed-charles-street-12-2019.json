@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "encoding": "google-polyline5",
+  "source": "Reviewed Charles Street 12 2019 route, original GPS preserved",
+  "routes": [
+    {
+      "id": "strava-4312788726",
+      "adventureIds": [
+        "charles-street-12-2019"
+      ],
+      "stravaActivityIds": [
+        "4312788726"
+      ],
+      "sourceFiles": [
+        "activities/4610353848.fit.gz"
+      ],
+      "sourcePointCount": 1468,
+      "retainedPointCount": 1468,
+      "sampling": "full-source-track-gap-split-180m",
+      "geometryClass": "mixed",
+      "publicationSelected": true,
+      "geometryNote": "Provisional, low-confidence inferred connector across 2019 Towson GPS outage. Original recorded segments preserved; inferred line should be dashed.",
+      "segments": [
+        {
+          "line": "yjpoFnqsrMHYHYHWDUJYBWBWB[D[DWB[FYHW",
+          "evidence": "recorded",
+          "confidence": "high"
+        },
+        {
+          "line": "{gpoFdgsrMBy@@oAJcBNwBPkCRkCZkCl@wBv@wBhAkCtAwBlBwBlBcB`C{@~Cg@fESnFSnFSzEQpD?",
+          "evidence": "inferred",
+          "confidence": "low",
+          "note": "Approximate Towson connector from recorded Kenilworth Drive endpoint to recorded Charles Street corridor; unsurveyed interior points; needs historical map georeferencing",
+          "source": "Baltimore DOT 2019 race-year street closure advisory"
+        },
+        {
+          "line": "}jnoFxrqrMTDRBTDRAPCRGVCPATCVCRETGRMRKRMNIPKNKPEPIPONMNONORONKROPKRCT?RFRLLRHTBZBTDV@Z@V@Z@^?\\@XDZBVBXF\\@ZDVFZHZDTFXHVDTFZFTBZBVDVDRFZF\\DTHXHVFZBTFXHVHXFXDZDVDZFVFXFXBZDZ@\\@Z@\\BX?Z?\\@X@Z@\\B\\DVNNTFP?T@RAVARAVARDTEPEPCPITKTETGRIPITKRIPOPKRIRMPORKPIRIRONKPGRKRKNGTERERKRKNKRITIRMPGPGPKPKRIPGT@PKTETEPCRCTATAR@TARCRAT?TCT@R?VFRBRFRBP@T?T?RBT@T@TCRARGRGTETGPETEPCTIPKTGNKRKPMRKNMLKPMNOPQPMPQNIRMTIRIVITCREVGTERERGRGRGPINKPKPINIRMNKPKRERCRBPFJX@ZB\\?X?X?V@V@XBZ@V?\\@Z@ZBXBZ?\\?\\@Z@ZD\\?ZBZBXFZ@V@Z@X@X@Z?Z@ZD\\@Z@X@VBZBXB\\FTHXJTJXJT??dApAlApANRLNJZ??j@pBFTFTFTDTF\\HRFXHZHXDVDTJXLVJVFVFTHXJTJTJTJPLRJPLRJVLTLPJRJTNVJVLRJTLTJRLTJZJXHTJTLTPLPRLRLVHVJTFXFRNRNPNPNRPPRNTJRFRJPLNJPPRNNRLNNRJRHRHXDVFXBXBVBZ?VBTDZNPR@RARAVEREXCPCVARATCPCVCRCPAR?PCTCRAT?PCR@P?PET?TERGTCR?P?T?T?TERCPEPER?RAT@TCTARARCR?PATERCTARAVAPEREVEVCRARCRBR@RCTCTARCT?RCPEVAT?T?VERERAVCRARAT?VATCTEVGTEV@T?RCT?TEREVET?T?R?P@PARARCREREPGR?T?PER?P?VARET?TAPAREV?PAVCPARAP?PET?RATARANIPETETCV?PBP@T?TERAT?PCRARCTCRBV?TARIVCV@PAPAR?VCRAPAVAP@PCTCPETCTATMPCRBT@TCR?VETCT@R?P?RAPATCTARAT?RCTAPCPCPAPAVEP?VAR?TARCPAR?TCTATCTCPAV?PCPERCPCTAR?RCPATARER?NETCTGTERAP?TCTB??VMPERERARCTGTGREPCRCVATCPEPCRCTCTEP?PGVGVERCTCTEPAVCRCNERCTETARCPEVCTCTATARCRCPIRAR?TEVGR?PATEVGPETAT?TCP?RAPCREPAPCTCVITGPCTGVARAPAVGNGRCTET?P?RCV?RARGR?PATCTCRBR?TGRARAPCTAT?RCPCRARCRKROPGRETFRCR@RAPCVARCTCRCRCVCRARATCTAVARGPCPATCT?PCVCTARGPITCRCV@REPCVARETCR?VGRERCPAR?RAREPKNMPQHSLSLSFULUJSPQHWLWJULSHSLUJULULQHSLSNOHYLSJSLWFULSPIRMPEVCVCRCTARCV?RAVAT?RCR@VERAVCR@RATGRCVBRBP?TEPCRARCTBR@R@T?R?TAT?T@R@VAT@TCR?TCT@R?TAP?R?TCTCPAR@TCRAT?VCV?P?V?P?R?RATATFRHPDVATCV?PARBTBVCR?VCP?TEPERCR?V@PARCTARAV?PCVBV@RAPARATCP@RAVBP@R?RAPAP?TERETIRCTGPEPAPERBV@RGRET?R@RAP@PEPAVBTCPEPAV?P?TCT@T@PCV?T@TAT@TCTIPER?RAV@TCPEPCR?R?T?R?RBV?NFT@PAV?R?PAT?PENKVGVARCRDRAP@P@RFRARCPEPIVAT?XAPAV@PAR?PAV@PCRGPKPEVCTBR@TAT?TARERAR?P@PBVAPCTCTAT@PATAT@R?PBPCRAPATAR?TATGPAV@T@T@PAR?RCPAT?TBTAT@RATCXCREPCTARARANATAVCT@VBTCVCTITATCRAP?PCR@RBRATCTEP@V?ZARCR@RAVCP@V@TBV?V?P?R?VAR?T?P?TATCV?TATATCPATERDRAP?V?T@TARETAVARCTEPCR?V@TAVAPAT?R@PAR?R@R?VAT@P@P?R@T?T?TAR?T?TERGTARCP?T?RATAR?PCR@R?P?PCPGV@R@TSJQPHTFR@TBXDTFRDTGZSTCR@TAPCVAP?TAT@RARARIP?RAT?RERERERGVCVAR@RDR@T?T?RCRAPAT@T?VDTBPEPGV?R?PARETAT?R?R?V?RAV@T@TCR?PDRET?Z?T@PER@RARAP?RHR?RCVAVAT?P@V@R@TBT?TGRETET?R@V@PAP?RB??RCPGRGP@P?VEPKPEREP?RCTERAP@PBRBTCR@PBRCR?RDVGR@P?V?RAVAV@TDXEXERIRMNGTCP@T@VAPGPERER@RDTCdCB|A^`BB|Am@dBI~AWfBJxAc@dBk@tBWxAp@xAKrBAdB?bB[PCR?PCV?T?T?TCPCVCR@T?PBTHTFPHTGTDPSNM??XgCB]A]EWC[?]DUJUPKRERATCRET@VCRCRKTAPGRQLUBWBY?YCYA]B[BYBW@YAWA]?YE[?[?YFU?[@WCY?W?[@W?]E]CY?[?[?[BYA[?]AYC[?WA[AWCY@WBY@]?W?[HYNMLMLUPGT@T@R@TAPEREPCRARDR@R?REPET@TDTCV@P?R?R@TEV?TBR?R@TAPGPGRAT@V?PCT?RAPATAR?P?TCPHRCR?RDR@V?TCTCNGLSJ[J]FYJUJQLWFWDY@k@@WJYLSNSJQNSJUNULSJUNSLQNQJOLWLUNSLSHSHWDUH[FYHUDYHUHWDUDWF[LUHWD[BWF[FYFWFWJSB[HSFU@[DUHYNUHUFWFUFWDUFUDWHUFUFYJSDYF[JUFUHYFYF[F[HUHYJWFYHUF[HWDYDYC]GUMQSEQGSGUEQIQEOGQMSKQKUKSKOISMSKUOQISISMQMQKOMOMMMQQMOMSIWI[IUIYGWE[?UCYCc@AWA_@C_@E]E[",
+          "evidence": "recorded",
+          "confidence": "high"
+        }
+      ],
+      "reconstructionEvidence": {
+        "status": "provisional-inferred-connector-published",
+        "raceYear": 2019,
+        "sourceUrl": "https://content.govdelivery.com/accounts/MDBALT/bulletins/25c026e",
+        "sourcePublisher": "Baltimore City Department of Transportation",
+        "sourceDate": "2019-08-30",
+        "raceDate": "2019-08-31",
+        "verifiedCourseDescription": "Starts on Kenilworth Drive in Towson; enters Baltimore on N. Charles Street from Stevenson Lane; follows N. Charles Street south, then Lee Street, Light Street, Key Highway and Key Highway extension to Tide Point at Under Armour.",
+        "recordedGapMeters": 1301,
+        "recordedFirstSegmentPoints": 14,
+        "recordedSecondSegmentPoints": 1454,
+        "publicationRule": "Keep source Strava lines disconnected until missing 2019 Towson streets can be mapped to the exact recorded endpoints; never connect with a straight chord.",
+        "caution": "Current race site specifies a different finish at Riverside Park; do not use it for 2019.",
+        "connectorPointsLatLon": [
+          [
+            39.41006,
+            -76.61699
+          ],
+          [
+            39.41004,
+            -76.6167
+          ],
+          [
+            39.41003,
+            -76.6163
+          ],
+          [
+            39.40997,
+            -76.6158
+          ],
+          [
+            39.40989,
+            -76.6152
+          ],
+          [
+            39.4098,
+            -76.6145
+          ],
+          [
+            39.4097,
+            -76.6138
+          ],
+          [
+            39.40956,
+            -76.6131
+          ],
+          [
+            39.40933,
+            -76.6125
+          ],
+          [
+            39.40905,
+            -76.6119
+          ],
+          [
+            39.40868,
+            -76.6112
+          ],
+          [
+            39.40825,
+            -76.6106
+          ],
+          [
+            39.4077,
+            -76.61
+          ],
+          [
+            39.40715,
+            -76.6095
+          ],
+          [
+            39.4065,
+            -76.6092
+          ],
+          [
+            39.4057,
+            -76.609
+          ],
+          [
+            39.4047,
+            -76.6089
+          ],
+          [
+            39.4035,
+            -76.6088
+          ],
+          [
+            39.4023,
+            -76.6087
+          ],
+          [
+            39.4012,
+            -76.60861
+          ],
+          [
+            39.40031,
+            -76.60861
+          ]
+        ],
+        "connectorConfidence": "low"
+      }
+    }
+  ]
+}
