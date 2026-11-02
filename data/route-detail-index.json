@@ -121,7 +121,7 @@
       "file": "data/strava-route-full-resolution-chicago-marathon-2021.json",
       "featureId": "strava-6094685711",
       "format": "polyline",
-      "quality": "full-source",
+      "quality": "reviewed-source",
       "geometryClass": "recorded-filtered"
     },
     "chicago-marathon-virtual-2020": {
