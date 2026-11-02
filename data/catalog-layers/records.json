@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceCount": 39,
-  "recordCount": 164,
+  "recordCount": 165,
   "layeredMergeCount": 54,
   "adventures": [
     {
@@ -1559,6 +1559,32 @@
       "matchConfidence": "high",
       "note": "The Strava activity starts at the published downtown 12th & Grand event location on the exact race date and records 12.08 km.",
       "_catalogSource": "data/mined-races.json"
+    },
+    {
+      "id": "new-york-city-marathon-2026",
+      "kind": "race",
+      "discipline": "marathon",
+      "name": "TCS New York City Marathon",
+      "eventSeries": "TCS New York City Marathon",
+      "year": 2026,
+      "date": "2026-11-01",
+      "distance": "Marathon",
+      "officialDistance": "Marathon",
+      "officialDistanceKm": 42.195,
+      "officialDistanceMi": 26.2,
+      "location": "New York City, New York — five boroughs",
+      "region": "New York",
+      "lat": 40.7128,
+      "lon": -74.006,
+      "coordinatePrecision": "city",
+      "participationMode": "in-person",
+      "routeStatus": "matched-no-public-route",
+      "matchSource": "User-confirmed completion on November 2, 2026 + NYRR official 2026 race schedule",
+      "matchConfidence": "confirmed",
+      "sourceUrl": "https://prod.nyrr.org/races-and-events/2026/2026-tcs-new-york-city-marathon",
+      "routeSourceUrl": "https://prod.nyrr.org/tcsnycmarathon/the-course",
+      "note": "Alex completed the November 1, 2026 TCS New York City Marathon, a 26.2-mile race through all five New York City boroughs. His second completed Abbott World Marathon Major, following Chicago in 2021. Individual official time and split data are not yet linked; no personal GPS route is asserted.",
+      "_catalogSource": "data/user-confirmed-races.json"
     },
     {
       "id": "air-force-5k-2026",
@@ -4601,6 +4627,9 @@
     ],
     "big-12-run-12k-2016": [
       "data/mined-races.json"
+    ],
+    "new-york-city-marathon-2026": [
+      "data/user-confirmed-races.json"
     ],
     "air-force-5k-2026": [
       "data/user-confirmed-races.json",

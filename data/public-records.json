@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 161,
+  "recordCount": 162,
   "records": [
     {
       "id": "mount-lincoln",
@@ -3599,6 +3599,60 @@
       "routeFeatureIds": [
         "strava-641962927"
       ]
+    },
+    {
+      "id": "new-york-city-marathon-2026",
+      "kind": "race",
+      "discipline": "marathon",
+      "name": "TCS New York City Marathon",
+      "eventSeries": "TCS New York City Marathon",
+      "year": 2026,
+      "date": "2026-11-01",
+      "distance": "Marathon",
+      "officialDistance": "Marathon",
+      "officialDistanceKm": 42.195,
+      "officialDistanceMi": 26.2,
+      "location": "New York City, New York — five boroughs",
+      "region": "New York",
+      "lat": 40.7128,
+      "lon": -74.006,
+      "coordinatePrecision": "city",
+      "participationMode": "in-person",
+      "routeStatus": "matched-no-public-route",
+      "matchSource": "User-confirmed completion on November 2, 2026 + NYRR official 2026 race schedule",
+      "matchConfidence": "confirmed",
+      "sourceUrl": "https://prod.nyrr.org/races-and-events/2026/2026-tcs-new-york-city-marathon",
+      "routeSourceUrl": "https://prod.nyrr.org/tcsnycmarathon/the-course",
+      "note": "Alex completed the November 1, 2026 TCS New York City Marathon, a 26.2-mile race through all five New York City boroughs. His second completed Abbott World Marathon Major, following Chicago in 2021. Individual official time and split data are not yet linked; no personal GPS route is asserted.",
+      "_catalogSource": "data/user-confirmed-races.json",
+      "slug": "2026-11-01-tcs-new-york-city-marathon",
+      "recordClass": "race",
+      "sport": "running",
+      "startDate": "2026-11-01",
+      "finishDate": "2026-11-01",
+      "distanceInfo": {
+        "km": 42.195,
+        "mi": 26.2,
+        "label": "Marathon",
+        "source": "official"
+      },
+      "locationInfo": {
+        "label": "New York City, New York — five boroughs",
+        "region": "New York",
+        "lat": 40.7128,
+        "lon": -74.006,
+        "precision": "city"
+      },
+      "evidence": {
+        "source": "User-confirmed completion on November 2, 2026 + NYRR official 2026 race schedule",
+        "matchSource": "User-confirmed completion on November 2, 2026 + NYRR official 2026 race schedule",
+        "resultSource": null,
+        "confidence": "confirmed"
+      },
+      "routeInfo": {
+        "status": "matched-no-public-route",
+        "provenance": null
+      }
     },
     {
       "id": "air-force-5k-2026",

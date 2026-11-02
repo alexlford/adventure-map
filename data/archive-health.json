@@ -1,46 +1,46 @@
 {
   "schemaVersion": 1,
-  "recordCount": 161,
+  "recordCount": 162,
   "coverage": {
     "Date": {
-      "complete": 161,
+      "complete": 162,
       "missing": 0,
       "percent": 100
     },
     "Place": {
-      "complete": 161,
+      "complete": 162,
       "missing": 0,
       "percent": 100
     },
     "Coordinates": {
-      "complete": 108,
+      "complete": 109,
       "missing": 53,
-      "percent": 67.1
+      "percent": 67.3
     },
     "Explicit taxonomy": {
-      "complete": 161,
+      "complete": 162,
       "missing": 0,
       "percent": 100
     },
     "Distance": {
-      "complete": 149,
+      "complete": 150,
       "missing": 12,
-      "percent": 92.5
+      "percent": 92.6
     },
     "Route": {
       "complete": 78,
-      "missing": 83,
-      "percent": 48.4
+      "missing": 84,
+      "percent": 48.1
     },
     "Evidence": {
-      "complete": 161,
+      "complete": 162,
       "missing": 0,
       "percent": 100
     },
     "Photo": {
       "complete": 27,
-      "missing": 134,
-      "percent": 16.8
+      "missing": 135,
+      "percent": 16.7
     }
   },
   "priorityIncomplete": [

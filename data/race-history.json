@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
-  "generatedFromRecordCount": 161,
+  "generatedFromRecordCount": 162,
   "summary": {
-    "raceCount": 81,
+    "raceCount": 82,
     "firstYear": 2006,
     "lastYear": 2026,
     "activeYearCount": 18,
-    "knownDistanceMiles": 732.49,
-    "knownDistanceCount": 78,
-    "officialResultCount": 27,
-    "marathonCount": 9,
+    "knownDistanceMiles": 758.69,
+    "knownDistanceCount": 79,
+    "officialResultCount": 28,
+    "marathonCount": 10,
     "halfMarathonCount": 12,
     "busiestYear": {
       "year": 2025,
@@ -228,15 +228,15 @@
     },
     {
       "year": 2026,
-      "count": 5,
-      "miles": 48.73,
-      "knownDistanceCount": 5,
-      "marathonCount": 1,
+      "count": 6,
+      "miles": 74.93,
+      "knownDistanceCount": 6,
+      "marathonCount": 2,
       "disciplines": {
         "road": 4,
-        "marathon": 1
+        "marathon": 2
       },
-      "cumulativeMiles": 732.49
+      "cumulativeMiles": 758.69
     }
   ],
   "disciplines": [
@@ -246,7 +246,7 @@
     },
     {
       "name": "marathon",
-      "count": 9
+      "count": 10
     },
     {
       "name": "relay",
@@ -354,6 +354,16 @@
       "name": "U.S. Air Force Marathon",
       "location": "Wright-Patterson Air Force Base & Fairborn, Ohio",
       "time": "4:54:34.40",
+      "miles": 26.2
+    },
+    {
+      "id": "new-york-city-marathon-2026",
+      "slug": "2026-11-01-tcs-new-york-city-marathon",
+      "year": 2026,
+      "date": "2026-11-01",
+      "name": "TCS New York City Marathon",
+      "location": "New York City, New York — five boroughs",
+      "time": null,
       "miles": 26.2
     }
   ],
