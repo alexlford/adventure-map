@@ -1,1 +1,887 @@
-{"schemaVersion":1,"generatedFrom":"data/route-catalog.json","publicRecordSource":"data/public-records.json","routeCatalogUpdatedOn":"2026-11-02","recordCount":143,"featureCount":129,"browserMaterializedFeatureCount":13,"records":{"abbott-chicago-5k-2021":{"file":"data/strava-route-full-resolution-abbott-chicago-5k-2021.json","featureId":"strava-6088254839","format":"polyline","quality":"full-source"},"abes-amble-2014":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-01.json","featureId":"strava-641968068","format":"polyline","quality":"full-source"},"air-force-marathon-2026":{"file":"data/historical-routes-v2.geojson","featureId":"air-force-marathon-2026-official-course","format":"geojson","quality":"catalog-detail"},"baltimore-5k-2018":{"file":"data/strava-route-full-resolution-baltimore-5k-2018.json","featureId":"strava-4312792085","format":"polyline","quality":"full-source"},"baltimore-half-2018":{"file":"data/strava-route-full-resolution-baltimore-half-2018.json","featureId":"strava-4312792178","format":"polyline","quality":"full-source"},"baltimore-shamrock-5k-2020-deferred-virtual":{"file":"data/strava-route-full-resolution-baltimore-shamrock-5k-2020-deferred-virtual.json","featureId":"strava-5115941734","format":"polyline","quality":"full-source"},"baltimore-virtual-turkey-trot-2020":{"file":"data/strava-route-full-resolution-mile-high-turkey-trot-2023.json","featureId":"strava-4395204902","format":"polyline","quality":"full-source"},"beerfit-kansas-city-5k-2016":{"file":"data/strava-route-full-resolution-beerfit-kansas-city-5k-2016.json","featureId":"strava-641962129","format":"polyline","quality":"full-source"},"beerfit-kansas-city-brew-mile-2016":{"file":"data/strava-route-full-resolution-beerfit-kansas-city-brew-mile-2016.json","featureId":"strava-641962098","format":"polyline","quality":"full-source"},"big-12-run-12k-2016":{"file":"data/strava-route-full-resolution-big-12-run-12k-2016.json","featureId":"strava-641962927","format":"polyline","quality":"full-source"},"big-ten-10k-2016":{"file":"data/strava-route-full-resolution-big-ten-10k-2016.json","featureId":"strava-4312806997","format":"polyline","quality":"full-source"},"bolderboulder-2022":{"file":"data/strava-route-full-resolution-bolderboulder-2022.json","featureId":"strava-7226710306","format":"polyline","quality":"full-source"},"bolderboulder-2023":{"file":"data/strava-route-full-resolution-bolderboulder-2023.json","featureId":"strava-9163211220","format":"polyline","quality":"full-source"},"bolderboulder-2024":{"file":"data/strava-route-full-resolution-bolderboulder-2024.json","featureId":"strava-11509394019","format":"polyline","quality":"full-source"},"bolderboulder-2025":{"file":"data/strava-route-full-resolution-bolderboulder-2025.json","featureId":"strava-14604711518","format":"polyline","quality":"full-source"},"boulderthon-2024":{"file":"data/strava-route-full-resolution-boulderthon-2024.json","featureId":"strava-12535362010","format":"polyline","quality":"full-source"},"brew-to-brew-relay-2013":{"file":"data/strava-route-full-resolution-brew-to-brew-2013.json","featureId":"strava-643096101","format":"polyline","quality":"full-source"},"charles-street-12-2019":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-02.json","featureId":"strava-4312788726","format":"polyline","quality":"full-source"},"chicago-marathon-2021":{"file":"data/strava-route-full-resolution-chicago-marathon-2021.json","featureId":"strava-6094685711","format":"polyline","quality":"reviewed-source","geometryClass":"recorded-filtered"},"chicago-marathon-virtual-2020":{"file":"data/strava-route-full-resolution-chicago-marathon-virtual-2020.json","featureId":"strava-4312782134","format":"polyline","quality":"full-source"},"clingmans-dome":{"file":"data/strava-route-full-resolution-clingmans-dome.json","featureId":"strava-5301627345","format":"polyline","quality":"full-source"},"colderbolder-2022":{"file":"data/strava-route-full-resolution-colderbolder-2022.json","featureId":"strava-8232311338","format":"polyline","quality":"full-source"},"colderbolder-2023":{"file":"data/strava-route-full-resolution-colderbolder-2023.json","featureId":"strava-10317055162","format":"polyline","quality":"full-source"},"colderbolder-2024":{"file":"data/strava-route-full-resolution-colderbolder-2024.json","featureId":"strava-13066323551","format":"polyline","quality":"full-source"},"colderbolder-2025":{"file":"data/strava-route-full-resolution-colderbolder-2025.json","featureId":"strava-16667231280","format":"polyline","quality":"full-source"},"colfax-5k-2024":{"file":"data/strava-route-full-resolution-colfax-5k-2024.json","featureId":"strava-11440407183","format":"polyline","quality":"full-source"},"colfax-5k-2025":{"file":"data/strava-route-full-resolution-colfax-5k-2024.json","featureId":"strava-14509902400","format":"polyline","quality":"full-source"},"colfax-5k-2026":{"file":"data/strava-route-full-resolution-colfax-5k-2026.json","featureId":"strava-18531584324","format":"polyline","quality":"full-source"},"colfax-half-2021":{"file":"data/strava-route-full-resolution-colfax-half-2021.json","featureId":"strava-6123940860","format":"polyline","quality":"full-source"},"colfax-marathon-2025":{"file":"data/strava-route-full-resolution-colfax-marathon-2025.json","featureId":"strava-14522257426","format":"polyline","quality":"full-source"},"colfax-urban-10-2024":{"file":"data/strava-route-full-resolution-colfax-urban-10-2024.json","featureId":"strava-11449222885","format":"polyline","quality":"full-source"},"colfax-urban-10-2026":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-02.json","featureId":"strava-18545647595","format":"polyline","quality":"full-source"},"colorado-triathlon-2023":{"file":"data/strava-route-full-resolution-colderbolder-2023.json","featureId":"strava-10317055162","format":"polyline","quality":"full-source"},"decalibron-2023":{"file":"data/strava-route-full-resolution-decalibron-2023.json","featureId":"strava-9642214422","format":"polyline","quality":"full-source"},"disney-princess-half-2018":{"file":"data/strava-route-full-resolution-disney-princess-half-2018.json","featureId":"strava-4312794804","format":"polyline","quality":"full-source"},"estes-park-half-2021":{"file":"data/strava-route-full-resolution-estes-park-half-2021.json","featureId":"strava-5503854364","format":"polyline","quality":"full-source"},"flying-pig-5k-2025":{"file":"data/strava-route-full-resolution-flying-pig-2025.json","featureId":"strava-14364821809","format":"polyline","quality":"full-source","geometryClass":"mixed"},"flying-pig-marathon-2025":{"file":"data/strava-route-full-resolution-flying-pig-2025.json","featureId":"strava-14377032125","format":"polyline","quality":"full-source"},"free-state-tri-100-relay-2015":{"file":"data/strava-route-full-resolution-free-state-tri-100-relay-2015.json","featureId":"strava-641965501","format":"polyline","quality":"full-source"},"frisco-brewski-2024":{"file":"data/strava-route-full-resolution-frisco-brewski-2024.json","featureId":"strava-10926255561","format":"polyline","quality":"full-source"},"garmin-half-2014":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-01.json","featureId":"strava-641968887","format":"polyline","quality":"full-source"},"garmin-half-2016":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-01.json","featureId":"strava-641962559","format":"polyline","quality":"full-source"},"gobble-cobble-2019":{"file":"data/strava-route-full-resolution-gobble-cobble-2019.json","featureId":"strava-4312787170","format":"polyline","quality":"full-source"},"granby-ranch-skinning-2025":{"file":"data/strava-route-full-resolution-granby-ranch-skinning-2025.json","featureId":"strava-13918978715","format":"polyline","quality":"full-source"},"haleakala":{"file":"data/strava-route-full-resolution-haleakala.json","featureId":"strava-4854788986","format":"polyline","quality":"full-source"},"hawksbill-mountain":{"file":"data/strava-route-full-resolution-hawksbill-mountain.json","featureId":"strava-4469336427","format":"polyline","quality":"full-source"},"illinois-5k-2015":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-01.json","featureId":"strava-641965799","format":"polyline","quality":"full-source"},"illinois-5k-2016":{"file":"data/strava-route-full-resolution-illinois-5k-2016.json","featureId":"strava-641962419","format":"polyline","quality":"full-source"},"illinois-half-2016":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-01.json","featureId":"strava-641962439","format":"polyline","quality":"full-source"},"illinois-marathon-2015":{"file":"data/strava-route-full-resolution-illinois-marathon-2015.json","featureId":"strava-641965920","format":"polyline","quality":"full-source"},"kansas-city-marathon-2019":{"file":"data/strava-route-full-resolution-kansas-city-marathon-2019.json","featureId":"strava-4312788772","format":"polyline","quality":"full-source"},"kokopelli-three-day-2025":{"file":"data/strava-route-full-resolution-mtb-2025-06-07.json","featureId":"activity-mtb-day-2025-06-07","format":"polyline","quality":"full-source"},"mauna-kea":{"file":"data/strava-route-full-resolution-mauna-kea.json","featureId":"strava-6185031796","format":"polyline","quality":"full-source"},"midland-hill":{"file":"data/strava-route-reviewed-midland-hill.json","featureId":"strava-9635633600","format":"polyline","quality":"reviewed-source","geometryClass":"recorded-filtered"},"mile-high-turkey-trot-2021":{"file":"data/strava-route-full-resolution-mile-high-turkey-trot-2021.json","featureId":"strava-6311007412","format":"polyline","quality":"full-source"},"mile-high-turkey-trot-2023":{"file":"data/strava-route-full-resolution-mile-high-turkey-trot-2023.json","featureId":"strava-10269813911-turkey-trot-segment","format":"polyline","quality":"full-source"},"mile-high-turkey-trot-2025":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-02.json","featureId":"strava-16584355003","format":"polyline","quality":"full-source"},"mount-bross":{"file":"data/strava-route-full-resolution-decalibron-2023.json","featureId":"strava-9642214422","format":"polyline","quality":"full-source"},"mount-cameron":{"file":"data/strava-route-full-resolution-decalibron-2023.json","featureId":"strava-9642214422","format":"polyline","quality":"full-source"},"mount-democrat":{"file":"data/strava-route-full-resolution-decalibron-2023.json","featureId":"strava-9642214422","format":"polyline","quality":"full-source"},"mount-evans":{"file":"data/strava-route-full-resolution-mount-evans-spalding.json","featureId":"strava-7560672014","format":"polyline","quality":"full-source"},"mount-jumullong-manglo":{"file":"data/strava-route-full-resolution-mount-jumullong-manglo.json","featureId":"strava-7123707788","format":"polyline","quality":"full-source"},"mount-lamlam":{"file":"data/strava-route-reviewed-mount-lamlam.json","featureId":"strava-8684346989","format":"polyline","quality":"reviewed-source","geometryClass":"recorded-filtered"},"mount-le-conte":{"file":"data/strava-route-full-resolution-mount-le-conte.json","featureId":"strava-5309635526","format":"polyline","quality":"full-source"},"mount-lincoln":{"file":"data/strava-route-full-resolution-decalibron-2023.json","featureId":"strava-9642214422","format":"polyline","quality":"full-source"},"mount-sherman":{"file":"data/strava-route-full-resolution-mount-sherman.json","featureId":"strava-7866173318","format":"polyline","quality":"full-source"},"mount-spalding":{"file":"data/strava-route-full-resolution-mount-evans-spalding.json","featureId":"strava-7560672014","format":"polyline","quality":"full-source"},"mount-wachusett":{"file":"data/strava-route-full-resolution-mount-wachusett.json","featureId":"strava-4337907837","format":"polyline","quality":"full-source"},"mtb-day-2022-07-16":{"file":"data/strava-route-full-resolution-mtb-day-2022-07-16.json","featureId":"activity-mtb-day-2022-07-16","format":"polyline","quality":"full-source"},"mtb-day-2023-09-24":{"file":"data/strava-route-full-resolution-mtb-day-2023-09-24.json","featureId":"activity-mtb-day-2023-09-24","format":"polyline","quality":"full-source"},"mtb-day-2023-12-02":{"file":"data/strava-route-full-resolution-mtb-day-2023-12-02.json","featureId":"activity-mtb-day-2023-12-02","format":"polyline","quality":"full-source"},"mtb-day-2024-07-27":{"file":"data/strava-route-full-resolution-mtb-day-2024-07-27.json","featureId":"activity-mtb-day-2024-07-27","format":"polyline","quality":"full-source"},"mtb-day-2024-08-31":{"file":"data/strava-route-full-resolution-mtb-day-2024-08-31.json","featureId":"activity-mtb-day-2024-08-31","format":"polyline","quality":"full-source"},"mtb-day-2025-06-05":{"file":"data/strava-route-full-resolution-mtb-2025-06-05.json","featureId":"activity-mtb-day-2025-06-05","format":"polyline","quality":"full-source"},"mtb-day-2025-06-06":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-full-resolution-mtb-2025-06-06.json","featureId":"activity-mtb-day-2025-06-06","format":"polyline","quality":"full-source"},"mtb-day-2025-06-07":{"file":"data/strava-route-full-resolution-mtb-2025-06-07.json","featureId":"activity-mtb-day-2025-06-07","format":"polyline","quality":"full-source"},"mtb-day-2025-07-11":{"file":"data/strava-route-full-resolution-mtb-day-2025-07-11.json","featureId":"activity-mtb-day-2025-07-11","format":"polyline","quality":"full-source"},"mtb-day-2025-09-28":{"file":"data/strava-route-full-resolution-mtb-day-2025-09-28.json","featureId":"activity-mtb-day-2025-09-28","format":"polyline","quality":"full-source"},"mtb-day-2025-10-05":{"file":"data/strava-route-full-resolution-mtb-day-2025-10-05.json","featureId":"activity-mtb-day-2025-10-05","format":"polyline","quality":"full-source"},"mtb-day-2026-05-24":{"file":"data/strava-route-full-resolution-mtb-day-2026-05-24.json","featureId":"activity-mtb-day-2026-05-24","format":"polyline","quality":"full-source"},"mtb-day-2026-08-05":{"file":"data/strava-route-full-resolution-mtb-day-2026-08-05.json","featureId":"activity-mtb-day-2026-08-05","format":"polyline","quality":"full-source"},"new-york-city-marathon-2026":{"file":"data/new-york-city-marathon-2026-course.geojson","featureId":"new-york-city-marathon-2026-official-course","format":"geojson","quality":"catalog-detail"},"nordic-day-2021-01-16":{"file":"data/strava-route-full-resolution-nordic-day-2021-01-16.json","featureId":"activity-nordic-day-2021-01-16","format":"polyline","quality":"full-source"},"nordic-day-2022-01-02":{"file":"data/strava-route-full-resolution-nordic-2022-01-02.json","featureId":"activity-nordic-day-2022-01-02","format":"polyline","quality":"full-source"},"nordic-day-2022-01-03":{"file":"data/strava-route-full-resolution-nordic-2022-01-03.json","featureId":"activity-nordic-day-2022-01-03","format":"polyline","quality":"full-source"},"nordic-day-2022-01-22":{"file":"data/strava-route-full-resolution-nordic-day-2022-01-22.json","featureId":"activity-nordic-day-2022-01-22","format":"polyline","quality":"full-source"},"nordic-day-2022-02-03":{"file":"data/strava-route-full-resolution-nordic-day-2022-02-03.json","featureId":"activity-nordic-day-2022-02-03","format":"polyline","quality":"full-source"},"nordic-day-2022-02-05":{"file":"data/strava-route-full-resolution-nordic-day-2022-02-05.json","featureId":"activity-nordic-day-2022-02-05","format":"polyline","quality":"full-source"},"nordic-day-2022-02-13":{"file":"data/strava-route-full-resolution-nordic-day-2022-02-13.json","featureId":"activity-nordic-day-2022-02-13","format":"polyline","quality":"full-source"},"nordic-day-2022-02-16":{"file":"data/strava-route-full-resolution-nordic-day-2022-02-16.json","featureId":"activity-nordic-day-2022-02-16","format":"polyline","quality":"full-source"},"nordic-day-2022-02-19":{"file":"data/strava-route-full-resolution-nordic-day-2022-02-19.json","featureId":"activity-nordic-day-2022-02-19","format":"polyline","quality":"full-source"},"nordic-day-2023-01-08":{"file":"data/strava-route-full-resolution-breckenridge-nordic-2023-01-08.json","featureId":"activity-nordic-day-2023-01-08","format":"polyline","quality":"full-source"},"nordic-day-2023-01-11":{"file":"data/strava-route-full-resolution-breckenridge-nordic-2023-01-11.json","featureId":"activity-nordic-day-2023-01-11","format":"polyline","quality":"full-source"},"nordic-day-2023-01-21":{"file":"data/strava-route-full-resolution-breckenridge-nordic-2023-01-21.json","featureId":"activity-nordic-day-2023-01-21","format":"polyline","quality":"full-source"},"nordic-day-2023-01-28":{"file":"data/strava-route-full-resolution-frisco-nordic-2023-01-28.json","featureId":"activity-nordic-day-2023-01-28","format":"polyline","quality":"full-source"},"nordic-day-2023-03-01":{"file":"data/strava-route-full-resolution-nordic-day-2023-03-01.json","featureId":"activity-nordic-day-2023-03-01","format":"polyline","quality":"full-source"},"nordic-day-2024-01-07":{"file":"data/strava-route-full-resolution-nordic-day-2024-01-07.json","featureId":"activity-nordic-day-2024-01-07","format":"polyline","quality":"full-source"},"nordic-day-2025-03-19":{"file":"data/strava-route-full-resolution-nordic-day-2025-03-19.json","featureId":"activity-nordic-day-2025-03-19","format":"polyline","quality":"full-source"},"nordic-day-2025-03-27":{"file":"data/strava-route-full-resolution-nordic-day-2025-03-27.json","featureId":"activity-nordic-day-2025-03-27","format":"polyline","quality":"full-source"},"nordic-day-2025-03-30":{"file":"data/strava-route-full-resolution-nordic-day-2025-03-30.json","featureId":"activity-nordic-day-2025-03-30","format":"polyline","quality":"full-source"},"nordic-day-2025-04-01":{"file":"data/strava-route-full-resolution-nordic-day-2025-04-01.json","featureId":"activity-nordic-day-2025-04-01","format":"polyline","quality":"full-source"},"north-star-mountain":{"file":"data/strava-route-full-resolution-north-star-mountain.json","featureId":"strava-4312782595","format":"polyline","quality":"full-source"},"old-rag-mountain":{"file":"data/strava-route-full-resolution-old-rag-mountain.json","featureId":"strava-4312103411","format":"polyline","quality":"full-source"},"pi-day-half-2015":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-01.json","featureId":"strava-641966412","format":"polyline","quality":"full-source"},"pi-miler-2015":{"file":"data/strava-route-full-resolution-pi-miler-2015.json","featureId":"strava-641966398","format":"polyline","quality":"full-source"},"polar-bear-5k-2022":{"file":"data/strava-route-full-resolution-polar-bear-5k-2022.json","featureId":"strava-6535048864","format":"polyline","quality":"full-source"},"rebel-run-5k-2015":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-02.json","featureId":"strava-641966162","format":"polyline","quality":"full-source"},"rippetoe-rucksack-2025":{"file":"data/strava-route-full-resolution-rippetoe-rucksack-2025.json","featureId":"strava-16395842302","format":"polyline","quality":"full-source"},"river-to-river-relay-2006":{"file":"data/historical-routes-v2.geojson","featureId":"river-to-river-relay-historical-course","format":"geojson","quality":"catalog-detail"},"river-to-river-relay-2008":{"file":"data/historical-routes-v2.geojson","featureId":"river-to-river-relay-historical-course","format":"geojson","quality":"catalog-detail"},"river-to-river-relay-2010":{"file":"data/historical-routes-v2.geojson","featureId":"river-to-river-relay-historical-course","format":"geojson","quality":"catalog-detail"},"rock-parkway-half-2016":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-01.json","featureId":"strava-641962666","format":"polyline","quality":"full-source"},"rocky-mountain-5k-2025":{"file":"data/strava-route-full-resolution-rocky-mountain-5k-2025.json","featureId":"strava-15313567459","format":"polyline","quality":"full-source"},"rocky-mountain-half-2025":{"file":"data/strava-route-full-resolution-rocky-mountain-half-2025.json","featureId":"strava-15319820628","format":"polyline","quality":"full-source"},"royal-gorge-groove-5k-2024":{"file":"data/strava-route-full-resolution-royal-gorge-groove-5k-2024.json","featureId":"strava-11224486648","format":"polyline","quality":"full-source"},"royal-gorge-groove-mtb-2024":{"file":"data/strava-route-full-resolution-royal-gorge-groove-mtb-2024.json","featureId":"strava-11234156794","format":"polyline","quality":"full-source"},"rudolph-ramble-5k-2021":{"file":"data/strava-route-full-resolution-rudolph-ramble-5k-2021.json","featureId":"strava-6347969246","format":"polyline","quality":"full-source"},"run-snetterton-10k-2026":{"file":"data/strava-route-full-resolution-run-snetterton-10k-2026.json","featureId":"strava-19519345106","format":"polyline","quality":"full-source"},"running-with-cows-half-2016":{"file":"data/route-detail-browser-polylines.json","sourceFile":"data/strava-route-source-complete-01.json","featureId":"strava-641962333","format":"polyline","quality":"full-source"},"san-gabriel-peak":{"file":"data/strava-route-reviewed-san-gabriel-peak.json","featureId":"strava-9552205777","format":"polyline","quality":"full-source","geometryClass":"mixed"},"shamrock-shuffle-10k-2015":{"file":"data/strava-route-full-resolution-shamrock-shuffle-10k-2015.json","featureId":"strava-641966512","format":"polyline","quality":"full-source"},"ski-colorado-triathlon-leg":{"file":"data/strava-route-full-resolution-colorado-triathlon-ski-2023.json","featureId":"strava-10318237034","format":"polyline","quality":"full-source"},"ski-the-sky-loop-2026":{"file":"data/strava-route-full-resolution-ski-the-sky-loop-2026.json","featureId":"strava-17688751938","format":"polyline","quality":"full-source"},"smr-stampede-ranch-hand-classic-2022":{"file":"data/strava-route-full-resolution-ranch-hand-classic-2022.json","featureId":"strava-6819611723","format":"polyline","quality":"full-source"},"smr-stampede-ranch-hand-skate-2022":{"file":"data/strava-route-full-resolution-ranch-hand-skate-2022.json","featureId":"strava-6814188054","format":"polyline","quality":"full-source"},"snowman-shuffle-2006":{"file":"data/historical-routes-v2.geojson","featureId":"snowman-shuffle-jalc-course-proxy","format":"geojson","quality":"catalog-detail"},"snowman-shuffle-2007":{"file":"data/historical-routes-v2.geojson","featureId":"snowman-shuffle-jalc-course-proxy","format":"geojson","quality":"catalog-detail"},"snowman-shuffle-2008":{"file":"data/historical-routes-v2.geojson","featureId":"snowman-shuffle-jalc-course-proxy","format":"geojson","quality":"catalog-detail"},"snowman-shuffle-2009":{"file":"data/historical-routes-v2.geojson","featureId":"snowman-shuffle-jalc-course-proxy","format":"geojson","quality":"catalog-detail"},"snowman-shuffle-2021-virtual":{"file":"data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json","featureId":"strava-4676340941","format":"polyline","quality":"full-source"},"snowman-shuffle-series":{"file":"data/historical-routes-v2.geojson","featureId":"snowman-shuffle-jalc-course-proxy","format":"geojson","quality":"catalog-detail"},"springfield-turkey-trot-2024":{"file":"data/strava-route-full-resolution-mile-high-turkey-trot-2023.json","featureId":"strava-13002340446","format":"polyline","quality":"full-source"},"st-louis-turkey-trot-8k-2018":{"file":"data/strava-route-full-resolution-st-louis-turkey-trot-8k-2018.json","featureId":"strava-4312791961","format":"polyline","quality":"full-source"},"stagecoach-classic-15k-2024":{"file":"data/strava-route-full-resolution-stagecoach-classic-15k-2024.json","featureId":"strava-10596610840","format":"polyline","quality":"full-source"},"staunton-rocks-half-2022":{"file":"data/strava-route-full-resolution-staunton-rocks-half-2022.json","featureId":"strava-7711293400","format":"polyline","quality":"full-source"},"super-bowl-5k-2022":{"file":"data/strava-route-full-resolution-super-bowl-5k-2022.json","featureId":"strava-6674072473","format":"polyline","quality":"full-source"},"tennessee-pass-nordic-weekend-2022":{"file":"data/strava-route-full-resolution-nordic-2022-01-02.json","featureId":"activity-nordic-day-2022-01-02","format":"polyline","quality":"full-source"},"that-dam-run-10k-2022":{"file":"data/strava-route-full-resolution-that-dam-run-10k-2022.json","featureId":"strava-6872397933","format":"polyline","quality":"full-source"},"twin-cities-marathon-2015":{"file":"data/strava-route-full-resolution-twin-cities-2015.json","featureId":"strava-641964287","format":"polyline","quality":"full-source"},"ugly-sweater-run-2012":{"file":"data/event-routes.geojson","featureId":"strava-643102245","format":"geojson","quality":"full-source"},"universal-sole-virtual-5k-2020":{"file":"data/strava-route-full-resolution-universal-sole-virtual-5k-2020.json","featureId":"strava-4312783900","format":"polyline","quality":"full-source"},"valentines-day-4m-2022":{"file":"data/strava-route-full-resolution-valentines-day-4m-2022.json","featureId":"strava-6713570022","format":"polyline","quality":"full-source"},"west-maroon-pass-2026":{"file":"data/strava-route-full-resolution-west-maroon-pass-2026.json","featureId":"strava-19122155622","format":"polyline","quality":"full-source"}}}
+{
+  "schemaVersion": 1,
+  "generatedFrom": "data/route-catalog.json",
+  "publicRecordSource": "data/public-records.json",
+  "routeCatalogUpdatedOn": "2026-11-02",
+  "recordCount": 143,
+  "featureCount": 129,
+  "browserMaterializedFeatureCount": 13,
+  "records": {
+    "abbott-chicago-5k-2021": {
+      "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
+      "featureId": "strava-6088254839",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "abes-amble-2014": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
+      "featureId": "strava-641968068",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "air-force-marathon-2026": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "air-force-marathon-2026-official-course",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "baltimore-5k-2018": {
+      "file": "data/strava-route-full-resolution-baltimore-5k-2018.json",
+      "featureId": "strava-4312792085",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "baltimore-half-2018": {
+      "file": "data/strava-route-full-resolution-baltimore-half-2018.json",
+      "featureId": "strava-4312792178",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "baltimore-shamrock-5k-2020-deferred-virtual": {
+      "file": "data/strava-route-full-resolution-baltimore-shamrock-5k-2020-deferred-virtual.json",
+      "featureId": "strava-5115941734",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "baltimore-virtual-turkey-trot-2020": {
+      "file": "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
+      "featureId": "strava-4395204902",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "beerfit-kansas-city-5k-2016": {
+      "file": "data/strava-route-full-resolution-beerfit-kansas-city-5k-2016.json",
+      "featureId": "strava-641962129",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "beerfit-kansas-city-brew-mile-2016": {
+      "file": "data/strava-route-full-resolution-beerfit-kansas-city-brew-mile-2016.json",
+      "featureId": "strava-641962098",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "big-12-run-12k-2016": {
+      "file": "data/strava-route-full-resolution-big-12-run-12k-2016.json",
+      "featureId": "strava-641962927",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "big-ten-10k-2016": {
+      "file": "data/strava-route-full-resolution-big-ten-10k-2016.json",
+      "featureId": "strava-4312806997",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "bolderboulder-2022": {
+      "file": "data/strava-route-full-resolution-bolderboulder-2022.json",
+      "featureId": "strava-7226710306",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "bolderboulder-2023": {
+      "file": "data/strava-route-full-resolution-bolderboulder-2023.json",
+      "featureId": "strava-9163211220",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "bolderboulder-2024": {
+      "file": "data/strava-route-full-resolution-bolderboulder-2024.json",
+      "featureId": "strava-11509394019",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "bolderboulder-2025": {
+      "file": "data/strava-route-full-resolution-bolderboulder-2025.json",
+      "featureId": "strava-14604711518",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "boulderthon-2024": {
+      "file": "data/strava-route-full-resolution-boulderthon-2024.json",
+      "featureId": "strava-12535362010",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "brew-to-brew-relay-2013": {
+      "file": "data/strava-route-full-resolution-brew-to-brew-2013.json",
+      "featureId": "strava-643096101",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "charles-street-12-2019": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-02.json",
+      "featureId": "strava-4312788726",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "chicago-marathon-2021": {
+      "file": "data/strava-route-full-resolution-chicago-marathon-2021.json",
+      "featureId": "strava-6094685711",
+      "format": "polyline",
+      "quality": "reviewed-source",
+      "geometryClass": "recorded-filtered"
+    },
+    "chicago-marathon-virtual-2020": {
+      "file": "data/strava-route-full-resolution-chicago-marathon-virtual-2020.json",
+      "featureId": "strava-4312782134",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "clingmans-dome": {
+      "file": "data/strava-route-full-resolution-clingmans-dome.json",
+      "featureId": "strava-5301627345",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colderbolder-2022": {
+      "file": "data/strava-route-full-resolution-colderbolder-2022.json",
+      "featureId": "strava-8232311338",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colderbolder-2023": {
+      "file": "data/strava-route-full-resolution-colderbolder-2023.json",
+      "featureId": "strava-10317055162",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colderbolder-2024": {
+      "file": "data/strava-route-full-resolution-colderbolder-2024.json",
+      "featureId": "strava-13066323551",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colderbolder-2025": {
+      "file": "data/strava-route-full-resolution-colderbolder-2025.json",
+      "featureId": "strava-16667231280",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colfax-5k-2024": {
+      "file": "data/strava-route-full-resolution-colfax-5k-2024.json",
+      "featureId": "strava-11440407183",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colfax-5k-2025": {
+      "file": "data/strava-route-full-resolution-colfax-5k-2024.json",
+      "featureId": "strava-14509902400",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colfax-5k-2026": {
+      "file": "data/strava-route-full-resolution-colfax-5k-2026.json",
+      "featureId": "strava-18531584324",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colfax-half-2021": {
+      "file": "data/strava-route-full-resolution-colfax-half-2021.json",
+      "featureId": "strava-6123940860",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colfax-marathon-2025": {
+      "file": "data/strava-route-full-resolution-colfax-marathon-2025.json",
+      "featureId": "strava-14522257426",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colfax-urban-10-2024": {
+      "file": "data/strava-route-full-resolution-colfax-urban-10-2024.json",
+      "featureId": "strava-11449222885",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colfax-urban-10-2026": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-02.json",
+      "featureId": "strava-18545647595",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "colorado-triathlon-2023": {
+      "file": "data/strava-route-full-resolution-colderbolder-2023.json",
+      "featureId": "strava-10317055162",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "decalibron-2023": {
+      "file": "data/strava-route-full-resolution-decalibron-2023.json",
+      "featureId": "strava-9642214422",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "disney-princess-half-2018": {
+      "file": "data/strava-route-full-resolution-disney-princess-half-2018.json",
+      "featureId": "strava-4312794804",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "estes-park-half-2021": {
+      "file": "data/strava-route-full-resolution-estes-park-half-2021.json",
+      "featureId": "strava-5503854364",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "flying-pig-5k-2025": {
+      "file": "data/strava-route-full-resolution-flying-pig-2025.json",
+      "featureId": "strava-14364821809",
+      "format": "polyline",
+      "quality": "full-source",
+      "geometryClass": "mixed"
+    },
+    "flying-pig-marathon-2025": {
+      "file": "data/strava-route-full-resolution-flying-pig-2025.json",
+      "featureId": "strava-14377032125",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "free-state-tri-100-relay-2015": {
+      "file": "data/strava-route-full-resolution-free-state-tri-100-relay-2015.json",
+      "featureId": "strava-641965501",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "frisco-brewski-2024": {
+      "file": "data/strava-route-full-resolution-frisco-brewski-2024.json",
+      "featureId": "strava-10926255561",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "garmin-half-2014": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
+      "featureId": "strava-641968887",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "garmin-half-2016": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
+      "featureId": "strava-641962559",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "gobble-cobble-2019": {
+      "file": "data/strava-route-full-resolution-gobble-cobble-2019.json",
+      "featureId": "strava-4312787170",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "granby-ranch-skinning-2025": {
+      "file": "data/strava-route-full-resolution-granby-ranch-skinning-2025.json",
+      "featureId": "strava-13918978715",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "haleakala": {
+      "file": "data/strava-route-full-resolution-haleakala.json",
+      "featureId": "strava-4854788986",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "hawksbill-mountain": {
+      "file": "data/strava-route-full-resolution-hawksbill-mountain.json",
+      "featureId": "strava-4469336427",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "illinois-5k-2015": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
+      "featureId": "strava-641965799",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "illinois-5k-2016": {
+      "file": "data/strava-route-full-resolution-illinois-5k-2016.json",
+      "featureId": "strava-641962419",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "illinois-half-2016": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
+      "featureId": "strava-641962439",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "illinois-marathon-2015": {
+      "file": "data/strava-route-full-resolution-illinois-marathon-2015.json",
+      "featureId": "strava-641965920",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "kansas-city-marathon-2019": {
+      "file": "data/strava-route-full-resolution-kansas-city-marathon-2019.json",
+      "featureId": "strava-4312788772",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "kokopelli-three-day-2025": {
+      "file": "data/strava-route-full-resolution-mtb-2025-06-07.json",
+      "featureId": "activity-mtb-day-2025-06-07",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mauna-kea": {
+      "file": "data/strava-route-full-resolution-mauna-kea.json",
+      "featureId": "strava-6185031796",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "midland-hill": {
+      "file": "data/strava-route-reviewed-midland-hill.json",
+      "featureId": "strava-9635633600",
+      "format": "polyline",
+      "quality": "reviewed-source",
+      "geometryClass": "recorded-filtered"
+    },
+    "mile-high-turkey-trot-2021": {
+      "file": "data/strava-route-full-resolution-mile-high-turkey-trot-2021.json",
+      "featureId": "strava-6311007412",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mile-high-turkey-trot-2023": {
+      "file": "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
+      "featureId": "strava-10269813911-turkey-trot-segment",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mile-high-turkey-trot-2025": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-02.json",
+      "featureId": "strava-16584355003",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mount-bross": {
+      "file": "data/strava-route-full-resolution-decalibron-2023.json",
+      "featureId": "strava-9642214422",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mount-cameron": {
+      "file": "data/strava-route-full-resolution-decalibron-2023.json",
+      "featureId": "strava-9642214422",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mount-democrat": {
+      "file": "data/strava-route-full-resolution-decalibron-2023.json",
+      "featureId": "strava-9642214422",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mount-evans": {
+      "file": "data/strava-route-full-resolution-mount-evans-spalding.json",
+      "featureId": "strava-7560672014",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mount-jumullong-manglo": {
+      "file": "data/strava-route-full-resolution-mount-jumullong-manglo.json",
+      "featureId": "strava-7123707788",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mount-lamlam": {
+      "file": "data/strava-route-reviewed-mount-lamlam.json",
+      "featureId": "strava-8684346989",
+      "format": "polyline",
+      "quality": "reviewed-source",
+      "geometryClass": "recorded-filtered"
+    },
+    "mount-le-conte": {
+      "file": "data/strava-route-full-resolution-mount-le-conte.json",
+      "featureId": "strava-5309635526",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mount-lincoln": {
+      "file": "data/strava-route-full-resolution-decalibron-2023.json",
+      "featureId": "strava-9642214422",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mount-sherman": {
+      "file": "data/strava-route-full-resolution-mount-sherman.json",
+      "featureId": "strava-7866173318",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mount-spalding": {
+      "file": "data/strava-route-full-resolution-mount-evans-spalding.json",
+      "featureId": "strava-7560672014",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mount-wachusett": {
+      "file": "data/strava-route-full-resolution-mount-wachusett.json",
+      "featureId": "strava-4337907837",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2022-07-16": {
+      "file": "data/strava-route-full-resolution-mtb-day-2022-07-16.json",
+      "featureId": "activity-mtb-day-2022-07-16",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2023-09-24": {
+      "file": "data/strava-route-full-resolution-mtb-day-2023-09-24.json",
+      "featureId": "activity-mtb-day-2023-09-24",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2023-12-02": {
+      "file": "data/strava-route-full-resolution-mtb-day-2023-12-02.json",
+      "featureId": "activity-mtb-day-2023-12-02",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2024-07-27": {
+      "file": "data/strava-route-full-resolution-mtb-day-2024-07-27.json",
+      "featureId": "activity-mtb-day-2024-07-27",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2024-08-31": {
+      "file": "data/strava-route-full-resolution-mtb-day-2024-08-31.json",
+      "featureId": "activity-mtb-day-2024-08-31",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2025-06-05": {
+      "file": "data/strava-route-full-resolution-mtb-2025-06-05.json",
+      "featureId": "activity-mtb-day-2025-06-05",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2025-06-06": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-full-resolution-mtb-2025-06-06.json",
+      "featureId": "activity-mtb-day-2025-06-06",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2025-06-07": {
+      "file": "data/strava-route-full-resolution-mtb-2025-06-07.json",
+      "featureId": "activity-mtb-day-2025-06-07",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2025-07-11": {
+      "file": "data/strava-route-full-resolution-mtb-day-2025-07-11.json",
+      "featureId": "activity-mtb-day-2025-07-11",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2025-09-28": {
+      "file": "data/strava-route-full-resolution-mtb-day-2025-09-28.json",
+      "featureId": "activity-mtb-day-2025-09-28",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2025-10-05": {
+      "file": "data/strava-route-full-resolution-mtb-day-2025-10-05.json",
+      "featureId": "activity-mtb-day-2025-10-05",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2026-05-24": {
+      "file": "data/strava-route-full-resolution-mtb-day-2026-05-24.json",
+      "featureId": "activity-mtb-day-2026-05-24",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "mtb-day-2026-08-05": {
+      "file": "data/strava-route-full-resolution-mtb-day-2026-08-05.json",
+      "featureId": "activity-mtb-day-2026-08-05",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "new-york-city-marathon-2026": {
+      "file": "data/new-york-city-marathon-2026-course.geojson",
+      "featureId": "new-york-city-marathon-2026-official-course",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "nordic-day-2021-01-16": {
+      "file": "data/strava-route-full-resolution-nordic-day-2021-01-16.json",
+      "featureId": "activity-nordic-day-2021-01-16",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2022-01-02": {
+      "file": "data/strava-route-full-resolution-nordic-2022-01-02.json",
+      "featureId": "activity-nordic-day-2022-01-02",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2022-01-03": {
+      "file": "data/strava-route-full-resolution-nordic-2022-01-03.json",
+      "featureId": "activity-nordic-day-2022-01-03",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2022-01-22": {
+      "file": "data/strava-route-full-resolution-nordic-day-2022-01-22.json",
+      "featureId": "activity-nordic-day-2022-01-22",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2022-02-03": {
+      "file": "data/strava-route-full-resolution-nordic-day-2022-02-03.json",
+      "featureId": "activity-nordic-day-2022-02-03",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2022-02-05": {
+      "file": "data/strava-route-full-resolution-nordic-day-2022-02-05.json",
+      "featureId": "activity-nordic-day-2022-02-05",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2022-02-13": {
+      "file": "data/strava-route-full-resolution-nordic-day-2022-02-13.json",
+      "featureId": "activity-nordic-day-2022-02-13",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2022-02-16": {
+      "file": "data/strava-route-full-resolution-nordic-day-2022-02-16.json",
+      "featureId": "activity-nordic-day-2022-02-16",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2022-02-19": {
+      "file": "data/strava-route-full-resolution-nordic-day-2022-02-19.json",
+      "featureId": "activity-nordic-day-2022-02-19",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2023-01-08": {
+      "file": "data/strava-route-full-resolution-breckenridge-nordic-2023-01-08.json",
+      "featureId": "activity-nordic-day-2023-01-08",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2023-01-11": {
+      "file": "data/strava-route-full-resolution-breckenridge-nordic-2023-01-11.json",
+      "featureId": "activity-nordic-day-2023-01-11",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2023-01-21": {
+      "file": "data/strava-route-full-resolution-breckenridge-nordic-2023-01-21.json",
+      "featureId": "activity-nordic-day-2023-01-21",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2023-01-28": {
+      "file": "data/strava-route-full-resolution-frisco-nordic-2023-01-28.json",
+      "featureId": "activity-nordic-day-2023-01-28",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2023-03-01": {
+      "file": "data/strava-route-full-resolution-nordic-day-2023-03-01.json",
+      "featureId": "activity-nordic-day-2023-03-01",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2024-01-07": {
+      "file": "data/strava-route-full-resolution-nordic-day-2024-01-07.json",
+      "featureId": "activity-nordic-day-2024-01-07",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2025-03-19": {
+      "file": "data/strava-route-full-resolution-nordic-day-2025-03-19.json",
+      "featureId": "activity-nordic-day-2025-03-19",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2025-03-27": {
+      "file": "data/strava-route-full-resolution-nordic-day-2025-03-27.json",
+      "featureId": "activity-nordic-day-2025-03-27",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2025-03-30": {
+      "file": "data/strava-route-full-resolution-nordic-day-2025-03-30.json",
+      "featureId": "activity-nordic-day-2025-03-30",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "nordic-day-2025-04-01": {
+      "file": "data/strava-route-full-resolution-nordic-day-2025-04-01.json",
+      "featureId": "activity-nordic-day-2025-04-01",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "north-star-mountain": {
+      "file": "data/strava-route-full-resolution-north-star-mountain.json",
+      "featureId": "strava-4312782595",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "old-rag-mountain": {
+      "file": "data/strava-route-full-resolution-old-rag-mountain.json",
+      "featureId": "strava-4312103411",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "pi-day-half-2015": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
+      "featureId": "strava-641966412",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "pi-miler-2015": {
+      "file": "data/strava-route-full-resolution-pi-miler-2015.json",
+      "featureId": "strava-641966398",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "polar-bear-5k-2022": {
+      "file": "data/strava-route-full-resolution-polar-bear-5k-2022.json",
+      "featureId": "strava-6535048864",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "rebel-run-5k-2015": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-02.json",
+      "featureId": "strava-641966162",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "rippetoe-rucksack-2025": {
+      "file": "data/strava-route-full-resolution-rippetoe-rucksack-2025.json",
+      "featureId": "strava-16395842302",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "river-to-river-relay-2006": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "river-to-river-relay-historical-course",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "river-to-river-relay-2008": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "river-to-river-relay-historical-course",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "river-to-river-relay-2010": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "river-to-river-relay-historical-course",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "rock-parkway-half-2016": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
+      "featureId": "strava-641962666",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "rocky-mountain-5k-2025": {
+      "file": "data/strava-route-full-resolution-rocky-mountain-5k-2025.json",
+      "featureId": "strava-15313567459",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "rocky-mountain-half-2025": {
+      "file": "data/strava-route-full-resolution-rocky-mountain-half-2025.json",
+      "featureId": "strava-15319820628",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "royal-gorge-groove-5k-2024": {
+      "file": "data/strava-route-full-resolution-royal-gorge-groove-5k-2024.json",
+      "featureId": "strava-11224486648",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "royal-gorge-groove-mtb-2024": {
+      "file": "data/strava-route-full-resolution-royal-gorge-groove-mtb-2024.json",
+      "featureId": "strava-11234156794",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "rudolph-ramble-5k-2021": {
+      "file": "data/strava-route-full-resolution-rudolph-ramble-5k-2021.json",
+      "featureId": "strava-6347969246",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "run-snetterton-10k-2026": {
+      "file": "data/strava-route-full-resolution-run-snetterton-10k-2026.json",
+      "featureId": "strava-19519345106",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "running-with-cows-half-2016": {
+      "file": "data/route-detail-browser-polylines.json",
+      "sourceFile": "data/strava-route-source-complete-01.json",
+      "featureId": "strava-641962333",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "san-gabriel-peak": {
+      "file": "data/strava-route-reviewed-san-gabriel-peak.json",
+      "featureId": "strava-9552205777",
+      "format": "polyline",
+      "quality": "full-source",
+      "geometryClass": "mixed"
+    },
+    "shamrock-shuffle-10k-2015": {
+      "file": "data/strava-route-full-resolution-shamrock-shuffle-10k-2015.json",
+      "featureId": "strava-641966512",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "ski-colorado-triathlon-leg": {
+      "file": "data/strava-route-full-resolution-colorado-triathlon-ski-2023.json",
+      "featureId": "strava-10318237034",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "ski-the-sky-loop-2026": {
+      "file": "data/strava-route-full-resolution-ski-the-sky-loop-2026.json",
+      "featureId": "strava-17688751938",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "smr-stampede-ranch-hand-classic-2022": {
+      "file": "data/strava-route-full-resolution-ranch-hand-classic-2022.json",
+      "featureId": "strava-6819611723",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "smr-stampede-ranch-hand-skate-2022": {
+      "file": "data/strava-route-full-resolution-ranch-hand-skate-2022.json",
+      "featureId": "strava-6814188054",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "snowman-shuffle-2006": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "snowman-shuffle-jalc-course-proxy",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "snowman-shuffle-2007": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "snowman-shuffle-jalc-course-proxy",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "snowman-shuffle-2008": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "snowman-shuffle-jalc-course-proxy",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "snowman-shuffle-2009": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "snowman-shuffle-jalc-course-proxy",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "snowman-shuffle-2021-virtual": {
+      "file": "data/strava-route-full-resolution-snowman-shuffle-2021-virtual.json",
+      "featureId": "strava-4676340941",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "snowman-shuffle-series": {
+      "file": "data/historical-routes-v2.geojson",
+      "featureId": "snowman-shuffle-jalc-course-proxy",
+      "format": "geojson",
+      "quality": "catalog-detail"
+    },
+    "springfield-turkey-trot-2024": {
+      "file": "data/strava-route-full-resolution-mile-high-turkey-trot-2023.json",
+      "featureId": "strava-13002340446",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "st-louis-turkey-trot-8k-2018": {
+      "file": "data/strava-route-full-resolution-st-louis-turkey-trot-8k-2018.json",
+      "featureId": "strava-4312791961",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "stagecoach-classic-15k-2024": {
+      "file": "data/strava-route-full-resolution-stagecoach-classic-15k-2024.json",
+      "featureId": "strava-10596610840",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "staunton-rocks-half-2022": {
+      "file": "data/strava-route-full-resolution-staunton-rocks-half-2022.json",
+      "featureId": "strava-7711293400",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "super-bowl-5k-2022": {
+      "file": "data/strava-route-full-resolution-super-bowl-5k-2022.json",
+      "featureId": "strava-6674072473",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "tennessee-pass-nordic-weekend-2022": {
+      "file": "data/strava-route-full-resolution-nordic-2022-01-02.json",
+      "featureId": "activity-nordic-day-2022-01-02",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "that-dam-run-10k-2022": {
+      "file": "data/strava-route-full-resolution-that-dam-run-10k-2022.json",
+      "featureId": "strava-6872397933",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "twin-cities-marathon-2015": {
+      "file": "data/strava-route-full-resolution-twin-cities-2015.json",
+      "featureId": "strava-641964287",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "ugly-sweater-run-2012": {
+      "file": "data/event-routes.geojson",
+      "featureId": "strava-643102245",
+      "format": "geojson",
+      "quality": "full-source"
+    },
+    "universal-sole-virtual-5k-2020": {
+      "file": "data/strava-route-full-resolution-universal-sole-virtual-5k-2020.json",
+      "featureId": "strava-4312783900",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "valentines-day-4m-2022": {
+      "file": "data/strava-route-full-resolution-valentines-day-4m-2022.json",
+      "featureId": "strava-6713570022",
+      "format": "polyline",
+      "quality": "full-source"
+    },
+    "west-maroon-pass-2026": {
+      "file": "data/strava-route-full-resolution-west-maroon-pass-2026.json",
+      "featureId": "strava-19122155622",
+      "format": "polyline",
+      "quality": "full-source"
+    }
+  }
+}
