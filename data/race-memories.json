@@ -204,7 +204,7 @@
       },
       "memoryTitle": "What I remember",
       "memory": [
-        "I remember driving out to Ca\u00f1on City with Olive while it was pouring rain and checking into a terrible hotel. A new Taylor Swift album had just come out, and Olive and I listened to it like white noise so she would not bark every time somebody walked down the hallway.",
+        "I remember driving out to Cañon City with Olive while it was pouring rain and checking into a terrible hotel. A new Taylor Swift album had just come out, and Olive and I listened to it like white noise so she would not bark every time somebody walked down the hallway.",
         "The next day, the 5K itself was the complete opposite of the hotel experience. The trail course was beautiful, and I had a really good time running it.",
         "It was also only the first half of the weekend. The plan was to come back the next day and race the mountain bike course on the same Royal Gorge trail system."
       ],
@@ -286,7 +286,7 @@
       "headline": "The hilly marathon where I hurt my Achilles and still finished.",
       "milestone": {
         "label": "Turning point",
-        "value": "Mile 18\u201319",
+        "value": "Mile 18–19",
         "note": "The pace slowed and never came back"
       },
       "memoryTitle": "What I remember",
@@ -386,6 +386,19 @@
           "caption": "Olive cooling off after the 2026 Colfax 5K."
         }
       ]
+    },
+    "new-york-city-marathon-2026": {
+      "headline": "Five boroughs. My second World Marathon Major.",
+      "memoryTitle": "New York, completed",
+      "memory": [
+        "I finished the 2026 TCS New York City Marathon on November 1 in 4:18:33, averaging 9:52 per mile. My first half was 1:56:14 and my second half was 2:22:19.",
+        "I started in pink and crossed all five boroughs to finish in Central Park. New York joins Chicago in my World Marathon Majors passport. Tokyo is next in 2027."
+      ],
+      "milestone": {
+        "label": "World Marathon Majors",
+        "value": "2 completed",
+        "note": "Chicago · New York"
+      }
     }
   }
 }

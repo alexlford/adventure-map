@@ -19,16 +19,19 @@
       "officialDistanceMi": 26.2,
       "location": "New York City, New York — five boroughs",
       "region": "New York",
-      "lat": 40.7128,
-      "lon": -74.006,
-      "coordinatePrecision": "city",
+      "lat": 40.60227,
+      "lon": -74.05858,
+      "coordinatePrecision": "event-area",
       "participationMode": "in-person",
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "historical-course",
       "matchSource": "User-confirmed completion on November 2, 2026 + NYRR official 2026 race schedule",
       "matchConfidence": "confirmed",
       "sourceUrl": "https://prod.nyrr.org/races-and-events/2026/2026-tcs-new-york-city-marathon",
-      "routeSourceUrl": "https://prod.nyrr.org/tcsnycmarathon/the-course",
-      "note": "Alex completed the November 1, 2026 TCS New York City Marathon, a 26.2-mile race through all five New York City boroughs. His second completed Abbott World Marathon Major, following Chicago in 2021. Individual official time and split data are not yet linked; no personal GPS route is asserted."
+      "routeSourceUrl": "https://www.google.com/maps/d/embed?mid=1pHIR8TGIl2liF3A2oR52Z1RPPi_una0",
+      "note": "Completed November 1, 2026 in 4:18:33 (9:52/mi), bib 32422; second completed World Marathon Major after Chicago in 2021. Route reconstructed from NYRR’s official 2026 pink-start course and checkpoint locations, including the revised Bronx section, with all 34 screenshot timing checkpoints. Alex confirmed his pink start. This is an organizer-course reconstruction, not personal GPS. Timing between checkpoints is interpolated; screenshot wall-clock times are precise only to the minute.",
+      "routeFeatureIds": [
+        "new-york-city-marathon-2026-official-course"
+      ]
     },
     {
       "id": "air-force-5k-2026",
@@ -71,7 +74,9 @@
       "lon": -84.10895,
       "coordinatePrecision": "venue",
       "participationMode": "in-person",
-      "routeFeatureIds": ["air-force-marathon-2026-official-course"],
+      "routeFeatureIds": [
+        "air-force-marathon-2026-official-course"
+      ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + 2026 Air Force Marathon official course map and turn-by-turn directions",
       "matchConfidence": "confirmed",
@@ -96,7 +101,9 @@
       "lon": -89.08914,
       "coordinatePrecision": "venue",
       "participationMode": "in-person",
-      "routeFeatureIds": ["snowman-shuffle-jalc-course-proxy"],
+      "routeFeatureIds": [
+        "snowman-shuffle-jalc-course-proxy"
+      ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2006 event calendar",
       "matchConfidence": "confirmed",
@@ -121,7 +128,9 @@
       "lon": -89.08914,
       "coordinatePrecision": "venue",
       "participationMode": "in-person",
-      "routeFeatureIds": ["snowman-shuffle-jalc-course-proxy"],
+      "routeFeatureIds": [
+        "snowman-shuffle-jalc-course-proxy"
+      ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2007 event calendar",
       "matchConfidence": "confirmed",
@@ -146,7 +155,9 @@
       "lon": -89.08914,
       "coordinatePrecision": "venue",
       "participationMode": "in-person",
-      "routeFeatureIds": ["snowman-shuffle-jalc-course-proxy"],
+      "routeFeatureIds": [
+        "snowman-shuffle-jalc-course-proxy"
+      ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2008 event calendar",
       "matchConfidence": "confirmed",
@@ -171,7 +182,9 @@
       "lon": -89.08914,
       "coordinatePrecision": "venue",
       "participationMode": "in-person",
-      "routeFeatureIds": ["snowman-shuffle-jalc-course-proxy"],
+      "routeFeatureIds": [
+        "snowman-shuffle-jalc-course-proxy"
+      ],
       "routeStatus": "historical-course",
       "matchSource": "User confirmation + River to River Runners 2009 event calendar",
       "matchConfidence": "confirmed",
@@ -329,7 +342,9 @@
       "stravaElapsedSeconds": 1981,
       "stravaMovingSeconds": 1969,
       "elevationGainM": 20.0,
-      "routeFeatureIds": ["strava-14509902400"],
+      "routeFeatureIds": [
+        "strava-14509902400"
+      ],
       "routeStatus": "gps-source-available",
       "matchSource": "User confirmation + exact-date 5.12 km Strava GPS + Denver Colfax 5K schedule and City Park start",
       "matchConfidence": "confirmed",
