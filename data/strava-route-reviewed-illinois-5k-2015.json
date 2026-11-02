@@ -17,7 +17,7 @@
       "sourcePointCount": 162,
       "retainedPointCount": 162,
       "sampling": "full-source-track-gap-split-180m",
-      "geometryClass": "recorded-partial",
+      "geometryClass": "recorded-clean",
       "publicationSelected": true,
       "geometryNote": "Original 2015 Strava GPS preserves the final 1.82 km (162 points). The opening ~3.18 km was not recorded and is intentionally not drawn; the 2016 course is not an accurate substitute because its direction differs at the observed 2015 segment. 2015 course map unavailable. Route is incomplete, not a full 5K reconstruction.",
       "lines": [
