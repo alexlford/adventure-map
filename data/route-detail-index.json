@@ -115,7 +115,8 @@
       "sourceFile": "data/strava-route-source-complete-02.json",
       "featureId": "strava-4312788726",
       "format": "polyline",
-      "quality": "full-source"
+      "quality": "full-source",
+      "geometryClass": "mixed"
     },
     "chicago-marathon-2021": {
       "file": "data/strava-route-full-resolution-chicago-marathon-2021.json",
