@@ -220,7 +220,8 @@
       "file": "data/strava-route-full-resolution-disney-princess-half-2018.json",
       "featureId": "strava-4312794804",
       "format": "polyline",
-      "quality": "full-source"
+      "quality": "full-source",
+      "geometryClass": "mixed"
     },
     "estes-park-half-2021": {
       "file": "data/strava-route-full-resolution-estes-park-half-2021.json",
