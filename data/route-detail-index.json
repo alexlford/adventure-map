@@ -296,7 +296,7 @@
       "featureId": "strava-641965799",
       "format": "polyline",
       "quality": "full-source",
-      "geometryClass": "recorded-partial"
+      "geometryClass": "recorded-clean"
     },
     "illinois-5k-2016": {
       "file": "data/strava-route-full-resolution-illinois-5k-2016.json",
