@@ -5,7 +5,7 @@
   "routeCatalogUpdatedOn": "2026-11-02",
   "recordCount": 143,
   "featureCount": 129,
-  "browserMaterializedFeatureCount": 12,
+  "browserMaterializedFeatureCount": 11,
   "records": {
     "abbott-chicago-5k-2021": {
       "file": "data/strava-route-full-resolution-abbott-chicago-5k-2021.json",
@@ -292,11 +292,11 @@
       "quality": "full-source"
     },
     "illinois-5k-2015": {
-      "file": "data/route-detail-browser-polylines.json",
-      "sourceFile": "data/strava-route-source-complete-01.json",
+      "file": "data/strava-route-reviewed-illinois-5k-2015.json",
       "featureId": "strava-641965799",
       "format": "polyline",
-      "quality": "full-source"
+      "quality": "full-source",
+      "geometryClass": "recorded-partial"
     },
     "illinois-5k-2016": {
       "file": "data/strava-route-full-resolution-illinois-5k-2016.json",
