@@ -1,0 +1,1998 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "new-york-city-marathon-2026-official-course",
+        "adventureIds": [
+          "new-york-city-marathon-2026"
+        ],
+        "category": "marathon",
+        "source": "NYRR official 2026 interactive Google My Maps course and mile/kilometer markers + Alex’s NYRR tracking screenshots",
+        "sourceUrl": "https://www.google.com/maps/d/embed?mid=1pHIR8TGIl2liF3A2oR52Z1RPPi_una0",
+        "courseMapUrl": "https://cms.prod.nyrr.org/api/document-files/file/TCSNYCM26_Map_Course_090226_RD3.pdf",
+        "sourceFile": "data/sources/new-york-city-marathon-2026-official.kml",
+        "sourceSha256": "65c88695ab9de980faed2ddcc8b51d48c1680265f5ae485224c2ff9589104742",
+        "distanceMi": 26.2,
+        "officialDistanceKm": 42.195,
+        "geometryDistanceKm": 42.323,
+        "routeType": "official-course-map-reconstruction",
+        "provenance": "historical-course",
+        "startAlignment": "Pink start confirmed by Alex; official pink branch joins the shared blue/pink course in Brooklyn.",
+        "note": "Official 2026 course including the East 141st Street Bronx adjustment. Not personal GPS. Pink start confirmed by Alex; official pink branch used through the Brooklyn merge. Official distance remains 42.195 km regardless of generalized map length. Checkpoint cumulative times and paces are transcribed exactly; elapsed times between checkpoints are interpolated along organizer geometry. No exact wall-clock seconds are inferred.",
+        "checkpointTimingSource": "data/new-york-city-marathon-2026-official.json",
+        "checkpointCount": 34,
+        "timingModel": "Piecewise linear elapsed time along official course, anchored at projected NYRR checkpoint markers.",
+        "elapsedSeconds": [
+          0.0,
+          1.678,
+          18.665,
+          118.147,
+          218.231,
+          526.856,
+          681.253,
+          757.862,
+          832.565,
+          842.366,
+          851.888,
+          862.505,
+          872.792,
+          943.501,
+          960.698,
+          977.507,
+          995.231,
+          1011.395,
+          1038.953,
+          1059.706,
+          1065.163,
+          1082.164,
+          1098.567,
+          1140.534,
+          1181.908,
+          1220.598,
+          1254.99,
+          1275.924,
+          1294.883,
+          1321.382,
+          1339.81,
+          1358.034,
+          1401.143,
+          1412.594,
+          1424.477,
+          1455.704,
+          1466.498,
+          1489.137,
+          1502.288,
+          1544.533,
+          1576.715,
+          1592.044,
+          1599.818,
+          1606.613,
+          1662.0,
+          1663.228,
+          1685.924,
+          1718.0,
+          1763.134,
+          1844.154,
+          1844.224,
+          2063.298,
+          2184.0,
+          2694.0,
+          3216.0,
+          3330.0,
+          3372.844,
+          3735.0,
+          3817.897,
+          4100.034,
+          4170.12,
+          4240.778,
+          4242.927,
+          4259.0,
+          4786.0,
+          4906.88,
+          4908.395,
+          4951.0,
+          5305.0,
+          5313.473,
+          5319.506,
+          5614.067,
+          5619.183,
+          5624.725,
+          5631.244,
+          5741.171,
+          5835.0,
+          5900.071,
+          5905.781,
+          6323.102,
+          6328.073,
+          6347.988,
+          6349.464,
+          6363.0,
+          6548.013,
+          6592.0,
+          6599.813,
+          6601.487,
+          6673.97,
+          6675.589,
+          6727.788,
+          6825.561,
+          6864.204,
+          6913.089,
+          6960.135,
+          6967.222,
+          6974.0,
+          6977.787,
+          7151.809,
+          7180.457,
+          7182.284,
+          7183.529,
+          7246.332,
+          7247.97,
+          7406.215,
+          7416.725,
+          7433.291,
+          7435.343,
+          7459.0,
+          7576.789,
+          7688.994,
+          7696.725,
+          7709.937,
+          7728.092,
+          7863.562,
+          7866.729,
+          7871.506,
+          7877.54,
+          7884.543,
+          7904.234,
+          8083.0,
+          8395.66,
+          8451.0,
+          8579.724,
+          8693.005,
+          8695.0,
+          8695.98,
+          8698.225,
+          8701.63,
+          8703.638,
+          8706.38,
+          8708.71,
+          8742.098,
+          8743.653,
+          9266.0,
+          9849.0,
+          10248.0,
+          10488.275,
+          10505.0,
+          10813.46,
+          10826.459,
+          10838.709,
+          10853.129,
+          11029.86,
+          11041.157,
+          11057.615,
+          11145.348,
+          11148.292,
+          11149.908,
+          11202.0,
+          11233.988,
+          11235.845,
+          11431.554,
+          11432.731,
+          11434.228,
+          11464.09,
+          11465.711,
+          11568.651,
+          11605.685,
+          11724.165,
+          11792.472,
+          11795.705,
+          11799.725,
+          11879.0,
+          11885.813,
+          11888.934,
+          11936.573,
+          11939.014,
+          12368.0,
+          12398.012,
+          12399.76,
+          12401.345,
+          12452.093,
+          12457.076,
+          12458.032,
+          12459.829,
+          12461.831,
+          12464.513,
+          12533.0,
+          12582.189,
+          12585.584,
+          12588.285,
+          12590.277,
+          12593.4,
+          12600.898,
+          12645.191,
+          12648.124,
+          13223.0,
+          13714.739,
+          13726.685,
+          13730.245,
+          13872.011,
+          13878.368,
+          13891.266,
+          13905.803,
+          13951.973,
+          13959.822,
+          13969.353,
+          13974.0,
+          13984.955,
+          13996.326,
+          14012.495,
+          14087.2,
+          14097.604,
+          14151.595,
+          14158.949,
+          14171.009,
+          14211.699,
+          14275.661,
+          14305.691,
+          14308.906,
+          14316.301,
+          14349.85,
+          14359.389,
+          14372.797,
+          14388.601,
+          14402.794,
+          14411.722,
+          14427.916,
+          14460.8,
+          14467.992,
+          14483.272,
+          14509.915,
+          14522.229,
+          14536.729,
+          14571.303,
+          14583.0,
+          14584.836,
+          14593.451,
+          14638.669,
+          14648.987,
+          14683.393,
+          14687.0,
+          14691.573,
+          14699.782,
+          14710.909,
+          14723.046,
+          14742.682,
+          14779.55,
+          14795.271,
+          14855.301,
+          14863.155,
+          14876.5,
+          14934.684,
+          14936.781,
+          14939.304,
+          15253.152,
+          15255.625,
+          15258.966,
+          15272.741,
+          15321.534,
+          15327.917,
+          15354.153,
+          15368.504,
+          15389.0,
+          15393.066,
+          15417.539,
+          15436.877,
+          15479.295,
+          15484.087,
+          15498.521,
+          15506.064,
+          15513.0
+        ],
+        "checkpoints": [
+          {
+            "label": "Start",
+            "time": "00:00:00",
+            "timeOfDay": "10:21 am",
+            "distanceKm": 0,
+            "distanceMi": 0.0,
+            "elapsedSeconds": 0,
+            "lat": 40.60227,
+            "lon": -74.05858,
+            "courseMarker": "PINK START",
+            "projectedCoordinates": [
+              -74.0585778,
+              40.6022637
+            ],
+            "markerOffsetMeters": 0.7,
+            "courseDistanceMeters": 0.0
+          },
+          {
+            "label": "3 mi",
+            "time": "00:27:42",
+            "timeOfDay": "10:49 am",
+            "distanceKm": 4.828032,
+            "distanceMi": 3.0,
+            "elapsedSeconds": 1662,
+            "lat": 40.62875,
+            "lon": -74.019917,
+            "courseMarker": "Mile 3 (PINK)",
+            "pace": "09:14/mi",
+            "segmentTime": "00:27:42",
+            "projectedCoordinates": [
+              -74.0199001,
+              40.6287663
+            ],
+            "markerOffsetMeters": 2.3,
+            "courseDistanceMeters": 4828.7
+          },
+          {
+            "label": "5K",
+            "time": "00:28:38",
+            "timeOfDay": "10:50 am",
+            "distanceKm": 5,
+            "distanceMi": 3.106856,
+            "elapsedSeconds": 1718,
+            "lat": 40.628778,
+            "lon": -74.021306,
+            "courseMarker": "5K (PINK)",
+            "pace": "08:43/mi",
+            "segmentTime": "00:00:56",
+            "projectedCoordinates": [
+              -74.0213215,
+              40.6287627
+            ],
+            "markerOffsetMeters": 2.1,
+            "courseDistanceMeters": 5014.5
+          },
+          {
+            "label": "4 mi",
+            "time": "00:36:24",
+            "timeOfDay": "10:58 am",
+            "distanceKm": 6.437376,
+            "distanceMi": 4.0,
+            "elapsedSeconds": 2184,
+            "lat": 40.639389,
+            "lon": -74.019833,
+            "courseMarker": "Mile 4 (BLUE/PINK)",
+            "pace": "08:42/mi",
+            "segmentTime": "00:07:46",
+            "projectedCoordinates": [
+              -74.0198375,
+              40.6393917
+            ],
+            "markerOffsetMeters": 0.5,
+            "courseDistanceMeters": 6454.5
+          },
+          {
+            "label": "5 mi",
+            "time": "00:44:54",
+            "timeOfDay": "11:06 am",
+            "distanceKm": 8.04672,
+            "distanceMi": 5.0,
+            "elapsedSeconds": 2694,
+            "lat": 40.650778,
+            "lon": -74.008,
+            "courseMarker": "Mile 5 (BLUE/PINK)",
+            "pace": "08:30/mi",
+            "segmentTime": "00:08:30",
+            "projectedCoordinates": [
+              -74.0080071,
+              40.6507822
+            ],
+            "markerOffsetMeters": 0.8,
+            "courseDistanceMeters": 8067.1
+          },
+          {
+            "label": "6 mi",
+            "time": "00:53:36",
+            "timeOfDay": "11:15 am",
+            "distanceKm": 9.656064,
+            "distanceMi": 6.0,
+            "elapsedSeconds": 3216,
+            "lat": 40.662111,
+            "lon": -73.996139,
+            "courseMarker": "Mile 6 (BLUE/PINK)",
+            "pace": "08:43/mi",
+            "segmentTime": "00:08:42",
+            "projectedCoordinates": [
+              -73.9962018,
+              40.6621486
+            ],
+            "markerOffsetMeters": 6.7,
+            "courseDistanceMeters": 9676.2
+          },
+          {
+            "label": "10K",
+            "time": "00:55:30",
+            "timeOfDay": "11:17 am",
+            "distanceKm": 10,
+            "distanceMi": 6.213712,
+            "elapsedSeconds": 3330,
+            "lat": 40.66455,
+            "lon": -73.99363,
+            "courseMarker": "10K (BLUE/PINK)",
+            "pace": "08:54/mi",
+            "segmentTime": "00:01:54",
+            "projectedCoordinates": [
+              -73.9936779,
+              40.6645786
+            ],
+            "markerOffsetMeters": 5.1,
+            "courseDistanceMeters": 10020.2
+          },
+          {
+            "label": "7 mi",
+            "time": "01:02:15",
+            "timeOfDay": "11:23 am",
+            "distanceKm": 11.265408,
+            "distanceMi": 7.0,
+            "elapsedSeconds": 3735,
+            "lat": 40.674111,
+            "lon": -73.985472,
+            "courseMarker": "Mile 7 (BLUE/PINK)",
+            "pace": "08:35/mi",
+            "segmentTime": "00:06:45",
+            "projectedCoordinates": [
+              -73.9855311,
+              40.6741393
+            ],
+            "markerOffsetMeters": 5.9,
+            "courseDistanceMeters": 11286.7
+          },
+          {
+            "label": "8 mi",
+            "time": "01:10:59",
+            "timeOfDay": "11:32 am",
+            "distanceKm": 12.874752,
+            "distanceMi": 8.0,
+            "elapsedSeconds": 4259,
+            "lat": 40.68675,
+            "lon": -73.978583,
+            "courseMarker": "Mile 8 (ALL COURSES)",
+            "pace": "08:45/mi",
+            "segmentTime": "00:08:44",
+            "projectedCoordinates": [
+              -73.9785866,
+              40.6867682
+            ],
+            "markerOffsetMeters": 2.0,
+            "courseDistanceMeters": 12908.6
+          },
+          {
+            "label": "9 mi",
+            "time": "01:19:46",
+            "timeOfDay": "11:41 am",
+            "distanceKm": 14.484096,
+            "distanceMi": 9.0,
+            "elapsedSeconds": 4786,
+            "lat": 40.688889,
+            "lon": -73.959722,
+            "courseMarker": "Mile 9",
+            "pace": "08:48/mi",
+            "segmentTime": "00:08:47",
+            "projectedCoordinates": [
+              -73.959732,
+              40.688939
+            ],
+            "markerOffsetMeters": 5.6,
+            "courseDistanceMeters": 14516.5
+          },
+          {
+            "label": "15K",
+            "time": "01:22:31",
+            "timeOfDay": "11:44 am",
+            "distanceKm": 15,
+            "distanceMi": 9.320568,
+            "elapsedSeconds": 4951,
+            "lat": 40.690694,
+            "lon": -73.955444,
+            "courseMarker": "15K",
+            "pace": "08:34/mi",
+            "segmentTime": "00:02:45",
+            "projectedCoordinates": [
+              -73.9554269,
+              40.690696
+            ],
+            "markerOffsetMeters": 1.5,
+            "courseDistanceMeters": 15041.3
+          },
+          {
+            "label": "10 mi",
+            "time": "01:28:25",
+            "timeOfDay": "11:50 am",
+            "distanceKm": 16.09344,
+            "distanceMi": 10.0,
+            "elapsedSeconds": 5305,
+            "lat": 40.700472,
+            "lon": -73.957389,
+            "courseMarker": "Mile 10",
+            "pace": "08:41/mi",
+            "segmentTime": "00:05:54",
+            "projectedCoordinates": [
+              -73.9573732,
+              40.7004738
+            ],
+            "markerOffsetMeters": 1.3,
+            "courseDistanceMeters": 16140.9
+          },
+          {
+            "label": "11 mi",
+            "time": "01:37:15",
+            "timeOfDay": "11:58 am",
+            "distanceKm": 17.702784,
+            "distanceMi": 11.0,
+            "elapsedSeconds": 5835,
+            "lat": 40.712833,
+            "lon": -73.962333,
+            "courseMarker": "Mile 11",
+            "pace": "08:50/mi",
+            "segmentTime": "00:08:50",
+            "projectedCoordinates": [
+              -73.9623352,
+              40.7128338
+            ],
+            "markerOffsetMeters": 0.2,
+            "courseDistanceMeters": 17760.1
+          },
+          {
+            "label": "12 mi",
+            "time": "01:46:03",
+            "timeOfDay": "12:07 pm",
+            "distanceKm": 19.312128,
+            "distanceMi": 12.0,
+            "elapsedSeconds": 6363,
+            "lat": 40.724167,
+            "lon": -73.951083,
+            "courseMarker": "Mile 12",
+            "pace": "08:49/mi",
+            "segmentTime": "00:08:48",
+            "projectedCoordinates": [
+              -73.9510793,
+              40.7241682
+            ],
+            "markerOffsetMeters": 0.3,
+            "courseDistanceMeters": 19369.3
+          },
+          {
+            "label": "20K",
+            "time": "01:49:52",
+            "timeOfDay": "12:11 pm",
+            "distanceKm": 20,
+            "distanceMi": 12.427424,
+            "elapsedSeconds": 6592,
+            "lat": 40.729944,
+            "lon": -73.954111,
+            "courseMarker": "20K",
+            "pace": "08:57/mi",
+            "segmentTime": "00:03:49",
+            "projectedCoordinates": [
+              -73.9541148,
+              40.7299431
+            ],
+            "markerOffsetMeters": 0.3,
+            "courseDistanceMeters": 20061.0
+          },
+          {
+            "label": "Half",
+            "time": "01:56:14",
+            "timeOfDay": "12:17 pm",
+            "distanceKm": 21.0975,
+            "distanceMi": 13.109379,
+            "elapsedSeconds": 6974,
+            "lat": 40.738222,
+            "lon": -73.953028,
+            "courseMarker": "HALF MARATHON (21.0975K)",
+            "pace": "09:20/mi",
+            "segmentTime": "00:06:22",
+            "projectedCoordinates": [
+              -73.9529809,
+              40.7382149
+            ],
+            "markerOffsetMeters": 4.0,
+            "courseDistanceMeters": 21165.7
+          },
+          {
+            "label": "14 mi",
+            "time": "02:04:19",
+            "timeOfDay": "12:25 pm",
+            "distanceKm": 22.530816,
+            "distanceMi": 14.0,
+            "elapsedSeconds": 7459,
+            "lat": 40.748694,
+            "lon": -73.950806,
+            "courseMarker": "Mile 14",
+            "pace": "09:05/mi",
+            "segmentTime": "00:08:05",
+            "projectedCoordinates": [
+              -73.9507972,
+              40.7487238
+            ],
+            "markerOffsetMeters": 3.4,
+            "courseDistanceMeters": 22603.8
+          },
+          {
+            "label": "15 mi",
+            "time": "02:14:43",
+            "timeOfDay": "12:36 pm",
+            "distanceKm": 24.14016,
+            "distanceMi": 15.0,
+            "elapsedSeconds": 8083,
+            "lat": 40.753222,
+            "lon": -73.946278,
+            "courseMarker": "Mile 15",
+            "pace": "10:24/mi",
+            "segmentTime": "00:10:24",
+            "projectedCoordinates": [
+              -73.9462469,
+              40.7532636
+            ],
+            "markerOffsetMeters": 5.3,
+            "courseDistanceMeters": 24211.5
+          },
+          {
+            "label": "25K",
+            "time": "02:20:51",
+            "timeOfDay": "12:42 pm",
+            "distanceKm": 25,
+            "distanceMi": 15.53428,
+            "elapsedSeconds": 8451,
+            "lat": 40.757084,
+            "lon": -73.954986,
+            "courseMarker": "25K",
+            "pace": "11:30/mi",
+            "segmentTime": "00:06:08",
+            "projectedCoordinates": [
+              -73.9550171,
+              40.7570435
+            ],
+            "markerOffsetMeters": 5.2,
+            "courseDistanceMeters": 25061.4
+          },
+          {
+            "label": "16 mi",
+            "time": "02:24:55",
+            "timeOfDay": "12:46 pm",
+            "distanceKm": 25.749504,
+            "distanceMi": 16.0,
+            "elapsedSeconds": 8695,
+            "lat": 40.760333,
+            "lon": -73.962889,
+            "courseMarker": "Mile 16",
+            "pace": "08:44/mi",
+            "segmentTime": "00:04:04",
+            "projectedCoordinates": [
+              -73.9628875,
+              40.7603397
+            ],
+            "markerOffsetMeters": 0.8,
+            "courseDistanceMeters": 25819.4
+          },
+          {
+            "label": "17 mi",
+            "time": "02:34:26",
+            "timeOfDay": "12:56 pm",
+            "distanceKm": 27.358848,
+            "distanceMi": 17.0,
+            "elapsedSeconds": 9266,
+            "lat": 40.771417,
+            "lon": -73.953444,
+            "courseMarker": "Mile 17",
+            "pace": "09:32/mi",
+            "segmentTime": "00:09:31",
+            "projectedCoordinates": [
+              -73.9534379,
+              40.7714144
+            ],
+            "markerOffsetMeters": 0.6,
+            "courseDistanceMeters": 27441.6
+          },
+          {
+            "label": "18 mi",
+            "time": "02:44:09",
+            "timeOfDay": "1:05 pm",
+            "distanceKm": 28.968192,
+            "distanceMi": 18.0,
+            "elapsedSeconds": 9849,
+            "lat": 40.784083,
+            "lon": -73.944194,
+            "courseMarker": "Mile 18",
+            "pace": "09:43/mi",
+            "segmentTime": "00:09:43",
+            "projectedCoordinates": [
+              -73.9441631,
+              40.78407
+            ],
+            "markerOffsetMeters": 3.0,
+            "courseDistanceMeters": 29051.0
+          },
+          {
+            "label": "30K",
+            "time": "02:50:48",
+            "timeOfDay": "1:12 pm",
+            "distanceKm": 30,
+            "distanceMi": 18.641136,
+            "elapsedSeconds": 10248,
+            "lat": 40.792222,
+            "lon": -73.938278,
+            "courseMarker": "30K",
+            "pace": "10:23/mi",
+            "segmentTime": "00:06:39",
+            "projectedCoordinates": [
+              -73.9382098,
+              40.7921934
+            ],
+            "markerOffsetMeters": 6.6,
+            "courseDistanceMeters": 30084.1
+          },
+          {
+            "label": "19 mi",
+            "time": "02:55:05",
+            "timeOfDay": "1:16 pm",
+            "distanceKm": 30.577536,
+            "distanceMi": 19.0,
+            "elapsedSeconds": 10505,
+            "lat": 40.796778,
+            "lon": -73.935,
+            "courseMarker": "Mile 19",
+            "pace": "11:56/mi",
+            "segmentTime": "00:04:17",
+            "projectedCoordinates": [
+              -73.9348831,
+              40.7967281
+            ],
+            "markerOffsetMeters": 11.3,
+            "courseDistanceMeters": 30660.9
+          },
+          {
+            "label": "20 mi",
+            "time": "03:06:42",
+            "timeOfDay": "1:28 pm",
+            "distanceKm": 32.18688,
+            "distanceMi": 20.0,
+            "elapsedSeconds": 11202,
+            "lat": 40.807833,
+            "lon": -73.925583,
+            "courseMarker": "Mile 20",
+            "pace": "11:37/mi",
+            "segmentTime": "00:11:37",
+            "projectedCoordinates": [
+              -73.9256124,
+              40.807798
+            ],
+            "markerOffsetMeters": 4.6,
+            "courseDistanceMeters": 32280.3
+          },
+          {
+            "label": "21 mi",
+            "time": "03:17:59",
+            "timeOfDay": "1:39 pm",
+            "distanceKm": 33.796224,
+            "distanceMi": 21.0,
+            "elapsedSeconds": 11879,
+            "lat": 40.814278,
+            "lon": -73.934528,
+            "courseMarker": "Mile 21",
+            "pace": "11:18/mi",
+            "segmentTime": "00:11:17",
+            "projectedCoordinates": [
+              -73.9345288,
+              40.8142696
+            ],
+            "markerOffsetMeters": 0.9,
+            "courseDistanceMeters": 33897.4
+          },
+          {
+            "label": "35K",
+            "time": "03:26:08",
+            "timeOfDay": "1:47 pm",
+            "distanceKm": 35,
+            "distanceMi": 21.747992,
+            "elapsedSeconds": 12368,
+            "lat": 40.806417,
+            "lon": -73.942361,
+            "courseMarker": "35K",
+            "pace": "10:54/mi",
+            "segmentTime": "00:08:09",
+            "projectedCoordinates": [
+              -73.9423469,
+              40.8064109
+            ],
+            "markerOffsetMeters": 1.4,
+            "courseDistanceMeters": 35103.7
+          },
+          {
+            "label": "22 mi",
+            "time": "03:28:53",
+            "timeOfDay": "1:50 pm",
+            "distanceKm": 35.405568,
+            "distanceMi": 22.0,
+            "elapsedSeconds": 12533,
+            "lat": 40.804972,
+            "lon": -73.945389,
+            "courseMarker": "Mile 22",
+            "pace": "10:57/mi",
+            "segmentTime": "00:02:45",
+            "projectedCoordinates": [
+              -73.9453747,
+              40.8049661
+            ],
+            "markerOffsetMeters": 1.4,
+            "courseDistanceMeters": 35497.6
+          },
+          {
+            "label": "23 mi",
+            "time": "03:40:23",
+            "timeOfDay": "2:02 pm",
+            "distanceKm": 37.014912,
+            "distanceMi": 23.0,
+            "elapsedSeconds": 13223,
+            "lat": 40.792556,
+            "lon": -73.952472,
+            "courseMarker": "Mile 23",
+            "pace": "11:30/mi",
+            "segmentTime": "00:11:30",
+            "projectedCoordinates": [
+              -73.9524839,
+              40.7925609
+            ],
+            "markerOffsetMeters": 1.1,
+            "courseDistanceMeters": 37120.1
+          },
+          {
+            "label": "24 mi",
+            "time": "03:52:54",
+            "timeOfDay": "2:14 pm",
+            "distanceKm": 38.624256,
+            "distanceMi": 24.0,
+            "elapsedSeconds": 13974,
+            "lat": 40.781444,
+            "lon": -73.963278,
+            "courseMarker": "24M",
+            "pace": "12:32/mi",
+            "segmentTime": "00:12:31",
+            "projectedCoordinates": [
+              -73.9632833,
+              40.7814529
+            ],
+            "markerOffsetMeters": 1.1,
+            "courseDistanceMeters": 38737.9
+          },
+          {
+            "label": "40K",
+            "time": "04:03:03",
+            "timeOfDay": "2:24 pm",
+            "distanceKm": 40,
+            "distanceMi": 24.854848,
+            "elapsedSeconds": 14583,
+            "lat": 40.771028,
+            "lon": -73.970611,
+            "courseMarker": "40K",
+            "pace": "11:52/mi",
+            "segmentTime": "00:10:09",
+            "projectedCoordinates": [
+              -73.9706023,
+              40.7710205
+            ],
+            "markerOffsetMeters": 1.1,
+            "courseDistanceMeters": 40117.9
+          },
+          {
+            "label": "25 mi",
+            "time": "04:04:47",
+            "timeOfDay": "2:26 pm",
+            "distanceKm": 40.2336,
+            "distanceMi": 25.0,
+            "elapsedSeconds": 14687,
+            "lat": 40.769472,
+            "lon": -73.972389,
+            "courseMarker": "25M",
+            "pace": "11:54/mi",
+            "segmentTime": "00:01:44",
+            "projectedCoordinates": [
+              -73.9723848,
+              40.7694664
+            ],
+            "markerOffsetMeters": 0.7,
+            "courseDistanceMeters": 40351.3
+          },
+          {
+            "label": "26 mi",
+            "time": "04:16:29",
+            "timeOfDay": "2:38 pm",
+            "distanceKm": 41.842944,
+            "distanceMi": 26.0,
+            "elapsedSeconds": 15389,
+            "lat": 40.770056,
+            "lon": -73.97925,
+            "courseMarker": "26M",
+            "pace": "11:43/mi",
+            "segmentTime": "00:11:42",
+            "projectedCoordinates": [
+              -73.9792577,
+              40.7700602
+            ],
+            "markerOffsetMeters": 0.8,
+            "courseDistanceMeters": 41969.4
+          },
+          {
+            "label": "Finish",
+            "time": "04:18:33",
+            "timeOfDay": "2:40 pm",
+            "distanceKm": 42.195,
+            "distanceMi": 26.218757,
+            "elapsedSeconds": 15513,
+            "lat": 40.772576,
+            "lon": -73.976768,
+            "courseMarker": "FINISH",
+            "pace": "09:26/mi",
+            "segmentTime": "00:02:04",
+            "projectedCoordinates": [
+              -73.976768,
+              40.772576
+            ],
+            "markerOffsetMeters": 0.0,
+            "courseDistanceMeters": 42322.5
+          }
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.0585778,
+            40.6022637
+          ],
+          [
+            -74.058522,
+            40.602275
+          ],
+          [
+            -74.057982,
+            40.602445
+          ],
+          [
+            -74.054837,
+            40.603472
+          ],
+          [
+            -74.051693,
+            40.60454
+          ],
+          [
+            -74.041925,
+            40.607707
+          ],
+          [
+            -74.037024,
+            40.609266
+          ],
+          [
+            -74.034598,
+            40.61005
+          ],
+          [
+            -74.032244,
+            40.610835
+          ],
+          [
+            -74.031946,
+            40.610955
+          ],
+          [
+            -74.031669,
+            40.611088
+          ],
+          [
+            -74.031404,
+            40.611279
+          ],
+          [
+            -74.031166,
+            40.611478
+          ],
+          [
+            -74.029798,
+            40.613006
+          ],
+          [
+            -74.029451,
+            40.61337
+          ],
+          [
+            -74.02908,
+            40.613707
+          ],
+          [
+            -74.028676,
+            40.614054
+          ],
+          [
+            -74.028316,
+            40.614376
+          ],
+          [
+            -74.027733,
+            40.614944
+          ],
+          [
+            -74.027303,
+            40.615377
+          ],
+          [
+            -74.027192,
+            40.615492
+          ],
+          [
+            -74.026851,
+            40.615853
+          ],
+          [
+            -74.026516,
+            40.616198
+          ],
+          [
+            -74.025724,
+            40.617115
+          ],
+          [
+            -74.024943,
+            40.618019
+          ],
+          [
+            -74.024216,
+            40.618866
+          ],
+          [
+            -74.02356,
+            40.619614
+          ],
+          [
+            -74.023162,
+            40.62007
+          ],
+          [
+            -74.022838,
+            40.6205
+          ],
+          [
+            -74.022376,
+            40.621097
+          ],
+          [
+            -74.022088,
+            40.621526
+          ],
+          [
+            -74.02179,
+            40.621945
+          ],
+          [
+            -74.021029,
+            40.622912
+          ],
+          [
+            -74.020825,
+            40.623168
+          ],
+          [
+            -74.020614,
+            40.623434
+          ],
+          [
+            -74.020089,
+            40.624146
+          ],
+          [
+            -74.019942,
+            40.624405
+          ],
+          [
+            -74.019639,
+            40.62495
+          ],
+          [
+            -74.019481,
+            40.625272
+          ],
+          [
+            -74.019005,
+            40.626315
+          ],
+          [
+            -74.018685,
+            40.62712
+          ],
+          [
+            -74.018535,
+            40.627504
+          ],
+          [
+            -74.01846,
+            40.627699
+          ],
+          [
+            -74.018402,
+            40.627871
+          ],
+          [
+            -74.0199001,
+            40.6287663
+          ],
+          [
+            -74.019938,
+            40.628789
+          ],
+          [
+            -74.020323,
+            40.628178
+          ],
+          [
+            -74.0213215,
+            40.6287627
+          ],
+          [
+            -74.02263,
+            40.629529
+          ],
+          [
+            -74.024942,
+            40.63094
+          ],
+          [
+            -74.0249445,
+            40.6309406
+          ],
+          [
+            -74.022574,
+            40.636757
+          ],
+          [
+            -74.0198375,
+            40.6393917
+          ],
+          [
+            -74.0080071,
+            40.6507822
+          ],
+          [
+            -73.9962018,
+            40.6621486
+          ],
+          [
+            -73.9936779,
+            40.6645786
+          ],
+          [
+            -73.992695,
+            40.665525
+          ],
+          [
+            -73.9855311,
+            40.6741393
+          ],
+          [
+            -73.983908,
+            40.676091
+          ],
+          [
+            -73.979161,
+            40.683071
+          ],
+          [
+            -73.97815,
+            40.684865
+          ],
+          [
+            -73.979222,
+            40.686656
+          ],
+          [
+            -73.97917,
+            40.686701
+          ],
+          [
+            -73.9785866,
+            40.6867682
+          ],
+          [
+            -73.959732,
+            40.688939
+          ],
+          [
+            -73.955224,
+            40.689458
+          ],
+          [
+            -73.955187,
+            40.689491
+          ],
+          [
+            -73.9554269,
+            40.690696
+          ],
+          [
+            -73.9573732,
+            40.7004738
+          ],
+          [
+            -73.957419,
+            40.700704
+          ],
+          [
+            -73.957512,
+            40.700854
+          ],
+          [
+            -73.964369,
+            40.707057
+          ],
+          [
+            -73.964425,
+            40.707191
+          ],
+          [
+            -73.964437,
+            40.707343
+          ],
+          [
+            -73.964401,
+            40.70752
+          ],
+          [
+            -73.963794,
+            40.710505
+          ],
+          [
+            -73.9623352,
+            40.7128338
+          ],
+          [
+            -73.961326,
+            40.714445
+          ],
+          [
+            -73.9612,
+            40.714569
+          ],
+          [
+            -73.951667,
+            40.723437
+          ],
+          [
+            -73.951532,
+            40.723527
+          ],
+          [
+            -73.950898,
+            40.723786
+          ],
+          [
+            -73.95089,
+            40.723826
+          ],
+          [
+            -73.9510793,
+            40.7241682
+          ],
+          [
+            -73.953643,
+            40.728803
+          ],
+          [
+            -73.9541148,
+            40.7299431
+          ],
+          [
+            -73.954195,
+            40.730137
+          ],
+          [
+            -73.954167,
+            40.730175
+          ],
+          [
+            -73.951715,
+            40.730493
+          ],
+          [
+            -73.951691,
+            40.730531
+          ],
+          [
+            -73.95197,
+            40.731872
+          ],
+          [
+            -73.952409,
+            40.734393
+          ],
+          [
+            -73.952659,
+            40.73538
+          ],
+          [
+            -73.952873,
+            40.736641
+          ],
+          [
+            -73.95304,
+            40.737858
+          ],
+          [
+            -73.953026,
+            40.738042
+          ],
+          [
+            -73.9529809,
+            40.7382149
+          ],
+          [
+            -73.952955,
+            40.738314
+          ],
+          [
+            -73.951497,
+            40.742821
+          ],
+          [
+            -73.951383,
+            40.74358
+          ],
+          [
+            -73.951394,
+            40.743628
+          ],
+          [
+            -73.951429,
+            40.743648
+          ],
+          [
+            -73.953549,
+            40.744122
+          ],
+          [
+            -73.953575,
+            40.744161
+          ],
+          [
+            -73.95221,
+            40.748252
+          ],
+          [
+            -73.952028,
+            40.748496
+          ],
+          [
+            -73.951681,
+            40.748851
+          ],
+          [
+            -73.95161,
+            40.748861
+          ],
+          [
+            -73.9507972,
+            40.7487238
+          ],
+          [
+            -73.947281,
+            40.74813
+          ],
+          [
+            -73.943946,
+            40.747517
+          ],
+          [
+            -73.94371,
+            40.747528
+          ],
+          [
+            -73.94335,
+            40.747667
+          ],
+          [
+            -73.943009,
+            40.747999
+          ],
+          [
+            -73.940632,
+            40.75057
+          ],
+          [
+            -73.940661,
+            40.75064
+          ],
+          [
+            -73.940736,
+            40.750735
+          ],
+          [
+            -73.940835,
+            40.750853
+          ],
+          [
+            -73.940996,
+            40.75096
+          ],
+          [
+            -73.94149,
+            40.751221
+          ],
+          [
+            -73.9462469,
+            40.7532636
+          ],
+          [
+            -73.953705,
+            40.756466
+          ],
+          [
+            -73.9550171,
+            40.7570435
+          ],
+          [
+            -73.959122,
+            40.75885
+          ],
+          [
+            -73.962815,
+            40.76033
+          ],
+          [
+            -73.9628875,
+            40.7603397
+          ],
+          [
+            -73.96292,
+            40.760344
+          ],
+          [
+            -73.962995,
+            40.760336
+          ],
+          [
+            -73.963084,
+            40.760281
+          ],
+          [
+            -73.963104,
+            40.760232
+          ],
+          [
+            -73.9631,
+            40.760162
+          ],
+          [
+            -73.963043,
+            40.760121
+          ],
+          [
+            -73.96204,
+            40.759733
+          ],
+          [
+            -73.96199,
+            40.759745
+          ],
+          [
+            -73.9534379,
+            40.7714144
+          ],
+          [
+            -73.9441631,
+            40.78407
+          ],
+          [
+            -73.9382098,
+            40.7921934
+          ],
+          [
+            -73.935102,
+            40.796434
+          ],
+          [
+            -73.9348831,
+            40.7967281
+          ],
+          [
+            -73.930703,
+            40.802343
+          ],
+          [
+            -73.930506,
+            40.80257
+          ],
+          [
+            -73.930295,
+            40.80277
+          ],
+          [
+            -73.929985,
+            40.802959
+          ],
+          [
+            -73.925986,
+            40.805074
+          ],
+          [
+            -73.925763,
+            40.805239
+          ],
+          [
+            -73.925503,
+            40.805521
+          ],
+          [
+            -73.924345,
+            40.807131
+          ],
+          [
+            -73.924368,
+            40.80719
+          ],
+          [
+            -73.924398,
+            40.807215
+          ],
+          [
+            -73.9256124,
+            40.807798
+          ],
+          [
+            -73.926379,
+            40.808166
+          ],
+          [
+            -73.92639,
+            40.808205
+          ],
+          [
+            -73.923887,
+            40.811958
+          ],
+          [
+            -73.923882,
+            40.811983
+          ],
+          [
+            -73.923907,
+            40.812009
+          ],
+          [
+            -73.924649,
+            40.812319
+          ],
+          [
+            -73.924695,
+            40.812319
+          ],
+          [
+            -73.927143,
+            40.811112
+          ],
+          [
+            -73.927935,
+            40.811635
+          ],
+          [
+            -73.930434,
+            40.813338
+          ],
+          [
+            -73.932094,
+            40.814096
+          ],
+          [
+            -73.932174,
+            40.81413
+          ],
+          [
+            -73.932284,
+            40.814153
+          ],
+          [
+            -73.9345288,
+            40.8142696
+          ],
+          [
+            -73.934728,
+            40.81428
+          ],
+          [
+            -73.934817,
+            40.814296
+          ],
+          [
+            -73.936095,
+            40.814722
+          ],
+          [
+            -73.936157,
+            40.814695
+          ],
+          [
+            -73.9423469,
+            40.8064109
+          ],
+          [
+            -73.942766,
+            40.80585
+          ],
+          [
+            -73.942803,
+            40.805825
+          ],
+          [
+            -73.942847,
+            40.805832
+          ],
+          [
+            -73.944149,
+            40.806297
+          ],
+          [
+            -73.944279,
+            40.806339
+          ],
+          [
+            -73.944306,
+            40.806341
+          ],
+          [
+            -73.944354,
+            40.806328
+          ],
+          [
+            -73.944402,
+            40.806305
+          ],
+          [
+            -73.944444,
+            40.806257
+          ],
+          [
+            -73.9453747,
+            40.8049661
+          ],
+          [
+            -73.946033,
+            40.804053
+          ],
+          [
+            -73.946083,
+            40.803992
+          ],
+          [
+            -73.946088,
+            40.803935
+          ],
+          [
+            -73.946067,
+            40.803896
+          ],
+          [
+            -73.945993,
+            40.803861
+          ],
+          [
+            -73.945817,
+            40.803775
+          ],
+          [
+            -73.944774,
+            40.803271
+          ],
+          [
+            -73.944745,
+            40.803213
+          ],
+          [
+            -73.9524839,
+            40.7925609
+          ],
+          [
+            -73.958548,
+            40.784214
+          ],
+          [
+            -73.958847,
+            40.784166
+          ],
+          [
+            -73.958923,
+            40.784128
+          ],
+          [
+            -73.960778,
+            40.781768
+          ],
+          [
+            -73.960908,
+            40.781694
+          ],
+          [
+            -73.961211,
+            40.781595
+          ],
+          [
+            -73.961576,
+            40.781541
+          ],
+          [
+            -73.962755,
+            40.781596
+          ],
+          [
+            -73.962951,
+            40.781563
+          ],
+          [
+            -73.963175,
+            40.78149
+          ],
+          [
+            -73.9632833,
+            40.7814529
+          ],
+          [
+            -73.963552,
+            40.781361
+          ],
+          [
+            -73.963813,
+            40.78124
+          ],
+          [
+            -73.964104,
+            40.780995
+          ],
+          [
+            -73.965068,
+            40.779659
+          ],
+          [
+            -73.965216,
+            40.779479
+          ],
+          [
+            -73.966114,
+            40.778614
+          ],
+          [
+            -73.966244,
+            40.778501
+          ],
+          [
+            -73.966423,
+            40.778296
+          ],
+          [
+            -73.966809,
+            40.77752
+          ],
+          [
+            -73.967288,
+            40.776268
+          ],
+          [
+            -73.96738,
+            40.77566
+          ],
+          [
+            -73.967408,
+            40.775598
+          ],
+          [
+            -73.967523,
+            40.775475
+          ],
+          [
+            -73.968214,
+            40.775035
+          ],
+          [
+            -73.968418,
+            40.774917
+          ],
+          [
+            -73.968644,
+            40.774704
+          ],
+          [
+            -73.968895,
+            40.774444
+          ],
+          [
+            -73.969054,
+            40.774181
+          ],
+          [
+            -73.969089,
+            40.774001
+          ],
+          [
+            -73.969084,
+            40.773671
+          ],
+          [
+            -73.968897,
+            40.773016
+          ],
+          [
+            -73.96888,
+            40.77287
+          ],
+          [
+            -73.968969,
+            40.772566
+          ],
+          [
+            -73.969239,
+            40.772063
+          ],
+          [
+            -73.969383,
+            40.771837
+          ],
+          [
+            -73.969628,
+            40.771607
+          ],
+          [
+            -73.970366,
+            40.771178
+          ],
+          [
+            -73.9706023,
+            40.7710205
+          ],
+          [
+            -73.970639,
+            40.770996
+          ],
+          [
+            -73.970793,
+            40.770867
+          ],
+          [
+            -73.971399,
+            40.770078
+          ],
+          [
+            -73.971556,
+            40.769907
+          ],
+          [
+            -73.972301,
+            40.769502
+          ],
+          [
+            -73.9723848,
+            40.7694664
+          ],
+          [
+            -73.972494,
+            40.76942
+          ],
+          [
+            -73.972662,
+            40.769307
+          ],
+          [
+            -73.972809,
+            40.769105
+          ],
+          [
+            -73.972931,
+            40.768871
+          ],
+          [
+            -73.973066,
+            40.768477
+          ],
+          [
+            -73.973143,
+            40.767715
+          ],
+          [
+            -73.973086,
+            40.767392
+          ],
+          [
+            -73.97261,
+            40.766201
+          ],
+          [
+            -73.972642,
+            40.76604
+          ],
+          [
+            -73.972763,
+            40.765779
+          ],
+          [
+            -73.973598,
+            40.764752
+          ],
+          [
+            -73.973644,
+            40.764726
+          ],
+          [
+            -73.973713,
+            40.764724
+          ],
+          [
+            -73.98122,
+            40.767886
+          ],
+          [
+            -73.981247,
+            40.767933
+          ],
+          [
+            -73.981255,
+            40.768002
+          ],
+          [
+            -73.981278,
+            40.768287
+          ],
+          [
+            -73.980165,
+            40.768846
+          ],
+          [
+            -73.980081,
+            40.768962
+          ],
+          [
+            -73.979764,
+            40.76945
+          ],
+          [
+            -73.979583,
+            40.769714
+          ],
+          [
+            -73.9792577,
+            40.7700602
+          ],
+          [
+            -73.979178,
+            40.770145
+          ],
+          [
+            -73.978638,
+            40.77062
+          ],
+          [
+            -73.978182,
+            40.770975
+          ],
+          [
+            -73.977238,
+            40.771793
+          ],
+          [
+            -73.977152,
+            40.771897
+          ],
+          [
+            -73.976932,
+            40.772227
+          ],
+          [
+            -73.976836,
+            40.772406
+          ],
+          [
+            -73.976768,
+            40.772576
+          ]
+        ]
+      }
+    }
+  ]
+}

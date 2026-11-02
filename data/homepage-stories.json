@@ -22,15 +22,15 @@
     },
     "new-york-city-marathon-2026": {
       "kicker": "My second World Marathon Major.",
-      "story": "I completed the 2026 New York City Marathon on November 1. That is 26.2 miles through all five boroughs and my second World Marathon Major, after Chicago in 2021.",
+      "story": "I finished the 2026 New York City Marathon on November 1 in 4:18:33, averaging 9:52 per mile through all five boroughs. My second World Marathon Major, after Chicago in 2021. Next up: Tokyo in 2027.",
       "stats": [
         {
-          "value": "26.2 mi",
-          "label": "Distance"
+          "value": "4:18:33",
+          "label": "Finish time"
         },
         {
-          "value": "5",
-          "label": "Boroughs"
+          "value": "9:52/mi",
+          "label": "Average pace"
         },
         {
           "value": "2",

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
-  "routeCatalogUpdatedOn": "2026-09-25",
-  "recordCount": 142,
-  "featureCount": 128,
+  "routeCatalogUpdatedOn": "2026-11-02",
+  "recordCount": 143,
+  "featureCount": 129,
   "browserMaterializedFeatureCount": 13,
   "records": {
     "abbott-chicago-5k-2021": {
@@ -503,6 +503,12 @@
       "featureId": "activity-mtb-day-2026-08-05",
       "format": "polyline",
       "quality": "full-source"
+    },
+    "new-york-city-marathon-2026": {
+      "file": "data/new-york-city-marathon-2026-course.geojson",
+      "featureId": "new-york-city-marathon-2026-official-course",
+      "format": "geojson",
+      "quality": "catalog-detail"
     },
     "nordic-day-2021-01-16": {
       "file": "data/strava-route-full-resolution-nordic-day-2021-01-16.json",

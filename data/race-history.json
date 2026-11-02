@@ -8,7 +8,7 @@
     "activeYearCount": 18,
     "knownDistanceMiles": 758.69,
     "knownDistanceCount": 79,
-    "officialResultCount": 28,
+    "officialResultCount": 29,
     "marathonCount": 10,
     "halfMarathonCount": 12,
     "busiestYear": {
@@ -363,7 +363,7 @@
       "date": "2026-11-01",
       "name": "TCS New York City Marathon",
       "location": "New York City, New York — five boroughs",
-      "time": null,
+      "time": "4:18:33",
       "miles": 26.2
     }
   ],

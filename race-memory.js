@@ -105,16 +105,22 @@
   };
 
   function marathonDetails(record) {
+    const half=(record.officialSplits||[]).find(split=>split.label==='Half');
+    const secondHalf=half&&Number.isFinite(record.elapsedSeconds)?record.elapsedSeconds-half.elapsedSeconds:null;
+    const halfClock=Number.isFinite(secondHalf)?`${Math.floor(secondHalf/3600)}:${String(Math.floor(secondHalf/60)%60).padStart(2,'0')}:${String(secondHalf%60).padStart(2,'0')}`:null;
     const facts = [
       record.officialPace ? ['Average pace', record.officialPace] : null,
       record.bib ? ['Bib', record.bib] : null,
+      half ? ['First half',half.time.replace(/^0/,'')] : null,
+      halfClock ? ['Second half',halfClock] : null,
       record.award ? ['Award', record.award] : null,
       record.officialPlace ? ['Overall place', String(record.officialPlace)] : null,
       record.ageGroupPlace ? ['Age-group place', String(record.ageGroupPlace)] : null
     ].filter(Boolean);
-    const splits = (record.officialSplits || []).filter(s => s.time && s.label !== 'Start');
+    const splits = (record.officialSplits || []).filter(s => s.time);
+    const showClock=splits.some(split=>split.timeOfDay);
     if (!facts.length && !splits.length) return '';
-    return `<details class="marathon-details"><summary>Race details${splits.length ? ' & splits' : ''}</summary><dl>${facts.map(([k,v]) => `<div><dt>${A.esc(k)}</dt><dd>${A.esc(v)}</dd></div>`).join('')}</dl>${splits.length ? `<div class="marathon-splits"><table><thead><tr><th>Checkpoint</th><th>Time</th><th>Pace / mile</th></tr></thead><tbody>${splits.map(s => `<tr><th scope="row">${A.esc(s.label)}</th><td>${A.esc(s.time.replace(/\.\d+$/, ''))}</td><td>${A.esc((s.pace || '').replace('/mi', ''))}</td></tr>`).join('')}</tbody></table></div>` : ''}</details>`;
+    return `<details class="marathon-details"><summary>Race details${splits.length ? ' & splits' : ''}</summary><dl>${facts.map(([k,v]) => `<div><dt>${A.esc(k)}</dt><dd>${A.esc(v)}</dd></div>`).join('')}</dl>${splits.length ? `<div class="marathon-splits"><table><thead><tr><th>Checkpoint</th><th>Time</th><th>Pace / mile</th>${showClock?'<th>Local time</th>':''}</tr></thead><tbody>${splits.map(s => `<tr><th scope="row">${A.esc(s.label)}</th><td>${A.esc(s.time.replace(/\.\d+$/, ''))}</td><td>${A.esc((s.pace || '').replace('/mi', ''))}</td>${showClock?`<td>${A.esc(s.timeOfDay||'—')}</td>`:''}</tr>`).join('')}</tbody></table></div>${record.id==='new-york-city-marathon-2026'?'<p>All 34 timing checkpoints are transcribed from the NYRR app. Metric checkpoints use exact 5K distances; local times retain the app’s minute precision (America/New_York).</p>':''}` : ''}</details>`;
   }
 
   const photoFigure = (photo, className = '') => {
@@ -237,6 +243,7 @@
       routeSection.classList.add('race-memory-route');
       const heading = routeSection.querySelector('h2');
       if (heading) heading.textContent = record.kind === 'race' ? 'The course' : 'The routes';
+      if(record.id==='new-york-city-marathon-2026') routeSection.insertAdjacentHTML('afterbegin',`<p class="race-course-source">Official 2026 pink-start course · reconstructed with 34 timing checkpoints. <a href="${A.esc(record.routeSourceUrl)}" target="_blank" rel="noopener">NYRR course map ↗</a></p>`);
       page.append(routeSection);
     }
     if (related) page.append(related);

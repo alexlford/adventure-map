@@ -403,6 +403,12 @@
       if (features.length) {
         const geo = L.geoJSON({ type: 'FeatureCollection', features }, { style: feature => { const color = AdventureRoutes.compositeRouteColor(feature, compositeContext); return { ...(color ? { color } : {}), weight: 4.5, opacity: feature.properties?.provenance === 'historical-course' ? .64 : .86, dashArray: feature.properties?.provenance === 'historical-course' ? '8 6' : null, lineCap: 'round', lineJoin: 'round' }; } }).addTo(map);
         map.fitBounds(geo.getBounds(), { padding: [30, 30], maxZoom: 14 });
+        for (const split of record.officialSplits||[]) {
+          if(!Number.isFinite(split.lat)||!Number.isFinite(split.lon))continue;
+          const marker=L.circleMarker([split.lat,split.lon],{radius:4,weight:1.5,color:'#fff',fillColor:'#27654e',fillOpacity:1}).addTo(map);
+          marker.bindTooltip(`${A.esc(split.label)} · ${A.esc(split.time)}`);
+          marker.bindPopup(`<strong>${A.esc(split.label)}</strong><br>${A.esc(split.time)} elapsed${split.pace?`<br>${A.esc(split.pace)} segment pace`:''}${split.timeOfDay?`<br>${A.esc(split.timeOfDay)} local time`:''}`);
+        }
       } else {
         L.circleMarker([record.lat, record.lon], { radius: 8, weight: 2, fillOpacity: .9 }).addTo(map);
         map.setView([record.lat, record.lon], record.kind === 'summit' ? 10 : 11);
