@@ -138,7 +138,11 @@
             -76.60861
           ]
         ],
-        "connectorConfidence": "low"
+        "connectorConfidence": "low",
+        "historicalRoutePrimarySource": "https://content.govdelivery.com/accounts/MDBALT/bulletins/25c026e",
+        "historicalRoutePrimarySourceDate": "2019-08-30",
+        "historicalRoutePrimarySourceFinding": "Baltimore DOT: start Kenilworth Drive in Towson; enter Baltimore via N Charles Street from Stevenson Lane; continue south to Lee Street, Light Street, Key Highway and Tide Point. Confirms corridor, not precise connector vertices.",
+        "connectorVerificationStatus": "approximate-low-confidence-not-georeferenced-to-historical-street-centerlines"
       }
     }
   ]
