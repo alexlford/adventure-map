@@ -152,7 +152,8 @@
     "data/strava-route-full-resolution-illinois-5k-2016.json",
     "data/strava-route-full-resolution-big-12-run-12k-2016.json",
     "data/strava-route-full-resolution-shamrock-shuffle-10k-2015.json",
-    "data/strava-route-reviewed-charles-street-12-2019.json"
+    "data/strava-route-reviewed-charles-street-12-2019.json",
+    "data/strava-route-reviewed-illinois-5k-2015.json"
   ],
   "provenanceTypes": {
     "personal-gps": "Geometry recorded by Alex through Strava/GPS and suitable for public display.",
