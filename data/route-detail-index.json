@@ -111,8 +111,7 @@
       "quality": "full-source"
     },
     "charles-street-12-2019": {
-      "file": "data/route-detail-browser-polylines.json",
-      "sourceFile": "data/strava-route-source-complete-02.json",
+      "file": "data/strava-route-reviewed-charles-street-12-2019.json",
       "featureId": "strava-4312788726",
       "format": "polyline",
       "quality": "full-source",
