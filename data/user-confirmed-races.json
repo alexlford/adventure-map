@@ -51,11 +51,15 @@
       "lon": -84.0525,
       "coordinatePrecision": "venue",
       "participationMode": "in-person",
-      "routeStatus": "matched-no-public-route",
+      "routeStatus": "historical-course",
       "matchSource": "User-supplied 2026 Aim High Challenge result + Air Force Marathon official schedule",
       "matchConfidence": "verified",
       "sourceUrl": "https://www.usafmarathon.com/air-force-marathon/",
-      "note": "Alex completed the Friday-evening 5K as the first leg of the 2026 Aim High Challenge, then completed the full marathon Saturday morning. The published challenge result confirms a 25:54.51 5K finish. No personal GPS route has been supplied for this leg."
+      "note": "Alex completed the Friday-evening 5K as the first leg of the 2026 Aim High Challenge, then completed the full marathon Saturday morning. The published challenge result confirms a 25:54.51 5K finish. No personal GPS route has been supplied for this leg. Approximate course reconstructed from the organizer’s 2026 course-map image and mapped campus roads and paths, including the retraced campus spur. Campus turns and start/finish placement are inferred; this is not personal GPS or a certified course measurement. Official distance remains 5K; reconstructed geometry is about 5.08 km. Reconcile against the next annual Strava export.",
+      "routeFeatureIds": [
+        "air-force-5k-2026-organizer-course"
+      ],
+      "routeSourceUrl": "https://www.usafmarathon.com/course-maps/"
     },
     {
       "id": "air-force-marathon-2026",

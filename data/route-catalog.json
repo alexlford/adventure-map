@@ -8,7 +8,8 @@
     "data/historical-routes-v2.geojson",
     "data/event-routes.geojson",
     "data/new-york-city-marathon-2026-course.geojson",
-    "data/breckenridge-half-2026-course.geojson"
+    "data/breckenridge-half-2026-course.geojson",
+    "data/air-force-5k-2026-course.geojson"
   ],
   "polylineFiles": [
     "data/activity-route-polylines.json",
@@ -466,7 +467,8 @@
       "snowman-shuffle-series",
       "air-force-marathon-2026",
       "new-york-city-marathon-2026",
-      "breckenridge-half-marathon-2026"
+      "breckenridge-half-marathon-2026",
+      "air-force-5k-2026"
     ]
   },
   "featureOverrides": {
@@ -522,6 +524,11 @@
       "provenance": "historical-course",
       "sourceLabel": "Organizer-linked Breckenridge Road Half Marathon Strava route",
       "note": "All 1,676 organizer coordinates retained. Screenshot shape and elevation profile corroborate course. Not personal GPS; reconcile with next annual export."
+    },
+    "air-force-5k-2026-organizer-course": {
+      "provenance": "historical-course",
+      "sourceLabel": "Approximate official Air Force 5K course reconstruction",
+      "note": "Organizer map matched to campus roads and pedestrian paths, including retraced spur. Inferred campus turns; not personal GPS or a certified course measurement."
     }
   },
   "recordOverrides": {
