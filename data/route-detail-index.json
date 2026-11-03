@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
-  "routeCatalogUpdatedOn": "2026-11-02",
-  "recordCount": 143,
-  "featureCount": 129,
+  "routeCatalogUpdatedOn": "2026-11-03",
+  "recordCount": 144,
+  "featureCount": 130,
   "browserMaterializedFeatureCount": 11,
   "records": {
     "abbott-chicago-5k-2021": {
@@ -103,6 +103,12 @@
       "featureId": "strava-12535362010",
       "format": "polyline",
       "quality": "full-source"
+    },
+    "breckenridge-half-marathon-2026": {
+      "file": "data/breckenridge-half-2026-course.geojson",
+      "featureId": "breckenridge-half-2026-organizer-course",
+      "format": "geojson",
+      "quality": "catalog-detail"
     },
     "brew-to-brew-relay-2013": {
       "file": "data/strava-route-full-resolution-brew-to-brew-2013.json",

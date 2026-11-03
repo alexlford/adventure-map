@@ -3,6 +3,11 @@
   "description": "Persistent first-seen dates for records intentionally surfaced as recently added. addedAt tracks archive entry, not event date.",
   "entries": [
     {
+      "recordId": "breckenridge-half-marathon-2026",
+      "addedAt": "2026-11-03",
+      "source": "manual"
+    },
+    {
       "recordId": "new-york-city-marathon-2026",
       "addedAt": "2026-11-02",
       "source": "manual",
