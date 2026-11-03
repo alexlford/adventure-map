@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "generatedFromRecordCount": 162,
+  "generatedFromRecordCount": 163,
   "summary": {
-    "raceCount": 82,
+    "raceCount": 83,
     "firstYear": 2006,
     "lastYear": 2026,
     "activeYearCount": 18,
-    "knownDistanceMiles": 758.69,
-    "knownDistanceCount": 79,
-    "officialResultCount": 29,
+    "knownDistanceMiles": 771.79,
+    "knownDistanceCount": 80,
+    "officialResultCount": 30,
     "marathonCount": 10,
-    "halfMarathonCount": 12,
+    "halfMarathonCount": 13,
     "busiestYear": {
       "year": 2025,
       "count": 10
@@ -228,21 +228,21 @@
     },
     {
       "year": 2026,
-      "count": 6,
-      "miles": 74.93,
-      "knownDistanceCount": 6,
+      "count": 7,
+      "miles": 88.03,
+      "knownDistanceCount": 7,
       "marathonCount": 2,
       "disciplines": {
-        "road": 4,
+        "road": 5,
         "marathon": 2
       },
-      "cumulativeMiles": 758.69
+      "cumulativeMiles": 771.79
     }
   ],
   "disciplines": [
     {
       "name": "road",
-      "count": 60
+      "count": 61
     },
     {
       "name": "marathon",

@@ -1,6 +1,6 @@
 # Updating Alex Ford Adventures
 
-Adventures is designed to stay curated as new running, mountain biking, Nordic skiing, alpine skiing, races, stories, and media accumulate. The update workflow is incremental: compare a fresh Strava export against the last fully reviewed snapshot watermark, review only the new relevant activities, promote the appropriate records, rebuild the deterministic publication, then advance the watermark.
+Adventures is designed to stay curated as new running, mountain biking, Nordic skiing, alpine skiing, races, stories, and media accumulate. Use screenshots, official results, organizer courses, and user confirmation for interim updates. Full Strava account exports are limited, so perform a complete archive audit once per year when Alex supplies a fresh export. At that audit, compare against the reviewed watermark, reconcile the full public archive for omissions and duplicates, promote appropriate records, rebuild, and advance the watermark only after the export has been fully reviewed.
 
 ## Current baseline
 
@@ -188,7 +188,7 @@ A screenshot from Slopes, a race result, medal/photo, calendar entry, or direct 
 
 The lowest-friction workflow is simple: upload a fresh Strava export and any new Slopes screenshots or photos, then ask to **update Adventures**. The same delta policy should be followed: scan from the reviewed watermark, review the new relevant subset, update canonical data/routes/media, rebuild and validate the static publication, advance the watermark, rebuild again, and publish. You should not need to re-explain the site architecture each time.
 
-For ordinary ongoing use, a fresh full Strava export is preferable to manually listing recent activities because it also catches rides, ski days, renamed activities, and new GPS files consistently.
+Between annual exports, screenshots and official race evidence are sufficient to add and correct records. Do not request a new full account export for each update. Track interim records for reconciliation, preserve watch metrics separately from official results, and label organizer-course or inferred geometry accurately. The annual export audit must catch rides, ski days, renamed activities, missing records, duplicates, and GPS replacements across the full archive. data/update-policy.json records the pending personal-GPS reconciliation list; screenshot updates do not advance data/ingest-state.json.
 
 ## Future automation
 

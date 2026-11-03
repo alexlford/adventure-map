@@ -123,6 +123,13 @@
     return `<details class="marathon-details"><summary>Race details${splits.length ? ' & splits' : ''}</summary><dl>${facts.map(([k,v]) => `<div><dt>${A.esc(k)}</dt><dd>${A.esc(v)}</dd></div>`).join('')}</dl>${splits.length ? `<div class="marathon-splits"><table><thead><tr><th>Checkpoint</th><th>Time</th><th>Pace / mile</th>${showClock?'<th>Local time</th>':''}</tr></thead><tbody>${splits.map(s => `<tr><th scope="row">${A.esc(s.label)}</th><td>${A.esc(s.time.replace(/\.\d+$/, ''))}</td><td>${A.esc((s.pace || '').replace('/mi', ''))}</td>${showClock?`<td>${A.esc(s.timeOfDay||'—')}</td>`:''}</tr>`).join('')}</tbody></table></div>${record.id==='new-york-city-marathon-2026'?'<p>All 34 timing checkpoints are transcribed from the NYRR app. Metric checkpoints use exact 5K distances; local times retain the app’s minute precision (America/New_York).</p>':''}` : ''}</details>`;
   }
 
+  function stravaDetails(record) {
+    const splits=record.stravaSplits||[];
+    if(!splits.length)return '';
+    const duration=seconds=>Number.isFinite(seconds)?A.formatDuration(seconds):'—';
+    return `<details class="marathon-details"><summary>Strava activity & mile splits</summary><p>Watch metrics from the supplied Strava screenshots. These paces describe the watch’s measured miles and remain separate from official race timing.</p><dl><div><dt>Watch distance</dt><dd>${A.esc(record.stravaDistanceMi)} mi</dd></div><div><dt>Moving time</dt><dd>${A.esc(duration(record.stravaMovingSeconds))}</dd></div><div><dt>Elapsed time</dt><dd>${A.esc(duration(record.stravaElapsedSeconds))}</dd></div><div><dt>Moving pace</dt><dd>${A.esc(record.stravaPace||'—')}</dd></div></dl><div class="marathon-splits"><table><thead><tr><th>Watch segment</th><th>Pace / mile</th><th>Net elevation (ft)</th></tr></thead><tbody>${splits.map(split=>`<tr><th scope="row">${A.esc(split.label)}</th><td>${A.esc(split.pace)}</td><td>${A.esc(split.elevationChangeFt)}</td></tr>`).join('')}</tbody></table></div></details>`;
+  }
+
   const photoFigure = (photo, className = '') => {
     const aspect = String(photo.aspect || photo.layout || '').toLowerCase();
     const layoutClass = aspect === '4:3' || aspect === 'four-three' ? ' race-memory-photo-four-three' : '';
@@ -233,7 +240,8 @@
       const finishLabel = page.querySelector('.race-memory-finish small');
       if (finishLabel) finishLabel.textContent = 'Finish time';
       page.insertAdjacentHTML('beforeend', marathonDetails(record));
-      if (!memory.memory?.length && record.note) page.insertAdjacentHTML('beforeend', `<details class="event-notes"><summary>Notes from the day</summary><p>${A.esc(record.note)}</p></details>`);
+      page.insertAdjacentHTML('beforeend', stravaDetails(record));
+      if ((!memory.memory?.length || record.routeStatus === 'historical-course') && record.note) page.insertAdjacentHTML('beforeend', `<details class="event-notes"><summary>Notes from the day</summary><p>${A.esc(record.note)}</p></details>`);
     }
     page.querySelectorAll('.race-memory-photo img').forEach(settlePhoto);
     document.body.classList.add('race-memory-page');
@@ -244,6 +252,7 @@
       const heading = routeSection.querySelector('h2');
       if (heading) heading.textContent = record.kind === 'race' ? 'The course' : 'The routes';
       if(record.id==='new-york-city-marathon-2026') routeSection.insertAdjacentHTML('afterbegin',`<p class="race-course-source">Official 2026 pink-start course · reconstructed with 34 timing checkpoints. <a href="${A.esc(record.routeSourceUrl)}" target="_blank" rel="noopener">NYRR course map ↗</a></p>`);
+      if(record.id==='breckenridge-half-marathon-2026') routeSection.insertAdjacentHTML('afterbegin',`<p class="race-course-source">Organizer course reconstruction · 1,676 published route points. <a href="${A.esc(record.routeSourceUrl)}" target="_blank" rel="noopener">RunBreck course map ↗</a></p>`);
       page.append(routeSection);
     }
     if (related) page.append(related);

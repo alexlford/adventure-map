@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "recordCount": 162,
+  "recordCount": 163,
   "records": [
     {
       "id": "mount-lincoln",
@@ -10064,6 +10064,186 @@
       "routeFeatureIds": [
         "strava-4312788726"
       ]
+    },
+    {
+      "id": "breckenridge-half-marathon-2026",
+      "kind": "race",
+      "discipline": "road",
+      "name": "Breckenridge Half Marathon",
+      "eventSeries": "Breckenridge RunFest",
+      "year": 2026,
+      "date": "2026-10-11",
+      "distance": "Half marathon",
+      "officialDistance": "Half marathon",
+      "officialDistanceKm": 21.0975,
+      "officialDistanceMi": 13.1,
+      "officialTime": "2:03:54",
+      "officialPace": "9:27/mi",
+      "officialGunTime": "2:04:06",
+      "bib": "383",
+      "officialPlace": 60,
+      "officialFieldSize": 222,
+      "gender": "Male",
+      "genderPlace": 38,
+      "genderFieldSize": 98,
+      "ageGroup": "M30–39",
+      "ageGroupPlace": 12,
+      "ageGroupFieldSize": 25,
+      "officialArchiveDate": "2026-10-10",
+      "location": "Boreas Pass Road to Kingdom Park, Breckenridge, Colorado",
+      "region": "Colorado",
+      "lat": 39.46273,
+      "lon": -106.0207,
+      "coordinatePrecision": "venue",
+      "participationMode": "in-person",
+      "routeFeatureIds": [
+        "breckenridge-half-2026-organizer-course"
+      ],
+      "routeStatus": "historical-course",
+      "stravaDistanceMi": 13.5,
+      "stravaDistanceKm": 21.726144,
+      "stravaMovingSeconds": 7401,
+      "stravaElapsedSeconds": 7445,
+      "stravaPace": "9:08/mi",
+      "stravaElapsedPace": "9:11/mi",
+      "elevationGainM": 118.872,
+      "stravaMaxElevationFt": 10358,
+      "stravaSplits": [
+        {
+          "label": "Mile 1",
+          "distanceMi": 1,
+          "pace": "8:24/mi",
+          "elevationChangeFt": -175,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 2",
+          "distanceMi": 1,
+          "pace": "8:28/mi",
+          "elevationChangeFt": -172,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 3",
+          "distanceMi": 1,
+          "pace": "8:12/mi",
+          "elevationChangeFt": -209,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 4",
+          "distanceMi": 1,
+          "pace": "8:26/mi",
+          "elevationChangeFt": -160,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 5",
+          "distanceMi": 1,
+          "pace": "8:36/mi",
+          "elevationChangeFt": -124,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 6",
+          "distanceMi": 1,
+          "pace": "9:09/mi",
+          "elevationChangeFt": -91,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 7",
+          "distanceMi": 1,
+          "pace": "8:31/mi",
+          "elevationChangeFt": -79,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 8",
+          "distanceMi": 1,
+          "pace": "8:33/mi",
+          "elevationChangeFt": -93,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 9",
+          "distanceMi": 1,
+          "pace": "8:55/mi",
+          "elevationChangeFt": -77,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 10",
+          "distanceMi": 1,
+          "pace": "9:29/mi",
+          "elevationChangeFt": 31,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 11",
+          "distanceMi": 1,
+          "pace": "10:46/mi",
+          "elevationChangeFt": 87,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 12",
+          "distanceMi": 1,
+          "pace": "10:10/mi",
+          "elevationChangeFt": 73,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Mile 13",
+          "distanceMi": 1,
+          "pace": "10:24/mi",
+          "elevationChangeFt": 93,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        },
+        {
+          "label": "Final 0.5 mi",
+          "distanceMi": 0.5,
+          "pace": "10:34/mi",
+          "elevationChangeFt": 35,
+          "source": "User-supplied Strava screenshot; displayed rounded split pace, not an official timing checkpoint."
+        }
+      ],
+      "resultSource": "Laurel individual result for Alex Ford, bib 383, corroborated by user screenshot. Chip time and placements are authoritative. The page header says October 10, while its own checkpoint timestamps show October 11, 2026 at 08:47:17–10:51:11 America/Denver, matching Strava and the organizer Sunday schedule.",
+      "resultUrl": "https://results.laurelt.com/bkm/results?pk=9322669",
+      "sourceUrl": "https://www.runbreck.com/",
+      "routeSourceUrl": "https://www.runbreck.com/Race/BreckenridgeRoadMarathon/Page/Course-Maps",
+      "matchSource": "User-confirmed participation + Strava activity screenshots + individual Laurel result bib 383 + organizer-linked Strava course 3479586316635225542",
+      "matchConfidence": "verified",
+      "note": "Completed October 11, 2026 in 2:03:54 (official chip time), 60th of 222 overall. Organizer course reconstructed from all 1,676 published coordinates. This is an organizer-course reconstruction, not personal GPS. Strava separately shows 13.50 miles, 2:03:21 moving, 2:04:05 elapsed, and 390 ft gain. Watch mile splits are retained separately from official results. The timing page header uses the weekend opening date October 10; its checkpoint timestamps and the activity confirm October 11. Some intermediate provider checkpoint distances/locations are inconsistent, so no synthetic timing track is asserted. Reconcile with the original personal GPS during the next annual Strava-export audit.",
+      "_catalogSource": "data/breckenridge-half-2026.json",
+      "slug": "2026-10-11-breckenridge-half-marathon",
+      "recordClass": "race",
+      "sport": "running",
+      "startDate": "2026-10-11",
+      "finishDate": "2026-10-11",
+      "distanceInfo": {
+        "km": 21.0975,
+        "mi": 13.1,
+        "label": "Half marathon",
+        "source": "official"
+      },
+      "locationInfo": {
+        "label": "Boreas Pass Road to Kingdom Park, Breckenridge, Colorado",
+        "region": "Colorado",
+        "lat": 39.46273,
+        "lon": -106.0207,
+        "precision": "venue"
+      },
+      "evidence": {
+        "source": "Laurel individual result for Alex Ford, bib 383, corroborated by user screenshot. Chip time and placements are authoritative. The page header says October 10, while its own checkpoint timestamps show October 11, 2026 at 08:47:17–10:51:11 America/Denver, matching Strava and the organizer Sunday schedule.",
+        "matchSource": "User-confirmed participation + Strava activity screenshots + individual Laurel result bib 383 + organizer-linked Strava course 3479586316635225542",
+        "resultSource": "Laurel individual result for Alex Ford, bib 383, corroborated by user screenshot. Chip time and placements are authoritative. The page header says October 10, while its own checkpoint timestamps show October 11, 2026 at 08:47:17–10:51:11 America/Denver, matching Strava and the organizer Sunday schedule.",
+        "confidence": "verified"
+      },
+      "routeInfo": {
+        "status": "historical-course",
+        "provenance": null
+      }
     }
   ]
 }

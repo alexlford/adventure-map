@@ -1,13 +1,14 @@
 {
   "schemaVersion": 1,
-  "updatedOn": "2026-11-02",
+  "updatedOn": "2026-11-03",
   "description": "Canonical route metadata for Alex Ford Adventures. Raw GeoJSON preserves imported geometry; this file defines public ownership, provenance, privacy treatment, and route-quality expectations.",
   "routeFiles": [
     "data/routes.geojson",
     "data/mined-routes.geojson",
     "data/historical-routes-v2.geojson",
     "data/event-routes.geojson",
-    "data/new-york-city-marathon-2026-course.geojson"
+    "data/new-york-city-marathon-2026-course.geojson",
+    "data/breckenridge-half-2026-course.geojson"
   ],
   "polylineFiles": [
     "data/activity-route-polylines.json",
@@ -464,7 +465,8 @@
       "snowman-shuffle-2009",
       "snowman-shuffle-series",
       "air-force-marathon-2026",
-      "new-york-city-marathon-2026"
+      "new-york-city-marathon-2026",
+      "breckenridge-half-marathon-2026"
     ]
   },
   "featureOverrides": {
@@ -515,6 +517,11 @@
       "provenance": "historical-course",
       "sourceLabel": "NYRR official 2026 interactive course + screenshot timing splits",
       "note": "Official 2026 pink-start course reconstruction with 34 screenshot timing checkpoints. Pink start confirmed by Alex. Not personal GPS."
+    },
+    "breckenridge-half-2026-organizer-course": {
+      "provenance": "historical-course",
+      "sourceLabel": "Organizer-linked Breckenridge Road Half Marathon Strava route",
+      "note": "All 1,676 organizer coordinates retained. Screenshot shape and elevation profile corroborate course. Not personal GPS; reconcile with next annual export."
     }
   },
   "recordOverrides": {
