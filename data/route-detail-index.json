@@ -3,8 +3,8 @@
   "generatedFrom": "data/route-catalog.json",
   "publicRecordSource": "data/public-records.json",
   "routeCatalogUpdatedOn": "2026-11-03",
-  "recordCount": 144,
-  "featureCount": 130,
+  "recordCount": 145,
+  "featureCount": 131,
   "browserMaterializedFeatureCount": 11,
   "records": {
     "abbott-chicago-5k-2021": {
@@ -19,6 +19,12 @@
       "featureId": "strava-641968068",
       "format": "polyline",
       "quality": "full-source"
+    },
+    "air-force-5k-2026": {
+      "file": "data/air-force-5k-2026-course.geojson",
+      "featureId": "air-force-5k-2026-organizer-course",
+      "format": "geojson",
+      "quality": "catalog-detail"
     },
     "air-force-marathon-2026": {
       "file": "data/historical-routes-v2.geojson",
