@@ -253,6 +253,7 @@
       if (heading) heading.textContent = record.kind === 'race' ? 'The course' : 'The routes';
       if(record.id==='new-york-city-marathon-2026') routeSection.insertAdjacentHTML('afterbegin',`<p class="race-course-source">Official 2026 pink-start course · reconstructed with 34 timing checkpoints. <a href="${A.esc(record.routeSourceUrl)}" target="_blank" rel="noopener">NYRR course map ↗</a></p>`);
       if(record.id==='breckenridge-half-marathon-2026') routeSection.insertAdjacentHTML('afterbegin',`<p class="race-course-source">Organizer course reconstruction · 1,676 published route points. <a href="${A.esc(record.routeSourceUrl)}" target="_blank" rel="noopener">RunBreck course map ↗</a></p>`);
+      if(record.id==='air-force-5k-2026') routeSection.insertAdjacentHTML('afterbegin',`<p class="race-course-source">Approximate course reconstruction · campus turns and start/finish positions inferred. <a href="${A.esc(record.routeSourceUrl)}" target="_blank" rel="noopener">Official 5K course map ↗</a></p>`);
       page.append(routeSection);
     }
     if (related) page.append(related);
