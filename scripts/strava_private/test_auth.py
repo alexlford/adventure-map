@@ -42,6 +42,26 @@ class MemoryStore:
         self.value = None
 
 
+class MemoryControl:
+    def __init__(self, value=None):
+        self.value = copy.deepcopy(value or {})
+
+    def load_control(self):
+        return copy.deepcopy(self.value)
+
+    def save_control(self, value):
+        self.value = copy.deepcopy(value)
+
+
+class InvalidStore(MemoryStore):
+    def __init__(self, code="keychain-invalid"):
+        super().__init__()
+        self.code = code
+
+    def load(self):
+        raise AuthError(self.code, "Synthetic stored authorization error.")
+
+
 class FakeTransport:
     def __init__(self, response=None, fail=False):
         self.response = response
@@ -208,6 +228,89 @@ class OAuthTests(unittest.TestCase):
         self.assertEqual(store.value, bundle())
         self.assertEqual(transport.calls[-1][1], "/oauth/revoke")
 
+    def test_uncertain_authorization_blocks_later_token_use(self):
+        for failure in ("network", "invalid-response", "keychain", "interrupt"):
+            with self.subTest(failure=failure):
+                control = MemoryControl()
+                store = MemoryStore(bundle())
+                store.fail_save = failure == "keychain"
+                transport = FakeTransport({"athlete": {"id": 42},
+                    "access_token": "synthetic-new-access", "refresh_token": "synthetic-new-refresh",
+                    "expires_at": 9000}, fail=failure == "network")
+                if failure == "invalid-response":
+                    transport.response = {}
+                request = transport.request
+                def exchange(*args, **kwargs):
+                    self.assertTrue(control.value["authorization_uncertain"])
+                    if failure == "interrupt":
+                        raise KeyboardInterrupt
+                    return request(*args, **kwargs)
+                transport.request = exchange
+                with patch(__package__ + ".auth.wait_for_callback", return_value=("synthetic-code", ["activity:read_all"])):
+                    with self.assertRaises((AuthError, KeyboardInterrupt)):
+                        authorize(store, transport, credentials=("123", "synthetic-client-secret"), control_store=control)
+                self.assertTrue(control.value["authorization_uncertain"])
+                later = FakeTransport()
+                with self.assertRaises(AuthError):
+                    TokenManager(store, later, now=lambda: 100, control_store=control).token()
+                self.assertEqual(later.calls, [])
+                self.assertEqual(store.value, bundle())
+
+    def test_successful_authorization_clears_guard_after_bundle_save(self):
+        control = MemoryControl({"authorization_uncertain": True, "rate": {"blocked_until": 1}})
+        store = MemoryStore(bundle())
+        save = store.save
+        def persist(value):
+            self.assertTrue(control.value["authorization_uncertain"])
+            save(value)
+        store.save = persist
+        transport = FakeTransport({"athlete": {"id": 42}, "access_token": "synthetic-new-access",
+            "refresh_token": "synthetic-new-refresh", "expires_at": 9000})
+        with patch(__package__ + ".auth.wait_for_callback", return_value=("synthetic-code", ["activity:read_all"])):
+            authorize(store, transport, credentials=("123", "synthetic-client-secret"), control_store=control)
+        self.assertEqual(control.value, {"rate": {"blocked_until": 1}})
+        self.assertEqual(store.value["refresh_token"], "synthetic-new-refresh")
+
+    def test_declined_reauthorization_preserves_existing_guard(self):
+        control = MemoryControl({"authorization_uncertain": True})
+        store, transport = MemoryStore(bundle()), FakeTransport()
+        with patch(__package__ + ".auth.wait_for_callback", side_effect=AuthError("access-denied", "Synthetic denial")):
+            with self.assertRaises(AuthError):
+                authorize(store, transport, credentials=("123", "synthetic-client-secret"), control_store=control)
+        self.assertTrue(control.value["authorization_uncertain"])
+        self.assertEqual(store.value, bundle())
+        self.assertEqual(transport.calls, [])
+
+    def test_authorization_guard_save_failure_prevents_exchange(self):
+        control = MemoryControl()
+        control.save_control = mock.Mock(side_effect=OSError("synthetic control failure"))
+        transport = FakeTransport()
+        with patch(__package__ + ".auth.wait_for_callback", return_value=("synthetic-code", ["activity:read_all"])):
+            with self.assertRaises(OSError):
+                authorize(MemoryStore(bundle()), transport, credentials=("123", "synthetic-client-secret"), control_store=control)
+        self.assertEqual(transport.calls, [])
+
+    def test_authorization_can_replace_malformed_credentials(self):
+        for code in ("keychain-invalid", "authorization-invalid", "missing-permission", "excess-permission"):
+            with self.subTest(code=code):
+                store = InvalidStore(code)
+                transport = FakeTransport({"athlete": {"id": 42}, "access_token": "synthetic-new-access",
+                    "refresh_token": "synthetic-new-refresh", "expires_at": 9000})
+                with patch(__package__ + ".auth.wait_for_callback", return_value=("synthetic-code", ["activity:read_all"])):
+                    result = authorize(store, transport, credentials=("123", "synthetic-client-secret"))
+                self.assertTrue(result["authorized"])
+                self.assertEqual(store.value["scopes"], ["activity:read_all"])
+                self.assertEqual(store.value["athlete_id"], "42")
+
+    def test_authorization_does_not_mask_keychain_access_failure(self):
+        store, transport = InvalidStore("keychain-failed"), FakeTransport()
+        with patch(__package__ + ".auth.wait_for_callback") as callback:
+            with self.assertRaises(AuthError) as error:
+                authorize(store, transport, credentials=("123", "synthetic-client-secret"))
+        self.assertEqual(error.exception.code, "keychain-failed")
+        callback.assert_not_called()
+        self.assertEqual(transport.calls, [])
+
     def test_unexpired_token_no_network(self):
         store, transport = MemoryStore(bundle()), FakeTransport()
         self.assertEqual(TokenManager(store, transport, now=lambda: 100).token(), "synthetic-access")
@@ -303,11 +406,28 @@ class OAuthTests(unittest.TestCase):
 
     def test_disconnect_revoke_and_delete(self):
         store, transport = MemoryStore(bundle()), FakeTransport()
-        disconnect(store, transport)
+        self.assertEqual(disconnect(store, transport), {"remoteRevoked": True})
         self.assertIsNone(store.value)
         self.assertEqual(transport.calls[0][1], "/oauth/revoke")
         self.assertEqual(transport.calls[0][2]["form"]["token_type_hint"], "refresh_token")
         self.assertEqual(transport.calls[0][2]["basic"], ("123", "synthetic-client-secret"))
+
+    def test_disconnect_missing_or_malformed_bundle_is_local_only(self):
+        for store in (MemoryStore(), InvalidStore(), InvalidStore("authorization-invalid")):
+            with self.subTest(store=type(store).__name__):
+                transport = FakeTransport()
+                self.assertEqual(disconnect(store, transport), {"remoteRevoked": False})
+                self.assertIsNone(store.value)
+                self.assertEqual(transport.calls, [])
+
+    def test_disconnect_does_not_mask_keychain_access_failure(self):
+        store, transport = InvalidStore("keychain-failed"), FakeTransport()
+        store.delete = mock.Mock()
+        with self.assertRaises(AuthError) as error:
+            disconnect(store, transport)
+        self.assertEqual(error.exception.code, "keychain-failed")
+        store.delete.assert_not_called()
+        self.assertEqual(transport.calls, [])
 
     def test_disconnect_failure_preserves_retry_credentials(self):
         store = MemoryStore(bundle())

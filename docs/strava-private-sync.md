@@ -47,7 +47,7 @@ npm run strava:purge
 npm run strava:disconnect
 ```
 
-`strava:reauth` repeats personal browser authorization, for example after a grant is revoked or required permissions were unchecked. `strava:purge` deletes the local API cache. `strava:disconnect` revokes API authorization using the official revocation endpoint and removes local credentials and private API state. Check its completion message; a network failure does not prove that remote revocation succeeded. You can also revoke access at [Strava's application settings](https://www.strava.com/settings/apps), then remove local data with the provided cleanup command. Preserve the existing historical account-export archive separately; it is not the API cache.
+`strava:reauth` repeats personal browser authorization, for example after a grant is revoked or required permissions were unchecked. It can replace a malformed stored credential bundle; a locked or denied Keychain still requires local resolution. `strava:purge` deletes the local API cache. `strava:disconnect` revokes API authorization using the official revocation endpoint and removes local credentials and private API state. If the saved bundle is absent or malformed, it removes the local item and explicitly reports that remote revocation was not verified. Check its completion message; a network failure does not prove that remote revocation succeeded. You can also revoke access at [Strava's application settings](https://www.strava.com/settings/apps), then remove local data with the provided cleanup command. Preserve the existing historical account-export archive separately; it is not the API cache.
 
 Explicit historical windows and optional GPS streams:
 
@@ -60,7 +60,7 @@ Use date windows of at most 31 days. Dates are UTC boundaries and `--until` is e
 
 ## Storage, refresh, and failure behavior
 
-macOS Keychain holds the client secret, access token, and latest refresh token. Refresh tokens can rotate on every successful refresh, invalidating the previous value immediately. The tool saves the returned credential bundle before continuing. If token persistence or an interrupted token exchange leaves the authorization uncertain, stop and reauthorize; do not keep retrying an old refresh token or assume a grant is usable. Before refresh I/O, a content-free uncertainty flag is saved in control state. It survives process interruption and blocks subsequent token use until successful reauthorization; it is cleared only after the rotated bundle is saved. Failed reauthorization preserves the flag. Do not run multiple copies against the same private store.
+macOS Keychain holds the client secret, access token, and latest refresh token. Refresh tokens can rotate on every successful refresh, invalidating the previous value immediately. The tool saves the returned credential bundle before continuing. If token persistence or an interrupted token exchange leaves the authorization uncertain, stop and reauthorize; do not keep retrying an old refresh token or assume a grant is usable. Before refresh I/O or an authorization-code exchange, a content-free uncertainty flag is saved in control state. It survives process interruption and blocks subsequent token use until successful reauthorization; it is cleared only after the new bundle is saved. Failed or declined reauthorization preserves an existing flag. Do not run multiple copies against the same private store.
 
 Activity records, IDs, fingerprints, stream evidence, and the review queue share a private atomic cache envelope with a maximum 48-hour lifetime. They are not retained as a permanent deduplication index or archive. A cache entry's expiry must not slide forward just because it was read or because a sync failed. Purging a cache can mean a later backfill surfaces the same candidate for review again; canonical duplicate reconciliation still uses the existing stable archive identities under human review.
 
@@ -117,21 +117,28 @@ Before live use, review the registered application's current eligibility/subscri
 ## macOS review follow-up
 
 The follow-up review ran `npm run test:strava-private` on macOS 26.6 with
-Python 3.8.2 and Node 25.6.1: all 91 synthetic tests passed. The source-only
+Python 3.8.2 and Node 25.6.1: all 100 synthetic tests passed. The source-only
 `npm run validate:strava-private` and `git diff --check` also passed. The first
 Mac run exposed symlinked system temporary paths in the test fixtures; resolving
 only those synthetic roots fixes the suite while production symlink rejection
-remains intact. Synthetic CI now includes both Linux and macOS; this local
-result does not establish a hosted CI result.
+remains intact. Regression coverage also checks interrupted authorization-code
+exchanges, malformed credential recovery, and honest local-only disconnect
+messages. Synthetic CI includes both Linux and macOS. Hosted results for each
+revision are recorded in the draft PR separately from these local results.
 
-No native Keychain credential operation, real OAuth grant, actual LaunchAgent
-installation, live refresh, live sync, report inspection, or revocation was
-performed by Codex. All remain owner verification steps.
+Subsequent noninteractive native diagnostics completed a Keychain lookup and
+found no saved authorization bundle; launchctl confirmed that the cleanup
+LaunchAgent was registered. Credential save/reload and rotation, cleanup
+execution/expiry, real OAuth, live sync, report inspection, and revocation still
+require separate verification. Diagnostic output contained only fixed
+operational results.
 
 For manual verification, use your normal full repository checkout in a separate
-ordinary Terminal, with this branch updated. Do not use the source-only Codex
-review checkout: it deliberately excludes the historical watermark file needed
-by live sync. Run auth, status, sync, then report using the commands above. Confirm
+ordinary Terminal, with this branch updated and the authoritative
+`data/ingest-state.json` available. A source-only review checkout may omit that
+file; include the unchanged file before live sync, without creating a replacement
+watermark or using an API checkpoint as its substitute. Run auth, status, sync,
+then report using the commands above. Confirm
 Keychain approval and cleanup installation locally. To check refresh later, wait
 until the access token needs refresh (normally about six hours), run sync again,
 and inspect locally. Never edit or expose tokens to force a test. Check the

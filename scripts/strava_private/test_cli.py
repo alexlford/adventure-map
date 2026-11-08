@@ -69,7 +69,8 @@ class CommandBoundaryTests(unittest.TestCase):
 
     def test_auth_resets_account_cursor_and_purges_before_browser(self):
         local = self.mock_local()
-        def authorized(*_args):
+        def authorized(*_args, **kwargs):
+            self.assertIs(kwargs["control_store"], local)
             local.clear_activity_data.assert_called_once()
             local.save_control.assert_called_with({"schemaVersion": 1, "rate": {"blocked_until": 789}})
         with patch.object(cli, "require_local_mac"), \
@@ -114,6 +115,26 @@ class CommandBoundaryTests(unittest.TestCase):
             self.assertEqual(cli.main(["reauth"]), 1)
         local.save_control.assert_called_once_with({"schemaVersion": 1,
             "rate": {"blocked_until": 789}, "authorization_uncertain": True})
+
+    def test_disconnect_local_only_does_not_claim_remote_revocation(self):
+        for malformed in (False, True):
+            with self.subTest(malformed=malformed):
+                local = self.mock_local()
+                keychain = MagicMock()
+                if malformed:
+                    keychain.load.side_effect = cli.AuthError("keychain-invalid", "Synthetic corrupt item")
+                else:
+                    keychain.load.return_value = None
+                with patch.object(cli, "require_local_mac"), \
+                        patch.object(cli, "PrivateStore", return_value=local), \
+                        patch.object(cli, "KeychainStore", return_value=keychain), \
+                        patch.object(cli, "Transport") as transport, \
+                        contextlib.redirect_stdout(io.StringIO()) as out:
+                    self.assertEqual(cli.main(["disconnect"]), 0)
+                keychain.delete.assert_called_once()
+                transport.return_value.request.assert_not_called()
+                self.assertIn("Remote revocation was not verified", out.getvalue())
+                self.assertNotIn("authorization revoked", out.getvalue())
 
     def test_token_refresh_failure_purges_cache(self):
         local = self.mock_local()

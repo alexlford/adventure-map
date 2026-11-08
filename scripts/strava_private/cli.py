@@ -83,7 +83,7 @@ def main(argv=None):
                 if old_control.get("authorization_uncertain"):
                     reset["authorization_uncertain"] = True
                 local.save_control(reset)
-                authorize(keychain, transport)
+                authorize(keychain, transport, control_store=local)
                 reset.pop("authorization_uncertain", None)
                 reset["rate"] = local.load_control().get("rate", {})
                 local.save_control(reset)
@@ -106,11 +106,14 @@ def main(argv=None):
                 if old_control.get("authorization_uncertain"):
                     reset["authorization_uncertain"] = True
                 local.save_control(reset)
-                disconnect(keychain, transport)
+                result = disconnect(keychain, transport)
                 reset.pop("authorization_uncertain", None)
                 reset["rate"] = local.load_control().get("rate", {})
                 local.save_control(reset)
-                print("Strava authorization revoked, Keychain item removed, and private API cache erased.")
+                if result["remoteRevoked"]:
+                    print("Strava authorization revoked, Keychain item removed, and private API cache erased.")
+                else:
+                    print("Local Keychain item and private API cache removed. Remote revocation was not verified; remove this application's access in Strava settings.")
             elif args.command == "sync":
                 from .cleanup import install_cleanup
                 install_cleanup(REPO / "scripts/strava_private_sync.py")

@@ -295,8 +295,22 @@ def wait_for_callback(state, browser_url, browser_open=webbrowser.open, timeout=
     return result["value"]
 
 
-def authorize(store, transport, browser_open=webbrowser.open, credentials=None, timeout=180):
-    previous = store.load()
+def _load_for_recovery(store):
+    """Allow explicit reauthorization/local removal of malformed credentials.
+
+    Keychain access errors must still reach the caller: a locked or denied item
+    is not absent or corrupt. Valid bundles retain normal athlete isolation.
+    """
+    try:
+        return store.load()
+    except AuthError as exc:
+        if exc.code not in {"keychain-invalid", "authorization-invalid", "missing-permission", "excess-permission"}:
+            raise
+        return None
+
+
+def authorize(store, transport, browser_open=webbrowser.open, credentials=None, timeout=180, control_store=None):
+    previous = _load_for_recovery(store)
     if credentials is None:
         if not sys.stdin.isatty():
             raise AuthError("terminal-required", "Authorization requires your interactive Mac terminal; do not supply credentials through chat, files or environment variables.")
@@ -319,21 +333,37 @@ def authorize(store, transport, browser_open=webbrowser.open, credentials=None, 
         })
 
     code, granted = wait_for_callback(state, url, browser_open, timeout)
-    response = transport.request("POST", "/oauth/token", form={
-        "client_id": client_id, "client_secret": client_secret,
-        "code": code, "grant_type": "authorization_code",
-    })
-    athlete = response.get("athlete") if isinstance(response, dict) else None
-    athlete_id = str(athlete.get("id", "")) if isinstance(athlete, dict) else ""
-    bundle = _token_bundle(response, {"client_id": client_id, "client_secret": client_secret,
-        "athlete_id": athlete_id, "scopes": granted})
+    # Authorization can also rotate an existing grant. Persist before the
+    # exchange so interruption cannot leave an older bundle silently usable.
+    if control_store:
+        control = control_store.load_control()
+        control["authorization_uncertain"] = True
+        control_store.save_control(control)
+    try:
+        response = transport.request("POST", "/oauth/token", form={
+            "client_id": client_id, "client_secret": client_secret,
+            "code": code, "grant_type": "authorization_code",
+        })
+        athlete = response.get("athlete") if isinstance(response, dict) else None
+        athlete_id = str(athlete.get("id", "")) if isinstance(athlete, dict) else ""
+        bundle = _token_bundle(response, {"client_id": client_id, "client_secret": client_secret,
+            "athlete_id": athlete_id, "scopes": granted})
+    except Exception:
+        raise AuthError("authorization-exchange-failed", "Authorization exchange did not complete safely. Reauthorize on your Mac before syncing again.") from None
     if previous and previous["athlete_id"] != athlete_id:
         # Do not replace another athlete's credentials or mix private caches.
         try:
             _revoke(bundle, transport)
         finally:
             raise AuthError("athlete-mismatch", "The approved Strava account differs from the connected athlete. Existing authorization was preserved. Disconnect and erase the private cache before connecting a different account.") from None
-    store.save(bundle)
+    try:
+        store.save(bundle)
+    except Exception:
+        raise AuthError("authorization-storage-failed", "New authorization could not be saved. Reauthorize on your Mac before syncing again.") from None
+    if control_store:
+        control = control_store.load_control()
+        control.pop("authorization_uncertain", None)
+        control_store.save_control(control)
     return {"authorized": True, "readOnly": True}
 
 
@@ -344,12 +374,13 @@ def _revoke(bundle, transport):
 
 
 def disconnect(store, transport):
-    bundle = store.load()
+    bundle = _load_for_recovery(store)
     if bundle:
         _revoke(bundle, transport)
-    # Keep credentials on revocation failure so the user can retry. CLI erases
-    # private API cache after successful revocation and local Keychain deletion.
+    # Keep valid credentials on revocation failure so the user can retry.
+    # A missing/malformed bundle permits local removal, not a remote-success claim.
     store.delete()
+    return {"remoteRevoked": bundle is not None}
 
 
 def status(store, now=time.time):
