@@ -69,11 +69,13 @@ npm run strava:auto-enable
 npm run strava:auto-status
 ```
 
-This installs an owner-only macOS LaunchAgent that runs every six hours when your
-Mac is awake and logged in. It uses the existing approved Keychain grant; no
+This installs an owner-only macOS LaunchAgent that runs once per week on Monday
+at 9:00 AM in the Mac's local timezone, when your Mac is awake and logged in. It uses the existing approved Keychain grant; no
 tokens or activity data go into the LaunchAgent definition. The job does not
 need an interactive terminal and does not use Codex. A normal Mac sleep or
-shutdown delays future checks; it is not a hosted 24/7 service.
+shutdown delays future checks; it is not a hosted 24/7 service. With the
+current 48-hour transient cache lifetime, review candidate data shortly after
+the weekly run or it will expire.
 
 A scheduled run fetches new activity metadata and requests GPS streams only for
 **candidate** races, cycling/MTB outings, Nordic outings, and likely adventure
