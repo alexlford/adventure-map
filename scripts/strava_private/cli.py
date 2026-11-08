@@ -32,19 +32,20 @@ def require_local_mac(interactive=True):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Private local Strava review workflow. Never run through AI tools.")
-    parser.add_argument("command", choices=("auth", "reauth", "status", "sync", "report", "disconnect", "purge", "purge-local"))
+    parser.add_argument("command", choices=("auth", "reauth", "status", "sync", "report", "disconnect", "purge", "purge-local",
+                                                    "sync-auto", "auto-enable", "auto-disable", "auto-status"))
     parser.add_argument("--since", help="Intentional bounded backfill, YYYY-MM-DD (UTC)")
     parser.add_argument("--until", help="Exclusive backfill end, YYYY-MM-DD (maximum 31 days)")
     parser.add_argument("--streams", action="store_true", help="Fetch private recorded GPS streams for local inspection")
     args = parser.parse_args(argv)
-    if args.command != "sync" and (args.since or args.until or args.streams):
+    if args.command not in ("sync", "sync-auto") and (args.since or args.until or args.streams):
         parser.error("Date and stream options apply only to sync.")
     try:
         if args.command == "purge-local":
             if sys.platform != "darwin":
                 raise SyncError("Scheduled local cleanup requires macOS.")
         else:
-            require_local_mac()
+            require_local_mac(interactive=args.command != "sync-auto")
         local = PrivateStore(repo_root=REPO)
         with local.locked():
             if args.command == "purge-local":
@@ -98,6 +99,19 @@ def main(argv=None):
                     print("Read-only authorization stored; access token will refresh on the next request.")
                 else:
                     print("Read-only authorization stored. No API request was made by this status check.")
+            elif args.command == "auto-enable":
+                from .automation import install_auto_sync
+                if not keychain.load():
+                    raise SyncError("Authorize Strava locally before enabling scheduled sync.")
+                install_auto_sync(REPO / "scripts/strava_private_sync.py")
+                print("Scheduled private polling enabled on this Mac (every six hours while awake and logged in).")
+            elif args.command == "auto-disable":
+                from .automation import remove_auto_sync
+                remove_auto_sync()
+                print("Scheduled private Strava polling disabled. Keychain authorization unchanged.")
+            elif args.command == "auto-status":
+                from .automation import auto_sync_status
+                print("Scheduled private polling enabled." if auto_sync_status() else "Scheduled private polling not enabled.")
             elif args.command == "disconnect":
                 # Purge immediately even if remote revocation is unavailable.
                 local.clear_activity_data()
@@ -106,6 +120,8 @@ def main(argv=None):
                 if old_control.get("authorization_uncertain"):
                     reset["authorization_uncertain"] = True
                 local.save_control(reset)
+                from .automation import remove_auto_sync
+                remove_auto_sync()
                 result = disconnect(keychain, transport)
                 reset.pop("authorization_uncertain", None)
                 reset["rate"] = local.load_control().get("rate", {})
@@ -114,7 +130,7 @@ def main(argv=None):
                     print("Strava authorization revoked, Keychain item removed, and private API cache erased.")
                 else:
                     print("Local Keychain item and private API cache removed. Remote revocation was not verified; remove this application's access in Strava settings.")
-            elif args.command == "sync":
+            elif args.command in ("sync", "sync-auto"):
                 from .cleanup import install_cleanup
                 install_cleanup(REPO / "scripts/strava_private_sync.py")
                 bundle = keychain.load()
@@ -123,8 +139,12 @@ def main(argv=None):
                 baseline = json.loads((REPO / "data/ingest-state.json").read_text())
                 baseline = {k: baseline[k] for k in ("snapshotOn", "activityCount", "lastSeenActivityLocalDateTime")}
                 Sync(local, TokenManager(keychain, transport, control_store=local), transport, bundle["athlete_id"], baseline).run(
-                    args.since, args.until, args.streams)
-                print("Private review window completed. Run npm run strava:report to inspect it locally.")
+                    args.since, args.until, args.streams,
+                    candidate_streams=args.command == "sync-auto")
+                if args.command == "sync-auto":
+                    print("Scheduled private review completed.")
+                else:
+                    print("Private review window completed. Run npm run strava:report to inspect it locally.")
                 print("No public records, routes, or reviewed export watermark were changed.")
         return 0
     except ApiError as exc:
