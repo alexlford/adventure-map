@@ -18,7 +18,7 @@ from .cleanup import _directory
 from .storage import StorageError
 
 LABEL = "org.adventurepassport.strava-private-sync"
-INTERVAL_SECONDS = 6 * 60 * 60
+WEEKLY_CALENDAR = {"Weekday": 1, "Hour": 9, "Minute": 0}  # Monday at 9 AM, Mac local time
 
 
 def _run(runner, args):
@@ -44,7 +44,7 @@ def install_auto_sync(wrapper_path, home=None, runner=subprocess.run, python=Non
     data = plistlib.dumps({
         "Label": LABEL,
         "ProgramArguments": [str(executable), str(wrapper), "sync-auto"],
-        "StartInterval": INTERVAL_SECONDS,
+        "StartCalendarInterval": WEEKLY_CALENDAR,
         "RunAtLoad": False,
         "ProcessType": "Background",
         "WorkingDirectory": str(wrapper.parents[1]),
