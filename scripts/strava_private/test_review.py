@@ -67,6 +67,20 @@ class CandidateTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             candidate(activity(id=None))
 
+    def test_race_identity_hints_preserve_owner_review(self):
+        value = candidate(activity(name="Synthetic Berlin Marathon", distance=42195))
+        self.assertEqual(value["raceEvidence"]["worldMajorNameSuggestion"], "Berlin Marathon")
+        self.assertEqual(value["raceEvidence"]["distanceCategorySuggestion"], "marathon")
+        self.assertFalse(value["raceEvidence"]["officialResultVerified"])
+        self.assertIsNone(value["canonicalRecordId"])
+        self.assertFalse(value["publicationAllowed"])
+
+    def test_distance_alone_does_not_identify_a_race(self):
+        value = candidate(activity(name="Synthetic training run", distance=10000, workout_type=0))
+        self.assertEqual(value["suggestedAction"], "review-only")
+        self.assertEqual(value["raceEvidence"]["signals"], [])
+        self.assertEqual(value["raceEvidence"]["distanceCategorySuggestion"], "10K")
+
 
 class StreamsTest(unittest.TestCase):
     def test_missing_gps_has_no_fallback_route(self):
@@ -112,6 +126,37 @@ class StreamsTest(unittest.TestCase):
         self.assertIn("do-not-reconstruct", value["visibilityCompleteness"])
         self.assertEqual(value["routePrivacy"], "unverified")
         self.assertEqual(value["inferredSegments"], [])
+
+    def test_distance_checks_never_bridge_recording_gaps(self):
+        value = inspect_streams(streams([[0, 0], [0, .001], [1, 1]], [0, 10, 300]),
+                                {"distance": 1000})
+        self.assertAlmostEqual(value["mappedRecordedDistanceM"], 111.195, places=2)
+        self.assertIn("recorded-distance-disagreement", [f["reason"] for f in value["flags"]])
+        self.assertEqual([len(s["coordinatesLatLng"]) for s in value["segments"]], [2, 1])
+
+    def test_shortening_flags_new_observation_without_copying_old_geometry(self):
+        source = streams([[0, 0], [0, .001]], [0, 10])
+        value = inspect_streams(source, {"distance": 111}, {"mappedRecordedDistanceM": 1000})
+        self.assertIn("recorded-geometry-shortened", [f["reason"] for f in value["flags"]])
+        self.assertEqual(value["validPointCount"], 2)
+        self.assertEqual(value["inferredSegments"], [])
+
+    def test_obvious_coordinate_order_errors_are_flagged_not_swapped(self):
+        source = streams([[120, 30]], [0])
+        value = inspect_streams(source)
+        self.assertEqual(value["segments"], [])
+        self.assertEqual(value["flags"][0]["reason"], "possible-coordinate-order-error")
+        self.assertEqual(source["latlng"]["data"], [[120, 30]])
+
+    def test_geometry_fingerprint_is_transient_and_deterministic(self):
+        a = inspect_streams(streams([[0, 0], [0, .001]], [0, 10]))
+        b = inspect_streams(streams([[0, 0], [0, .001]], [0, 20]))
+        self.assertEqual(a["transientGeometryFingerprint"], b["transientGeometryFingerprint"])
+        self.assertIsNone(inspect_streams({})["transientGeometryFingerprint"])
+
+    def test_negative_time_does_not_connect_to_a_valid_next_point(self):
+        value = inspect_streams(streams([[0, 0], [0, .001]], [-1, 10]))
+        self.assertEqual(len(value["segments"]), 2)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,15 @@
+# Metadata only. Never put app credentials, OAuth codes or tokens in tfvars.
+project_id  = "your-existing-dedicated-project"
+owner_email = "owner@example.com"
+region      = "us-central1"
+# Prefer reusing an existing email notification channel:
+monitoring_notification_channel_ids = []
+# monitoring_email = "owner@example.com"
+deploy_workloads                  = false
+container_image                   = ""
+enable_schedulers                 = false
+oauth_and_first_sync_verified     = false
+# Optional WIF bootstrap, after the protected GitHub environment is configured:
+# github_repository               = "owner/repository"
+# github_repository_id            = "123456789"
+# github_repository_owner_id      = "1234567"

@@ -82,7 +82,9 @@
     "validate:strava-private": "python3 scripts/validate_strava_private.py",
     "strava:auto-enable": "python3 scripts/strava_private_sync.py auto-enable",
     "strava:auto-disable": "python3 scripts/strava_private_sync.py auto-disable",
-    "strava:auto-status": "python3 scripts/strava_private_sync.py auto-status"
+    "strava:auto-status": "python3 scripts/strava_private_sync.py auto-status",
+    "test:strava-cloud": "python3 -m unittest discover -s scripts/strava_cloud -t . -p \"test_*.py\"",
+    "validate:strava-cloud": "python3 scripts/validate_strava_cloud.py"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

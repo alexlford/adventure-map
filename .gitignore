@@ -15,3 +15,11 @@ strava-review*.json
 strava-token*.json
 __pycache__/
 *.pyc
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars
+!*.tfvars.example
+crash.log
+.cloud-build-context/

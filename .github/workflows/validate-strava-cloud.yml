@@ -1,0 +1,90 @@
+name: Validate private Strava cloud source
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/strava_cloud/**'
+      - 'scripts/strava_private/**'
+      - 'scripts/validate_strava_cloud.py'
+      - 'scripts/validate_strava_private.py'
+      - 'cloud/strava/**'
+      - 'infra/strava-cloud/**'
+      - 'package.json'
+      - '.github/workflows/validate-strava-cloud.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/strava_cloud/**'
+      - 'scripts/strava_private/**'
+      - 'scripts/validate_strava_cloud.py'
+      - 'scripts/validate_strava_private.py'
+      - 'cloud/strava/**'
+      - 'infra/strava-cloud/**'
+      - 'package.json'
+      - '.github/workflows/validate-strava-cloud.yml'
+  workflow_dispatch:
+
+# Validation has no cloud identity, secrets, deployment or artifact publishing.
+permissions:
+  contents: read
+
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/strava_private/
+            /scripts/strava_cloud/
+            /scripts/validate_strava_private.py
+            /scripts/validate_strava_cloud.py
+            /cloud/strava/
+            /infra/strava-cloud/
+            /package.json
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Install checksum-locked SDK dependencies
+        run: python -m pip install --only-binary=:all: --require-hashes -r cloud/strava/requirements.lock
+      - name: Validate isolated source boundaries
+        run: |
+          npm run validate:strava-private
+          npm run validate:strava-cloud
+      - name: Test entirely synthetic backends, OAuth, workers and review
+        run: |
+          npm run test:strava-private
+          npm run test:strava-cloud
+          python -m unittest discover -s cloud/strava -p 'test_*.py'
+      - name: Verify source-only container build
+        run: |
+          python cloud/strava/package_source.py /tmp/strava-source.tar.gz
+          mkdir /tmp/strava-build-context
+          tar -xzf /tmp/strava-source.tar.gz -C /tmp/strava-build-context
+          docker build --pull -f /tmp/strava-build-context/cloud/strava/Dockerfile -t strava-cloud-synthetic:validation /tmp/strava-build-context
+
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/strava-cloud
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          sparse-checkout: infra/strava-cloud
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.16.5'
+          terraform_wrapper: false
+      - name: Check Terraform formatting
+        run: terraform fmt -check -recursive
+      - name: Initialize pinned public provider without backend or credentials
+        run: terraform init -backend=false -lockfile=readonly -input=false
+      - name: Validate provider schemas
+        run: terraform validate -no-color
+      - name: Test synthetic plans using a mocked Google provider
+        run: terraform test -no-color
