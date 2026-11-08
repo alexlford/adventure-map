@@ -1,0 +1,44 @@
+name: Validate private Strava sync with synthetic fixtures
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/strava_private/**'
+      - 'scripts/strava_private_sync.py'
+      - 'scripts/validate_strava_private.py'
+      - 'package.json'
+      - '.github/workflows/validate-strava-private.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/strava_private/**'
+      - 'scripts/strava_private_sync.py'
+      - 'scripts/validate_strava_private.py'
+      - 'package.json'
+      - '.github/workflows/validate-strava-private.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/strava_private/
+            /scripts/strava_private_sync.py
+            /scripts/validate_strava_private.py
+            /package.json
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Validate private source (no activity files)
+        run: npm run validate:strava-private
+      - name: Test synthetic OAuth, storage, and sync only
+        run: npm run test:strava-private

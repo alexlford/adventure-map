@@ -7,3 +7,11 @@ test-results/
 .env.*
 !.env.example
 .DS_Store
+# Defense in depth: runtime storage is outside this repository.
+.strava-private/
+strava-private/
+strava-cache/
+strava-review*.json
+strava-token*.json
+__pycache__/
+*.pyc

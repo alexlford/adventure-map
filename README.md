@@ -42,6 +42,8 @@ See `docs/data-model.md` for schema and precedence details.
 
 The site is designed to update incrementally as new activities accumulate.
 
+For the separate, local-only API integration, see [Private Strava sync](docs/strava-private-sync.md). On your Mac, `npm run strava:auth`, `npm run strava:status`, and `npm run strava:sync` authorize personal read-only access and prepare a transient private review queue. Run live commands outside AI sessions. API data and derivatives must never be sent to Codex, committed, or automatically published; the reviewed account-export watermark remains separate.
+
 ### 1. Scan a fresh Strava export
 
 ```bash
