@@ -79,10 +79,18 @@ def main(argv=None):
                 # even if a previous Keychain item has been removed separately.
                 local.clear_activity_data()
                 old_control = local.load_control()
-                local.save_control({"schemaVersion": 1, "rate": old_control.get("rate", {})})
+                reset = {"schemaVersion": 1, "rate": old_control.get("rate", {})}
+                if old_control.get("authorization_uncertain"):
+                    reset["authorization_uncertain"] = True
+                local.save_control(reset)
                 authorize(keychain, transport)
+                reset.pop("authorization_uncertain", None)
+                reset["rate"] = local.load_control().get("rate", {})
+                local.save_control(reset)
                 print("Read-only authorization saved in macOS Keychain. Live sync has not yet been verified.")
             elif args.command == "status":
+                if local.load_control().get("authorization_uncertain"):
+                    raise AuthError("token-refresh-failed", "Authorization is uncertain. Reauthorize on your Mac before syncing again.")
                 result = status(keychain)
                 if not result["authorized"]:
                     print("Not authorized. Run npm run strava:auth on your Mac.")
@@ -94,8 +102,14 @@ def main(argv=None):
                 # Purge immediately even if remote revocation is unavailable.
                 local.clear_activity_data()
                 old_control = local.load_control()
-                local.save_control({"schemaVersion": 1, "rate": old_control.get("rate", {})})
+                reset = {"schemaVersion": 1, "rate": old_control.get("rate", {})}
+                if old_control.get("authorization_uncertain"):
+                    reset["authorization_uncertain"] = True
+                local.save_control(reset)
                 disconnect(keychain, transport)
+                reset.pop("authorization_uncertain", None)
+                reset["rate"] = local.load_control().get("rate", {})
+                local.save_control(reset)
                 print("Strava authorization revoked, Keychain item removed, and private API cache erased.")
             elif args.command == "sync":
                 from .cleanup import install_cleanup
@@ -105,7 +119,7 @@ def main(argv=None):
                     raise SyncError("No authorization found. Run npm run strava:auth on your Mac.")
                 baseline = json.loads((REPO / "data/ingest-state.json").read_text())
                 baseline = {k: baseline[k] for k in ("snapshotOn", "activityCount", "lastSeenActivityLocalDateTime")}
-                Sync(local, TokenManager(keychain, transport), transport, bundle["athlete_id"], baseline).run(
+                Sync(local, TokenManager(keychain, transport, control_store=local), transport, bundle["athlete_id"], baseline).run(
                     args.since, args.until, args.streams)
                 print("Private review window completed. Run npm run strava:report to inspect it locally.")
                 print("No public records, routes, or reviewed export watermark were changed.")

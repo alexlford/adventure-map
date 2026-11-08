@@ -61,7 +61,7 @@ class SyncTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.clock = NOW
-        self.store = PrivateStore(Path(self.tmp.name)/"private", now=lambda: self.clock)
+        self.store = PrivateStore(Path(self.tmp.name).resolve()/"private", now=lambda: self.clock)
         self.tokens = Tokens()
         self.api = FakeAPI()
 

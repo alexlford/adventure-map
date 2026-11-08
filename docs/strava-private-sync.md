@@ -60,7 +60,7 @@ Use date windows of at most 31 days. Dates are UTC boundaries and `--until` is e
 
 ## Storage, refresh, and failure behavior
 
-macOS Keychain holds the client secret, access token, and latest refresh token. Refresh tokens can rotate on every successful refresh, invalidating the previous value immediately. The tool saves the returned credential bundle before continuing. If token persistence or an interrupted token exchange leaves the authorization uncertain, stop and reauthorize; do not keep retrying an old refresh token or assume a grant is usable. Do not run multiple copies against the same private store.
+macOS Keychain holds the client secret, access token, and latest refresh token. Refresh tokens can rotate on every successful refresh, invalidating the previous value immediately. The tool saves the returned credential bundle before continuing. If token persistence or an interrupted token exchange leaves the authorization uncertain, stop and reauthorize; do not keep retrying an old refresh token or assume a grant is usable. Before refresh I/O, a content-free uncertainty flag is saved in control state. It survives process interruption and blocks subsequent token use until successful reauthorization; it is cleared only after the rotated bundle is saved. Failed reauthorization preserves the flag. Do not run multiple copies against the same private store.
 
 Activity records, IDs, fingerprints, stream evidence, and the review queue share a private atomic cache envelope with a maximum 48-hour lifetime. They are not retained as a permanent deduplication index or archive. A cache entry's expiry must not slide forward just because it was read or because a sync failed. Purging a cache can mean a later backfill surfaces the same candidate for review again; canonical duplicate reconciliation still uses the existing stable archive identities under human review.
 
@@ -113,3 +113,37 @@ The activity-list endpoint filters by when an activity occurred, not when it was
 Manual execution provides no continuous webhook coverage. Freshness and cache expiry must be enforced locally, and stale information must not be treated as current. No successful live authentication, Keychain interaction, or synchronization should be assumed from synthetic tests.
 
 Before live use, review the registered application's current eligibility/subscription requirements and its privacy-policy disclosures. The registered name “Adventure Passport Private Strava Sync” also needs a brand review: API Policy §4.1 restricts use of the Strava mark as part of an application's name. Confirm required Strava/device attribution, including Garmin-sourced data (§4.4), in the private display. Any future publication or extended retention requires separate review; this implementation does not authorize it.
+
+## macOS review follow-up
+
+The follow-up review ran `npm run test:strava-private` on macOS 26.6 with
+Python 3.8.2 and Node 25.6.1: all 91 synthetic tests passed. The source-only
+`npm run validate:strava-private` and `git diff --check` also passed. The first
+Mac run exposed symlinked system temporary paths in the test fixtures; resolving
+only those synthetic roots fixes the suite while production symlink rejection
+remains intact. Synthetic CI now includes both Linux and macOS; this local
+result does not establish a hosted CI result.
+
+No native Keychain credential operation, real OAuth grant, actual LaunchAgent
+installation, live refresh, live sync, report inspection, or revocation was
+performed by Codex. All remain owner verification steps.
+
+For manual verification, use your normal full repository checkout in a separate
+ordinary Terminal, with this branch updated. Do not use the source-only Codex
+review checkout: it deliberately excludes the historical watermark file needed
+by live sync. Run auth, status, sync, then report using the commands above. Confirm
+Keychain approval and cleanup installation locally. To check refresh later, wait
+until the access token needs refresh (normally about six hours), run sync again,
+and inspect locally. Never edit or expose tokens to force a test. Check the
+cleanup LaunchAgent locally with:
+
+```bash
+launchctl print "gui/$(id -u)/org.adventurepassport.strava-private-cleanup"
+```
+
+After private review, close the report. Test disconnect when ready to revoke the
+grant; confirm its fixed completion message locally. If desired, authorize again
+afterward. You may tell Codex only whether each operational step passed, failed,
+or was skipped. Do not send raw terminal output, callback URLs, credentials,
+activity counts, API details, GPS, reports, or derived summaries. A step's
+operational pass/fail is not a claim about activity completeness or content.

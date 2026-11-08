@@ -178,16 +178,25 @@ def _token_bundle(response, previous):
 
 
 class TokenManager:
-    def __init__(self, store, transport, now=time.time):
+    def __init__(self, store, transport, now=time.time, control_store=None):
         self.store, self.transport, self.now = store, transport, now
+        self.control_store = control_store
 
     def token(self, force_refresh=False):
+        if self.control_store and self.control_store.load_control().get("authorization_uncertain"):
+            raise AuthError("token-refresh-failed", "Authorization is uncertain. Reauthorize on your Mac before syncing again.")
         bundle = self.store.load()
         if not bundle:
             raise AuthError("not-authorized", "No authorization found. Run npm run strava:auth on your Mac.")
         validate_bundle(bundle)
         if not force_refresh and bundle["expires_at"] > self.now() + 60:
             return bundle["access_token"]
+        # Persist before I/O so a crash or ambiguous exchange cannot cause a
+        # later process to retry a potentially invalidated refresh token.
+        if self.control_store:
+            control = self.control_store.load_control()
+            control["authorization_uncertain"] = True
+            self.control_store.save_control(control)
         try:
             response = self.transport.request("POST", "/oauth/token", form={
                 "client_id": bundle["client_id"], "client_secret": bundle["client_secret"],
@@ -204,6 +213,10 @@ class TokenManager:
             self.store.save(updated)
         except Exception:
             raise AuthError("rotation-storage-failed", "Refreshed authorization could not be saved. Stop and reauthorize before syncing; do not retry with the old refresh token.") from None
+        if self.control_store:
+            control = self.control_store.load_control()
+            control.pop("authorization_uncertain", None)
+            self.control_store.save_control(control)
         return updated["access_token"]
 
 

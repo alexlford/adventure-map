@@ -44,7 +44,7 @@ def _private_file(info):
 
 
 def _validate_control(value):
-    allowed = {"schemaVersion", "checkpoint", "last_complete_scan", "pending", "rate", "events"}
+    allowed = {"schemaVersion", "checkpoint", "last_complete_scan", "pending", "rate", "events", "authorization_uncertain"}
     if not isinstance(value, dict) or set(value) - allowed:
         raise StorageError("Invalid private control state; activity data belongs in the expiring cache.")
     if value.get("schemaVersion", 1) != 1:
@@ -52,6 +52,8 @@ def _validate_control(value):
     for field in ("checkpoint", "last_complete_scan"):
         if field in value and value[field] is not None and not _number(value[field]):
             raise StorageError("Invalid private control timestamp.")
+    if "authorization_uncertain" in value and not isinstance(value["authorization_uncertain"], bool):
+        raise StorageError("Invalid authorization control state.")
     pending = value.get("pending")
     if pending is not None:
         if not isinstance(pending, dict) or set(pending) - {"after", "before", "page", "mode", "started_at", "streams"}:

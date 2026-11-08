@@ -102,6 +102,19 @@ class CommandBoundaryTests(unittest.TestCase):
         local.clear_activity_data.assert_called_once()
         local.save_control.assert_called_with({"schemaVersion": 1, "rate": {"blocked_until": 789}})
 
+    def test_failed_reauthorization_preserves_uncertainty(self):
+        local = self.mock_local()
+        local.load_control.return_value["authorization_uncertain"] = True
+        with patch.object(cli, "require_local_mac"), \
+                patch.object(cli, "PrivateStore", return_value=local), \
+                patch.object(cli, "KeychainStore"), patch.object(cli, "Transport"), \
+                patch("scripts.strava_private.cleanup.install_cleanup"), \
+                patch.object(cli, "authorize", side_effect=cli.AuthError("access-denied", "Synthetic denial")), \
+                contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(cli.main(["reauth"]), 1)
+        local.save_control.assert_called_once_with({"schemaVersion": 1,
+            "rate": {"blocked_until": 789}, "authorization_uncertain": True})
+
     def test_token_refresh_failure_purges_cache(self):
         local = self.mock_local()
         with patch.object(cli, "require_local_mac"), \

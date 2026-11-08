@@ -17,7 +17,7 @@ class StorageTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
-        self.base = Path(self.temporary.name)
+        self.base = Path(self.temporary.name).resolve()
         self.clock = 1000000.0
         self.store = PrivateStore(self.base / "private", repo_root=self.base / "repo", now=lambda: self.clock)
 
@@ -43,13 +43,13 @@ class StorageTests(unittest.TestCase):
         self.assertFalse(orphan.exists())
 
     def test_control_does_not_retain_activity_identifiers(self):
-        value = {"schemaVersion": 1, "checkpoint": self.clock, "pending": {
+        value = {"schemaVersion": 1, "authorization_uncertain": True, "checkpoint": self.clock, "pending": {
             "after": 0, "before": self.clock, "page": 1, "mode": "incremental", "started_at": self.clock,
         }, "rate": {"read": {"limits": [100, 1000], "usage": [1, 1], "window": 1, "day": 1}},
             "events": [{"event": "started", "at": self.clock}]}
         self.store.save_control(value)
         self.assertEqual(self.store.load_control(), value)
-        for invalid in ({"activity_id": "synthetic"}, {"checkpoint": "synthetic"}, {"rate": {"activity": "synthetic"}},
+        for invalid in ({"authorization_uncertain": "synthetic"}, {"activity_id": "synthetic"}, {"checkpoint": "synthetic"}, {"rate": {"activity": "synthetic"}},
                         {"events": [{"event": "synthetic private name", "at": self.clock}]}):
             with self.assertRaises(StorageError):
                 self.store.save_control(invalid)
@@ -126,7 +126,7 @@ class CleanupTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
-        self.home = Path(self.temporary.name)
+        self.home = Path(self.temporary.name).resolve()
         self.calls = []
 
     def runner(self, arguments, **kwargs):

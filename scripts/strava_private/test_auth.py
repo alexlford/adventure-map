@@ -7,6 +7,7 @@ import json
 import threading
 import unittest
 from contextlib import redirect_stderr
+from unittest import mock
 from unittest.mock import patch
 from urllib.parse import parse_qs, urlencode, urlsplit
 from urllib.request import urlopen
@@ -239,6 +240,51 @@ class OAuthTests(unittest.TestCase):
         self.assertEqual(error.exception.code, "token-refresh-failed")
         self.assertEqual(len(transport.calls), 1)
         self.assertEqual(store.value, bundle())
+
+    def test_uncertain_refresh_blocks_a_later_manager(self):
+        class Control:
+            value = {}
+
+            def load_control(self):
+                return copy.deepcopy(self.value)
+
+            def save_control(self, value):
+                self.value = copy.deepcopy(value)
+
+        for failure in ("network", "keychain", "interrupt"):
+            with self.subTest(failure=failure):
+                control = Control()
+                store = MemoryStore(bundle())
+                store.fail_save = failure == "keychain"
+                transport = FakeTransport({"access_token": "synthetic-new-access",
+                    "refresh_token": "synthetic-new-refresh", "expires_at": 9000},
+                    fail=failure == "network")
+                if failure == "interrupt":
+                    transport.request = mock.Mock(side_effect=KeyboardInterrupt)
+                manager = TokenManager(store, transport, now=lambda: 1100, control_store=control)
+                with self.assertRaises((AuthError, KeyboardInterrupt)):
+                    manager.token()
+                self.assertTrue(control.value["authorization_uncertain"])
+                later = FakeTransport()
+                with self.assertRaises(AuthError):
+                    TokenManager(store, later, now=lambda: 100, control_store=control).token()
+                self.assertEqual(later.calls, [])
+
+    def test_successful_rotation_clears_uncertainty_after_save(self):
+        control = mock.Mock()
+        state = {}
+        control.load_control.side_effect = lambda: copy.deepcopy(state)
+        def save(value):
+            state.clear()
+            state.update(value)
+        control.save_control.side_effect = save
+        store = MemoryStore(bundle())
+        transport = FakeTransport({"access_token": "synthetic-new-access",
+            "refresh_token": "synthetic-new-refresh", "expires_at": 9000})
+        self.assertEqual(TokenManager(store, transport, now=lambda: 1100,
+            control_store=control).token(), "synthetic-new-access")
+        self.assertNotIn("authorization_uncertain", state)
+        self.assertEqual(store.value["refresh_token"], "synthetic-new-refresh")
 
     def test_bad_token_response_never_saved(self):
         for response in ({"access_token": "synthetic-new-access", "expires_at": 9000},
