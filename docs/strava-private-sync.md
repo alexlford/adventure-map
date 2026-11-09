@@ -1,5 +1,12 @@
 # Adventure Passport private API sync
 
+The separate [Google Cloud implementation](strava-cloud-deployment-plan.md) uses
+Cloud Run, Scheduler, Secret Manager, Firestore, and private expiring object
+storage. Its Monday 09:00 America/Denver schedule can operate with the Mac off
+after cloud authorization and deployment are verified. The Mac Keychain grant
+is not exported or assumed portable. Cloud source and synthetic checks do not
+establish a deployed service or a successful live cloud synchronization.
+
 This integration is a local tool for the authenticated athlete's private review. It is separate from the public site and the annual account-export workflow. API authorization and live synchronization must be performed personally on your Mac, outside Codex or any other AI session. No live authentication or live activity synchronization was performed during development.
 
 ## Privacy and permitted boundaries

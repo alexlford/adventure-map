@@ -1,0 +1,9 @@
+# Source-only context produced by package_source.py. Deliberately no trigger or
+# automatic deployment. The build identity cannot access runtime secrets/cache.
+steps:
+  - name: 'gcr.io/cloud-builders/docker@sha256:91eaff0806a70dc0b3c853191a2da9995b2aa88d9b24196182344a4cef633603'
+    args: ['build', '--pull', '--network=default', '-f', 'cloud/strava/Dockerfile', '-t', '${_IMAGE}', '.']
+images: ['${_IMAGE}']
+options:
+  logging: NONE
+timeout: 1200s

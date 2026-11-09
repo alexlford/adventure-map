@@ -186,6 +186,26 @@ class SyncTests(unittest.TestCase):
         self.run_sync()
         self.assertIn("streams", self.store.load_cache()["activities"]["900001"])
 
+    def test_alpine_candidates_get_private_gps_without_slopes_merge(self):
+        self.api.details["900001"]["sport_type"] = "AlpineSki"
+        self.run_sync(candidate_streams=True)
+        entry = self.store.load_cache()["activities"]["900001"]
+        self.assertIn("streams", entry)
+        candidate = self.store.load_cache()["queue"]["candidates"][0]
+        self.assertTrue(candidate["slopesReconciliationRequired"])
+        self.assertFalse(candidate["publicationAllowed"])
+
+    def test_duplicate_geometry_is_only_a_transient_review_flag(self):
+        self.api.details["900002"] = activity(900002)
+        self.api.pages = [[{"id": 900001}, {"id": 900002}]]
+        self.api.streams = {"latlng": {"data": [[0, 0], [0, .001]]}, "time": {"data": [0, 10]}}
+        self.run_sync(streams=True)
+        queue = self.store.load_cache()["queue"]["candidates"]
+        self.assertEqual(len(queue), 2)
+        for item in queue:
+            self.assertIn("duplicate-geometry-review", [f["reason"] for f in item["gpsReview"]["flags"]])
+        self.assertNotIn("geometry", self.store.load_control())
+
     def test_historical_bounds_fail_without_request(self):
         for options in ({"since": "2025-01-01", "until": "2025-03-01"},
                         {"since": "2027-01-01"}, {"until": "2025-01-01"}):

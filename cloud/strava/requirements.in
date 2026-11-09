@@ -1,0 +1,9 @@
+# Direct dependencies; the full transitive graph and SHA-256 hashes are locked.
+# Official PyPI metadata verified 2026-11-08 for Linux CPython 3.14.
+google-cloud-firestore==2.34.1
+google-cloud-storage==3.17.1
+google-cloud-secret-manager==2.32.0
+google-auth==2.62.1
+requests==2.34.2
+cryptography==50.0.2
+gunicorn==26.2.0

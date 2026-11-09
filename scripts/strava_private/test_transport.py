@@ -70,6 +70,24 @@ class TransportTests(unittest.TestCase):
         self.assertEqual(self.opener.calls[0].get_header("Authorization"), "Bearer synthetic-access")
         self.assertTrue(response.closed)
 
+    def test_preflight_does_not_reserve_or_send_a_request(self):
+        client = self.client(Response({"ok": True}))
+        client.preflight()
+        self.assertEqual(self.opener.calls, [])
+        self.assertEqual(client.rate_state["overall"]["usage"], [0, 0])
+        client.request("POST", "/oauth/token", form={"grant_type": "refresh_token"})
+        self.assertEqual(client.rate_state["overall"]["usage"], [1, 1])
+
+    def test_preflight_rejects_known_quota_before_token_exchange(self):
+        client = self.client()
+        client.rate_state["overall"]["usage"][0] = 200
+        with self.assertRaises(ApiError) as error:
+            client.preflight()
+        self.assertEqual(error.exception.status, 429)
+        self.assertGreater(error.exception.retry_at, self.clock.now())
+        self.assertEqual(self.opener.calls, [])
+        self.assertEqual(client.rate_state["overall"]["usage"], [200, 0])
+
     def test_token_exchange_form_not_query(self):
         client = self.client(Response({"access_token": "synthetic-next"}))
         result = client.request("POST", "/oauth/token", form={"grant_type": "refresh_token",

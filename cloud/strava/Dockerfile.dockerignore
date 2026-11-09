@@ -1,0 +1,24 @@
+# Source allowlist. Build context must ALSO be created with package_source.py;
+# Docker ignore rules do not protect a gcloud source upload on their own.
+**
+!scripts/
+!scripts/strava_cloud/
+!scripts/strava_cloud/*.py
+!scripts/strava_cloud/static/
+!scripts/strava_cloud/static/review.css
+!scripts/strava_cloud/static/review.js
+!scripts/strava_private/
+!scripts/strava_private/__init__.py
+!scripts/strava_private/review.py
+!scripts/strava_private/storage.py
+!scripts/strava_private/sync.py
+!scripts/strava_private/transport.py
+!cloud/
+!cloud/strava/
+!cloud/strava/Dockerfile
+!cloud/strava/Dockerfile.dockerignore
+!cloud/strava/requirements.lock
+!cloud/strava/gunicorn.conf.py
+scripts/strava_cloud/test_*.py
+**/__pycache__/
+**/*.pyc

@@ -84,7 +84,12 @@ class Transport:
         if delay:
             self.sleep(delay)
 
-    def _reserve(self, is_read):
+    def preflight(self, is_read=False):
+        """Check known quota before an irreversible token exchange begins.
+
+        This does not reserve a request or perform network I/O. The actual
+        request still reserves immediately before sending.
+        """
         self._roll_windows()
         now = self.now()
         retry_at = self.rate_state.get("blocked_until", 0)
@@ -96,6 +101,9 @@ class Transport:
         if retry_at > now:
             self._wait(retry_at)
             self._roll_windows()
+
+    def _reserve(self, is_read):
+        self.preflight(is_read)
         for name in (["overall", "read"] if is_read else ["overall"]):
             self.rate_state[name]["usage"] = [v + 1 for v in self.rate_state[name]["usage"]]
         self._persist()

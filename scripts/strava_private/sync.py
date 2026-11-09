@@ -113,11 +113,20 @@ class Sync:
         def save(complete=False):
             activities = payload["activities"]
             candidates = []
+            geometry_counts = {}
+            for entry in activities.values():
+                digest = (entry.get("gpsReview") or {}).get("transientGeometryFingerprint")
+                if digest:
+                    geometry_counts[digest] = geometry_counts.get(digest, 0) + 1
             for ident, entry in sorted(activities.items()):
                 item = candidate(entry["activity"])
                 item["change"] = entry["change"]
                 item["observedAt"] = entry["observedAt"]
-                item["gpsReview"] = entry.get("gpsReview")
+                item["gpsReview"] = copy.deepcopy(entry.get("gpsReview"))
+                review = item["gpsReview"]
+                if review and geometry_counts.get(review.get("transientGeometryFingerprint"), 0) > 1:
+                    review["qualityReviewRequired"] = True
+                    review["flags"].append({"reason": "duplicate-geometry-review", "requiresReview": True})
                 candidates.append(item)
             payload["queue"] = {
                 "schemaVersion": 2, "source": "strava-api-private-transient-cache",
@@ -149,7 +158,7 @@ class Sync:
             if not candidate_streams:
                 return False
             review = candidate(detail)
-            return (review["suggestedAction"] in {"race-review", "bike-review", "candidate-outing"}
+            return (review["suggestedAction"] in {"race-review", "bike-review", "candidate-outing", "ski-passport"}
                     or review["possibleStoryReview"])
 
         def refresh(ident):
@@ -189,7 +198,7 @@ class Sync:
                         raise
                     raw = {}
                 entry["streams"] = raw
-                entry["gpsReview"] = inspect_streams(raw)
+                entry["gpsReview"] = inspect_streams(raw, detail, previous.get("gpsReview") if previous else None)
                 if previous and "streams" in previous and fingerprint(previous["streams"]) != fingerprint(raw):
                     entry["change"] = "privacy-changed" if privacy_changed else "gps-changed"
             entry["processedWindow"] = window
