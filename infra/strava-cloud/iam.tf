@@ -8,6 +8,7 @@ resource "google_project_iam_custom_role" "state" {
     "datastore.databases.get", "datastore.entities.get", "datastore.entities.list",
     "datastore.entities.create", "datastore.entities.update", "datastore.entities.delete"
   ]
+  depends_on = [google_project_service.required]
 }
 
 resource "google_project_iam_member" "state" {
@@ -31,6 +32,7 @@ resource "google_project_iam_custom_role" "cache" {
   role_id     = "${replace(var.name_prefix, "-", "_")}_${each.key}_cache"
   title       = "Private Strava ${each.key} transient cache"
   permissions = each.value
+  depends_on  = [google_project_service.required]
 }
 
 resource "google_storage_bucket_iam_member" "cache" {
@@ -48,6 +50,7 @@ resource "google_project_iam_custom_role" "rotate" {
     "secretmanager.versions.add", "secretmanager.versions.access", "secretmanager.versions.list",
     "secretmanager.versions.disable", "secretmanager.versions.destroy"
   ]
+  depends_on = [google_project_service.required]
 }
 
 resource "google_secret_manager_secret_iam_member" "athlete_rotation" {
@@ -77,6 +80,7 @@ resource "google_project_iam_custom_role" "client_cleanup" {
   role_id     = "${replace(var.name_prefix, "-", "_")}_client_version_cleanup"
   title       = "Private Strava superseded client versions"
   permissions = ["secretmanager.versions.list", "secretmanager.versions.destroy"]
+  depends_on  = [google_project_service.required]
 }
 
 resource "google_secret_manager_secret_iam_member" "worker_client_cleanup" {
@@ -111,6 +115,7 @@ resource "google_project_iam_custom_role" "source_upload" {
   role_id     = "${replace(var.name_prefix, "-", "_")}_source_upload"
   title       = "Private Strava source-only upload"
   permissions = ["storage.buckets.get", "storage.objects.create"]
+  depends_on  = [google_project_service.required]
 }
 
 resource "google_artifact_registry_repository_iam_member" "deployer" {
@@ -126,6 +131,7 @@ resource "google_project_iam_custom_role" "build_submit" {
   role_id     = "${replace(var.name_prefix, "-", "_")}_build_submit"
   title       = "Private Strava source build submission"
   permissions = ["cloudbuild.builds.create", "cloudbuild.builds.get", "serviceusage.services.use"]
+  depends_on  = [google_project_service.required]
 }
 
 resource "google_project_iam_member" "build_submit" {
@@ -142,6 +148,7 @@ resource "google_project_iam_custom_role" "deploy" {
     "run.services.get", "run.services.update", "run.jobs.get", "run.jobs.update",
     "run.operations.get"
   ]
+  depends_on = [google_project_service.required]
 }
 
 resource "google_project_iam_member" "deploy" {
@@ -189,6 +196,7 @@ resource "google_project_iam_custom_role" "admin" {
     "iap.webServices.getIamPolicy", "iap.webServices.setIamPolicy",
     "iam.workloadIdentityPools.create", "iam.workloadIdentityPools.get", "iam.workloadIdentityPools.update", "iam.workloadIdentityPools.delete", "iam.workloadIdentityPoolProviders.create", "iam.workloadIdentityPoolProviders.get", "iam.workloadIdentityPoolProviders.update", "iam.workloadIdentityPoolProviders.delete"
   ]
+  depends_on = [google_project_service.required]
 }
 
 resource "google_project_iam_member" "admin" {
