@@ -37,6 +37,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /scripts/strava_private/
+            /scripts/strava_private_sync.py
             /scripts/strava_cloud/
             /scripts/validate_strava_private.py
             /scripts/validate_strava_cloud.py

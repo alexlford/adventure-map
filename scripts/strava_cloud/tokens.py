@@ -118,7 +118,19 @@ class CredentialStore:
     def _write(self, bundle, resource, pointer, authorized=False):
         lease = self.store.lease
         lease.check()
+        add_attempted = False
+
+        def mark_cleanup(state):
+            # A counter also lets a sweep detect cleanup requests that arrive
+            # during its paginated reads. Older boolean markers remain valid.
+            state["secret_cleanup_pending"] = int(state.get("secret_cleanup_pending", 0)) + 1
+
         try:
+            # Persist before the irreversible add: an acknowledged-lost RPC or
+            # expired writer may create a version without returning its name.
+            # The next owner can enumerate it without selecting ``latest``.
+            self.store.state.fenced(lease, mark_cleanup)
+            add_attempted = True
             response = self.client.add_secret_version(request={"parent": resource, "payload": {
                 "data": json.dumps(bundle, allow_nan=False, separators=(",", ":")).encode()}})
             version = response.name
@@ -126,17 +138,24 @@ class CredentialStore:
                 raise AuthorizationError()
 
             def publish(state):
-                old = state.get(pointer)
                 state[pointer] = version
                 if authorized:
                     state["credential_status"] = "authorized"
-                return old
 
-            previous = self.store.state.fenced(lease, publish)
+            self.store.state.fenced(lease, publish)
         except Exception:
+            if add_attempted:
+                try:
+                    # A successor may already have swept before this stale RPC
+                    # finished. Request another sweep without reviving a grant
+                    # or touching its selected version, even after lease loss.
+                    self.store.state.atomic(mark_cleanup)
+                except Exception:
+                    pass  # State failure never permits selecting this orphan.
             raise AuthorizationError("credential-persistence-failed") from None
-        if previous and previous != version and not self._destroy(previous):
-            self.store.state.fenced(lease, lambda state: state.update(secret_cleanup_pending=True))
+        # Sweep both containers so setup or reauthorization also removes older
+        # orphan writes. A failed sweep preserves the durable cleanup marker.
+        self.cleanup_versions(include_app=True)
         return version
 
     def save(self, bundle):
@@ -205,22 +224,34 @@ class CredentialStore:
         return self.cleanup_versions(include_app=include_app)
 
     def cleanup_versions(self, include_app=False):
-        self.store.lease.check()
-        state = self.store.state.snapshot()
-        active = {state.get("credential_version"), state.get("app_version")}
+        lease = self.store.lease
+        lease.check()
+        pending = self.store.state.fenced(lease, lambda state: state.get("secret_cleanup_pending"))
         ok = True
         for resource in ([self.athlete_resource, self.app_resource] if include_app else [self.athlete_resource]):
             try:
                 versions = self.client.list_secret_versions(request={"parent": resource})
                 for version in versions:
+                    # Listing may paginate or outlive this lease. Recheck after
+                    # each result, before deletion, so a preempted cleaner does
+                    # not destroy a successor's selected or unpublished grant.
+                    active = self.store.state.fenced(lease, lambda state: {
+                        state.get("credential_version"), state.get("app_version")})
                     status = getattr(version, "state", None)
                     destroyed = status == 3 or getattr(status, "name", None) == "DESTROYED"
                     if version.name not in active and not destroyed and not self._destroy(version.name):
                         ok = False
             except Exception:
-                ok = False
-        if ok:
-            self.store.state.fenced(self.store.lease, lambda current: current.pop("secret_cleanup_pending", None))
+                return False
+        # This marker covers both containers; an athlete-only revocation sweep
+        # must not acknowledge an application-version orphan it did not inspect.
+        if ok and include_app:
+            def acknowledge(state):
+                if state.get("secret_cleanup_pending") == pending:
+                    state.pop("secret_cleanup_pending", None)
+                    return True
+                return False
+            ok = self.store.state.fenced(lease, acknowledge)
         return ok
 
 
