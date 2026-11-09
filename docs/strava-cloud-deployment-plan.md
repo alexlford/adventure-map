@@ -108,6 +108,7 @@ and wheel SHA256 hashes. Never run these steps against real activity fixtures.
 python3.12 -m venv /path/outside/repository/cloud-tools
 /path/outside/repository/cloud-tools/bin/pip install --require-hashes -r cloud/strava/requirements.lock
 /path/outside/repository/cloud-tools/bin/python -m unittest discover -s scripts/strava_cloud -t . -p 'test_*.py'
+/path/outside/repository/cloud-tools/bin/python -m unittest discover -s cloud/strava -p 'test_*.py'
 npm run test:strava-private
 npm run validate:strava-private
 npm run validate:strava-cloud
@@ -128,6 +129,24 @@ publication validators remain unchanged and belong in their existing non-AI CI.
 2. Authenticate the Google Cloud CLI and Terraform ADC using Google's browser
    flow (`gcloud auth login`, `gcloud auth application-default login`). Do not
    paste credential files, tokens, passwords, or verification codes into AI tools.
+   Before Terraform reads project metadata, enable its bootstrap APIs:
+
+   ```bash
+   gcloud services enable cloudresourcemanager.googleapis.com serviceusage.googleapis.com --project PROJECT
+   ```
+
+   Enable the Billing Budget API and run the owner-only metadata tool using the
+   installed cloud-tools interpreter, before deploying workloads:
+
+   ```bash
+   gcloud services enable billingbudgets.googleapis.com --project PROJECT
+   /path/outside/repository/cloud-tools/bin/python cloud/strava/configure_budget.py --project PROJECT --project-number PROJECT_NUMBER --billing-account BILLING_ACCOUNT_ID
+   ```
+
+   This uses ADC internally, creates a $3 monthly gross Cloud Run cap and a $1
+   monthly net project alert, and verifies their saved settings. Existing matching
+   budgets are reused; conflicting names/settings are refused without an update
+   or deletion. After an interrupted create, rerun it to reconcile the result.
 3. Create a private metadata-only Terraform state bucket, or reuse a suitable
    existing restricted state bucket. Initialize the GCS backend with its bucket
    and prefix. Keep `.tfvars`, plans, and state out of Git.
@@ -135,6 +154,9 @@ publication validators remain unchanged and belong in their existing non-AI CI.
    project, exact owner Google email, and operational notification destination.
    Initially keep `deploy_workloads=false`, `enable_schedulers=false`, and
    `oauth_and_first_sync_verified=false`. Review and apply the bootstrap plan.
+   New log-based metrics can take up to ten minutes to become available to
+   Monitoring. If an alert-policy creation reports only a missing new metric,
+   let it propagate, then replan and reapply against the saved backend state.
 5. Build the reviewed source with the build identity (the packager only reads a
    fixed source allowlist):
 
@@ -227,6 +249,23 @@ Secret Manager versions, the project's default Firestore free quota, and Cloud
 Build's eligible default E2-standard-2 machine. No always-on instance or load
 balancer is provisioned. A billing account is still required; this is a usage
 estimate, not a guarantee of a zero bill or a spending cap.
+
+The owner-run budget tool uses [Cloud Billing spend caps](https://docs.cloud.google.com/billing/docs/how-to/budgets-spend-caps)
+for Cloud Run only. The $3 threshold measures gross estimated list-price usage
+before free allowances and credits; the separate $1 alert includes credits and
+covers all project services. Cap enforcement can lag, and overages remain payable.
+An enforced cap pauses this project's review service and all Cloud Run jobs,
+including recovery and cleanup; the independent two-day GCS lifecycle remains
+the asynchronous deletion fallback. Other services keep operating and can incur
+costs. The cap resets automatically next month. Notifications go to Project Owner
+users and default billing recipients. Creating these single-project budgets
+requires `resourcemanager.projects.get`, `billing.resourcebudgets.read`, and
+`billing.resourcebudgets.write`; the cap additionally requires
+`billing.resourcebudgets.configureSpendCap`. Equivalent billing-account budget
+permissions can be used instead. The quota project must have the Budget API
+enabled and the caller must have `serviceusage.services.use`. These rights belong
+to the owner administration environment; the runtime and build identities do not
+receive billing access.
 
 Hourly recovery and cleanup create about 1,488 executions in a 31-day month.
 Their 60-second minimum at 1 vCPU / 512 MiB consumes about 89,280 vCPU-seconds and
