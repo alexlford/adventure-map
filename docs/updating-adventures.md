@@ -186,10 +186,12 @@ A screenshot from Slopes, a race result, medal/photo, calendar entry, or direct 
 
 ## Updating through ChatGPT
 
-The lowest-friction workflow is simple: upload a fresh Strava export and any new Slopes screenshots or photos, then ask to **update Adventures**. The same delta policy should be followed: scan from the reviewed watermark, review the new relevant subset, update canonical data/routes/media, rebuild and validate the static publication, advance the watermark, rebuild again, and publish. You should not need to re-explain the site architecture each time.
+AI-assisted development should use source code, schemas, and entirely synthetic fixtures. Do not upload Strava API data, streams, locations, private queues, reports, or derivatives to ChatGPT, Codex, or another AI system. Run live API operations and review their output locally outside AI tools. Historical account exports are a separate source with potentially different usage rights; do not assume that an existing export workflow authorizes transmitting API data or that API authorization settles export-publication rights. Review those distinctions before sharing source evidence.
 
 Between annual exports, screenshots and official race evidence are sufficient to add and correct records. Do not request a new full account export for each update. Track interim records for reconciliation, preserve watch metrics separately from official results, and label organizer-course or inferred geometry accurately. The annual export audit must catch rides, ski days, renamed activities, missing records, duplicates, and GPS replacements across the full archive. data/update-policy.json records the pending personal-GPS reconciliation list; screenshot updates do not advance data/ingest-state.json.
 
-## Future automation
+## Private API synchronization
 
-The current workflow intentionally begins from account exports rather than depending on a live Strava API token. If a reliable automated Strava ingestion path is added later, it should feed the **same review queue and promotion policy** rather than bypassing curation and writing directly to public data.
+The [private sync utility](strava-private-sync.md) uses local macOS OAuth and Keychain credentials to prepare a transient queue with the same maintenance categories and suggested-action vocabulary. It does not write canonical records, invoke route materializers, publish API data, or advance `data/ingest-state.json`. Its download checkpoint is separate from the reviewed account-export watermark.
+
+Use `npm run strava:auth`, `npm run strava:status`, and `npm run strava:sync` personally on your Mac outside AI sessions. Inspect `npm run strava:report` locally. API queues have no export-watermark proposal and must not be passed into the public promotion workflow. Current API policy limits cache retention and prohibits indefinite API archives; consult the linked guide before authorization, historical scans, or any proposed publication.

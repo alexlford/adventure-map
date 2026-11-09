@@ -70,7 +70,16 @@
     "test:browser": "node scripts/run-browser-tests.mjs",
     "check:fast": "npm run build:publish && npm run validate:all && npm run test:update-pipeline",
     "check": "npm run check:fast && npm run test:browser",
-    "test:segmented-route-publication": "node scripts/test-segmented-route-publication.mjs"
+    "test:segmented-route-publication": "node scripts/test-segmented-route-publication.mjs",
+    "strava:auth": "python3 scripts/strava_private_sync.py auth",
+    "strava:reauth": "python3 scripts/strava_private_sync.py reauth",
+    "strava:status": "python3 scripts/strava_private_sync.py status",
+    "strava:sync": "python3 scripts/strava_private_sync.py sync",
+    "strava:report": "python3 scripts/strava_private_sync.py report",
+    "strava:disconnect": "python3 scripts/strava_private_sync.py disconnect",
+    "strava:purge": "python3 scripts/strava_private_sync.py purge",
+    "test:strava-private": "python3 -m unittest discover -s scripts/strava_private -t . -p \"test_*.py\"",
+    "validate:strava-private": "python3 scripts/validate_strava_private.py"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
