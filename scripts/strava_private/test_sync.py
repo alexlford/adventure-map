@@ -153,6 +153,39 @@ class SyncTests(unittest.TestCase):
         self.run_sync()
         self.assertIn("streams", self.store.load_cache()["activities"]["900001"])
 
+    def test_candidate_streams_select_races_and_outings_not_training(self):
+        training = activity(900001)
+        race = activity(900002)
+        race["name"] = "Synthetic Marathon Race"
+        ride = activity(900003)
+        ride["sport_type"] = "MountainBikeRide"
+        self.api.details = {"900001": training, "900002": race, "900003": ride}
+        self.api.pages = [[{"id": key} for key in (900001, 900002, 900003)]]
+        self.run_sync(candidate_streams=True)
+        stream_paths = [path for path in self.api.calls if "/streams?" in path]
+        self.assertEqual(len(stream_paths), 2)
+        self.assertFalse(any("/900001/" in path for path in stream_paths))
+        self.assertTrue(any("/900002/" in path for path in stream_paths))
+        self.assertTrue(any("/900003/" in path for path in stream_paths))
+        self.assertNotIn("streams", self.store.load_cache()["activities"]["900001"])
+
+    def test_candidate_stream_selection_survives_interrupted_window(self):
+        self.api.details["900001"]["name"] = "Synthetic Race"
+        original = self.api.request
+        rejected = [False]
+        def flaky(*args, **kwargs):
+            if "/streams?" in args[1] and not rejected[0]:
+                rejected[0] = True
+                raise ApiError(429, "rate_limited", NOW+900)
+            return original(*args, **kwargs)
+        self.api.request = flaky
+        with self.assertRaises(ApiError):
+            self.run_sync(candidate_streams=True)
+        pending = self.store.load_control()["pending"]
+        self.assertTrue(pending["candidateStreams"])
+        self.run_sync()
+        self.assertIn("streams", self.store.load_cache()["activities"]["900001"])
+
     def test_historical_bounds_fail_without_request(self):
         for options in ({"since": "2025-01-01", "until": "2025-03-01"},
                         {"since": "2027-01-01"}, {"until": "2025-01-01"}):

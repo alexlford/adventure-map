@@ -56,10 +56,12 @@ def _validate_control(value):
         raise StorageError("Invalid authorization control state.")
     pending = value.get("pending")
     if pending is not None:
-        if not isinstance(pending, dict) or set(pending) - {"after", "before", "page", "mode", "started_at", "streams"}:
+        if not isinstance(pending, dict) or set(pending) - {"after", "before", "page", "mode", "started_at", "streams", "candidateStreams"}:
             raise StorageError("Invalid pending operation state.")
         if not isinstance(pending.get("streams", False), bool):
             raise StorageError("Invalid pending stream option.")
+        if not isinstance(pending.get("candidateStreams", False), bool):
+            raise StorageError("Invalid pending candidate stream option.")
         if pending.get("mode") not in _MODES or pending.get("page", 1) != 1:
             raise StorageError("Invalid pending operation mode.")
         if any(not _number(pending.get(key)) for key in ("after", "before", "started_at")):

@@ -64,7 +64,7 @@ class Sync:
             raise SyncError("Activity ownership could not be verified; checkpoint unchanged.")
         return {key: detail[key] for key in FIELDS if key in detail}
 
-    def run(self, since=None, until=None, streams=False):
+    def run(self, since=None, until=None, streams=False, candidate_streams=False):
         self.store.purge_expired()
         control = self.store.load_control()
         envelope = self.store.read_json("cache.json")
@@ -98,10 +98,12 @@ class Sync:
                 raise SyncError("An interrupted window is pending. Resume strava:sync without date arguments first.")
             start, end, mode = pending["after"], pending["before"], pending["mode"]
             streams = streams or pending.get("streams", False)
+            candidate_streams = candidate_streams or pending.get("candidateStreams", False)
         if end <= start:
             raise SyncError("No valid scan window; check the local clock.")
         control["pending"] = {"after": start, "before": end, "page": 1,
                               "mode": mode, "streams": streams,
+                              "candidateStreams": candidate_streams,
                               "started_at": pending["started_at"] if pending else int(self.now())}
         window = [start, end, control["pending"]["started_at"]]
         self.event(control, "started")
@@ -141,10 +143,19 @@ class Sync:
             # an expired in-memory payload with a fresh retention deadline.
             self.store.save_cache(payload, expires_at=deadline)
 
+        def wants_gps(detail):
+            if streams:
+                return True
+            if not candidate_streams:
+                return False
+            review = candidate(detail)
+            return (review["suggestedAction"] in {"race-review", "bike-review", "candidate-outing"}
+                    or review["possibleStoryReview"])
+
         def refresh(ident):
             previous = payload["activities"].get(ident)
             if (resuming and previous and previous.get("processedWindow") == window
-                    and (not streams or "streams" in previous)):
+                    and (not wants_gps(previous["activity"]) or "streams" in previous)):
                 # Replaying list pages must not spend the next quota window
                 # re-downloading the same completed prefix forever.
                 return
@@ -170,7 +181,7 @@ class Sync:
             payload["activities"][ident] = entry
             payload["notices"].pop(ident, None)
             save()
-            if streams:
+            if wants_gps(detail):
                 try:
                     raw = self.get(f"/api/v3/activities/{ident}/streams?keys=latlng,time,altitude,moving&key_by_type=true")
                 except ApiError as exc:

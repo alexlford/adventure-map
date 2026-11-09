@@ -58,6 +58,49 @@ npm run strava:sync -- --streams
 
 Use date windows of at most 31 days. Dates are UTC boundaries and `--until` is exclusive. The first normal scan begins conservatively before the reviewed export snapshot because that watermark uses local activity time while the API filters use UTC epoch time. Each normal run processes at most 31 days; repeat the command to catch up after a longer gap. Later scans overlap the previous checkpoint by seven days. `--streams` explicitly enables private retrieval of permitted `latlng`, `time`, `altitude`, and `moving` streams; it does not publish or export routes. Avoid fetching streams until you need to inspect a specific private review window.
 
+## Automatic private sync on your Mac
+
+After personally completing `npm run strava:auth` and verifying one successful
+`npm run strava:sync`, enable automatic checks **once** in an ordinary Terminal
+session (not a Codex terminal):
+
+```bash
+npm run strava:auto-enable
+npm run strava:auto-status
+```
+
+This installs an owner-only macOS LaunchAgent that runs once per week on Monday
+at 9:00 AM in the Mac's local timezone, when your Mac is awake and logged in. It uses the existing approved Keychain grant; no
+tokens or activity data go into the LaunchAgent definition. The job does not
+need an interactive terminal and does not use Codex. A normal Mac sleep or
+shutdown delays future checks; it is not a hosted 24/7 service. With the
+current 48-hour transient cache lifetime, review candidate data shortly after
+the weekly run or it will expire.
+
+A scheduled run fetches new activity metadata and requests GPS streams only for
+**candidate** races, cycling/MTB outings, Nordic outings, and likely adventure
+stories; ordinary training runs do not have GPS streams fetched automatically.
+These are broad candidate classifications, not validated public records.
+API quota limits and interruptions may require later scheduled runs to catch up.
+The original export GPS files are preserved separately.
+
+Review results privately with `npm run strava:report`. The scheduled job
+**does not** upload GPS to GitHub, make data available to ChatGPT/Codex, publish
+routes, or advance the reviewed export watermark. Use an independently owned
+watch-original FIT/GPX/TCX source for any separate AI-assisted publishing flow.
+
+To stop polling without revoking your Strava authorization:
+
+```bash
+npm run strava:auto-disable
+```
+
+`npm run strava:disconnect` also disables the scheduled polling agent. If you
+move the checkout or change the Python interpreter, disable and re-enable the
+agent so its stored paths are updated. Keychain access for a background process
+may require local macOS approval; verify a real scheduled run before assuming
+it works unattended.
+
 ## Storage, refresh, and failure behavior
 
 macOS Keychain holds the client secret, access token, and latest refresh token. Refresh tokens can rotate on every successful refresh, invalidating the previous value immediately. The tool saves the returned credential bundle before continuing. If token persistence or an interrupted token exchange leaves the authorization uncertain, stop and reauthorize; do not keep retrying an old refresh token or assume a grant is usable. Before refresh I/O or an authorization-code exchange, a content-free uncertainty flag is saved in control state. It survives process interruption and blocks subsequent token use until successful reauthorization; it is cleared only after the new bundle is saved. Failed or declined reauthorization preserves an existing flag. Do not run multiple copies against the same private store.

@@ -79,7 +79,10 @@
     "strava:disconnect": "python3 scripts/strava_private_sync.py disconnect",
     "strava:purge": "python3 scripts/strava_private_sync.py purge",
     "test:strava-private": "python3 -m unittest discover -s scripts/strava_private -t . -p \"test_*.py\"",
-    "validate:strava-private": "python3 scripts/validate_strava_private.py"
+    "validate:strava-private": "python3 scripts/validate_strava_private.py",
+    "strava:auto-enable": "python3 scripts/strava_private_sync.py auto-enable",
+    "strava:auto-disable": "python3 scripts/strava_private_sync.py auto-disable",
+    "strava:auto-status": "python3 scripts/strava_private_sync.py auto-status"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

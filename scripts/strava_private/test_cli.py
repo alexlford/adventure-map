@@ -97,6 +97,7 @@ class CommandBoundaryTests(unittest.TestCase):
         with patch.object(cli, "require_local_mac"), \
                 patch.object(cli, "PrivateStore", return_value=local), \
                 patch.object(cli, "KeychainStore"), patch.object(cli, "Transport"), \
+                patch("scripts.strava_private.automation.remove_auto_sync"), \
                 patch.object(cli, "disconnect", side_effect=cli.ApiError(code="request_failed")), \
                 contextlib.redirect_stderr(io.StringIO()):
             self.assertEqual(cli.main(["disconnect"]), 1)
@@ -129,6 +130,7 @@ class CommandBoundaryTests(unittest.TestCase):
                         patch.object(cli, "PrivateStore", return_value=local), \
                         patch.object(cli, "KeychainStore", return_value=keychain), \
                         patch.object(cli, "Transport") as transport, \
+                        patch("scripts.strava_private.automation.remove_auto_sync"), \
                         contextlib.redirect_stdout(io.StringIO()) as out:
                     self.assertEqual(cli.main(["disconnect"]), 0)
                 keychain.delete.assert_called_once()
