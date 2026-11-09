@@ -126,6 +126,16 @@ resource "google_artifact_registry_repository_iam_member" "deployer" {
   member     = "serviceAccount:${google_service_account.identity["deploy"].email}"
 }
 
+# Creating a Cloud Run workload requires image read access for its caller as
+# well as the platform's execution agent. This grants source-image access only.
+resource "google_artifact_registry_repository_iam_member" "admin_image_reader" {
+  project    = var.project_id
+  location   = var.region
+  repository = google_artifact_registry_repository.images.repository_id
+  role       = "roles/artifactregistry.reader"
+  member     = "serviceAccount:${google_service_account.identity["admin"].email}"
+}
+
 resource "google_project_iam_custom_role" "build_submit" {
   project     = var.project_id
   role_id     = "${replace(var.name_prefix, "-", "_")}_build_submit"
