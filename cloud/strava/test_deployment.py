@@ -115,6 +115,60 @@ class PreflightTests(unittest.TestCase):
         self.assertTrue(all(passed for _, passed in results))
         self.assertEqual({command[0] for command in commands}, {"projects", "billing", "services"})
 
+    def test_deployed_preflight_reads_default_sink_metadata_and_fails_closed(self):
+        args = argparse.Namespace(project="synthetic-project", phase="deployed", prefix="synthetic",
+                                  region="us-central1", database="(default)", owner_email="owner@example.com",
+                                  ancestor_sinks_reviewed=False, expect_active=False)
+        exclusions = [
+            {"name": "synthetic-no-request-urls", "filter": 'log_id("run.googleapis.com/requests")'},
+            {"name": "synthetic-no-iap-access-urls", "filter": 'log_id("cloudaudit.googleapis.com/data_access")'},
+            {"name": "synthetic-fixed-status-only", "filter": 'log_id("run.googleapis.com/stdout") NOT jsonPayload.status="completed"'},
+        ]
+        commands = []
+
+        def fake(command):
+            commands.append(command)
+            group = command[:3]
+            if command[0] == "projects":
+                return {"lifecycleState": "ACTIVE", "projectNumber": "123456789012"}
+            if command[0] == "billing":
+                return {"billingEnabled": True}
+            if command[0] == "services":
+                return [{"config": {"name": name}} for name in preflight.APIS]
+            if group == ["logging", "sinks", "list"]:
+                return [{"name": "_Default"}, {"name": "_Required"}]
+            if group == ["logging", "sinks", "describe"]:
+                self.assertEqual(command[3], "_Default")
+                return {"exclusions": exclusions}
+            if group == ["storage", "buckets", "describe"]:
+                return self.bucket()
+            if group == ["storage", "buckets", "get-iam-policy"]:
+                return {"bindings": []}
+            if group == ["firestore", "databases", "describe"]:
+                return {"pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED"}
+            if command[:4] == ["firestore", "backups", "schedules", "list"]:
+                return []
+            if group == ["run", "services", "describe"]:
+                return {"metadata": {"annotations": {"run.googleapis.com/iap-enabled": "true"}}}
+            if group == ["run", "services", "get-iam-policy"]:
+                return {"bindings": [{"role": "roles/run.invoker", "members": [
+                    "serviceAccount:service-123456789012@gcp-sa-iap.iam.gserviceaccount.com"]}]}
+            if group == ["iap", "web", "get-iam-policy"]:
+                return {"bindings": [{"role": "roles/iap.httpsResourceAccessor", "members": ["user:owner@example.com"]}]}
+            if group == ["scheduler", "jobs", "describe"]:
+                mode = command[3].removeprefix("synthetic-")
+                return {"state": "PAUSED", "schedule": {"weekly": "0 9 * * 1", "recovery": "17 * * * *", "cleanup": "37 * * * *"}[mode],
+                        "timeZone": "America/Denver", "httpTarget": {"oauthToken": {
+                            "serviceAccountEmail": "synthetic-scheduler@synthetic-project.iam.gserviceaccount.com"}}}
+            self.fail("Unexpected metadata or content command: " + repr(command))
+
+        self.assertTrue(all(passed for _, passed in preflight.check(args, fake)))
+        self.assertIn(["logging", "sinks", "describe", "_Default", "--project=synthetic-project", "--format=json(exclusions)"], commands)
+        for entry, check in zip(exclusions, ("request_logs_excluded", "iap_access_urls_excluded", "unstructured_runtime_excluded")):
+            entry["disabled"] = True
+            self.assertFalse(dict(preflight.check(args, fake))[check])
+            entry.pop("disabled")
+
 
 if __name__ == "__main__":
     unittest.main()
